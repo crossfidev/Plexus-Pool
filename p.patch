@@ -1,0 +1,74 @@
+From cd9845180adb52a5f73da283150dcb62ab240c4d Mon Sep 17 00:00:00 2001
+From: GitLabRoman <gitlabroman@yandex.ru>
+Date: Thu, 30 Jul 2020 18:27:33 +0700
+Subject: [PATCH] My awesome feature
+
+---
+ sandbox.json                                 | 4 ++++
+ src/lib_client_base_unix/client_config.ml    | 2 +-
+ src/lib_rpc_http/RPC_client.ml               | 2 +-
+ src/proto_alpha/lib_protocol/init_storage.ml | 3 +++
+ 4 files changed, 9 insertions(+), 2 deletions(-)
+ create mode 100644 sandbox.json
+
+diff --git a/sandbox.json b/sandbox.json
+new file mode 100644
+index 000000000..007ba123e
+--- /dev/null
++++ b/sandbox.json
+@@ -0,0 +1,4 @@
++{
++    "genesis_pubkey":
++      "edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2"
++}
+diff --git a/src/lib_client_base_unix/client_config.ml b/src/lib_client_base_unix/client_config.ml
+index bf676f04d..f82087f49 100644
+--- a/src/lib_client_base_unix/client_config.ml
++++ b/src/lib_client_base_unix/client_config.ml
+@@ -152,7 +152,7 @@ let default_chain = `Main
+ 
+ let default_block = `Head 0
+ 
+-let default_endpoint = Uri.of_string "http://localhost:8732"
++let default_endpoint = Uri.of_string "http://127.0.0.1:8732"
+ 
+ let ( // ) = Filename.concat
+ 
+diff --git a/src/lib_rpc_http/RPC_client.ml b/src/lib_rpc_http/RPC_client.ml
+index 06423eec0..ac8d6bf18 100644
+--- a/src/lib_rpc_http/RPC_client.ml
++++ b/src/lib_rpc_http/RPC_client.ml
+@@ -386,7 +386,7 @@ module Make (Client : Cohttp_lwt.S.Client) = struct
+       (obj1 (req "endpoint" RPC_encoding.uri_encoding))
+ 
+   let default_config =
+-    {endpoint = Uri.of_string "http://localhost:8732"; logger = null_logger}
++    {endpoint = Uri.of_string "http://127.0.0.1:8732"; logger = null_logger}
+ 
+   class http_ctxt config media_types : RPC_context.json =
+     let base = config.endpoint in
+diff --git a/src/proto_alpha/lib_protocol/init_storage.ml b/src/proto_alpha/lib_protocol/init_storage.ml
+index 8518a027f..f7c171fe8 100644
+--- a/src/proto_alpha/lib_protocol/init_storage.ml
++++ b/src/proto_alpha/lib_protocol/init_storage.ml
+@@ -29,6 +29,7 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
+   >>=? fun (previous_protocol, ctxt) ->
+   match previous_protocol with
+   | Genesis param ->
++      Logging.log_notice "\nSTITCHING!\n" ;
+       Commitment_storage.init ctxt param.commitments
+       >>=? fun ctxt ->
+       Roll_storage.init ctxt
+@@ -53,8 +54,10 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
+       >>=? fun ctxt ->
+       Vote_storage.freeze_listings ctxt >>=? fun ctxt -> return ctxt
+   | Alpha_previous ->
++      Logging.log_notice "\nSTITCHING1!\n" ;
+       return ctxt
+   | Carthage_006 ->
++      Logging.log_notice "\nSTITCHING2!\n" ;
+       return ctxt
+ 
+ let prepare ctxt ~level ~predecessor_timestamp ~timestamp ~fitness =
+-- 
+2.26.2

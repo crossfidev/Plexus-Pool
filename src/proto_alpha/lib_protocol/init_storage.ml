@@ -29,6 +29,7 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
   >>=? fun (previous_protocol, ctxt) ->
   match previous_protocol with
   | Genesis param ->
+      Logging.log_notice "\nSTITCHING!\n" ;
       Commitment_storage.init ctxt param.commitments
       >>=? fun ctxt ->
       Roll_storage.init ctxt
@@ -53,8 +54,10 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
       >>=? fun ctxt ->
       Vote_storage.freeze_listings ctxt >>=? fun ctxt -> return ctxt
   | Alpha_previous ->
+      Logging.log_notice "\nSTITCHING1!\n" ;
       return ctxt
   | Carthage_006 ->
+      Logging.log_notice "\nSTITCHING2!\n" ;
       return ctxt
 
 let prepare ctxt ~level ~predecessor_timestamp ~timestamp ~fitness =

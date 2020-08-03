@@ -152,7 +152,7 @@ let default_chain = `Main
 
 let default_block = `Head 0
 
-let default_endpoint = Uri.of_string "http://localhost:8732"
+let default_endpoint = Uri.of_string "http://127.0.0.1:8732"
 
 let ( // ) = Filename.concat
 
