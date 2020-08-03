@@ -27,7 +27,7 @@ type bootstrap_account = {
   public_key_hash : Signature.Public_key_hash.t;
   public_key : Signature.Public_key.t option;
   amount : Tez_repr.t;
-  amount_mine : Mine_repr.t;
+  mine_amount : Mine_repr.t;
 }
 
 type bootstrap_contract = {
@@ -53,32 +53,32 @@ let bootstrap_account_encoding =
         ~title:"Public_key_known"
         (tup3 Signature.Public_key.encoding Tez_repr.encoding Mine_repr.encoding)
         (function
-          | {public_key_hash; public_key = Some public_key; amount; amount_mine} ->
+          | {public_key_hash; public_key = Some public_key; amount; mine_amount} ->
               assert (
                 Signature.Public_key_hash.equal
                   (Signature.Public_key.hash public_key)
                   public_key_hash ) ;
-              Some (public_key, amount, amount_mine)
+              Some (public_key, amount, mine_amount)
           | {public_key = None} ->
               None)
-        (fun (public_key, amount, amount_mine) ->
+        (fun (public_key, amount, mine_amount) ->
           {
             public_key = Some public_key;
             public_key_hash = Signature.Public_key.hash public_key;
             amount;
-            amount_mine;
+            mine_amount;
           });
       case
         (Tag 1)
         ~title:"Public_key_unknown"
         (tup3 Signature.Public_key_hash.encoding Tez_repr.encoding Mine_repr.encoding)
         (function
-          | {public_key_hash; public_key = None; amount; amount_mine} ->
-              Some (public_key_hash, amount, amount_mine)
+          | {public_key_hash; public_key = None; amount; mine_amount} ->
+              Some (public_key_hash, amount, mine_amount)
           | {public_key = Some _} ->
               None)
-        (fun (public_key_hash, amount, amount_mine) ->
-          {public_key = None; public_key_hash; amount; amount_mine}) ]
+        (fun (public_key_hash, amount, mine_amount) ->
+          {public_key = None; public_key_hash; amount; mine_amount}) ]
 
 let bootstrap_contract_encoding =
   let open Data_encoding in

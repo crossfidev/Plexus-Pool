@@ -724,7 +724,7 @@ let spend c contract amount =
                 (* Delete empty implicit contract *)
                 delete c contract ) )
 
-let credit c contract amount amount_mine  =
+let credit c contract amount mine_amount  =
   ( if Tez_repr.(amount <> Tez_repr.zero) then return c
   else
     Storage.Contract.Code.mem c contract
@@ -739,7 +739,7 @@ let credit c contract amount amount_mine  =
     | None ->
         fail (Non_existing_contract contract)
     | Some manager ->
-        create_implicit c manager ~balance:amount ~mine_balance:amount_mine )
+        create_implicit c manager ~balance:amount ~mine_balance:mine_amount )
   | Some balance ->
       Lwt.return Tez_repr.(amount +? balance)
       >>=? fun balance ->

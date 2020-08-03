@@ -46,7 +46,7 @@ type parsed_account_repr = {
   name : string;
   sk_uri : Client_keys.sk_uri;
   amount : Protocol.Tez_repr.t;
-  amount_mine : Protocol.Mine_repr.t;
+  mine_amount : Protocol.Mine_repr.t;
 }
 
 let parsed_account_repr_pp ppf account =
@@ -67,15 +67,15 @@ let bootstrap_account_encoding :
   let open Data_encoding in
   let open Protocol.Parameters_repr in
   conv
-    (fun {public_key_hash; public_key; amount; amount_mine} ->
-      (public_key_hash, public_key, amount, amount_mine))
-    (fun (public_key_hash, public_key, amount, amount_mine) ->
-      {public_key_hash; public_key; amount; amount_mine})
+    (fun {public_key_hash; public_key; amount; mine_amount} ->
+      (public_key_hash, public_key, amount, mine_amount))
+    (fun (public_key_hash, public_key, amount, mine_amount) ->
+      {public_key_hash; public_key; amount; mine_amount})
     (obj4
        (req "public_key_hash" Signature.Public_key_hash.encoding)
        (opt "public_key" Signature.Public_key.encoding)
        (req "amount" Protocol.Tez_repr.encoding)
-       (req "amount_mine" Protocol.Mine_repr.encoding))
+       (req "mine_amount" Protocol.Mine_repr.encoding))
 
 let bootstrap_contract_encoding :
     Protocol.Parameters_repr.bootstrap_contract Data_encoding.t =
@@ -170,18 +170,18 @@ let bootstrap_account_to_parsed_account_repr cctxt
     (bootstrap_account : Protocol.Parameters_repr.bootstrap_account) =
   Client_keys.get_key cctxt bootstrap_account.public_key_hash
   >>=? fun (name, _, sk_uri) ->
-  return {name; sk_uri; amount = bootstrap_account.amount; amount_mine = bootstrap_account.amount_mine}
+  return {name; sk_uri; amount = bootstrap_account.amount; mine_amount = bootstrap_account.mine_amount}
 
 let parsed_account_repr_encoding =
   let open Data_encoding in
   conv
-    (fun p -> (p.name, p.sk_uri, p.amount, p.amount_mine))
-    (fun (name, sk_uri, amount, amount_mine) -> {name; sk_uri; amount; amount_mine})
+    (fun p -> (p.name, p.sk_uri, p.amount, p.mine_amount))
+    (fun (name, sk_uri, amount, mine_amount) -> {name; sk_uri; amount; mine_amount})
     (obj4
        (req "name" string)
        (req "sk_uri" Client_keys.Secret_key.encoding)
        (req "amount" Protocol.Tez_repr.encoding)
-       (req "amount_mine" Protocol.Mine_repr.encoding))
+       (req "mine_amount" Protocol.Mine_repr.encoding))
 
 let mockup_default_bootstrap_accounts
     (cctxt : Tezos_client_base.Client_context.full) : string tzresult Lwt.t =
@@ -213,9 +213,9 @@ let mockup_default_bootstrap_accounts
               | None ->
                   (* we're reading the wallet, it's content MUST be valid *)
                   assert false
-              | Some amount_mine ->
+              | Some mine_amount ->
                   parsed_account_reprs :=
-                    {name; sk_uri; amount = Protocol.Tez_repr.zero; amount_mine} :: !parsed_account_reprs ;
+                    {name; sk_uri; amount = Protocol.Tez_repr.zero; mine_amount} :: !parsed_account_reprs ;
                   Lwt.return_unit )
           | Error err ->
               errors := err :: !errors ;
@@ -300,7 +300,7 @@ let to_bootstrap_account repr =
   let public_key_hash = Signature.Public_key.hash public_key in
   return
     Protocol.Parameters_repr.
-      {public_key_hash; public_key = Some public_key; amount = repr.amount; amount_mine = repr.amount_mine}
+      {public_key_hash; public_key = Some public_key; amount = repr.amount; mine_amount = repr.mine_amount}
 
 (* ------------------------------------------------------------------------- *)
 (* Blocks *)

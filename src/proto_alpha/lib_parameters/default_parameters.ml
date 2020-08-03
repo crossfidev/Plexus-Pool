@@ -96,7 +96,7 @@ let bootstrap_accounts_strings =
     "edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU";
     "edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n" ]
 
-let bootstrap_mine_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
+let mine_bootstrap_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
 let bootstrap_balance = Tez_repr.of_mutez_exn 1_000_000_000_000L
 
 let bootstrap_accounts =
@@ -109,7 +109,7 @@ let bootstrap_accounts =
           public_key_hash;
           public_key = Some public_key;
           amount = bootstrap_balance;
-          amount_mine = bootstrap_mine_balance;
+          mine_amount = mine_bootstrap_balance;
         })
     bootstrap_accounts_strings
 
@@ -140,8 +140,8 @@ let commitments =
         (Data_encoding.list Commitment_repr.encoding)
         json
 
-let make_bootstrap_account (pkh, pk, amount, amount_mine) =
-  Parameters_repr.{public_key_hash = pkh; public_key = Some pk; amount; amount_mine}
+let make_bootstrap_account (pkh, pk, amount, mine_amount) =
+  Parameters_repr.{public_key_hash = pkh; public_key = Some pk; amount; mine_amount}
 
 let parameters_of_constants ?(bootstrap_accounts = bootstrap_accounts)
     ?(bootstrap_contracts = []) ?(with_commitments = false) constants =
