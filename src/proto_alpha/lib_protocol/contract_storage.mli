@@ -86,6 +86,8 @@ val reveal_manager_key :
 
 val get_balance : Raw_context.t -> Contract_repr.t -> Tez_repr.t tzresult Lwt.t
 
+val get_mine_balance : Raw_context.t -> Contract_repr.t -> Mine_repr.t tzresult Lwt.t
+
 val get_counter :
   Raw_context.t -> Signature.Public_key_hash.t -> Z.t tzresult Lwt.t
 
@@ -134,6 +136,7 @@ val credit :
   Raw_context.t ->
   Contract_repr.t ->
   Tez_repr.t ->
+  Mine_repr.t ->
   Raw_context.t tzresult Lwt.t
 
 val spend :

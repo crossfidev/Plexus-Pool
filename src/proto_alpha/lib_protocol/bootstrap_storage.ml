@@ -26,10 +26,10 @@
 open Misc
 
 let init_account ctxt
-    ({public_key_hash; public_key; amount} : Parameters_repr.bootstrap_account)
+    ({public_key_hash; public_key; amount; amount_mine} : Parameters_repr.bootstrap_account)
     =
   let contract = Contract_repr.implicit_contract public_key_hash in
-  Contract_storage.credit ctxt contract amount
+  Contract_storage.credit ctxt contract amount amount_mine
   >>=? fun ctxt ->
   match public_key with
   | Some public_key ->

@@ -136,6 +136,12 @@ module Contract : sig
        and type value = Tez_repr.t
        and type t := Raw_context.t
 
+  module MineBalance :
+    Indexed_data_storage
+      with type key = Contract_repr.t
+      and type value = Mine_repr.t
+      and type t := Raw_context.t
+
   (** Frozen balance, see 'delegate_storage.mli' for more explanation.
       Always update `Delegates_with_frozen_balance` accordingly. *)
   module Frozen_deposits :

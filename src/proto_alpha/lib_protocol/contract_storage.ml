@@ -425,7 +425,7 @@ let update_script_big_map c = function
 
 let create_base c ?(prepaid_bootstrap_storage = false)
     (* Free space for bootstrap contracts *)
-    contract ~balance ~manager ~delegate ?script () =
+    contract ~balance ~mine_balance ~manager ~delegate ?script () =
   ( match Contract_repr.is_implicit contract with
   | None ->
       return c
@@ -434,6 +434,8 @@ let create_base c ?(prepaid_bootstrap_storage = false)
       >>=? fun counter -> Storage.Contract.Counter.init c contract counter )
   >>=? fun c ->
   Storage.Contract.Balance.init c contract balance
+  >>=? fun c ->
+  Storage.Contract.MineBalance.init c contract mine_balance
   >>=? fun c ->
   ( match manager with
   | Some manager ->
@@ -478,16 +480,18 @@ let originate c ?prepaid_bootstrap_storage contract ~balance ~script ~delegate
     ?prepaid_bootstrap_storage
     contract
     ~balance
+    ~mine_balance: Mine_repr.zero
     ~manager:None
     ~delegate
     ~script
     ()
 
-let create_implicit c manager ~balance =
+let create_implicit c manager ~balance ~mine_balance =
   create_base
     c
     (Contract_repr.implicit_contract manager)
     ~balance
+    ~mine_balance
     ~manager:(Some manager)
     ?script:None
     ~delegate:None
@@ -667,6 +671,18 @@ let get_balance c contract =
   | Some v ->
       return v
 
+let get_mine_balance c contract =
+  Storage.Contract.MineBalance.get_option c contract
+  >>=? function
+  | None -> (
+    match Contract_repr.is_implicit contract with
+    | Some _ ->
+        return Mine_repr.zero
+    | None ->
+        failwith "get_mine_balance" )
+  | Some v ->
+      return v
+
 let update_script_storage c contract storage big_map_diff =
   let storage = Script_repr.lazy_expr storage in
   update_script_big_map c big_map_diff
@@ -708,7 +724,7 @@ let spend c contract amount =
                 (* Delete empty implicit contract *)
                 delete c contract ) )
 
-let credit c contract amount =
+let credit c contract amount amount_mine  =
   ( if Tez_repr.(amount <> Tez_repr.zero) then return c
   else
     Storage.Contract.Code.mem c contract
@@ -723,7 +739,7 @@ let credit c contract amount =
     | None ->
         fail (Non_existing_contract contract)
     | Some manager ->
-        create_implicit c manager ~balance:amount )
+        create_implicit c manager ~balance:amount ~mine_balance:amount_mine )
   | Some balance ->
       Lwt.return Tez_repr.(amount +? balance)
       >>=? fun balance ->

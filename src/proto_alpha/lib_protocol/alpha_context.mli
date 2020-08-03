@@ -779,6 +779,8 @@ module Contract : sig
   val get_counter : context -> public_key_hash -> Z.t tzresult Lwt.t
 
   val get_balance : context -> contract -> Tez.t tzresult Lwt.t
+  
+  val get_mine_balance : context -> contract -> Mine.t tzresult Lwt.t
 
   val init_origination_nonce : context -> Operation_hash.t -> context
 
@@ -821,7 +823,7 @@ module Contract : sig
 
   val spend : context -> contract -> Tez.t -> context tzresult Lwt.t
 
-  val credit : context -> contract -> Tez.t -> context tzresult Lwt.t
+  val credit : context -> contract -> Tez.t -> Mine.t -> context tzresult Lwt.t
 
   val update_script_storage :
     context ->

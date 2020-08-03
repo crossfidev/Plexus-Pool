@@ -210,6 +210,7 @@ let register () =
         )
   in
   register_field S.balance Contract.get_balance ;
+  register_field S.mine_balance Contract.get_mine_balance ;
   register1 S.manager_key (fun ctxt contract () () ->
       match Contract.is_implicit contract with
       | None ->

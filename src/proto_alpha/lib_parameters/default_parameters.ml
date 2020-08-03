@@ -96,7 +96,8 @@ let bootstrap_accounts_strings =
     "edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU";
     "edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n" ]
 
-let bootstrap_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
+let bootstrap_mine_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
+let bootstrap_balance = Tez_repr.of_mutez_exn 1_000_000_000_000L
 
 let bootstrap_accounts =
   List.map
@@ -107,8 +108,8 @@ let bootstrap_accounts =
         {
           public_key_hash;
           public_key = Some public_key;
-          amount = Tez_repr.zero;
-          amount_mine = bootstrap_balance;
+          amount = bootstrap_balance;
+          amount_mine = bootstrap_mine_balance;
         })
     bootstrap_accounts_strings
 

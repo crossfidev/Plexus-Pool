@@ -118,6 +118,13 @@ module Contract = struct
       end)
       (Tez_repr)
 
+  module MineBalance =
+    Indexed_context.Make_map
+      (struct
+        let name = ["mine_balance"]
+      end)
+      (Mine_repr)
+
   module Frozen_balance_index =
     Make_indexed_subcontext
       (Make_subcontext (Registered) (Indexed_context.Raw_context)

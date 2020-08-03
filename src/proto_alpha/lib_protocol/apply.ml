@@ -552,7 +552,7 @@ let apply_manager_operation_content :
                   true ) ) )
       >>=? fun (ctxt, maybe_burn_balance_update, allocated_destination_contract)
                ->
-      Contract.credit ctxt destination amount
+      Contract.credit ctxt destination amount Mine.zero
       >>=? fun ctxt ->
       Contract.get_script ctxt destination
       >>=? fun (ctxt, script) ->
@@ -1248,7 +1248,7 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
           Commitment.delete ctxt blinded_pkh
           >>=? fun ctxt ->
           let contract = Contract.implicit_contract (Signature.Ed25519 pkh) in
-          Contract.(credit ctxt contract amount)
+          Contract.(credit ctxt contract amount Mine.zero)
           >>=? fun ctxt ->
           return
             ( ctxt,
