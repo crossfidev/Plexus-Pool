@@ -65,6 +65,7 @@ let bootstrap_account_encoding =
             public_key = Some public_key;
             public_key_hash = Signature.Public_key.hash public_key;
             amount;
+            amount_mine;
           });
       case
         (Tag 1)

@@ -1,191 +1,23 @@
-From 34a10d42b965b90d84c66c8b8a059749f70a17c0 Mon Sep 17 00:00:00 2001
+From 3c942710c9eb9f0f967b6e7edbb5d65850e32fd1 Mon Sep 17 00:00:00 2001
 From: GitLabRoman <gitlabroman@yandex.ru>
-Date: Sat, 1 Aug 2020 11:28:11 +0700
+Date: Sat, 1 Aug 2020 11:28:47 +0700
 Subject: [PATCH] revert
 
 ---
- .../lib_parameters/default_parameters.ml      | 17 ++++++++--------
- .../lib_parameters/default_parameters.mli     |  2 +-
- .../lib_protocol/bootstrap_storage.ml         | 12 +++++------
- .../lib_protocol/constants_repr.ml            | 20 +++++++++----------
- src/proto_alpha/lib_protocol/mine_repr.ml     |  2 +-
- src/proto_alpha/lib_protocol/mine_repr.mli    |  6 +++---
- 6 files changed, 30 insertions(+), 29 deletions(-)
+ src/proto_alpha/lib_protocol/parameters_repr.ml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/src/proto_alpha/lib_parameters/default_parameters.ml b/src/proto_alpha/lib_parameters/default_parameters.ml
-index 4619f1152..95b90062c 100644
---- a/src/proto_alpha/lib_parameters/default_parameters.ml
-+++ b/src/proto_alpha/lib_parameters/default_parameters.ml
-@@ -38,19 +38,19 @@ let constants_mainnet =
-       hard_gas_limit_per_operation = Z.of_int 1_040_000;
-       hard_gas_limit_per_block = Z.of_int 10_400_000;
-       proof_of_work_threshold = Int64.(sub (shift_left 1L 46) 1L);
--      tokens_per_roll = Mine_repr.(mul_exn one 8_000);
-+      tokens_per_roll = Tez_repr.(mul_exn one 8_000);
-       michelson_maximum_type_size = 1000;
-       seed_nonce_revelation_tip =
--        (match Mine_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
-+        (match Tez_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
-       origination_size = 257;
--      block_security_deposit = Mine.(mul_exn one 512);
--      endorsement_security_deposit = Mine_repr.(mul_exn one 64);
-+      block_security_deposit = Tez_repr.(mul_exn one 512);
-+      endorsement_security_deposit = Tez_repr.(mul_exn one 64);
-       baking_reward_per_endorsement =
-         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 187_500L];
-       endorsement_reward =
-         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 833_333L];
-       hard_storage_limit_per_operation = Z.of_int 60_000;
--      cost_per_byte = Mine_repr.of_mutez_exn 1_000L;
-+      cost_per_byte = Tez_repr.of_mutez_exn 1_000L;
-       test_chain_duration = Int64.mul 32768L 60L;
-       quorum_min = 20_00l;
-       (* quorum is in centile of a percentage *)
-@@ -107,7 +107,8 @@ let bootstrap_accounts =
-         {
-           public_key_hash;
-           public_key = Some public_key;
--          amount = bootstrap_balance;
-+          amount = Tez_repr.zero;
-+          amount_mine = bootstrap_balance;
-         })
-     bootstrap_accounts_strings
- 
-@@ -138,8 +139,8 @@ let commitments =
-         (Data_encoding.list Commitment_repr.encoding)
-         json
- 
--let make_bootstrap_account (pkh, pk, amount) =
--  Parameters_repr.{public_key_hash = pkh; public_key = Some pk; amount}
-+let make_bootstrap_account (pkh, pk, amount, amount_mine) =
-+  Parameters_repr.{public_key_hash = pkh; public_key = Some pk; amount; amount_mine}
- 
- let parameters_of_constants ?(bootstrap_accounts = bootstrap_accounts)
-     ?(bootstrap_contracts = []) ?(with_commitments = false) constants =
-diff --git a/src/proto_alpha/lib_parameters/default_parameters.mli b/src/proto_alpha/lib_parameters/default_parameters.mli
-index 431357b4f..10a0f777a 100644
---- a/src/proto_alpha/lib_parameters/default_parameters.mli
-+++ b/src/proto_alpha/lib_parameters/default_parameters.mli
-@@ -32,7 +32,7 @@ val constants_sandbox : Constants_repr.parametric
- val constants_test : Constants_repr.parametric
- 
- val make_bootstrap_account :
--  Signature.public_key_hash * Signature.public_key * Mine_repr.t ->
-+  Signature.public_key_hash * Signature.public_key * Tez_repr.t * Mine_repr.t ->
-   Parameters_repr.bootstrap_account
- 
- val parameters_of_constants :
-diff --git a/src/proto_alpha/lib_protocol/bootstrap_storage.ml b/src/proto_alpha/lib_protocol/bootstrap_storage.ml
-index f6f92596f..f21ebc257 100644
---- a/src/proto_alpha/lib_protocol/bootstrap_storage.ml
-+++ b/src/proto_alpha/lib_protocol/bootstrap_storage.ml
-@@ -92,25 +92,25 @@ let init ctxt ~typecheck ?ramp_up_cycles ?no_reward_cycles accounts contracts =
-       (* Store pending ramp ups. *)
-       let constants = Raw_context.constants ctxt in
-       Lwt.return
--        Mine_repr.(constants.block_security_deposit /? Int64.of_int cycles)
-+        Tez_repr.(constants.block_security_deposit /? Int64.of_int cycles)
-       >>=? fun block_step ->
-       Lwt.return
--        Mine_repr.(
-+        Tez_repr.(
-           constants.endorsement_security_deposit /? Int64.of_int cycles)
-       >>=? fun endorsement_step ->
-       (* Start without security_deposit *)
-       Raw_context.patch_constants ctxt (fun c ->
-           {
-             c with
--            block_security_deposit = Mine_repr.zero;
--            endorsement_security_deposit = Mine_repr.zero;
-+            block_security_deposit = Tez_repr.zero;
-+            endorsement_security_deposit = Tez_repr.zero;
-           })
-       >>= fun ctxt ->
-       fold_left_s
-         (fun ctxt cycle ->
--          Lwt.return Mine_repr.(block_step *? Int64.of_int cycle)
-+          Lwt.return Tez_repr.(block_step *? Int64.of_int cycle)
-           >>=? fun block_security_deposit ->
--          Lwt.return Mine_repr.(endorsement_step *? Int64.of_int cycle)
-+          Lwt.return Tez_repr.(endorsement_step *? Int64.of_int cycle)
-           >>=? fun endorsement_security_deposit ->
-           let cycle = Cycle_repr.of_int32_exn (Int32.of_int cycle) in
-           Storage.Ramp_up.Security_deposits.init
-diff --git a/src/proto_alpha/lib_protocol/constants_repr.ml b/src/proto_alpha/lib_protocol/constants_repr.ml
-index 39d2832cb..5621187a9 100644
---- a/src/proto_alpha/lib_protocol/constants_repr.ml
-+++ b/src/proto_alpha/lib_protocol/constants_repr.ml
-@@ -93,15 +93,15 @@ type parametric = {
-   hard_gas_limit_per_operation : Z.t;
-   hard_gas_limit_per_block : Z.t;
-   proof_of_work_threshold : int64;
--  tokens_per_roll : Mine_repr.t;
-+  tokens_per_roll : Tez_repr.t;
-   michelson_maximum_type_size : int;
--  seed_nonce_revelation_tip : Mine_repr.t;
-+  seed_nonce_revelation_tip : Tez_repr.t;
-   origination_size : int;
--  block_security_deposit : Mine_repr.t;
--  endorsement_security_deposit : Mine_repr.t;
-+  block_security_deposit : Tez_repr.t;
-+  endorsement_security_deposit : Tez_repr.t;
-   baking_reward_per_endorsement : Tez_repr.t list;
-   endorsement_reward : Tez_repr.t list;
--  cost_per_byte : Mine_repr.t;
-+  cost_per_byte : Tez_repr.t;
-   hard_storage_limit_per_operation : Z.t;
-   test_chain_duration : int64;
-   (* in seconds *)
-@@ -210,16 +210,16 @@ let parametric_encoding =
-        (merge_objs
-           (obj8
-              (req "proof_of_work_threshold" int64)
--             (req "tokens_per_roll" Mine_repr.encoding)
-+             (req "tokens_per_roll" Tez_repr.encoding)
-              (req "michelson_maximum_type_size" uint16)
--             (req "seed_nonce_revelation_tip" Mine_repr.encoding)
-+             (req "seed_nonce_revelation_tip" Tez_repr.encoding)
-              (req "origination_size" int31)
--             (req "block_security_deposit" Mine_repr.encoding)
--             (req "endorsement_security_deposit" Mine_repr.encoding)
-+             (req "block_security_deposit" Tez_repr.encoding)
-+             (req "endorsement_security_deposit" Tez_repr.encoding)
-              (req "baking_reward_per_endorsement" (list Tez_repr.encoding)))
-           (obj9
-              (req "endorsement_reward" (list Tez_repr.encoding))
--             (req "cost_per_byte" Mine_repr.encoding)
-+             (req "cost_per_byte" Tez_repr.encoding)
-              (req "hard_storage_limit_per_operation" z)
-              (req "test_chain_duration" int64)
-              (req "quorum_min" int32)
-diff --git a/src/proto_alpha/lib_protocol/mine_repr.ml b/src/proto_alpha/lib_protocol/mine_repr.ml
-index 54ed4c68c..f08d7d5d9 100644
---- a/src/proto_alpha/lib_protocol/mine_repr.ml
-+++ b/src/proto_alpha/lib_protocol/mine_repr.ml
-@@ -27,7 +27,7 @@ include Qty_repr.Make (struct
-   let id = "mine"
- end)
- 
--type m = qty
-+type t = qty
- 
- type mine = qty
- 
-diff --git a/src/proto_alpha/lib_protocol/mine_repr.mli b/src/proto_alpha/lib_protocol/mine_repr.mli
-index 23d63d214..001e74ecd 100644
---- a/src/proto_alpha/lib_protocol/mine_repr.mli
-+++ b/src/proto_alpha/lib_protocol/mine_repr.mli
-@@ -23,8 +23,8 @@
- (*                                                                           *)
- (*****************************************************************************)
- 
--type m
-+type t
- 
--type mine = m
-+type mine = t
- 
--include Qty_repr.S with type qty := m
-+include Qty_repr.S with type qty := t
+diff --git a/src/proto_alpha/lib_protocol/parameters_repr.ml b/src/proto_alpha/lib_protocol/parameters_repr.ml
+index d5869c641..1247793a5 100644
+--- a/src/proto_alpha/lib_protocol/parameters_repr.ml
++++ b/src/proto_alpha/lib_protocol/parameters_repr.ml
+@@ -65,6 +65,7 @@ let bootstrap_account_encoding =
+             public_key = Some public_key;
+             public_key_hash = Signature.Public_key.hash public_key;
+             amount;
++            amount_mine;
+           });
+       case
+         (Tag 1)
 -- 
 2.26.2
