@@ -11,6 +11,7 @@
 
         "Qty_repr",
         "Tez_repr",
+        "Mine_repr",
         "Period_repr",
         "Time_repr",
         "Constants_repr",

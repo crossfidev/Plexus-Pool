@@ -1,74 +1,363 @@
-From cd9845180adb52a5f73da283150dcb62ab240c4d Mon Sep 17 00:00:00 2001
+From 04eddcc50dd45e9772f6aea637ea9cb154b2044f Mon Sep 17 00:00:00 2001
 From: GitLabRoman <gitlabroman@yandex.ru>
-Date: Thu, 30 Jul 2020 18:27:33 +0700
-Subject: [PATCH] My awesome feature
+Date: Fri, 31 Jul 2020 16:17:32 +0700
+Subject: [PATCH] add new token
 
 ---
- sandbox.json                                 | 4 ++++
- src/lib_client_base_unix/client_config.ml    | 2 +-
- src/lib_rpc_http/RPC_client.ml               | 2 +-
- src/proto_alpha/lib_protocol/init_storage.ml | 3 +++
- 4 files changed, 9 insertions(+), 2 deletions(-)
- create mode 100644 sandbox.json
+ src/bin_client/tezos-init-sandboxed-client.sh | 16 ++++-----
+ .../lib_parameters/default_parameters.ml      | 12 +++----
+ .../lib_parameters/default_parameters.mli     |  2 +-
+ src/proto_alpha/lib_protocol/TEZOS_PROTOCOL   |  1 +
+ .../lib_protocol/bootstrap_storage.ml         | 12 +++----
+ .../lib_protocol/constants_repr.ml            | 20 +++++------
+ src/proto_alpha/lib_protocol/dune.inc         |  4 +++
+ src/proto_alpha/lib_protocol/init_storage.ml  |  3 --
+ src/proto_alpha/lib_protocol/mine_repr.ml     | 34 +++++++++++++++++++
+ src/proto_alpha/lib_protocol/mine_repr.mli    | 30 ++++++++++++++++
+ 10 files changed, 100 insertions(+), 34 deletions(-)
+ create mode 100644 src/proto_alpha/lib_protocol/mine_repr.ml
+ create mode 100644 src/proto_alpha/lib_protocol/mine_repr.mli
 
-diff --git a/sandbox.json b/sandbox.json
-new file mode 100644
-index 000000000..007ba123e
---- /dev/null
-+++ b/sandbox.json
-@@ -0,0 +1,4 @@
-+{
-+    "genesis_pubkey":
-+      "edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2"
-+}
-diff --git a/src/lib_client_base_unix/client_config.ml b/src/lib_client_base_unix/client_config.ml
-index bf676f04d..f82087f49 100644
---- a/src/lib_client_base_unix/client_config.ml
-+++ b/src/lib_client_base_unix/client_config.ml
-@@ -152,7 +152,7 @@ let default_chain = `Main
+diff --git a/src/bin_client/tezos-init-sandboxed-client.sh b/src/bin_client/tezos-init-sandboxed-client.sh
+index 5ea23ce41..f81e954e3 100755
+--- a/src/bin_client/tezos-init-sandboxed-client.sh
++++ b/src/bin_client/tezos-init-sandboxed-client.sh
+@@ -7,10 +7,10 @@ client_dirs=()
+ init_sandboxed_client() {
  
- let default_block = `Head 0
+     id="$1"
+-    host="${2:-localhost}"
++    host="${2:-127.0.0.1}"
+     shift 1
  
--let default_endpoint = Uri.of_string "http://localhost:8732"
-+let default_endpoint = Uri.of_string "http://127.0.0.1:8732"
+-    rpc=$((18730 + id))
++    rpc=$((8731 + id))
+     client_dir="$(mktemp -d -t tezos-tmp-client.XXXXXXXX)"
+     client_dirs+=("$client_dir")
+     signer="$local_signer -d $client_dir"
+@@ -101,11 +101,11 @@ add_sandboxed_bootstrap_identities() {
+     ${client} import secret key activator ${ACTIVATOR_SECRET}
+ }
  
- let ( // ) = Filename.concat
+-activate_alpha() {
++activate_006_PsCARTHA() {
  
-diff --git a/src/lib_rpc_http/RPC_client.ml b/src/lib_rpc_http/RPC_client.ml
-index 06423eec0..ac8d6bf18 100644
---- a/src/lib_rpc_http/RPC_client.ml
-+++ b/src/lib_rpc_http/RPC_client.ml
-@@ -386,7 +386,7 @@ module Make (Client : Cohttp_lwt.S.Client) = struct
-       (obj1 (req "endpoint" RPC_encoding.uri_encoding))
+     ${client} \
+         -block genesis \
+-        activate protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK \
++        activate protocol PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb \
+         with fitness 1 \
+         and key activator \
+         and parameters "${parameters_file}" \
+@@ -128,7 +128,7 @@ main () {
+         local_signer="${local_signer:-$bin_dir/../../_build/default/src/bin_signer/main_signer.exe}"
+         local_compiler="${local_compiler:-$bin_dir/../../_build/default/src/lib_protocol_compiler/main_native.exe}"
  
-   let default_config =
--    {endpoint = Uri.of_string "http://localhost:8732"; logger = null_logger}
-+    {endpoint = Uri.of_string "http://127.0.0.1:8732"; logger = null_logger}
+-        parameters_file="$bin_dir/../proto_alpha/parameters/sandbox-parameters.json"
++        parameters_file="$bin_dir/../proto_006_PsCARTHA/parameters/sandbox-parameters.json"
  
-   class http_ctxt config media_types : RPC_context.json =
-     let base = config.endpoint in
+     else
+         # we assume a clean install with tezos-(admin-)client in the path
+@@ -193,8 +193,8 @@ main () {
+     cat <<EOF
+ if type tezos-client-reset >/dev/null 2>&1 ; then tezos-client-reset; fi ;
+ PATH="$client_dir/bin:\$PATH" ; export PATH ;
+-alias tezos-activate-alpha="$client  -block genesis activate protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
+-alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-alpha tezos-client-reset" ;
++alias tezos-activate-006-PsCARTHA="$client  -block genesis activate protocol PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
++alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-006-PsCARTHA tezos-client-reset" ;
+ alias tezos-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
+ trap tezos-client-reset EXIT ;
+ 
+@@ -213,7 +213,7 @@ command, is "ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im", you
+ may have to activate in your "sandboxed network" the same economic
+ protocol as used by the alphanet by running:
+ 
+-  tezos-activate-alpha
++  tezos-activate-006-PsCARTHA
+ 
+ Warning: all the client data will be removed when you close this shell
+ or if you run this command a second time.
+diff --git a/src/proto_alpha/lib_parameters/default_parameters.ml b/src/proto_alpha/lib_parameters/default_parameters.ml
+index d14113d2e..4619f1152 100644
+--- a/src/proto_alpha/lib_parameters/default_parameters.ml
++++ b/src/proto_alpha/lib_parameters/default_parameters.ml
+@@ -38,19 +38,19 @@ let constants_mainnet =
+       hard_gas_limit_per_operation = Z.of_int 1_040_000;
+       hard_gas_limit_per_block = Z.of_int 10_400_000;
+       proof_of_work_threshold = Int64.(sub (shift_left 1L 46) 1L);
+-      tokens_per_roll = Tez_repr.(mul_exn one 8_000);
++      tokens_per_roll = Mine_repr.(mul_exn one 8_000);
+       michelson_maximum_type_size = 1000;
+       seed_nonce_revelation_tip =
+-        (match Tez_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
++        (match Mine_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
+       origination_size = 257;
+-      block_security_deposit = Tez_repr.(mul_exn one 512);
+-      endorsement_security_deposit = Tez_repr.(mul_exn one 64);
++      block_security_deposit = Mine.(mul_exn one 512);
++      endorsement_security_deposit = Mine_repr.(mul_exn one 64);
+       baking_reward_per_endorsement =
+         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 187_500L];
+       endorsement_reward =
+         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 833_333L];
+       hard_storage_limit_per_operation = Z.of_int 60_000;
+-      cost_per_byte = Tez_repr.of_mutez_exn 1_000L;
++      cost_per_byte = Mine_repr.of_mutez_exn 1_000L;
+       test_chain_duration = Int64.mul 32768L 60L;
+       quorum_min = 20_00l;
+       (* quorum is in centile of a percentage *)
+@@ -96,7 +96,7 @@ let bootstrap_accounts_strings =
+     "edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU";
+     "edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n" ]
+ 
+-let bootstrap_balance = Tez_repr.of_mutez_exn 4_000_000_000_000L
++let bootstrap_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
+ 
+ let bootstrap_accounts =
+   List.map
+diff --git a/src/proto_alpha/lib_parameters/default_parameters.mli b/src/proto_alpha/lib_parameters/default_parameters.mli
+index 598574c8f..431357b4f 100644
+--- a/src/proto_alpha/lib_parameters/default_parameters.mli
++++ b/src/proto_alpha/lib_parameters/default_parameters.mli
+@@ -32,7 +32,7 @@ val constants_sandbox : Constants_repr.parametric
+ val constants_test : Constants_repr.parametric
+ 
+ val make_bootstrap_account :
+-  Signature.public_key_hash * Signature.public_key * Tez_repr.t ->
++  Signature.public_key_hash * Signature.public_key * Mine_repr.t ->
+   Parameters_repr.bootstrap_account
+ 
+ val parameters_of_constants :
+diff --git a/src/proto_alpha/lib_protocol/TEZOS_PROTOCOL b/src/proto_alpha/lib_protocol/TEZOS_PROTOCOL
+index bede80027..286da0b34 100644
+--- a/src/proto_alpha/lib_protocol/TEZOS_PROTOCOL
++++ b/src/proto_alpha/lib_protocol/TEZOS_PROTOCOL
+@@ -11,6 +11,7 @@
+ 
+         "Qty_repr",
+         "Tez_repr",
++        "Mine_repr",
+         "Period_repr",
+         "Time_repr",
+         "Constants_repr",
+diff --git a/src/proto_alpha/lib_protocol/bootstrap_storage.ml b/src/proto_alpha/lib_protocol/bootstrap_storage.ml
+index f21ebc257..f6f92596f 100644
+--- a/src/proto_alpha/lib_protocol/bootstrap_storage.ml
++++ b/src/proto_alpha/lib_protocol/bootstrap_storage.ml
+@@ -92,25 +92,25 @@ let init ctxt ~typecheck ?ramp_up_cycles ?no_reward_cycles accounts contracts =
+       (* Store pending ramp ups. *)
+       let constants = Raw_context.constants ctxt in
+       Lwt.return
+-        Tez_repr.(constants.block_security_deposit /? Int64.of_int cycles)
++        Mine_repr.(constants.block_security_deposit /? Int64.of_int cycles)
+       >>=? fun block_step ->
+       Lwt.return
+-        Tez_repr.(
++        Mine_repr.(
+           constants.endorsement_security_deposit /? Int64.of_int cycles)
+       >>=? fun endorsement_step ->
+       (* Start without security_deposit *)
+       Raw_context.patch_constants ctxt (fun c ->
+           {
+             c with
+-            block_security_deposit = Tez_repr.zero;
+-            endorsement_security_deposit = Tez_repr.zero;
++            block_security_deposit = Mine_repr.zero;
++            endorsement_security_deposit = Mine_repr.zero;
+           })
+       >>= fun ctxt ->
+       fold_left_s
+         (fun ctxt cycle ->
+-          Lwt.return Tez_repr.(block_step *? Int64.of_int cycle)
++          Lwt.return Mine_repr.(block_step *? Int64.of_int cycle)
+           >>=? fun block_security_deposit ->
+-          Lwt.return Tez_repr.(endorsement_step *? Int64.of_int cycle)
++          Lwt.return Mine_repr.(endorsement_step *? Int64.of_int cycle)
+           >>=? fun endorsement_security_deposit ->
+           let cycle = Cycle_repr.of_int32_exn (Int32.of_int cycle) in
+           Storage.Ramp_up.Security_deposits.init
+diff --git a/src/proto_alpha/lib_protocol/constants_repr.ml b/src/proto_alpha/lib_protocol/constants_repr.ml
+index 5621187a9..39d2832cb 100644
+--- a/src/proto_alpha/lib_protocol/constants_repr.ml
++++ b/src/proto_alpha/lib_protocol/constants_repr.ml
+@@ -93,15 +93,15 @@ type parametric = {
+   hard_gas_limit_per_operation : Z.t;
+   hard_gas_limit_per_block : Z.t;
+   proof_of_work_threshold : int64;
+-  tokens_per_roll : Tez_repr.t;
++  tokens_per_roll : Mine_repr.t;
+   michelson_maximum_type_size : int;
+-  seed_nonce_revelation_tip : Tez_repr.t;
++  seed_nonce_revelation_tip : Mine_repr.t;
+   origination_size : int;
+-  block_security_deposit : Tez_repr.t;
+-  endorsement_security_deposit : Tez_repr.t;
++  block_security_deposit : Mine_repr.t;
++  endorsement_security_deposit : Mine_repr.t;
+   baking_reward_per_endorsement : Tez_repr.t list;
+   endorsement_reward : Tez_repr.t list;
+-  cost_per_byte : Tez_repr.t;
++  cost_per_byte : Mine_repr.t;
+   hard_storage_limit_per_operation : Z.t;
+   test_chain_duration : int64;
+   (* in seconds *)
+@@ -210,16 +210,16 @@ let parametric_encoding =
+        (merge_objs
+           (obj8
+              (req "proof_of_work_threshold" int64)
+-             (req "tokens_per_roll" Tez_repr.encoding)
++             (req "tokens_per_roll" Mine_repr.encoding)
+              (req "michelson_maximum_type_size" uint16)
+-             (req "seed_nonce_revelation_tip" Tez_repr.encoding)
++             (req "seed_nonce_revelation_tip" Mine_repr.encoding)
+              (req "origination_size" int31)
+-             (req "block_security_deposit" Tez_repr.encoding)
+-             (req "endorsement_security_deposit" Tez_repr.encoding)
++             (req "block_security_deposit" Mine_repr.encoding)
++             (req "endorsement_security_deposit" Mine_repr.encoding)
+              (req "baking_reward_per_endorsement" (list Tez_repr.encoding)))
+           (obj9
+              (req "endorsement_reward" (list Tez_repr.encoding))
+-             (req "cost_per_byte" Tez_repr.encoding)
++             (req "cost_per_byte" Mine_repr.encoding)
+              (req "hard_storage_limit_per_operation" z)
+              (req "test_chain_duration" int64)
+              (req "quorum_min" int32)
+diff --git a/src/proto_alpha/lib_protocol/dune.inc b/src/proto_alpha/lib_protocol/dune.inc
+index 847a6a9c8..d622245c6 100644
+--- a/src/proto_alpha/lib_protocol/dune.inc
++++ b/src/proto_alpha/lib_protocol/dune.inc
+@@ -28,6 +28,7 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
+    blinded_public_key_hash.mli blinded_public_key_hash.ml
+    qty_repr.ml
+    tez_repr.mli tez_repr.ml
++   mine_repr.mli mine_repr.ml
+    period_repr.mli period_repr.ml
+    time_repr.mli time_repr.ml
+    constants_repr.ml
+@@ -105,6 +106,7 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
+    blinded_public_key_hash.mli blinded_public_key_hash.ml
+    qty_repr.ml
+    tez_repr.mli tez_repr.ml
++   mine_repr.mli mine_repr.ml
+    period_repr.mli period_repr.ml
+    time_repr.mli time_repr.ml
+    constants_repr.ml
+@@ -182,6 +184,7 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
+    blinded_public_key_hash.mli blinded_public_key_hash.ml
+    qty_repr.ml
+    tez_repr.mli tez_repr.ml
++   mine_repr.mli mine_repr.ml
+    period_repr.mli period_repr.ml
+    time_repr.mli time_repr.ml
+    constants_repr.ml
+@@ -279,6 +282,7 @@ include Tezos_raw_protocol_alpha.Main
+    Blinded_public_key_hash
+    Qty_repr
+    Tez_repr
++   Mine_repr
+    Period_repr
+    Time_repr
+    Constants_repr
 diff --git a/src/proto_alpha/lib_protocol/init_storage.ml b/src/proto_alpha/lib_protocol/init_storage.ml
-index 8518a027f..f7c171fe8 100644
+index f7c171fe8..8518a027f 100644
 --- a/src/proto_alpha/lib_protocol/init_storage.ml
 +++ b/src/proto_alpha/lib_protocol/init_storage.ml
-@@ -29,6 +29,7 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
+@@ -29,7 +29,6 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
    >>=? fun (previous_protocol, ctxt) ->
    match previous_protocol with
    | Genesis param ->
-+      Logging.log_notice "\nSTITCHING!\n" ;
+-      Logging.log_notice "\nSTITCHING!\n" ;
        Commitment_storage.init ctxt param.commitments
        >>=? fun ctxt ->
        Roll_storage.init ctxt
-@@ -53,8 +54,10 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
+@@ -54,10 +53,8 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
        >>=? fun ctxt ->
        Vote_storage.freeze_listings ctxt >>=? fun ctxt -> return ctxt
    | Alpha_previous ->
-+      Logging.log_notice "\nSTITCHING1!\n" ;
+-      Logging.log_notice "\nSTITCHING1!\n" ;
        return ctxt
    | Carthage_006 ->
-+      Logging.log_notice "\nSTITCHING2!\n" ;
+-      Logging.log_notice "\nSTITCHING2!\n" ;
        return ctxt
  
  let prepare ctxt ~level ~predecessor_timestamp ~timestamp ~fitness =
+diff --git a/src/proto_alpha/lib_protocol/mine_repr.ml b/src/proto_alpha/lib_protocol/mine_repr.ml
+new file mode 100644
+index 000000000..54ed4c68c
+--- /dev/null
++++ b/src/proto_alpha/lib_protocol/mine_repr.ml
+@@ -0,0 +1,34 @@
++(*****************************************************************************)
++(*                                                                           *)
++(* Open Source License                                                       *)
++(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
++(*                                                                           *)
++(* Permission is hereby granted, free of charge, to any person obtaining a   *)
++(* copy of this software and associated documentation files (the "Software"),*)
++(* to deal in the Software without restriction, including without limitation *)
++(* the rights to use, copy, modify, merge, publish, distribute, sublicense,  *)
++(* and/or sell copies of the Software, and to permit persons to whom the     *)
++(* Software is furnished to do so, subject to the following conditions:      *)
++(*                                                                           *)
++(* The above copyright notice and this permission notice shall be included   *)
++(* in all copies or substantial portions of the Software.                    *)
++(*                                                                           *)
++(* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR*)
++(* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,  *)
++(* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL   *)
++(* THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER*)
++(* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING   *)
++(* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER       *)
++(* DEALINGS IN THE SOFTWARE.                                                 *)
++(*                                                                           *)
++(*****************************************************************************)
++
++include Qty_repr.Make (struct
++  let id = "mine"
++end)
++
++type m = qty
++
++type mine = qty
++
++let encoding = Data_encoding.def "mumine" @@ encoding
+diff --git a/src/proto_alpha/lib_protocol/mine_repr.mli b/src/proto_alpha/lib_protocol/mine_repr.mli
+new file mode 100644
+index 000000000..23d63d214
+--- /dev/null
++++ b/src/proto_alpha/lib_protocol/mine_repr.mli
+@@ -0,0 +1,30 @@
++(*****************************************************************************)
++(*                                                                           *)
++(* Open Source License                                                       *)
++(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
++(*                                                                           *)
++(* Permission is hereby granted, free of charge, to any person obtaining a   *)
++(* copy of this software and associated documentation files (the "Software"),*)
++(* to deal in the Software without restriction, including without limitation *)
++(* the rights to use, copy, modify, merge, publish, distribute, sublicense,  *)
++(* and/or sell copies of the Software, and to permit persons to whom the     *)
++(* Software is furnished to do so, subject to the following conditions:      *)
++(*                                                                           *)
++(* The above copyright notice and this permission notice shall be included   *)
++(* in all copies or substantial portions of the Software.                    *)
++(*                                                                           *)
++(* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR*)
++(* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,  *)
++(* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL   *)
++(* THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER*)
++(* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING   *)
++(* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER       *)
++(* DEALINGS IN THE SOFTWARE.                                                 *)
++(*                                                                           *)
++(*****************************************************************************)
++
++type m
++
++type mine = m
++
++include Qty_repr.S with type qty := m
 -- 
 2.26.2

@@ -7,10 +7,10 @@ client_dirs=()
 init_sandboxed_client() {
 
     id="$1"
-    host="${2:-localhost}"
+    host="${2:-127.0.0.1}"
     shift 1
 
-    rpc=$((18730 + id))
+    rpc=$((8731 + id))
     client_dir="$(mktemp -d -t tezos-tmp-client.XXXXXXXX)"
     client_dirs+=("$client_dir")
     signer="$local_signer -d $client_dir"
@@ -101,11 +101,11 @@ add_sandboxed_bootstrap_identities() {
     ${client} import secret key activator ${ACTIVATOR_SECRET}
 }
 
-activate_alpha() {
+activate_006_PsCARTHA() {
 
     ${client} \
         -block genesis \
-        activate protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK \
+        activate protocol PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb \
         with fitness 1 \
         and key activator \
         and parameters "${parameters_file}" \
@@ -128,7 +128,7 @@ main () {
         local_signer="${local_signer:-$bin_dir/../../_build/default/src/bin_signer/main_signer.exe}"
         local_compiler="${local_compiler:-$bin_dir/../../_build/default/src/lib_protocol_compiler/main_native.exe}"
 
-        parameters_file="$bin_dir/../proto_alpha/parameters/sandbox-parameters.json"
+        parameters_file="$bin_dir/../proto_006_PsCARTHA/parameters/sandbox-parameters.json"
 
     else
         # we assume a clean install with tezos-(admin-)client in the path
@@ -193,8 +193,8 @@ main () {
     cat <<EOF
 if type tezos-client-reset >/dev/null 2>&1 ; then tezos-client-reset; fi ;
 PATH="$client_dir/bin:\$PATH" ; export PATH ;
-alias tezos-activate-alpha="$client  -block genesis activate protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
-alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-alpha tezos-client-reset" ;
+alias tezos-activate-006-PsCARTHA="$client  -block genesis activate protocol PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
+alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-006-PsCARTHA tezos-client-reset" ;
 alias tezos-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
 trap tezos-client-reset EXIT ;
 
@@ -213,7 +213,7 @@ command, is "ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im", you
 may have to activate in your "sandboxed network" the same economic
 protocol as used by the alphanet by running:
 
-  tezos-activate-alpha
+  tezos-activate-006-PsCARTHA
 
 Warning: all the client data will be removed when you close this shell
 or if you run this command a second time.
