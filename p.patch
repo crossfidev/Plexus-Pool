@@ -1,39 +1,491 @@
-From df0c5fa5e648a5b846e8d4cd268da95564baf8ce Mon Sep 17 00:00:00 2001
+From be74ba34b4a425d92215e11d07b5177b993eeed7 Mon Sep 17 00:00:00 2001
 From: GitLabRoman <gitlabroman@yandex.ru>
-Date: Mon, 3 Aug 2020 13:03:28 +0700
-Subject: [PATCH] update commands
+Date: Mon, 3 Aug 2020 14:51:27 +0700
+Subject: [PATCH] Add token
 
 ---
- .../lib_client_commands/client_proto_context_commands.ml  | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../tezos-init-sandboxed-client-d007.sh       | 231 ++++++++++++++++++
+ .../lib_parameters/default_parameters.ml      |   7 +-
+ .../lib_protocol/alpha_context.mli            |   4 +-
+ src/proto_alpha/lib_protocol/apply.ml         |   4 +-
+ .../lib_protocol/bootstrap_storage.ml         |   4 +-
+ .../lib_protocol/contract_services.ml         |   1 +
+ .../lib_protocol/contract_storage.ml          |  24 +-
+ .../lib_protocol/contract_storage.mli         |   3 +
+ src/proto_alpha/lib_protocol/storage.ml       |   7 +
+ src/proto_alpha/lib_protocol/storage.mli      |   6 +
+ 10 files changed, 279 insertions(+), 12 deletions(-)
+ create mode 100755 src/bin_client/tezos-init-sandboxed-client-d007.sh
 
-diff --git a/src/proto_alpha/lib_client_commands/client_proto_context_commands.ml b/src/proto_alpha/lib_client_commands/client_proto_context_commands.ml
-index 2a53673a9..531489c14 100644
---- a/src/proto_alpha/lib_client_commands/client_proto_context_commands.ml
-+++ b/src/proto_alpha/lib_client_commands/client_proto_context_commands.ml
-@@ -222,9 +222,9 @@ let commands version () =
-         >>= fun () -> return_unit);
-     command
-       ~group
--      ~desc:"Get the mine_balance of a contract."
-+      ~desc:"Get the balance of a contract."
-       no_options
--      ( prefixes ["get"; "mine_balance"; "for"]
-+      ( prefixes ["get"; "balance"; "for"]
-       @@ ContractAlias.destination_param ~name:"src" ~desc:"source contract"
-       @@ stop )
-       (fun () (_, contract) (cctxt : Protocol_client_context.full) ->
-@@ -234,9 +234,9 @@ let commands version () =
-         >>= fun () -> return_unit);
-     command
-       ~group
--      ~desc:"Get the balance of a contract."
-+      ~desc:"Get the mine_balance of a contract."
-       no_options
--      ( prefixes ["get"; "balance"; "for"]
-+      ( prefixes ["get"; "mine_balance"; "for"]
-       @@ ContractAlias.destination_param ~name:"src" ~desc:"source contract"
-       @@ stop )
-       (fun () (_, contract) (cctxt : Protocol_client_context.full) ->
+diff --git a/src/bin_client/tezos-init-sandboxed-client-d007.sh b/src/bin_client/tezos-init-sandboxed-client-d007.sh
+new file mode 100755
+index 000000000..587bd088d
+--- /dev/null
++++ b/src/bin_client/tezos-init-sandboxed-client-d007.sh
+@@ -0,0 +1,231 @@
++#! /usr/bin/env bash
++
++set -e
++
++client_dirs=()
++
++init_sandboxed_client() {
++
++    id="$1"
++    host="${2:-127.0.0.1}"
++    shift 1
++
++    rpc=$((8731 + id))
++    client_dir="$(mktemp -d -t tezos-tmp-client.XXXXXXXX)"
++    client_dirs+=("$client_dir")
++    signer="$local_signer -d $client_dir"
++    if [ -n "$USE_TLS" ]; then
++        client="$local_client -base-dir $client_dir -endpoint https://$host:$rpc"
++        admin_client="$local_admin_client -base-dir $client_dir -endpoint https://$host:$rpc"
++        alpha_baker="$local_alpha_baker -base-dir $client_dir -endpoint https://$host:$rpc"
++        alpha_endorser="$local_alpha_endorser -base-dir $client_dir -endpoint https://$host:$rpc"
++        alpha_accuser="$local_alpha_accuser -base-dir $client_dir -endpoint https://$host:$rpc"
++        signer="$local_signer -base-dir $client_dir -endpoint https://$host:$rpc"
++        compiler="$local_compiler"
++    else
++        client="$local_client -base-dir $client_dir -endpoint http://$host:$rpc"
++        admin_client="$local_admin_client -base-dir $client_dir -endpoint http://$host:$rpc"
++        alpha_baker="$local_alpha_baker -base-dir $client_dir -endpoint http://$host:$rpc"
++        alpha_endorser="$local_alpha_endorser -base-dir $client_dir -endpoint http://$host:$rpc"
++        alpha_accuser="$local_alpha_accuser -base-dir $client_dir -endpoint http://$host:$rpc"
++        signer="$local_signer -base-dir $client_dir -endpoint http://$host:$rpc"
++        compiler="$local_compiler"
++    fi
++}
++
++cleanup_clients() {
++    rm -rf "${client_dirs[@]}"
++}
++
++
++## Waiter ##################################################################
++
++wait_for_the_node_to_be_ready() {
++    local count=0
++    if $client rpc get /chains/main/blocks/head/hash >/dev/null 2>&1; then return; fi
++    printf "Waiting for the node to initialize..."
++    sleep 1
++    while ! $client rpc get /chains/main/blocks/head/hash >/dev/null 2>&1
++    do
++        count=$((count+1))
++        if [ "$count" -ge 30 ]; then
++            echo " timeout."
++            exit 2
++        fi
++        printf "."
++        sleep 1
++    done
++    echo " done."
++}
++
++wait_for_the_node_to_be_bootstrapped() {
++    wait_for_the_node_to_be_ready
++    echo "Waiting for the node to synchronize with the network..."
++    $client bootstrapped
++}
++
++## Sandboxed client ########################################################
++
++# key pairs from $src_dir/test/sandbox.json
++
++BOOTSTRAP1_IDENTITY="tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx"
++BOOTSTRAP1_PUBLIC="edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav"
++BOOTSTRAP1_SECRET="unencrypted:edsk3gUfUPyBSfrS9CCgmCiQsTCHGkviBDusMxDJstFtojtc1zcpsh"
++
++BOOTSTRAP2_IDENTITY="tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN"
++BOOTSTRAP2_PUBLIC="edpktzNbDAUjUk697W7gYg2CRuBQjyPxbEg8dLccYYwKSKvkPvjtV9"
++BOOTSTRAP2_SECRET="unencrypted:edsk39qAm1fiMjgmPkw1EgQYkMzkJezLNewd7PLNHTkr6w9XA2zdfo"
++
++BOOTSTRAP3_IDENTITY="tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU"
++BOOTSTRAP3_PUBLIC="edpkuTXkJDGcFd5nh6VvMz8phXxU3Bi7h6hqgywNFi1vZTfQNnS1RV"
++BOOTSTRAP3_SECRET="unencrypted:edsk4ArLQgBTLWG5FJmnGnT689VKoqhXwmDPBuGx3z4cvwU9MmrPZZ"
++
++BOOTSTRAP4_IDENTITY="tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv"
++BOOTSTRAP4_PUBLIC="edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU"
++BOOTSTRAP4_SECRET="unencrypted:edsk2uqQB9AY4FvioK2YMdfmyMrer5R8mGFyuaLLFfSRo8EoyNdht3"
++
++BOOTSTRAP5_IDENTITY="tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"
++BOOTSTRAP5_PUBLIC="edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n"
++BOOTSTRAP5_SECRET="unencrypted:edsk4QLrcijEffxV31gGdN2HU7UpyJjA8drFoNcmnB28n89YjPNRFm"
++
++ACTIVATOR_SECRET="unencrypted:edsk31vznjHSSpGExDMHYASz45VZqXN4DPxvsa4hAyY8dHM28cZzp6"
++
++add_sandboxed_bootstrap_identities() {
++
++    ${client} import secret key bootstrap1 ${BOOTSTRAP1_SECRET}
++    ${client} import secret key bootstrap2 ${BOOTSTRAP2_SECRET}
++    ${client} import secret key bootstrap3 ${BOOTSTRAP3_SECRET}
++    ${client} import secret key bootstrap4 ${BOOTSTRAP4_SECRET}
++    ${client} import secret key bootstrap5 ${BOOTSTRAP5_SECRET}
++
++    ${client} import secret key activator ${ACTIVATOR_SECRET}
++}
++
++activate_007_Ps2i822q() {
++
++    ${client} \
++        -block genesis \
++        activate protocol Ps2i822qmKkoZw8q4pKrx1U1NcM9mmwjVU1YNhVA14T9wwzJjG4 \
++        with fitness 1 \
++        and key activator \
++        and parameters "${parameters_file}" \
++        --timestamp $(TZ='AAA+1' date +%FT%TZ)
++}
++
++usage() {
++    echo "Small script to initialize a client to a local and closed test network with a maximum of 9 nodes."
++    echo
++    echo "Usage: eval \`$0 <id>\`"
++    echo "  where <id> should be an integer between 1 and 9."
++}
++
++main () {
++
++    local bin_dir="$(cd "$(dirname "$0")" && echo "$(pwd -P)")"
++    if [ $(basename "$bin_dir") = "bin_client" ]; then
++        local_client="${local_client:-$bin_dir/../../_build/default/src/bin_client/main_client.exe}"
++        local_admin_client="${local_admin_client:-$bin_dir/../../_build/default/src/bin_client/main_admin.exe}"
++        local_signer="${local_signer:-$bin_dir/../../_build/default/src/bin_signer/main_signer.exe}"
++        local_compiler="${local_compiler:-$bin_dir/../../_build/default/src/lib_protocol_compiler/main_native.exe}"
++
++        parameters_file="$bin_dir/../proto_007_Ps2i822q/parameters/sandbox-parameters.json"
++
++    else
++        # we assume a clean install with tezos-(admin-)client in the path
++        local_client="${local_client:-$(which tezos-client)}"
++        local_admin_client="${local_admin_client:-$(which tezos-admin-client)}"
++        local_signer="${local_signer:-$(which tezos-signer)}"
++        local_compiler="${local_compiler:-$(which tezos-protocol-compiler)}"
++    fi
++
++    if [ $# -lt 1 ] || [ "$1" -le 0 ] || [ 10 -le "$1" ]; then
++        usage
++        exit 1
++    fi
++
++    init_sandboxed_client "$1" "$2"
++
++    add_sandboxed_bootstrap_identities | sed -e 's/^/## /' 1>&2
++
++    mkdir -p $client_dir/bin
++
++    echo '#!/bin/sh' > $client_dir/bin/tezos-client
++    echo "exec $client \"\$@\"" >> $client_dir/bin/tezos-client
++    chmod +x $client_dir/bin/tezos-client
++
++    echo '#!/bin/sh' > $client_dir/bin/tezos-admin-client
++    echo "exec $admin_client \"\$@\""  >> $client_dir/bin/tezos-admin-client
++    chmod +x $client_dir/bin/tezos-admin-client
++
++    for protocol in $(cat $bin_dir/../../active_protocol_versions); do
++        protocol_underscore=$(echo $protocol | tr -- - _)
++        local_baker="$bin_dir/../../_build/default/src/proto_$protocol_underscore/bin_baker/main_baker_$protocol_underscore.exe"
++        local_endorser="$bin_dir/../../_build/default/src/proto_$protocol_underscore/bin_endorser/main_endorser_$protocol_underscore.exe"
++        local_accuser="$bin_dir/../../_build/default/src/proto_$protocol_underscore/bin_accuser/main_accuser_$protocol_underscore.exe"
++
++        if [ -n "$USE_TLS" ]; then
++            baker="$local_baker -base-dir $client_dir -endpoint https://$host:$rpc"
++            endorser="$local_endorser -base-dir $client_dir -endpoint https://$host:$rpc"
++            accuser="$local_accuser -base-dir $client_dir -endpoint https://$host:$rpc"
++        else
++            baker="$local_baker -base-dir $client_dir -endpoint http://$host:$rpc"
++            endorser="$local_endorser -base-dir $client_dir -endpoint http://$host:$rpc"
++            accuser="$local_accuser -base-dir $client_dir -endpoint http://$host:$rpc"
++        fi
++
++        echo '#!/bin/sh' > $client_dir/bin/tezos-baker-$protocol
++        echo "exec $baker \"\$@\""  >> $client_dir/bin/tezos-baker-$protocol
++        chmod +x $client_dir/bin/tezos-baker-$protocol
++
++        echo '#!/bin/sh' > $client_dir/bin/tezos-endorser-$protocol
++        echo "exec $endorser \"\$@\""  >> $client_dir/bin/tezos-endorser-$protocol
++        chmod +x $client_dir/bin/tezos-endorser-$protocol
++
++        echo '#!/bin/sh' > $client_dir/bin/tezos-accuser-$protocol
++        echo "exec $accuser \"\$@\""  >> $client_dir/bin/tezos-accuser-$protocol
++        chmod +x $client_dir/bin/tezos-accuser-$protocol
++    done
++
++    echo '#!/bin/sh' > $client_dir/bin/tezos-signer
++    echo "exec $signer \"\$@\""  >> $client_dir/bin/tezos-signer
++    chmod +x $client_dir/bin/tezos-signer
++
++    cat <<EOF
++if type tezos-client-reset >/dev/null 2>&1 ; then tezos-client-reset; fi ;
++PATH="$client_dir/bin:\$PATH" ; export PATH ;
++alias tezos-activate-007-Ps2i822q="$client  -block genesis activate protocol Ps2i822qmKkoZw8q4pKrx1U1NcM9mmwjVU1YNhVA14T9wwzJjG4 with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
++alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-007-Ps2i822q tezos-client-reset" ;
++alias tezos-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
++trap tezos-client-reset EXIT ;
++
++EOF
++
++    (cat | sed -e 's/^/## /') 1>&2 <<EOF
++
++The client is now properly initialized. In the rest of this shell
++session, you might now run \`tezos-client\` to communicate with a
++tezos node launched with \`launch-sandboxed-node $1\`. For instance:
++
++  tezos-client rpc get /chains/main/blocks/head/metadata
++
++Note: if the current protocol version, as reported by the previous
++command, is "ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im", you
++may have to activate in your "sandboxed network" the same economic
++protocol as used by the alphanet by running:
++
++  tezos-activate-007-Ps2i822q
++
++Warning: all the client data will be removed when you close this shell
++or if you run this command a second time.
++
++Activate tab completion by running:
++
++  tezos-autocomplete
++
++EOF
++
++}
++
++if [ "$0" == "$BASH_SOURCE" ]; then
++    main "$@"
++fi
+diff --git a/src/proto_alpha/lib_parameters/default_parameters.ml b/src/proto_alpha/lib_parameters/default_parameters.ml
+index 95b90062c..09bd9accf 100644
+--- a/src/proto_alpha/lib_parameters/default_parameters.ml
++++ b/src/proto_alpha/lib_parameters/default_parameters.ml
+@@ -96,7 +96,8 @@ let bootstrap_accounts_strings =
+     "edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU";
+     "edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n" ]
+ 
+-let bootstrap_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
++let bootstrap_mine_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
++let bootstrap_balance = Tez_repr.of_mutez_exn 1_000_000_000_000L
+ 
+ let bootstrap_accounts =
+   List.map
+@@ -107,8 +108,8 @@ let bootstrap_accounts =
+         {
+           public_key_hash;
+           public_key = Some public_key;
+-          amount = Tez_repr.zero;
+-          amount_mine = bootstrap_balance;
++          amount = bootstrap_balance;
++          amount_mine = bootstrap_mine_balance;
+         })
+     bootstrap_accounts_strings
+ 
+diff --git a/src/proto_alpha/lib_protocol/alpha_context.mli b/src/proto_alpha/lib_protocol/alpha_context.mli
+index 67852991b..87b3de916 100644
+--- a/src/proto_alpha/lib_protocol/alpha_context.mli
++++ b/src/proto_alpha/lib_protocol/alpha_context.mli
+@@ -779,6 +779,8 @@ module Contract : sig
+   val get_counter : context -> public_key_hash -> Z.t tzresult Lwt.t
+ 
+   val get_balance : context -> contract -> Tez.t tzresult Lwt.t
++  
++  val get_mine_balance : context -> contract -> Mine.t tzresult Lwt.t
+ 
+   val init_origination_nonce : context -> Operation_hash.t -> context
+ 
+@@ -821,7 +823,7 @@ module Contract : sig
+ 
+   val spend : context -> contract -> Tez.t -> context tzresult Lwt.t
+ 
+-  val credit : context -> contract -> Tez.t -> context tzresult Lwt.t
++  val credit : context -> contract -> Tez.t -> Mine.t -> context tzresult Lwt.t
+ 
+   val update_script_storage :
+     context ->
+diff --git a/src/proto_alpha/lib_protocol/apply.ml b/src/proto_alpha/lib_protocol/apply.ml
+index 0cd9ee01b..516a975e8 100644
+--- a/src/proto_alpha/lib_protocol/apply.ml
++++ b/src/proto_alpha/lib_protocol/apply.ml
+@@ -552,7 +552,7 @@ let apply_manager_operation_content :
+                   true ) ) )
+       >>=? fun (ctxt, maybe_burn_balance_update, allocated_destination_contract)
+                ->
+-      Contract.credit ctxt destination amount
++      Contract.credit ctxt destination amount Mine.zero
+       >>=? fun ctxt ->
+       Contract.get_script ctxt destination
+       >>=? fun (ctxt, script) ->
+@@ -1248,7 +1248,7 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
+           Commitment.delete ctxt blinded_pkh
+           >>=? fun ctxt ->
+           let contract = Contract.implicit_contract (Signature.Ed25519 pkh) in
+-          Contract.(credit ctxt contract amount)
++          Contract.(credit ctxt contract amount Mine.zero)
+           >>=? fun ctxt ->
+           return
+             ( ctxt,
+diff --git a/src/proto_alpha/lib_protocol/bootstrap_storage.ml b/src/proto_alpha/lib_protocol/bootstrap_storage.ml
+index f21ebc257..2e663f201 100644
+--- a/src/proto_alpha/lib_protocol/bootstrap_storage.ml
++++ b/src/proto_alpha/lib_protocol/bootstrap_storage.ml
+@@ -26,10 +26,10 @@
+ open Misc
+ 
+ let init_account ctxt
+-    ({public_key_hash; public_key; amount} : Parameters_repr.bootstrap_account)
++    ({public_key_hash; public_key; amount; amount_mine} : Parameters_repr.bootstrap_account)
+     =
+   let contract = Contract_repr.implicit_contract public_key_hash in
+-  Contract_storage.credit ctxt contract amount
++  Contract_storage.credit ctxt contract amount amount_mine
+   >>=? fun ctxt ->
+   match public_key with
+   | Some public_key ->
+diff --git a/src/proto_alpha/lib_protocol/contract_services.ml b/src/proto_alpha/lib_protocol/contract_services.ml
+index 1cea32b6f..846a59cb0 100644
+--- a/src/proto_alpha/lib_protocol/contract_services.ml
++++ b/src/proto_alpha/lib_protocol/contract_services.ml
+@@ -210,6 +210,7 @@ let register () =
+         )
+   in
+   register_field S.balance Contract.get_balance ;
++  register_field S.mine_balance Contract.get_mine_balance ;
+   register1 S.manager_key (fun ctxt contract () () ->
+       match Contract.is_implicit contract with
+       | None ->
+diff --git a/src/proto_alpha/lib_protocol/contract_storage.ml b/src/proto_alpha/lib_protocol/contract_storage.ml
+index c63a9f283..fac1b3a72 100644
+--- a/src/proto_alpha/lib_protocol/contract_storage.ml
++++ b/src/proto_alpha/lib_protocol/contract_storage.ml
+@@ -425,7 +425,7 @@ let update_script_big_map c = function
+ 
+ let create_base c ?(prepaid_bootstrap_storage = false)
+     (* Free space for bootstrap contracts *)
+-    contract ~balance ~manager ~delegate ?script () =
++    contract ~balance ~mine_balance ~manager ~delegate ?script () =
+   ( match Contract_repr.is_implicit contract with
+   | None ->
+       return c
+@@ -435,6 +435,8 @@ let create_base c ?(prepaid_bootstrap_storage = false)
+   >>=? fun c ->
+   Storage.Contract.Balance.init c contract balance
+   >>=? fun c ->
++  Storage.Contract.MineBalance.init c contract mine_balance
++  >>=? fun c ->
+   ( match manager with
+   | Some manager ->
+       Storage.Contract.Manager.init c contract (Manager_repr.Hash manager)
+@@ -478,16 +480,18 @@ let originate c ?prepaid_bootstrap_storage contract ~balance ~script ~delegate
+     ?prepaid_bootstrap_storage
+     contract
+     ~balance
++    ~mine_balance: Mine_repr.zero
+     ~manager:None
+     ~delegate
+     ~script
+     ()
+ 
+-let create_implicit c manager ~balance =
++let create_implicit c manager ~balance ~mine_balance =
+   create_base
+     c
+     (Contract_repr.implicit_contract manager)
+     ~balance
++    ~mine_balance
+     ~manager:(Some manager)
+     ?script:None
+     ~delegate:None
+@@ -667,6 +671,18 @@ let get_balance c contract =
+   | Some v ->
+       return v
+ 
++let get_mine_balance c contract =
++  Storage.Contract.MineBalance.get_option c contract
++  >>=? function
++  | None -> (
++    match Contract_repr.is_implicit contract with
++    | Some _ ->
++        return Mine_repr.zero
++    | None ->
++        failwith "get_mine_balance" )
++  | Some v ->
++      return v
++
+ let update_script_storage c contract storage big_map_diff =
+   let storage = Script_repr.lazy_expr storage in
+   update_script_big_map c big_map_diff
+@@ -708,7 +724,7 @@ let spend c contract amount =
+                 (* Delete empty implicit contract *)
+                 delete c contract ) )
+ 
+-let credit c contract amount =
++let credit c contract amount amount_mine  =
+   ( if Tez_repr.(amount <> Tez_repr.zero) then return c
+   else
+     Storage.Contract.Code.mem c contract
+@@ -723,7 +739,7 @@ let credit c contract amount =
+     | None ->
+         fail (Non_existing_contract contract)
+     | Some manager ->
+-        create_implicit c manager ~balance:amount )
++        create_implicit c manager ~balance:amount ~mine_balance:amount_mine )
+   | Some balance ->
+       Lwt.return Tez_repr.(amount +? balance)
+       >>=? fun balance ->
+diff --git a/src/proto_alpha/lib_protocol/contract_storage.mli b/src/proto_alpha/lib_protocol/contract_storage.mli
+index 450b58ac1..c7ea2279c 100644
+--- a/src/proto_alpha/lib_protocol/contract_storage.mli
++++ b/src/proto_alpha/lib_protocol/contract_storage.mli
+@@ -86,6 +86,8 @@ val reveal_manager_key :
+ 
+ val get_balance : Raw_context.t -> Contract_repr.t -> Tez_repr.t tzresult Lwt.t
+ 
++val get_mine_balance : Raw_context.t -> Contract_repr.t -> Mine_repr.t tzresult Lwt.t
++
+ val get_counter :
+   Raw_context.t -> Signature.Public_key_hash.t -> Z.t tzresult Lwt.t
+ 
+@@ -134,6 +136,7 @@ val credit :
+   Raw_context.t ->
+   Contract_repr.t ->
+   Tez_repr.t ->
++  Mine_repr.t ->
+   Raw_context.t tzresult Lwt.t
+ 
+ val spend :
+diff --git a/src/proto_alpha/lib_protocol/storage.ml b/src/proto_alpha/lib_protocol/storage.ml
+index 86f11b8bb..a8279c9ed 100644
+--- a/src/proto_alpha/lib_protocol/storage.ml
++++ b/src/proto_alpha/lib_protocol/storage.ml
+@@ -118,6 +118,13 @@ module Contract = struct
+       end)
+       (Tez_repr)
+ 
++  module MineBalance =
++    Indexed_context.Make_map
++      (struct
++        let name = ["mine_balance"]
++      end)
++      (Mine_repr)
++
+   module Frozen_balance_index =
+     Make_indexed_subcontext
+       (Make_subcontext (Registered) (Indexed_context.Raw_context)
+diff --git a/src/proto_alpha/lib_protocol/storage.mli b/src/proto_alpha/lib_protocol/storage.mli
+index 669b3048f..2ef6dc2ec 100644
+--- a/src/proto_alpha/lib_protocol/storage.mli
++++ b/src/proto_alpha/lib_protocol/storage.mli
+@@ -136,6 +136,12 @@ module Contract : sig
+        and type value = Tez_repr.t
+        and type t := Raw_context.t
+ 
++  module MineBalance :
++    Indexed_data_storage
++      with type key = Contract_repr.t
++      and type value = Mine_repr.t
++      and type t := Raw_context.t
++
+   (** Frozen balance, see 'delegate_storage.mli' for more explanation.
+       Always update `Delegates_with_frozen_balance` accordingly. *)
+   module Frozen_deposits :
 -- 
 2.26.2
