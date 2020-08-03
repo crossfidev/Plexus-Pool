@@ -38,19 +38,19 @@ let constants_mainnet =
       hard_gas_limit_per_operation = Z.of_int 1_040_000;
       hard_gas_limit_per_block = Z.of_int 10_400_000;
       proof_of_work_threshold = Int64.(sub (shift_left 1L 46) 1L);
-      tokens_per_roll = Mine_repr.(mul_exn one 8_000);
+      tokens_per_roll = Tez_repr.(mul_exn one 8_000);
       michelson_maximum_type_size = 1000;
       seed_nonce_revelation_tip =
-        (match Mine_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
+        (match Tez_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
       origination_size = 257;
-      block_security_deposit = Mine.(mul_exn one 512);
-      endorsement_security_deposit = Mine_repr.(mul_exn one 64);
+      block_security_deposit = Tez_repr.(mul_exn one 512);
+      endorsement_security_deposit = Tez_repr.(mul_exn one 64);
       baking_reward_per_endorsement =
         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 187_500L];
       endorsement_reward =
         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 833_333L];
       hard_storage_limit_per_operation = Z.of_int 60_000;
-      cost_per_byte = Mine_repr.of_mutez_exn 1_000L;
+      cost_per_byte = Tez_repr.of_mutez_exn 1_000L;
       test_chain_duration = Int64.mul 32768L 60L;
       quorum_min = 20_00l;
       (* quorum is in centile of a percentage *)
@@ -107,7 +107,8 @@ let bootstrap_accounts =
         {
           public_key_hash;
           public_key = Some public_key;
-          amount = bootstrap_balance;
+          amount = Tez_repr.zero;
+          amount_mine = bootstrap_balance;
         })
     bootstrap_accounts_strings
 
@@ -138,8 +139,8 @@ let commitments =
         (Data_encoding.list Commitment_repr.encoding)
         json
 
-let make_bootstrap_account (pkh, pk, amount) =
-  Parameters_repr.{public_key_hash = pkh; public_key = Some pk; amount}
+let make_bootstrap_account (pkh, pk, amount, amount_mine) =
+  Parameters_repr.{public_key_hash = pkh; public_key = Some pk; amount; amount_mine}
 
 let parameters_of_constants ?(bootstrap_accounts = bootstrap_accounts)
     ?(bootstrap_contracts = []) ?(with_commitments = false) constants =

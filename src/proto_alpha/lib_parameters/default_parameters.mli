@@ -32,7 +32,7 @@ val constants_sandbox : Constants_repr.parametric
 val constants_test : Constants_repr.parametric
 
 val make_bootstrap_account :
-  Signature.public_key_hash * Signature.public_key * Mine_repr.t ->
+  Signature.public_key_hash * Signature.public_key * Tez_repr.t * Mine_repr.t ->
   Parameters_repr.bootstrap_account
 
 val parameters_of_constants :
