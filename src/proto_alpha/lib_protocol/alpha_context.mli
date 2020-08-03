@@ -75,6 +75,38 @@ module Tez : sig
   val to_mutez : tez -> int64
 end
 
+module Mine : sig
+  include BASIC_DATA
+
+  type mine = t
+
+  val zero : mine
+
+  val one_mutez : mine
+
+  val one_cent : mine
+
+  val fifty_cents : mine
+
+  val one : mine
+
+  val ( -? ) : mine -> mine -> mine tzresult
+
+  val ( +? ) : mine -> mine -> mine tzresult
+
+  val ( *? ) : mine -> int64 -> mine tzresult
+
+  val ( /? ) : mine -> int64 -> mine tzresult
+
+  val of_string : string -> mine option
+
+  val to_string : mine -> string
+
+  val of_mutez : int64 -> mine option
+
+  val to_mutez : mine -> int64
+end
+
 module Period : sig
   include BASIC_DATA
 

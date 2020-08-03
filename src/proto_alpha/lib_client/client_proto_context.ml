@@ -33,6 +33,9 @@ open Client_keys
 let get_balance (rpc : #rpc_context) ~chain ~block contract =
   Alpha_services.Contract.balance rpc (chain, block) contract
 
+let get_mine_balance (rpc : #rpc_context) ~chain ~block contract =
+  Alpha_services.Contract.mine_balance rpc (chain, block) contract
+
 let get_storage (rpc : #rpc_context) ~chain ~block contract =
   Alpha_services.Contract.storage_opt rpc (chain, block) contract
 

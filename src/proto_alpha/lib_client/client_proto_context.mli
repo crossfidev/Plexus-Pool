@@ -69,6 +69,13 @@ val get_balance :
   Contract.t ->
   Tez.t tzresult Lwt.t
 
+val get_mine_balance :
+  #Protocol_client_context.rpc_context ->
+  chain:Shell_services.chain ->
+  block:Shell_services.block ->
+  Contract.t ->
+  Mine.t tzresult Lwt.t
+
 val set_delegate :
   #Protocol_client_context.full ->
   chain:Shell_services.chain ->

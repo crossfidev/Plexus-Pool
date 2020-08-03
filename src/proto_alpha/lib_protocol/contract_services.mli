@@ -42,6 +42,9 @@ val info :
 val balance :
   'a #RPC_context.simple -> 'a -> Contract.t -> Tez.t shell_tzresult Lwt.t
 
+val mine_balance :
+  'a #RPC_context.simple -> 'a -> Contract.t -> Mine.t shell_tzresult Lwt.t
+
 val manager_key :
   'a #RPC_context.simple ->
   'a ->

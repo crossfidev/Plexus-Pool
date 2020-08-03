@@ -38,6 +38,7 @@ module type BASIC_DATA = sig
 end
 
 module Tez = Tez_repr
+module Mine = Mine_repr
 module Period = Period_repr
 
 module Timestamp = struct

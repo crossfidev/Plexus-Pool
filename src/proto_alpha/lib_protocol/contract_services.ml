@@ -63,6 +63,13 @@ module S = struct
       ~output:Tez.encoding
       RPC_path.(custom_root /: Contract.rpc_arg / "balance")
 
+  let mine_balance =
+    RPC_service.get_service
+      ~description:"Access the mine_balance of a contract."
+      ~query:RPC_query.empty
+      ~output:Mine.encoding
+      RPC_path.(custom_root /: Contract.rpc_arg / "mine_balance")
+
   let manager_key =
     RPC_service.get_service
       ~description:"Access the manager of a contract."
@@ -375,6 +382,9 @@ let info ctxt block contract =
 
 let balance ctxt block contract =
   RPC_context.make_call1 S.balance ctxt block contract () ()
+
+let mine_balance ctxt block contract =
+  RPC_context.make_call1 S.mine_balance ctxt block contract () ()
 
 let manager_key ctxt block mgr =
   RPC_context.make_call1

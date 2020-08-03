@@ -222,15 +222,27 @@ let commands version () =
         >>= fun () -> return_unit);
     command
       ~group
-      ~desc:"Get the balance of a contract."
+      ~desc:"Get the mine_balance of a contract."
       no_options
-      ( prefixes ["get"; "balance"; "for"]
+      ( prefixes ["get"; "mine_balance"; "for"]
       @@ ContractAlias.destination_param ~name:"src" ~desc:"source contract"
       @@ stop )
       (fun () (_, contract) (cctxt : Protocol_client_context.full) ->
         get_balance cctxt ~chain:cctxt#chain ~block:cctxt#block contract
         >>=? fun amount ->
         cctxt#answer "%a %s" Tez.pp amount Client_proto_args.tez_sym
+        >>= fun () -> return_unit);
+    command
+      ~group
+      ~desc:"Get the balance of a contract."
+      no_options
+      ( prefixes ["get"; "balance"; "for"]
+      @@ ContractAlias.destination_param ~name:"src" ~desc:"source contract"
+      @@ stop )
+      (fun () (_, contract) (cctxt : Protocol_client_context.full) ->
+        get_mine_balance cctxt ~chain:cctxt#chain ~block:cctxt#block contract
+        >>=? fun amount ->
+        cctxt#answer "%a %s" Mine.pp amount Client_proto_args.tez_sym
         >>= fun () -> return_unit);
     command
       ~group

@@ -27,6 +27,7 @@ type bootstrap_account = {
   public_key_hash : Signature.Public_key_hash.t;
   public_key : Signature.Public_key.t option;
   amount : Tez_repr.t;
+  amount_mine : Mine_repr.t;
 }
 
 type bootstrap_contract = {
