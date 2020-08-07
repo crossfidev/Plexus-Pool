@@ -484,14 +484,20 @@ let unfreeze ctxt delegate cycle =
   get_frozen_rewards ctxt contract cycle
   >>=? fun rewards ->
   Storage.Contract.MineBalance.get ctxt contract
+  >>=? fun mine_balance ->
+  Storage.Contract.Balance.get ctxt contract
   >>=? fun balance ->
   Lwt.return Mine_repr.(deposit +? fees)
   >>=? fun mine_unfrozen_amount ->
   (* MINEPLEX Lwt.return Tez_repr.(mine_unfrozen_amount +? rewards)
   >>=? fun tez_unfrozen_amount -> *)
-  Lwt.return Mine_repr.(balance +? mine_unfrozen_amount)
+  Lwt.return Mine_repr.(mine_balance +? mine_unfrozen_amount)
+  >>=? fun mine_balance ->
+  Storage.Contract.MineBalance.set ctxt contract mine_balance
+  >>=? fun _ ->
+  Lwt.return Tez_repr.(balance +? rewards)
   >>=? fun balance ->
-  Storage.Contract.MineBalance.set ctxt contract balance
+  Storage.Contract.Balance.set ctxt contract balance
   (* MINEPLEX >>=? fun ctxt ->
   Roll_storage.Delegate.add_amount ctxt delegate rewards *)
   >>=? fun ctxt ->
