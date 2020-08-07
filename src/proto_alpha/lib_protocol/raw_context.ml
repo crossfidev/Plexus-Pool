@@ -33,12 +33,14 @@ type t = {
   predecessor_timestamp : Time.t;
   timestamp : Time.t;
   fitness : Int64.t;
-  deposits : Tez_repr.t Signature.Public_key_hash.Map.t;
+  deposits : Mine_repr.t Signature.Public_key_hash.Map.t;
   included_endorsements : int;
   allowed_endorsements :
     (Signature.Public_key.t * int list * bool) Signature.Public_key_hash.Map.t;
   fees : Tez_repr.t;
+  mine_fees : Mine_repr.t;
   rewards : Tez_repr.t;
+  mine_rewards : Mine_repr.t;
   block_gas : Z.t;
   operation_gas : Gas_limit_repr.t;
   internal_gas : Gas_limit_repr.internal_gas;
@@ -134,6 +136,9 @@ let set_current_fitness ctxt fitness = {ctxt with fitness}
 let add_fees ctxt fees =
   Lwt.return Tez_repr.(ctxt.fees +? fees)
   >>=? fun fees -> return {ctxt with fees}
+let add_mine_fees ctxt fees =
+  Lwt.return Mine_repr.(ctxt.mine_fees +? fees)
+  >>=? fun mine_fees -> return {ctxt with mine_fees}
 
 let add_rewards ctxt rewards =
   Lwt.return Tez_repr.(ctxt.rewards +? rewards)
@@ -145,9 +150,9 @@ let add_deposit ctxt delegate deposit =
     | Some tz ->
         tz
     | None ->
-        Tez_repr.zero
+        Mine_repr.zero
   in
-  Lwt.return Tez_repr.(previous +? deposit)
+  Lwt.return Mine_repr.(previous +? deposit)
   >>=? fun deposit ->
   let deposits =
     Signature.Public_key_hash.Map.add delegate deposit ctxt.deposits
@@ -157,8 +162,10 @@ let add_deposit ctxt delegate deposit =
 let get_deposits ctxt = ctxt.deposits
 
 let get_rewards ctxt = ctxt.rewards
+let get_mine_rewards ctxt = ctxt.mine_rewards
 
 let get_fees ctxt = ctxt.fees
+let get_mine_fees ctxt = ctxt.mine_fees
 
 type error += Undefined_operation_nonce (* `Permanent *)
 
@@ -542,7 +549,9 @@ let prepare ~level ~predecessor_timestamp ~timestamp ~fitness ctxt =
       allowed_endorsements = Signature.Public_key_hash.Map.empty;
       included_endorsements = 0;
       fees = Tez_repr.zero;
+      mine_fees = Mine_repr.zero;
       rewards = Tez_repr.zero;
+      mine_rewards = Mine_repr.zero;
       deposits = Signature.Public_key_hash.Map.empty;
       operation_gas = Unaccounted;
       internal_gas = Gas_limit_repr.internal_gas_zero;

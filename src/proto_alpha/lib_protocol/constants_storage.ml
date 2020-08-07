@@ -83,6 +83,10 @@ let tokens_per_roll c =
   let constants = Raw_context.constants c in
   constants.tokens_per_roll
 
+let mine_tokens_per_roll c =
+  let constants = Raw_context.constants c in
+  constants.mine_tokens_per_roll
+
 let michelson_maximum_type_size c =
   let constants = Raw_context.constants c in
   constants.michelson_maximum_type_size

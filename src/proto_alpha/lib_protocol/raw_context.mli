@@ -106,6 +106,7 @@ val first_level : context -> Raw_level_repr.t
 (** Increment the current block fee stash that will be credited to baker's
     frozen_fees account at finalize_application *)
 val add_fees : context -> Tez_repr.t -> context tzresult Lwt.t
+val add_mine_fees : context -> Mine_repr.t -> context tzresult Lwt.t
 
 (** Increment the current block reward stash that will be credited to baker's
     frozen_fees account at finalize_application *)
@@ -116,14 +117,16 @@ val add_rewards : context -> Tez_repr.t -> context tzresult Lwt.t
 val add_deposit :
   context ->
   Signature.Public_key_hash.t ->
-  Tez_repr.t ->
+  Mine_repr.t ->
   context tzresult Lwt.t
 
 val get_fees : context -> Tez_repr.t
+val get_mine_fees : context -> Mine_repr.t
 
 val get_rewards : context -> Tez_repr.t
+val get_mine_rewards : context -> Mine_repr.t
 
-val get_deposits : context -> Tez_repr.t Signature.Public_key_hash.Map.t
+val get_deposits : context -> Mine_repr.t Signature.Public_key_hash.Map.t
 
 type error += Gas_limit_too_high (* `Permanent *)
 

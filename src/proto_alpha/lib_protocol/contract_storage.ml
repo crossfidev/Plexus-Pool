@@ -25,6 +25,7 @@
 
 type error +=
   | Balance_too_low of Contract_repr.contract * Tez_repr.t * Tez_repr.t
+  | MineBalance_too_low of Contract_repr.contract * Mine_repr.t * Mine_repr.t
   | (* `Temporary *)
       Counter_in_the_past of Contract_repr.contract * Z.t * Z.t
   | (* `Branch *)
@@ -93,6 +94,29 @@ let () =
         (req "amount" Tez_repr.encoding))
     (function Balance_too_low (c, b, a) -> Some (c, b, a) | _ -> None)
     (fun (c, b, a) -> Balance_too_low (c, b, a)) ;
+  register_error_kind
+    `Temporary
+    ~id:"contract.mine_balance_too_low"
+    ~title:"MineBalance too low"
+    ~description:
+      "An operation tried to spend more tokens than the contract has"
+    ~pp:(fun ppf (c, b, a) ->
+      Format.fprintf
+        ppf
+        "MineBalance of contract %a too low (%a) to spend %a"
+        Contract_repr.pp
+        c
+        Mine_repr.pp
+        b
+        Mine_repr.pp
+        a)
+    Data_encoding.(
+      obj3
+        (req "contract" Contract_repr.encoding)
+        (req "balance" Mine_repr.encoding)
+        (req "amount" Mine_repr.encoding))
+    (function MineBalance_too_low (c, b, a) -> Some (c, b, a) | _ -> None)
+    (fun (c, b, a) -> MineBalance_too_low (c, b, a)) ;
   register_error_kind
     `Temporary
     ~id:"contract.counter_in_the_future"
@@ -704,10 +728,38 @@ let spend c contract amount =
       fail (Balance_too_low (contract, balance, amount))
   | Ok new_balance -> (
       Storage.Contract.Balance.set c contract new_balance
+      (* >>=? fun c ->
+      Roll_storage.Contract.remove_amount c contract amount *)
+      >>=? fun c ->
+      if Tez_repr.(new_balance > Tez_repr.zero) then return c
+      else
+        match Contract_repr.is_implicit contract with
+        | None ->
+            return c (* Never delete originated contracts *)
+        | Some pkh -> (
+            Delegate_storage.get c contract
+            >>=? function
+            | Some pkh' ->
+                if Signature.Public_key_hash.equal pkh pkh' then return c
+                else
+                  (* Delegated implicit accounts cannot be emptied *)
+                  fail (Empty_implicit_delegated_contract pkh)
+            | None ->
+                (* Delete empty implicit contract *)
+                delete c contract ) )
+
+let mine_spend c contract amount =
+  Storage.Contract.MineBalance.get c contract
+  >>=? fun balance ->
+  match Mine_repr.(balance -? amount) with
+  | Error _ ->
+      fail (MineBalance_too_low (contract, balance, amount))
+  | Ok new_balance -> (
+      Storage.Contract.MineBalance.set c contract new_balance
       >>=? fun c ->
       Roll_storage.Contract.remove_amount c contract amount
       >>=? fun c ->
-      if Tez_repr.(new_balance > Tez_repr.zero) then return c
+      if Mine_repr.(new_balance > Mine_repr.zero) then return c
       else
         match Contract_repr.is_implicit contract with
         | None ->
@@ -744,7 +796,8 @@ let credit c contract amount mine_amount  =
       Lwt.return Tez_repr.(amount +? balance)
       >>=? fun balance ->
       Storage.Contract.Balance.set c contract balance
-      >>=? fun c -> Roll_storage.Contract.add_amount c contract amount
+      >>=? fun c -> Roll_storage.Contract.add_amount c contract mine_amount
+
 
 let init c =
   Storage.Contract.Global_counter.init c Z.zero

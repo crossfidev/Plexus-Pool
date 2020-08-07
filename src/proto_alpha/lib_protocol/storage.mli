@@ -90,7 +90,7 @@ module Roll : sig
   module Delegate_change :
     Indexed_data_storage
       with type key = Signature.Public_key_hash.t
-       and type value = Tez_repr.t
+       and type value = Mine_repr.t
        and type t := Raw_context.t
 
   (** Index of the randomly selected roll snapshot of a given cycle. *)
@@ -147,13 +147,13 @@ module Contract : sig
   module Frozen_deposits :
     Indexed_data_storage
       with type key = Cycle_repr.t
-       and type value = Tez_repr.t
+       and type value = Mine_repr.t
        and type t = Raw_context.t * Contract_repr.t
 
   module Frozen_fees :
     Indexed_data_storage
       with type key = Cycle_repr.t
-       and type value = Tez_repr.t
+       and type value = Mine_repr.t
        and type t = Raw_context.t * Contract_repr.t
 
   module Frozen_rewards :
@@ -349,7 +349,9 @@ module Seed : sig
     nonce_hash : Nonce_hash.t;
     delegate : Signature.Public_key_hash.t;
     rewards : Tez_repr.t;
+    mine_rewards : Mine_repr.t;
     fees : Tez_repr.t;
+    mine_fees : Mine_repr.t;
   }
 
   type nonce_status =
@@ -396,7 +398,7 @@ module Ramp_up : sig
   module Security_deposits :
     Indexed_data_storage
       with type key = Cycle_repr.t
-       and type value = Tez_repr.t * Tez_repr.t
+       and type value = Mine_repr.t * Mine_repr.t
       (* baking * endorsement *)
        and type t := Raw_context.t
 end

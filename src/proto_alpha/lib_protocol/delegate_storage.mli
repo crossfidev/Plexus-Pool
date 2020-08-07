@@ -31,7 +31,7 @@ type balance =
   | Deposits of Signature.Public_key_hash.t * Cycle_repr.t
 
 (** A credit or debit of tezzies to a balance. *)
-type balance_update = Debited of Tez_repr.t | Credited of Tez_repr.t
+type balance_update = Debited of Tez_repr.t | Credited of Tez_repr.t | MineDebited of Mine_repr.t | MineCredited of Mine_repr.t
 
 (** A list of balance updates. Duplicates may happen. *)
 type balance_updates = (balance * balance_update) list
@@ -42,8 +42,8 @@ val balance_updates_encoding : balance_updates Data_encoding.t
 val cleanup_balance_updates : balance_updates -> balance_updates
 
 type frozen_balance = {
-  deposit : Tez_repr.t;
-  fees : Tez_repr.t;
+  deposit : Mine_repr.t;
+  fees : Mine_repr.t;
   rewards : Tez_repr.t;
 }
 
@@ -83,10 +83,10 @@ type error +=
   | Active_delegate (* `Temporary *)
   | Current_delegate (* `Temporary *)
   | Empty_delegate_account of Signature.Public_key_hash.t (* `Temporary *)
-  | Balance_too_low_for_deposit of {
+  | MineBalance_too_low_for_deposit of {
       delegate : Signature.Public_key_hash.t;
-      deposit : Tez_repr.t;
-      balance : Tez_repr.t;
+      deposit : Mine_repr.t;
+      balance : Mine_repr.t;
     }
 
 (* `Temporary *)
@@ -108,13 +108,13 @@ val list : Raw_context.t -> Signature.Public_key_hash.t list Lwt.t
 val freeze_deposit :
   Raw_context.t ->
   Signature.Public_key_hash.t ->
-  Tez_repr.t ->
+  Mine_repr.t ->
   Raw_context.t tzresult Lwt.t
 
 val freeze_fees :
   Raw_context.t ->
   Signature.Public_key_hash.t ->
-  Tez_repr.t ->
+  Mine_repr.t ->
   Raw_context.t tzresult Lwt.t
 
 val freeze_rewards :
@@ -153,7 +153,7 @@ val has_frozen_balance :
 (** Returns the amount of frozen deposit, fees and rewards associated
     to a given delegate. *)
 val frozen_balance :
-  Raw_context.t -> Signature.Public_key_hash.t -> Tez_repr.t tzresult Lwt.t
+  Raw_context.t -> Signature.Public_key_hash.t -> Mine_repr.t tzresult Lwt.t
 
 val frozen_balance_encoding : frozen_balance Data_encoding.t
 
@@ -172,17 +172,17 @@ val frozen_balance_by_cycle :
     a given key, i.e. the sum of the spendable balance and of the
     frozen balance. *)
 val full_balance :
-  Raw_context.t -> Signature.Public_key_hash.t -> Tez_repr.t tzresult Lwt.t
+  Raw_context.t -> Signature.Public_key_hash.t -> Mine_repr.t tzresult Lwt.t
 
 val staking_balance :
-  Raw_context.t -> Signature.Public_key_hash.t -> Tez_repr.t tzresult Lwt.t
+  Raw_context.t -> Signature.Public_key_hash.t -> Mine_repr.t tzresult Lwt.t
 
 (** Returns the list of contracts (implicit or originated) that delegated towards a given delegate *)
 val delegated_contracts :
   Raw_context.t -> Signature.Public_key_hash.t -> Contract_repr.t list Lwt.t
 
 val delegated_balance :
-  Raw_context.t -> Signature.Public_key_hash.t -> Tez_repr.t tzresult Lwt.t
+  Raw_context.t -> Signature.Public_key_hash.t -> Mine_repr.t tzresult Lwt.t
 
 val deactivated :
   Raw_context.t -> Signature.Public_key_hash.t -> bool tzresult Lwt.t

@@ -518,11 +518,12 @@ module Constants : sig
     hard_gas_limit_per_block : Z.t;
     proof_of_work_threshold : int64;
     tokens_per_roll : Tez.t;
+    mine_tokens_per_roll : Mine.t;
     michelson_maximum_type_size : int;
     seed_nonce_revelation_tip : Tez.t;
     origination_size : int;
-    block_security_deposit : Tez.t;
-    endorsement_security_deposit : Tez.t;
+    block_security_deposit : Mine.t;
+    endorsement_security_deposit : Mine.t;
     baking_reward_per_endorsement : Tez.t list;
     endorsement_reward : Tez.t list;
     cost_per_byte : Tez.t;
@@ -569,6 +570,8 @@ module Constants : sig
 
   val tokens_per_roll : context -> Tez.t
 
+  val mine_tokens_per_roll : context -> Mine.t
+
   val michelson_maximum_type_size : context -> int
 
   val baking_reward_per_endorsement : context -> Tez.t list
@@ -579,9 +582,9 @@ module Constants : sig
 
   val origination_size : context -> int
 
-  val block_security_deposit : context -> Tez.t
+  val block_security_deposit : context -> Mine.t
 
-  val endorsement_security_deposit : context -> Tez.t
+  val endorsement_security_deposit : context -> Mine.t
 
   val test_chain_duration : context -> int64
 
@@ -676,7 +679,9 @@ module Nonce : sig
     nonce_hash : Nonce_hash.t;
     delegate : public_key_hash;
     rewards : Tez.t;
+    mine_rewards : Mine.t;
     fees : Tez.t;
+    mine_fees : Mine.t;
   }
 
   val record_hash : context -> unrevealed -> context tzresult Lwt.t
@@ -822,6 +827,8 @@ module Contract : sig
   type error += Balance_too_low of contract * Tez.t * Tez.t
 
   val spend : context -> contract -> Tez.t -> context tzresult Lwt.t
+  
+  val mine_spend : context -> contract -> Mine.t -> context tzresult Lwt.t
 
   val credit : context -> contract -> Tez.t -> Mine.t -> context tzresult Lwt.t
 
@@ -856,7 +863,7 @@ module Delegate : sig
     | Fees of Signature.Public_key_hash.t * Cycle.t
     | Deposits of Signature.Public_key_hash.t * Cycle.t
 
-  type balance_update = Debited of Tez.t | Credited of Tez.t
+  type balance_update = Debited of Tez.t | Credited of Tez.t | MineDebited of Mine.t | MineCredited of Mine.t
 
   type balance_updates = (balance * balance_update) list
 
@@ -875,13 +882,13 @@ module Delegate : sig
   val list : context -> public_key_hash list Lwt.t
 
   val freeze_deposit :
-    context -> public_key_hash -> Tez.t -> context tzresult Lwt.t
+    context -> public_key_hash -> Mine.t -> context tzresult Lwt.t
 
   val freeze_rewards :
     context -> public_key_hash -> Tez.t -> context tzresult Lwt.t
 
   val freeze_fees :
-    context -> public_key_hash -> Tez.t -> context tzresult Lwt.t
+    context -> public_key_hash -> Mine.t -> context tzresult Lwt.t
 
   val cycle_end :
     context ->
@@ -890,7 +897,7 @@ module Delegate : sig
     (context * balance_updates * Signature.Public_key_hash.t list) tzresult
     Lwt.t
 
-  type frozen_balance = {deposit : Tez.t; fees : Tez.t; rewards : Tez.t}
+  type frozen_balance = {deposit : Mine.t; fees : Mine.t; rewards : Tez.t}
 
   val punish :
     context ->
@@ -898,12 +905,12 @@ module Delegate : sig
     Cycle.t ->
     (context * frozen_balance) tzresult Lwt.t
 
-  val full_balance : context -> public_key_hash -> Tez.t tzresult Lwt.t
+  val full_balance : context -> public_key_hash -> Mine.t tzresult Lwt.t
 
   val has_frozen_balance :
     context -> public_key_hash -> Cycle.t -> bool tzresult Lwt.t
 
-  val frozen_balance : context -> public_key_hash -> Tez.t tzresult Lwt.t
+  val frozen_balance : context -> public_key_hash -> Mine.t tzresult Lwt.t
 
   val frozen_balance_encoding : frozen_balance Data_encoding.t
 
@@ -914,13 +921,13 @@ module Delegate : sig
     context -> Signature.Public_key_hash.t -> frozen_balance Cycle.Map.t Lwt.t
 
   val staking_balance :
-    context -> Signature.Public_key_hash.t -> Tez.t tzresult Lwt.t
+    context -> Signature.Public_key_hash.t -> Mine.t tzresult Lwt.t
 
   val delegated_contracts :
     context -> Signature.Public_key_hash.t -> Contract_repr.t list Lwt.t
 
   val delegated_balance :
-    context -> Signature.Public_key_hash.t -> Tez.t tzresult Lwt.t
+    context -> Signature.Public_key_hash.t -> Mine.t tzresult Lwt.t
 
   val deactivated :
     context -> Signature.Public_key_hash.t -> bool tzresult Lwt.t
@@ -1337,7 +1344,7 @@ module Roll : sig
     context -> Signature.Public_key_hash.t -> roll list tzresult Lwt.t
 
   val get_change :
-    context -> Signature.Public_key_hash.t -> Tez.t tzresult Lwt.t
+    context -> Signature.Public_key_hash.t -> Mine.t tzresult Lwt.t
 end
 
 module Commitment : sig
@@ -1409,16 +1416,19 @@ val record_internal_nonce : context -> int -> context
 val internal_nonce_already_recorded : context -> int -> bool
 
 val add_fees : context -> Tez.t -> context tzresult Lwt.t
+val add_mine_fees : context -> Mine.t -> context tzresult Lwt.t
 
 val add_rewards : context -> Tez.t -> context tzresult Lwt.t
 
 val add_deposit :
-  context -> Signature.Public_key_hash.t -> Tez.t -> context tzresult Lwt.t
+  context -> Signature.Public_key_hash.t -> Mine.t -> context tzresult Lwt.t
 
 val get_fees : context -> Tez.t
+val get_mine_fees : context -> Mine.t
 
 val get_rewards : context -> Tez.t
+val get_mine_rewards : context -> Mine.t
 
-val get_deposits : context -> Tez.t Signature.Public_key_hash.Map.t
+val get_deposits : context -> Mine.t Signature.Public_key_hash.Map.t
 
 val description : context Storage_description.t

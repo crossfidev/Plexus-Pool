@@ -138,14 +138,14 @@ module Contract = struct
       (struct
         let name = ["deposits"]
       end)
-      (Tez_repr)
+      (Mine_repr)
 
   module Frozen_fees =
     Frozen_balance_index.Make_map
       (struct
         let name = ["fees"]
       end)
-      (Tez_repr)
+      (Mine_repr)
 
   module Frozen_rewards =
     Frozen_balance_index.Make_map
@@ -306,7 +306,7 @@ module Contract = struct
       (struct
         let name = ["change"]
       end)
-      (Tez_repr)
+      (Mine_repr)
 end
 
 (** Big maps handling *)
@@ -556,7 +556,9 @@ module Cycle = struct
     nonce_hash : Nonce_hash.t;
     delegate : Signature.Public_key_hash.t;
     rewards : Tez_repr.t;
+    mine_rewards : Mine_repr.t;
     fees : Tez_repr.t;
+    mine_fees : Mine_repr.t;
   }
 
   type nonce_status =
@@ -569,18 +571,20 @@ module Cycle = struct
       [ case
           (Tag 0)
           ~title:"Unrevealed"
-          (tup4
+          (tup6
              Nonce_hash.encoding
              Signature.Public_key_hash.encoding
              Tez_repr.encoding
-             Tez_repr.encoding)
+             Mine_repr.encoding
+             Tez_repr.encoding
+             Mine_repr.encoding)
           (function
-            | Unrevealed {nonce_hash; delegate; rewards; fees} ->
-                Some (nonce_hash, delegate, rewards, fees)
+            | Unrevealed {nonce_hash; delegate; rewards; mine_rewards; fees; mine_fees} ->
+                Some (nonce_hash, delegate, rewards, mine_rewards, fees, mine_fees)
             | _ ->
                 None)
-          (fun (nonce_hash, delegate, rewards, fees) ->
-            Unrevealed {nonce_hash; delegate; rewards; fees});
+          (fun (nonce_hash, delegate, rewards, mine_rewards, fees, mine_fees) ->
+            Unrevealed {nonce_hash; delegate; rewards; mine_rewards; fees; mine_fees});
         case
           (Tag 1)
           ~title:"Revealed"
@@ -817,7 +821,9 @@ module Seed = struct
     nonce_hash : Nonce_hash.t;
     delegate : Signature.Public_key_hash.t;
     rewards : Tez_repr.t;
+    mine_rewards : Mine_repr.t;
     fees : Tez_repr.t;
+    mine_fees : Mine_repr.t;
   }
 
   type nonce_status = Cycle.nonce_status =
@@ -890,9 +896,9 @@ module Ramp_up = struct
          end))
          (Make_index (Cycle_repr.Index))
          (struct
-           type t = Tez_repr.t * Tez_repr.t
+           type t = Mine_repr.t * Mine_repr.t
 
            let encoding =
-             Data_encoding.tup2 Tez_repr.encoding Tez_repr.encoding
+             Data_encoding.tup2 Mine_repr.encoding Mine_repr.encoding
          end)
 end

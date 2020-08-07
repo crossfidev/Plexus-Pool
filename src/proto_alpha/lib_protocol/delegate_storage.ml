@@ -72,7 +72,7 @@ let balance_encoding =
            (function Deposits (d, l) -> Some ((), (), d, l) | _ -> None)
            (fun ((), (), d, l) -> Deposits (d, l)) ]
 
-type balance_update = Debited of Tez_repr.t | Credited of Tez_repr.t
+type balance_update = Debited of Tez_repr.t | Credited of Tez_repr.t | MineDebited of Mine_repr.t | MineCredited of Mine_repr.t
 
 let balance_update_encoding =
   let open Data_encoding in
@@ -85,7 +85,12 @@ let balance_update_encoding =
                | Credited v ->
                    Tez_repr.to_mutez v
                | Debited v ->
-                   Int64.neg (Tez_repr.to_mutez v))
+                   Int64.neg (Tez_repr.to_mutez v)
+               | MineCredited v ->
+                   Mine_repr.to_mutez v
+               | MineDebited v ->
+                   Int64.neg (Mine_repr.to_mutez v)   
+             )
              ( Json.wrap_error
              @@ fun v ->
              if Compare.Int64.(v < 0L) then
@@ -111,13 +116,18 @@ let balance_updates_encoding =
 
 let cleanup_balance_updates balance_updates =
   List.filter
-    (fun (_, (Credited update | Debited update)) ->
-      not (Tez_repr.equal update Tez_repr.zero))
+    (fun (_, (update)) ->
+      match update with
+        | Credited u -> not (Tez_repr.equal u Tez_repr.zero)
+        | Debited u -> not (Tez_repr.equal u Tez_repr.zero)
+        | MineCredited u -> not (Mine_repr.equal u Mine_repr.zero)
+        | MineDebited u -> not (Mine_repr.equal u Mine_repr.zero)
+    )
     balance_updates
 
 type frozen_balance = {
-  deposit : Tez_repr.t;
-  fees : Tez_repr.t;
+  deposit : Mine_repr.t;
+  fees : Mine_repr.t;
   rewards : Tez_repr.t;
 }
 
@@ -127,8 +137,8 @@ let frozen_balance_encoding =
     (fun {deposit; fees; rewards} -> (deposit, fees, rewards))
     (fun (deposit, fees, rewards) -> {deposit; fees; rewards})
     (obj3
-       (req "deposit" Tez_repr.encoding)
-       (req "fees" Tez_repr.encoding)
+       (req "deposit" Mine_repr.encoding)
+       (req "fees" Mine_repr.encoding)
        (req "rewards" Tez_repr.encoding))
 
 type error +=
@@ -136,10 +146,10 @@ type error +=
   | Active_delegate (* `Temporary *)
   | Current_delegate (* `Temporary *)
   | Empty_delegate_account of Signature.Public_key_hash.t (* `Temporary *)
-  | Balance_too_low_for_deposit of {
+  | MineBalance_too_low_for_deposit of {
       delegate : Signature.Public_key_hash.t;
-      deposit : Tez_repr.t;
-      balance : Tez_repr.t;
+      deposit : Mine_repr.t;
+      balance : Mine_repr.t;
     }
 
 (* `Temporary *)
@@ -199,7 +209,7 @@ let () =
     (fun c -> Empty_delegate_account c) ;
   register_error_kind
     `Temporary
-    ~id:"delegate.balance_too_low_for_deposit"
+    ~id:"delegate.mine_balance_too_low_for_deposit"
     ~title:"Balance too low for deposit"
     ~description:"Cannot freeze deposit when the balance is too low"
     ~pp:(fun ppf (delegate, balance, deposit) ->
@@ -208,25 +218,25 @@ let () =
         "Delegate %a has a too low balance (%a) to deposit %a"
         Signature.Public_key_hash.pp
         delegate
-        Tez_repr.pp
+        Mine_repr.pp
         balance
-        Tez_repr.pp
+        Mine_repr.pp
         deposit)
     Data_encoding.(
       obj3
         (req "delegate" Signature.Public_key_hash.encoding)
-        (req "balance" Tez_repr.encoding)
-        (req "deposit" Tez_repr.encoding))
+        (req "balance" Mine_repr.encoding)
+        (req "deposit" Mine_repr.encoding))
     (function
-      | Balance_too_low_for_deposit {delegate; balance; deposit} ->
+      | MineBalance_too_low_for_deposit {delegate; balance; deposit} ->
           Some (delegate, balance, deposit)
       | _ ->
           None)
     (fun (delegate, balance, deposit) ->
-      Balance_too_low_for_deposit {delegate; balance; deposit})
+      MineBalance_too_low_for_deposit {delegate; balance; deposit})
 
 let link c contract delegate =
-  Storage.Contract.Balance.get c contract
+  Storage.Contract.MineBalance.get c contract
   >>=? fun balance ->
   Roll_storage.Delegate.add_amount c delegate balance
   >>=? fun c ->
@@ -236,7 +246,7 @@ let link c contract delegate =
   >>= fun c -> return c
 
 let unlink c contract =
-  Storage.Contract.Balance.get c contract
+  Storage.Contract.MineBalance.get c contract
   >>=? fun balance ->
   Storage.Contract.Delegate.get_option c contract
   >>=? function
@@ -369,13 +379,13 @@ let delegated_contracts ctxt delegate =
 
 let get_frozen_deposit ctxt contract cycle =
   Storage.Contract.Frozen_deposits.get_option (ctxt, contract) cycle
-  >>=? function None -> return Tez_repr.zero | Some frozen -> return frozen
+  >>=? function None -> return Mine_repr.zero | Some frozen -> return frozen
 
 let credit_frozen_deposit ctxt delegate cycle amount =
   let contract = Contract_repr.implicit_contract delegate in
   get_frozen_deposit ctxt contract cycle
   >>=? fun old_amount ->
-  Lwt.return Tez_repr.(old_amount +? amount)
+  Lwt.return Mine_repr.(old_amount +? amount)
   >>=? fun new_amount ->
   Storage.Contract.Frozen_deposits.init_set (ctxt, contract) cycle new_amount
   >>= fun ctxt ->
@@ -387,25 +397,25 @@ let freeze_deposit ctxt delegate amount =
   Roll_storage.Delegate.set_active ctxt delegate
   >>=? fun ctxt ->
   let contract = Contract_repr.implicit_contract delegate in
-  Storage.Contract.Balance.get ctxt contract
+  Storage.Contract.MineBalance.get ctxt contract
   >>=? fun balance ->
   Lwt.return
     (record_trace
-       (Balance_too_low_for_deposit {delegate; deposit = amount; balance})
-       Tez_repr.(balance -? amount))
+       (MineBalance_too_low_for_deposit {delegate; deposit = amount; balance})
+       Mine_repr.(balance -? amount))
   >>=? fun new_balance ->
-  Storage.Contract.Balance.set ctxt contract new_balance
+  Storage.Contract.MineBalance.set ctxt contract new_balance
   >>=? fun ctxt -> credit_frozen_deposit ctxt delegate cycle amount
 
 let get_frozen_fees ctxt contract cycle =
   Storage.Contract.Frozen_fees.get_option (ctxt, contract) cycle
-  >>=? function None -> return Tez_repr.zero | Some frozen -> return frozen
+  >>=? function None -> return Mine_repr.zero | Some frozen -> return frozen
 
 let credit_frozen_fees ctxt delegate cycle amount =
   let contract = Contract_repr.implicit_contract delegate in
   get_frozen_fees ctxt contract cycle
   >>=? fun old_amount ->
-  Lwt.return Tez_repr.(old_amount +? amount)
+  Lwt.return Mine_repr.(old_amount +? amount)
   >>=? fun new_amount ->
   Storage.Contract.Frozen_fees.init_set (ctxt, contract) cycle new_amount
   >>= fun ctxt ->
@@ -421,13 +431,13 @@ let burn_fees ctxt delegate cycle amount =
   let contract = Contract_repr.implicit_contract delegate in
   get_frozen_fees ctxt contract cycle
   >>=? fun old_amount ->
-  ( match Tez_repr.(old_amount -? amount) with
+  ( match Mine_repr.(old_amount -? amount) with
   | Ok new_amount ->
       Roll_storage.Delegate.remove_amount ctxt delegate amount
       >>=? fun ctxt -> return (new_amount, ctxt)
   | Error _ ->
       Roll_storage.Delegate.remove_amount ctxt delegate old_amount
-      >>=? fun ctxt -> return (Tez_repr.zero, ctxt) )
+      >>=? fun ctxt -> return (Mine_repr.zero, ctxt) )
   >>=? fun (new_amount, ctxt) ->
   Storage.Contract.Frozen_fees.init_set (ctxt, contract) cycle new_amount
   >>= fun ctxt -> return ctxt
@@ -471,19 +481,19 @@ let unfreeze ctxt delegate cycle =
   >>=? fun deposit ->
   get_frozen_fees ctxt contract cycle
   >>=? fun fees ->
-  get_frozen_rewards ctxt contract cycle
-  >>=? fun rewards ->
-  Storage.Contract.Balance.get ctxt contract
+  (* MINEPLEX get_frozen_rewards ctxt contract cycle *)
+  (* MINEPLEX >>=? fun rewards -> *)
+  Storage.Contract.MineBalance.get ctxt contract
   >>=? fun balance ->
-  Lwt.return Tez_repr.(deposit +? fees)
-  >>=? fun unfrozen_amount ->
-  Lwt.return Tez_repr.(unfrozen_amount +? rewards)
-  >>=? fun unfrozen_amount ->
-  Lwt.return Tez_repr.(balance +? unfrozen_amount)
+  Lwt.return Mine_repr.(deposit +? fees)
+  >>=? fun mine_unfrozen_amount ->
+  (* MINEPLEX Lwt.return Tez_repr.(mine_unfrozen_amount +? rewards)
+  >>=? fun tez_unfrozen_amount -> *)
+  Lwt.return Mine_repr.(balance +? mine_unfrozen_amount)
   >>=? fun balance ->
-  Storage.Contract.Balance.set ctxt contract balance
-  >>=? fun ctxt ->
-  Roll_storage.Delegate.add_amount ctxt delegate rewards
+  Storage.Contract.MineBalance.set ctxt contract balance
+  (* MINEPLEX >>=? fun ctxt ->
+  Roll_storage.Delegate.add_amount ctxt delegate rewards *)
   >>=? fun ctxt ->
   Storage.Contract.Frozen_deposits.remove (ctxt, contract) cycle
   >>= fun ctxt ->
@@ -491,14 +501,15 @@ let unfreeze ctxt delegate cycle =
   >>= fun ctxt ->
   Storage.Contract.Frozen_rewards.remove (ctxt, contract) cycle
   >>= fun ctxt ->
+
   return
     ( ctxt,
       cleanup_balance_updates
-        [ (Deposits (delegate, cycle), Debited deposit);
-          (Fees (delegate, cycle), Debited fees);
-          (Rewards (delegate, cycle), Debited rewards);
+        [ (Deposits (delegate, cycle), MineDebited deposit);
+          (Fees (delegate, cycle), MineDebited fees);
+          (* MINEPLEX (Rewards (delegate, cycle), Debited rewards); *)
           ( Contract (Contract_repr.implicit_contract delegate),
-            Credited unfrozen_amount ) ] )
+            MineCredited mine_unfrozen_amount ) ] )
 
 let cycle_end ctxt last_cycle unrevealed =
   let preserved = Constants_storage.preserved_cycles ctxt in
@@ -510,13 +521,13 @@ let cycle_end ctxt last_cycle unrevealed =
         (fun acc (u : Nonce_storage.unrevealed) ->
           acc
           >>=? fun (ctxt, balance_updates) ->
-          burn_fees ctxt u.delegate revealed_cycle u.fees
+          burn_fees ctxt u.delegate revealed_cycle u.mine_fees
           >>=? fun ctxt ->
           burn_rewards ctxt u.delegate revealed_cycle u.rewards
           >>=? fun ctxt ->
           let bus =
-            [ (Fees (u.delegate, revealed_cycle), Debited u.fees);
-              (Rewards (u.delegate, revealed_cycle), Debited u.rewards) ]
+            [ (Fees (u.delegate, revealed_cycle), MineDebited u.mine_fees);
+              (Rewards (u.delegate, revealed_cycle), MineDebited u.mine_rewards) ]
           in
           return (ctxt, bus @ balance_updates))
         (return (ctxt, []))
@@ -579,11 +590,11 @@ let has_frozen_balance ctxt delegate cycle =
   let contract = Contract_repr.implicit_contract delegate in
   get_frozen_deposit ctxt contract cycle
   >>=? fun deposit ->
-  if Tez_repr.(deposit <> zero) then return_true
+  if Mine_repr.(deposit <> zero) then return_true
   else
     get_frozen_fees ctxt contract cycle
     >>=? fun fees ->
-    if Tez_repr.(fees <> zero) then return_true
+    if Mine_repr.(fees <> zero) then return_true
     else
       get_frozen_rewards ctxt contract cycle
       >>=? fun rewards -> return Tez_repr.(rewards <> zero)
@@ -601,7 +612,7 @@ let frozen_balance_by_cycle_encoding =
           frozen_balance_encoding))
 
 let empty_frozen_balance =
-  {deposit = Tez_repr.zero; fees = Tez_repr.zero; rewards = Tez_repr.zero}
+  {deposit = Mine_repr.zero; fees = Mine_repr.zero; rewards = Tez_repr.zero}
 
 let frozen_balance_by_cycle ctxt delegate =
   let contract = Contract_repr.implicit_contract delegate in
@@ -645,32 +656,33 @@ let frozen_balance_by_cycle ctxt delegate =
 
 let frozen_balance ctxt delegate =
   let contract = Contract_repr.implicit_contract delegate in
-  let balance = Ok Tez_repr.zero in
+  let mine_balance = Ok Mine_repr.zero in
+  (* MINEPLEX let balance = Ok Tez_repr.zero in *)
   Storage.Contract.Frozen_deposits.fold
     (ctxt, contract)
-    ~init:balance
+    ~init:mine_balance
     ~f:(fun _cycle amount acc ->
-      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount))
-  >>= fun balance ->
+      Lwt.return acc >>=? fun acc -> Lwt.return Mine_repr.(acc +? amount))
+  >>= fun mine_balance ->
   Storage.Contract.Frozen_fees.fold
     (ctxt, contract)
-    ~init:balance
+    ~init:mine_balance
     ~f:(fun _cycle amount acc ->
-      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount))
-  >>= fun balance ->
-  Storage.Contract.Frozen_rewards.fold
+      Lwt.return acc >>=? fun acc -> Lwt.return Mine_repr.(acc +? amount))
+  >>= fun mine_balance -> Lwt.return mine_balance
+  (* MINEPLEX Storage.Contract.Frozen_rewards.fold
     (ctxt, contract)
     ~init:balance
     ~f:(fun _cycle amount acc ->
-      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount))
-  >>= fun balance -> Lwt.return balance
+      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount)) *)
+  (* MINEPLEX >>= fun balance -> Lwt.return balance *)
 
 let full_balance ctxt delegate =
   let contract = Contract_repr.implicit_contract delegate in
   frozen_balance ctxt delegate
   >>=? fun frozen_balance ->
-  Storage.Contract.Balance.get ctxt contract
-  >>=? fun balance -> Lwt.return Tez_repr.(frozen_balance +? balance)
+  Storage.Contract.MineBalance.get ctxt contract
+  >>=? fun balance -> Lwt.return Mine_repr.(frozen_balance +? balance)
 
 let deactivated = Roll_storage.Delegate.is_inactive
 
@@ -679,34 +691,34 @@ let grace_period ctxt delegate =
   Storage.Contract.Delegate_desactivation.get ctxt contract
 
 let staking_balance ctxt delegate =
-  let token_per_rolls = Constants_storage.tokens_per_roll ctxt in
+  let token_per_rolls = Constants_storage.mine_tokens_per_roll ctxt in
   Roll_storage.get_rolls ctxt delegate
   >>=? fun rolls ->
   Roll_storage.get_change ctxt delegate
   >>=? fun change ->
   let rolls = Int64.of_int (List.length rolls) in
-  Lwt.return Tez_repr.(token_per_rolls *? rolls)
-  >>=? fun balance -> Lwt.return Tez_repr.(balance +? change)
+  Lwt.return Mine_repr.(token_per_rolls *? rolls)
+  >>=? fun balance -> Lwt.return Mine_repr.(balance +? change)
 
 let delegated_balance ctxt delegate =
   let contract = Contract_repr.implicit_contract delegate in
   staking_balance ctxt delegate
   >>=? fun staking_balance ->
-  Storage.Contract.Balance.get ctxt contract
+  Storage.Contract.MineBalance.get ctxt contract
   >>= fun self_staking_balance ->
   Storage.Contract.Frozen_deposits.fold
     (ctxt, contract)
     ~init:self_staking_balance
     ~f:(fun _cycle amount acc ->
-      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount))
+      Lwt.return acc >>=? fun acc -> Lwt.return Mine_repr.(acc +? amount))
   >>= fun self_staking_balance ->
   Storage.Contract.Frozen_fees.fold
     (ctxt, contract)
     ~init:self_staking_balance
     ~f:(fun _cycle amount acc ->
-      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount))
+      Lwt.return acc >>=? fun acc -> Lwt.return Mine_repr.(acc +? amount))
   >>=? fun self_staking_balance ->
-  Lwt.return Tez_repr.(staking_balance -? self_staking_balance)
+  Lwt.return Mine_repr.(staking_balance -? self_staking_balance)
 
 let fold = Storage.Delegates.fold
 

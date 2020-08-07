@@ -94,11 +94,12 @@ type parametric = {
   hard_gas_limit_per_block : Z.t;
   proof_of_work_threshold : int64;
   tokens_per_roll : Tez_repr.t;
+  mine_tokens_per_roll : Mine_repr.t;
   michelson_maximum_type_size : int;
   seed_nonce_revelation_tip : Tez_repr.t;
   origination_size : int;
-  block_security_deposit : Tez_repr.t;
-  endorsement_security_deposit : Tez_repr.t;
+  block_security_deposit : Mine_repr.t;
+  endorsement_security_deposit : Mine_repr.t;
   baking_reward_per_endorsement : Tez_repr.t list;
   endorsement_reward : Tez_repr.t list;
   cost_per_byte : Tez_repr.t;
@@ -127,6 +128,7 @@ let parametric_encoding =
           c.hard_gas_limit_per_block ),
         ( ( c.proof_of_work_threshold,
             c.tokens_per_roll,
+            c.mine_tokens_per_roll,
             c.michelson_maximum_type_size,
             c.seed_nonce_revelation_tip,
             c.origination_size,
@@ -153,6 +155,7 @@ let parametric_encoding =
              hard_gas_limit_per_block ),
            ( ( proof_of_work_threshold,
                tokens_per_roll,
+               mine_tokens_per_roll,
                michelson_maximum_type_size,
                seed_nonce_revelation_tip,
                origination_size,
@@ -180,6 +183,7 @@ let parametric_encoding =
         hard_gas_limit_per_block;
         proof_of_work_threshold;
         tokens_per_roll;
+        mine_tokens_per_roll;
         michelson_maximum_type_size;
         seed_nonce_revelation_tip;
         origination_size;
@@ -208,14 +212,15 @@ let parametric_encoding =
           (req "hard_gas_limit_per_operation" z)
           (req "hard_gas_limit_per_block" z))
        (merge_objs
-          (obj8
+          (obj9
              (req "proof_of_work_threshold" int64)
              (req "tokens_per_roll" Tez_repr.encoding)
+             (req "mine_tokens_per_roll" Mine_repr.encoding)
              (req "michelson_maximum_type_size" uint16)
              (req "seed_nonce_revelation_tip" Tez_repr.encoding)
              (req "origination_size" int31)
-             (req "block_security_deposit" Tez_repr.encoding)
-             (req "endorsement_security_deposit" Tez_repr.encoding)
+             (req "block_security_deposit" Mine_repr.encoding)
+             (req "endorsement_security_deposit" Mine_repr.encoding)
              (req "baking_reward_per_endorsement" (list Tez_repr.encoding)))
           (obj9
              (req "endorsement_reward" (list Tez_repr.encoding))

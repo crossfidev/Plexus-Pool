@@ -34,12 +34,12 @@ val list :
   Signature.Public_key_hash.t list shell_tzresult Lwt.t
 
 type info = {
-  balance : Tez.t;
-  frozen_balance : Tez.t;
+  balance : Mine.t;
+  frozen_balance : Mine.t;
   frozen_balance_by_cycle : Delegate.frozen_balance Cycle.Map.t;
-  staking_balance : Tez.t;
+  staking_balance : Mine.t;
   delegated_contracts : Contract_repr.t list;
-  delegated_balance : Tez.t;
+  delegated_balance : Mine.t;
   deactivated : bool;
   grace_period : Cycle.t;
 }
@@ -56,13 +56,13 @@ val balance :
   'a #RPC_context.simple ->
   'a ->
   Signature.Public_key_hash.t ->
-  Tez.t shell_tzresult Lwt.t
+  Mine.t shell_tzresult Lwt.t
 
 val frozen_balance :
   'a #RPC_context.simple ->
   'a ->
   Signature.Public_key_hash.t ->
-  Tez.t shell_tzresult Lwt.t
+  Mine.t shell_tzresult Lwt.t
 
 val frozen_balance_by_cycle :
   'a #RPC_context.simple ->
@@ -74,7 +74,7 @@ val staking_balance :
   'a #RPC_context.simple ->
   'a ->
   Signature.Public_key_hash.t ->
-  Tez.t shell_tzresult Lwt.t
+  Mine.t shell_tzresult Lwt.t
 
 val delegated_contracts :
   'a #RPC_context.simple ->
@@ -86,7 +86,7 @@ val delegated_balance :
   'a #RPC_context.simple ->
   'a ->
   Signature.Public_key_hash.t ->
-  Tez.t shell_tzresult Lwt.t
+  Mine.t shell_tzresult Lwt.t
 
 val deactivated :
   'a #RPC_context.simple ->

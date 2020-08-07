@@ -174,6 +174,10 @@ let pp_balance_updates ppf = function
             Format.fprintf ppf "+%s%a" Client_proto_args.tez_sym Tez.pp amount
         | Debited amount ->
             Format.fprintf ppf "-%s%a" Client_proto_args.tez_sym Tez.pp amount
+        | MineCredited amount ->
+            Format.fprintf ppf "+%s%a" Client_proto_args.tez_sym Mine.pp amount
+        | MineDebited amount ->
+            Format.fprintf ppf "-%s%a" Client_proto_args.tez_sym Mine.pp amount
       in
       let pp_one ppf (balance, update) =
         let to_fill = column_size + 3 - String.length balance in

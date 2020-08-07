@@ -145,6 +145,12 @@ val spend :
   Tez_repr.t ->
   Raw_context.t tzresult Lwt.t
 
+val mine_spend :
+  Raw_context.t ->
+  Contract_repr.t ->
+  Mine_repr.t ->
+  Raw_context.t tzresult Lwt.t
+
 val originate :
   Raw_context.t ->
   ?prepaid_bootstrap_storage:bool ->

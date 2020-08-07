@@ -1075,7 +1075,7 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
         let ctxt = record_endorsement ctxt delegate in
         let gap = List.length slots in
         Lwt.return
-          Tez.(Constants.endorsement_security_deposit ctxt *? Int64.of_int gap)
+          Mine.(Constants.endorsement_security_deposit ctxt *? Int64.of_int gap)
         >>=? fun deposit ->
         Delegate.freeze_deposit ctxt delegate deposit
         >>=? fun ctxt ->
@@ -1094,8 +1094,8 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
                    balance_updates =
                      Delegate.cleanup_balance_updates
                        [ ( Contract (Contract.implicit_contract delegate),
-                           Debited deposit );
-                         (Deposits (delegate, level.cycle), Credited deposit);
+                           MineDebited deposit );
+                         (Deposits (delegate, level.cycle), MineCredited deposit);
                          (Rewards (delegate, level.cycle), Credited reward) ];
                    delegate;
                    slots;
@@ -1146,9 +1146,15 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
         >>=? fun () ->
         Delegate.punish ctxt delegate1 level.cycle
         >>=? fun (ctxt, balance) ->
-        Lwt.return Tez.(balance.deposit +? balance.fees)
+        Lwt.return Mine.(balance.deposit +? balance.fees)
         >>=? fun burned ->
         let reward =
+          let burned = match Tez.of_mutez (Mine.to_mutez burned) with
+            | None ->
+                Tez.zero
+            | Some tez ->
+                tez
+          in
           match Tez.(burned /? 2L) with Ok v -> v | Error _ -> Tez.zero
         in
         add_rewards ctxt reward
@@ -1160,11 +1166,12 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
               (Double_endorsement_evidence_result
                  (Delegate.cleanup_balance_updates
                     [ ( Deposits (delegate1, level.cycle),
-                        Debited balance.deposit );
-                      (Fees (delegate1, level.cycle), Debited balance.fees);
+                        MineDebited balance.deposit );
+                      (Fees (delegate1, level.cycle), MineDebited balance.fees);
                       ( Rewards (delegate1, level.cycle),
                         Debited balance.rewards );
-                      (Rewards (baker, current_cycle), Credited reward) ])) )
+                      ( Rewards (baker, current_cycle), Credited reward) 
+                    ])) )
     | (_, _) ->
         fail Invalid_double_endorsement_evidence )
   | Single (Double_baking_evidence {bh1; bh2}) ->
@@ -1219,9 +1226,15 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
       >>=? fun () ->
       Delegate.punish ctxt delegate level.cycle
       >>=? fun (ctxt, balance) ->
-      Lwt.return Tez.(balance.deposit +? balance.fees)
+      Lwt.return Mine.(balance.deposit +? balance.fees)
       >>=? fun burned ->
       let reward =
+        let burned = match Tez.of_mutez (Mine.to_mutez burned) with
+          | None ->
+              Tez.zero
+          | Some tez ->
+              tez
+        in
         match Tez.(burned /? 2L) with Ok v -> v | Error _ -> Tez.zero
       in
       add_rewards ctxt reward
@@ -1232,10 +1245,11 @@ let apply_contents_list (type kind) ctxt chain_id mode pred_block baker
           Single_result
             (Double_baking_evidence_result
                (Delegate.cleanup_balance_updates
-                  [ (Deposits (delegate, level.cycle), Debited balance.deposit);
-                    (Fees (delegate, level.cycle), Debited balance.fees);
+                  [ (Deposits (delegate, level.cycle), MineDebited balance.deposit);
+                    (Fees (delegate, level.cycle), MineDebited balance.fees);
                     (Rewards (delegate, level.cycle), Debited balance.rewards);
-                    (Rewards (baker, current_cycle), Credited reward) ])) )
+                    (Rewards (baker, current_cycle), Credited reward) 
+                  ])) )
   | Single (Activate_account {id = pkh; activation_code}) -> (
       let blinded_pkh =
         Blinded_public_key_hash.of_ed25519_pkh activation_code pkh
@@ -1435,17 +1449,19 @@ let finalize_application ctxt protocol_data delegate ~block_delay =
     (return ctxt)
   >>=? fun ctxt ->
   (* end of level (from this point nothing should fail) *)
+  let mine_fees = Alpha_context.get_mine_fees ctxt in
   let fees = Alpha_context.get_fees ctxt in
-  Delegate.freeze_fees ctxt delegate fees
+  Delegate.freeze_fees ctxt delegate mine_fees
   >>=? fun ctxt ->
   let rewards = Alpha_context.get_rewards ctxt in
+  let mine_rewards = Alpha_context.get_mine_rewards ctxt in
   Delegate.freeze_rewards ctxt delegate rewards
   >>=? fun ctxt ->
   ( match protocol_data.Block_header.seed_nonce_hash with
   | None ->
       return ctxt
   | Some nonce_hash ->
-      Nonce.record_hash ctxt {nonce_hash; delegate; rewards; fees} )
+      Nonce.record_hash ctxt {nonce_hash; delegate; rewards; mine_rewards; fees; mine_fees} )
   >>=? fun ctxt ->
   (* end of cycle *)
   may_snapshot_roll ctxt
@@ -1458,9 +1474,11 @@ let finalize_application ctxt protocol_data delegate ~block_delay =
   let balance_updates =
     Delegate.(
       cleanup_balance_updates
-        ( [ (Contract (Contract.implicit_contract delegate), Debited deposit);
-            (Deposits (delegate, cycle), Credited deposit);
-            (Rewards (delegate, cycle), Credited reward) ]
+        ( [ 
+            (Contract (Contract.implicit_contract delegate), MineDebited deposit);
+            (Deposits (delegate, cycle), MineCredited deposit);
+            (Rewards (delegate, cycle), Credited reward) 
+          ]
         @ balance_updates ))
   in
   let consumed_gas =

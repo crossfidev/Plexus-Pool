@@ -26,12 +26,12 @@
 open Alpha_context
 
 type info = {
-  balance : Tez.t;
-  frozen_balance : Tez.t;
+  balance : Mine.t;
+  frozen_balance : Mine.t;
   frozen_balance_by_cycle : Delegate.frozen_balance Cycle.Map.t;
-  staking_balance : Tez.t;
+  staking_balance : Mine.t;
   delegated_contracts : Contract_repr.t list;
-  delegated_balance : Tez.t;
+  delegated_balance : Mine.t;
   deactivated : bool;
   grace_period : Cycle.t;
 }
@@ -74,12 +74,12 @@ let info_encoding =
         grace_period;
       })
     (obj8
-       (req "balance" Tez.encoding)
-       (req "frozen_balance" Tez.encoding)
+       (req "balance" Mine.encoding)
+       (req "frozen_balance" Mine.encoding)
        (req "frozen_balance_by_cycle" Delegate.frozen_balance_by_cycle_encoding)
-       (req "staking_balance" Tez.encoding)
+       (req "staking_balance" Mine.encoding)
        (req "delegated_contracts" (list Contract_repr.encoding))
-       (req "delegated_balance" Tez.encoding)
+       (req "delegated_balance" Mine.encoding)
        (req "deactivated" bool)
        (req "grace_period" Cycle.encoding))
 
@@ -119,7 +119,7 @@ module S = struct
         "Returns the full balance of a given delegate, including the frozen \
          balances."
       ~query:RPC_query.empty
-      ~output:Tez.encoding
+      ~output:Mine.encoding
       RPC_path.(path / "balance")
 
   let frozen_balance =
@@ -128,7 +128,7 @@ module S = struct
         "Returns the total frozen balances of a given delegate, this includes \
          the frozen deposits, rewards and fees."
       ~query:RPC_query.empty
-      ~output:Tez.encoding
+      ~output:Mine.encoding
       RPC_path.(path / "frozen_balance")
 
   let frozen_balance_by_cycle =
@@ -149,7 +149,7 @@ module S = struct
          deposits. The rewards do not count in the delegated balance until \
          they are unfrozen."
       ~query:RPC_query.empty
-      ~output:Tez.encoding
+      ~output:Mine.encoding
       RPC_path.(path / "staking_balance")
 
   let delegated_contracts =
@@ -167,7 +167,7 @@ module S = struct
          delegate. This excludes the delegate's own balance and its frozen \
          balances."
       ~query:RPC_query.empty
-      ~output:Tez.encoding
+      ~output:Mine.encoding
       RPC_path.(path / "delegated_balance")
 
   let deactivated =

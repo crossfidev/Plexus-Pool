@@ -39,7 +39,9 @@ type unrevealed = Storage.Seed.unrevealed_nonce = {
   nonce_hash : Nonce_hash.t;
   delegate : Signature.Public_key_hash.t;
   rewards : Tez_repr.t;
+  mine_rewards : Mine_repr.t;
   fees : Tez_repr.t;
+  mine_fees : Mine_repr.t;
 }
 
 type status = Unrevealed of unrevealed | Revealed of Seed_repr.nonce

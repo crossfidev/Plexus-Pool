@@ -38,13 +38,14 @@ let constants_mainnet =
       hard_gas_limit_per_operation = Z.of_int 1_040_000;
       hard_gas_limit_per_block = Z.of_int 10_400_000;
       proof_of_work_threshold = Int64.(sub (shift_left 1L 46) 1L);
-      tokens_per_roll = Tez_repr.(mul_exn one 8_000);
+      tokens_per_roll = Tez_repr.zero;
+      mine_tokens_per_roll = Mine_repr.(mul_exn one 8_000);
       michelson_maximum_type_size = 1000;
       seed_nonce_revelation_tip =
         (match Tez_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
       origination_size = 257;
-      block_security_deposit = Tez_repr.(mul_exn one 512);
-      endorsement_security_deposit = Tez_repr.(mul_exn one 64);
+      block_security_deposit = Mine_repr.(mul_exn one 512);
+      endorsement_security_deposit = Mine_repr.(mul_exn one 64);
       baking_reward_per_endorsement =
         Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 187_500L];
       endorsement_reward =

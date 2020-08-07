@@ -74,13 +74,13 @@ module Delegate : sig
   val add_amount :
     Raw_context.t ->
     Signature.Public_key_hash.t ->
-    Tez_repr.t ->
+    Mine_repr.t ->
     Raw_context.t tzresult Lwt.t
 
   val remove_amount :
     Raw_context.t ->
     Signature.Public_key_hash.t ->
-    Tez_repr.t ->
+    Mine_repr.t ->
     Raw_context.t tzresult Lwt.t
 
   val set_inactive :
@@ -98,13 +98,13 @@ module Contract : sig
   val add_amount :
     Raw_context.t ->
     Contract_repr.t ->
-    Tez_repr.t ->
+    Mine_repr.t ->
     Raw_context.t tzresult Lwt.t
 
   val remove_amount :
     Raw_context.t ->
     Contract_repr.t ->
-    Tez_repr.t ->
+    Mine_repr.t ->
     Raw_context.t tzresult Lwt.t
 end
 
@@ -119,10 +119,10 @@ val get_rolls :
   Roll_repr.t list tzresult Lwt.t
 
 val get_change :
-  Raw_context.t -> Signature.Public_key_hash.t -> Tez_repr.t tzresult Lwt.t
+  Raw_context.t -> Signature.Public_key_hash.t -> Mine_repr.t tzresult Lwt.t
 
 val update_tokens_per_roll :
-  Raw_context.t -> Tez_repr.t -> Raw_context.t tzresult Lwt.t
+  Raw_context.t -> Mine_repr.t -> Raw_context.t tzresult Lwt.t
 
 (**/**)
 
