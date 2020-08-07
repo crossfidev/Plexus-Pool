@@ -481,8 +481,8 @@ let unfreeze ctxt delegate cycle =
   >>=? fun deposit ->
   get_frozen_fees ctxt contract cycle
   >>=? fun fees ->
-  (* MINEPLEX get_frozen_rewards ctxt contract cycle *)
-  (* MINEPLEX >>=? fun rewards -> *)
+  get_frozen_rewards ctxt contract cycle
+  >>=? fun rewards ->
   Storage.Contract.MineBalance.get ctxt contract
   >>=? fun balance ->
   Lwt.return Mine_repr.(deposit +? fees)
@@ -507,7 +507,7 @@ let unfreeze ctxt delegate cycle =
       cleanup_balance_updates
         [ (Deposits (delegate, cycle), MineDebited deposit);
           (Fees (delegate, cycle), MineDebited fees);
-          (* MINEPLEX (Rewards (delegate, cycle), Debited rewards); *)
+          (Rewards (delegate, cycle), Debited rewards);
           ( Contract (Contract_repr.implicit_contract delegate),
             MineCredited mine_unfrozen_amount ) ] )
 
@@ -657,7 +657,7 @@ let frozen_balance_by_cycle ctxt delegate =
 let frozen_balance ctxt delegate =
   let contract = Contract_repr.implicit_contract delegate in
   let mine_balance = Ok Mine_repr.zero in
-  (* MINEPLEX let balance = Ok Tez_repr.zero in *)
+  let balance = Ok Tez_repr.zero in
   Storage.Contract.Frozen_deposits.fold
     (ctxt, contract)
     ~init:mine_balance
@@ -669,13 +669,13 @@ let frozen_balance ctxt delegate =
     ~init:mine_balance
     ~f:(fun _cycle amount acc ->
       Lwt.return acc >>=? fun acc -> Lwt.return Mine_repr.(acc +? amount))
-  >>= fun mine_balance -> Lwt.return mine_balance
-  (* MINEPLEX Storage.Contract.Frozen_rewards.fold
+  >>= fun mine_balance ->
+  Storage.Contract.Frozen_rewards.fold
     (ctxt, contract)
     ~init:balance
     ~f:(fun _cycle amount acc ->
-      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount)) *)
-  (* MINEPLEX >>= fun balance -> Lwt.return balance *)
+      Lwt.return acc >>=? fun acc -> Lwt.return Tez_repr.(acc +? amount))
+  >>= fun _ -> Lwt.return mine_balance
 
 let full_balance ctxt delegate =
   let contract = Contract_repr.implicit_contract delegate in
