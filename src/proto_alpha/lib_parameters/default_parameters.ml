@@ -28,16 +28,16 @@ open Protocol
 let constants_mainnet =
   Constants_repr.
     {
-      preserved_cycles = 5;
-      blocks_per_cycle = 4096l;
-      blocks_per_commitment = 32l;
-      blocks_per_roll_snapshot = 256l;
-      blocks_per_voting_period = 32768l;
-      time_between_blocks = List.map Period_repr.of_seconds_exn [60L; 40L];
+      preserved_cycles = 2;
+      blocks_per_cycle = 8l;
+      blocks_per_commitment = 4l;
+      blocks_per_roll_snapshot = 4l;
+      blocks_per_voting_period = 64l;
+      time_between_blocks = List.map Period_repr.of_seconds_exn [1L; 0L];
       endorsers_per_block = 1;
       hard_gas_limit_per_operation = Z.of_int 1_040_000;
       hard_gas_limit_per_block = Z.of_int 10_400_000;
-      proof_of_work_threshold = Int64.(sub (shift_left 1L 46) 1L);
+      proof_of_work_threshold = Int64.of_int (-1);
       tokens_per_roll = Tez_repr.zero;
       mine_tokens_per_roll = Mine_repr.(mul_exn one 8_000);
       michelson_maximum_type_size = 1000;
@@ -57,8 +57,8 @@ let constants_mainnet =
       (* quorum is in centile of a percentage *)
       quorum_max = 70_00l;
       min_proposal_quorum = 5_00l;
-      initial_endorsers = 24;
-      delay_per_missing_endorsement = Period_repr.of_seconds_exn 8L;
+      initial_endorsers = 1;
+      delay_per_missing_endorsement = Period_repr.of_seconds_exn 1L;
     }
 
 let constants_sandbox =
