@@ -28,7 +28,7 @@ open Protocol
 let constants_mainnet =
   Constants_repr.
     {
-      preserved_cycles = 2;
+      preserved_cycles = 5;
       blocks_per_cycle = 8l;
       blocks_per_commitment = 4l;
       blocks_per_roll_snapshot = 4l;
