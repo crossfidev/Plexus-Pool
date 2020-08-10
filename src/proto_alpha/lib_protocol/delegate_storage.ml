@@ -352,7 +352,7 @@ let set c contract delegate =
         | None ->
             return_unit )
         >>=? fun () ->
-        Storage.Contract.Balance.mem c contract
+        Storage.Contract.MineBalance.mem c contract
         >>= fun exists ->
         fail_when
           (self_delegation && not exists)
