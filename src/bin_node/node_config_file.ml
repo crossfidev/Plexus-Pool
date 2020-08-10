@@ -90,17 +90,11 @@ let blockchain_network_mainnet =
         Protocol_hash.of_b58check_exn
           "Ps9mPmXaRzmzk35gbAYNCAw6UXdE2qoABTHbN2oEEc1qM7CwT9P";
     }
-    ~chain_name:"TEZOS_MAINNET"
-    ~old_chain_name:"TEZOS_BETANET_2018-06-30T16:07:32Z"
+    ~chain_name:"MINEPLEX_MAINNET"
+    ~old_chain_name:"MINEPLEX_BETANET_2018-06-30T16:07:32Z"
     ~incompatible_chain_name:"INCOMPATIBLE"
-    ~sandboxed_chain_name:"SANDBOXED_TEZOS_MAINNET"
-    ~user_activated_upgrades:
-      [ (28082l, "PsYLVpVvgbLhAhoqAkMFUo6gudkJ9weNXhUYCiLDzcUpFpkk8Wt");
-        (204761l, "PsddFKi32cMJ2qPjf43Qv5GDWLDPZb3T3bF6fLKiF5HtvHNU7aP") ]
-    ~user_activated_protocol_overrides:
-      [ ( "PsBABY5HQTSkA4297zNHfsZNKtxULfL18y95qb3m53QJiXGmrbU",
-          "PsBabyM1eUXZseaJdmXFApDSBqj8YBfwELoxZHHW77EMcAbbwAS" ) ]
-    ~default_bootstrap_peers:["boot.tzbeta.net"]
+    ~sandboxed_chain_name:"SANDBOXED_MINEPLEX_MAINNET"
+    ~default_bootstrap_peers:["192.168.0.104"]
 
 let blockchain_network_carthagenet =
   make_blockchain_network
