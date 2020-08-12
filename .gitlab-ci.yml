@@ -163,16 +163,6 @@ unit:storage:
   script:
     - dune build @src/lib_storage/runtest
 
-unit:src/proto_006_PsCARTHA/lib_client:
-  <<: *test_definition
-  script:
-    - dune build @src/proto_006_PsCARTHA/lib_client/runtest
-
-unit:src/proto_006_PsCARTHA/lib_protocol:
-  <<: *test_definition
-  script:
-    - dune build @src/proto_006_PsCARTHA/lib_protocol/runtest
-
 unit:src/proto_alpha/lib_client:
   <<: *test_definition
   script:
@@ -650,21 +640,6 @@ opam:ledgerwallet-tezos:
   variables:
     package: ledgerwallet-tezos
 
-opam:tezos-006-PsCARTHA-test-helpers:
-  <<: *opam_definition
-  variables:
-    package: tezos-006-PsCARTHA-test-helpers
-
-opam:tezos-accuser-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-accuser-006-PsCARTHA
-
-opam:tezos-accuser-006-PsCARTHA-commands:
-  <<: *opam_definition
-  variables:
-    package: tezos-accuser-006-PsCARTHA-commands
-
 opam:tezos-accuser-alpha:
   <<: *opam_definition
   variables:
@@ -680,25 +655,10 @@ opam:tezos-alpha-test-helpers:
   variables:
     package: tezos-alpha-test-helpers
 
-opam:tezos-baker-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-baker-006-PsCARTHA
-
 opam:tezos-baker-alpha:
   <<: *opam_definition
   variables:
     package: tezos-baker-alpha
-
-opam:tezos-baking-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-baking-006-PsCARTHA
-
-opam:tezos-baking-006-PsCARTHA-commands:
-  <<: *opam_definition
-  variables:
-    package: tezos-baking-006-PsCARTHA-commands
 
 opam:tezos-baking-alpha:
   <<: *opam_definition
@@ -729,16 +689,6 @@ opam:tezos-client-000-Ps9mPmXa:
   <<: *opam_definition
   variables:
     package: tezos-client-000-Ps9mPmXa
-
-opam:tezos-client-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-client-006-PsCARTHA
-
-opam:tezos-client-006-PsCARTHA-commands:
-  <<: *opam_definition
-  variables:
-    package: tezos-client-006-PsCARTHA-commands
 
 opam:tezos-client-alpha:
   <<: *opam_definition
@@ -795,11 +745,6 @@ opam:tezos-embedded-protocol-000-Ps9mPmXa:
   variables:
     package: tezos-embedded-protocol-000-Ps9mPmXa
 
-opam:tezos-embedded-protocol-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-embedded-protocol-006-PsCARTHA
-
 opam:tezos-embedded-protocol-alpha:
   <<: *opam_definition
   variables:
@@ -824,16 +769,6 @@ opam:tezos-embedded-protocol-genesis-carthagenet:
   <<: *opam_definition
   variables:
     package: tezos-embedded-protocol-genesis-carthagenet
-
-opam:tezos-endorser-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-endorser-006-PsCARTHA
-
-opam:tezos-endorser-006-PsCARTHA-commands:
-  <<: *opam_definition
-  variables:
-    package: tezos-endorser-006-PsCARTHA-commands
 
 opam:tezos-endorser-alpha:
   <<: *opam_definition
@@ -864,11 +799,6 @@ opam:tezos-lwt-result-stdlib:
   <<: *opam_definition
   variables:
     package: tezos-lwt-result-stdlib
-
-opam:tezos-mempool-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-mempool-006-PsCARTHA
 
 opam:tezos-mempool-alpha:
   <<: *opam_definition
@@ -914,21 +844,6 @@ opam:tezos-protocol-000-Ps9mPmXa:
   <<: *opam_definition
   variables:
     package: tezos-protocol-000-Ps9mPmXa
-
-opam:tezos-protocol-006-PsCARTHA:
-  <<: *opam_definition
-  variables:
-    package: tezos-protocol-006-PsCARTHA
-
-opam:tezos-protocol-006-PsCARTHA-parameters:
-  <<: *opam_definition
-  variables:
-    package: tezos-protocol-006-PsCARTHA-parameters
-
-opam:tezos-protocol-006-PsCARTHA-tests:
-  <<: *opam_definition
-  variables:
-    package: tezos-protocol-006-PsCARTHA-tests
 
 opam:tezos-protocol-alpha:
   <<: *opam_definition
