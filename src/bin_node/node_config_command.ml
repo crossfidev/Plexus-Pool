@@ -24,7 +24,7 @@
 (*****************************************************************************)
 
 let () =
-  Prevalidator_filters.register (module Tezos_mempool_006_PsCARTHA.Filter)
+  Prevalidator_filters.register (module Tezos_mempool_001_Pt8PXNHh.Filter)
 
 (** Commands *)
 

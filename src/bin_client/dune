@@ -24,8 +24,8 @@
             (select void_for_linking-000-Ps9mPmXa from
               (tezos-client-000-Ps9mPmXa -> void_for_linking)
               (-> void_for_linking))
-            (select void_for_linking-006-PsCARTHA from
-              (tezos-client-006-PsCARTHA-commands.registration -> void_for_linking)
+            (select void_for_linking-001-Pt8PXNHh from
+              (tezos-client-001-Pt8PXNHh-commands.registration -> void_for_linking)
               (-> void_for_linking))
 
             (select void_for_linking-alpha from
@@ -38,8 +38,8 @@
             (select void_for_linking-baking-alpha from
               (tezos-baking-alpha-commands.registration -> void_for_linking)
               (-> void_for_linking))
-            (select void_for_linking-baking-006-PsCARTHA from
-              (tezos-baking-006-PsCARTHA-commands.registration -> void_for_linking)
+            (select void_for_linking-baking-001-Pt8PXNHh from
+              (tezos-baking-001-Pt8PXNHh-commands.registration -> void_for_linking)
               (-> void_for_linking))
 
             tezos-stdlib-unix

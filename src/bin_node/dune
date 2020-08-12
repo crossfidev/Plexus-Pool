@@ -41,11 +41,11 @@
             (select void_for_linking-000-Ps9mPmXa from
               (tezos-embedded-protocol-000-Ps9mPmXa -> void_for_linking)
               (-> void_for_linking))
-            (select void_for_linking-006-PsCARTHA from
-              (tezos-embedded-protocol-006-PsCARTHA -> void_for_linking)
+            (select void_for_linking-001-Pt8PXNHh from
+              (tezos-embedded-protocol-001-Pt8PXNHh -> void_for_linking)
               (-> void_for_linking))
-            (select void_for_linking-006-PsCARTHA-mempool from
-              (tezos-mempool-006-PsCARTHA -> void_for_linking)
+            (select void_for_linking-001-Pt8PXNHh-mempool from
+              (tezos-mempool-001-Pt8PXNHh -> void_for_linking)
               (-> void_for_linking))
             cmdliner
             tls)
