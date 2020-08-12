@@ -494,7 +494,7 @@ let unfreeze ctxt delegate cycle =
   Lwt.return Mine_repr.(mine_balance +? mine_unfrozen_amount)
   >>=? fun mine_balance ->
   Storage.Contract.MineBalance.set ctxt contract mine_balance
-  >>=? fun _ ->
+  >>=? fun ctxt ->
   Lwt.return Tez_repr.(balance +? rewards)
   >>=? fun balance ->
   Storage.Contract.Balance.set ctxt contract balance
@@ -515,7 +515,9 @@ let unfreeze ctxt delegate cycle =
           (Fees (delegate, cycle), MineDebited fees);
           (Rewards (delegate, cycle), Debited rewards);
           ( Contract (Contract_repr.implicit_contract delegate),
-            MineCredited mine_unfrozen_amount ) ] )
+            MineCredited mine_unfrozen_amount );
+          ( Contract (Contract_repr.implicit_contract delegate),
+            Credited rewards ) ] )
 
 let cycle_end ctxt last_cycle unrevealed =
   let preserved = Constants_storage.preserved_cycles ctxt in
@@ -533,7 +535,7 @@ let cycle_end ctxt last_cycle unrevealed =
           >>=? fun ctxt ->
           let bus =
             [ (Fees (u.delegate, revealed_cycle), MineDebited u.mine_fees);
-              (Rewards (u.delegate, revealed_cycle), MineDebited u.mine_rewards) ]
+              (Rewards (u.delegate, revealed_cycle), Debited u.rewards) ]
           in
           return (ctxt, bus @ balance_updates))
         (return (ctxt, []))
