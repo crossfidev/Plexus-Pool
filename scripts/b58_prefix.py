@@ -25,7 +25,6 @@ if __name__ == '__main__':
     prefix = sys.argv[1]
     length = int(sys.argv[2])
     target = b58dec(prefix)
-    print(target)
     shift = 8*(length+4)
 
     for m in range(1,1000):

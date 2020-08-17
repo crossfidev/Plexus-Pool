@@ -16,16 +16,16 @@ import string
 
 def get_keys(mnemonic, email, password):
     salt = unicodedata.normalize(
-    "NFKD", (email + password).decode("utf8")).encode("utf8")
-    seed = bitcoin.mnemonic_to_seed(mnemonic, salt)
+    "NFKD", str(email + password)).encode("utf-8")
+    seed = bitcoin.mnemonic_to_seed(mnemonic.encode("utf-8"), salt)
     pk, sk = pysodium.crypto_sign_seed_keypair(seed[0:32])
     pkh = blake2b(pk,20).digest()
-    pkhb58 = bitcoin.bin_to_b58check(pkh, magicbyte=434591)
+    pkhb58 = bitcoin.bin_to_b58check(pkh, magicbyte=374627)
     return (sk, pk, pkh, pkhb58)
 
 def random_email():
     rnd = lambda n: ''.join(random.choice(string.ascii_lowercase) for _ in range(n))
-    return '%s.%s@tezos.example.org' % (rnd(8),rnd(8))
+    return '%s.%s@mineplex.example.org' % (rnd(8),rnd(8))
 
 def tez_to_int(amount):
     return int(round(amount * 1e6, 0))
@@ -52,11 +52,11 @@ def get_wallets(path):
     return wallets
 
 def secret_code(pkh, blind):
-    return blake2b(pkh, 20, key=blind).digest()
+    return blake2b(pkh, 20, key=str.encode(blind)).digest()
 
 def genesis_commitments(wallets, blind):
     commitments = []
-    for pkh_b58, amount in wallets.iteritems():
+    for pkh_b58, amount in iter(wallets.items()):
         # Public key hash corresponding to this Tezos address.
         pkh = bitcoin.b58check_to_bin(pkh_b58)[2:]
         # The redemption code is unique to the public key hash and deterministically
@@ -65,7 +65,7 @@ def genesis_commitments(wallets, blind):
         # The redemption code is used to blind the pkh
         blinded_pkh = blake2b(pkh, 20, key=secret).digest()
         commitment = {
-            'blinded_pkh': bitcoin.bin_to_b58check(blinded_pkh, magicbyte=16921055),
+            'blinded_pkh': bitcoin.bin_to_b58check(blinded_pkh, magicbyte=16861091),
             'amount': amount
         }
         commitments.append(commitment)
@@ -80,24 +80,24 @@ def make_dummy_wallets(n, blind):
     wallets = {}
     secrets = {}
     for i in range(0, n):
-        entropy = blake2b(str(i), 20, key=blind).digest()
+        entropy = blake2b(str.encode(str(i)), 20, key=str.encode(blind)).digest()
         mnemonic = bitcoin.mnemonic.entropy_to_words(entropy)
-        password = ''.join(random.choice(string.letters + string.digits) for _ in range(10))
+        password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
         email    = random_email()
         sk, pk, pkh, pkh_b58 = get_keys(' '.join(mnemonic), email, password)
         amount = tez_to_int(amounts[i])
         wallets[pkh_b58] = amount
         secret = secret_code(pkh, blind)
-        secrets[pkh_b58] = (mnemonic, email, password, amount, binascii.hexlify(secret))
+        secrets[pkh_b58] = (mnemonic, email, password, amount, binascii.hexlify(secret).decode("utf-8"))
     return wallets, secrets
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print "Usage: python create_genesis_info.py /path/to/json blind [dummy]"
+        print ("Usage: python create_genesis_info.py /path/to/json blind [dummy]")
         exit(1)
     blind = sys.argv[2]
     if len(sys.argv) == 4 and sys.argv[3] == "dummy":
-        wallets, secrets = make_dummy_wallets(30000, blind)
+        wallets, secrets = make_dummy_wallets(5, blind)
         with open('secret_seeds.json', 'w') as f:
             json.dump([ { "pkh" : pkh,
                           "mnemonic" : mnemonic,
@@ -105,9 +105,16 @@ if __name__ == '__main__':
                           "password" : password,
                           "amount" : str(amount),
                           "activation_code" : secret }
-                        for pkh, (mnemonic, email, password, amount, secret) in secrets.iteritems()], f, indent=1)
+                        for pkh, (mnemonic, email, password, amount, secret) in iter(secrets.items())], f, indent=1)
     else:
-        wallets = get_wallets( sys.argv[1] )
+        # wallets = get_wallets( sys.argv[1] )
+        wallets = {
+          "mp1P2PHa5fd7jXWSc9v4TzCgUrq2EMMTp59Y": tez_to_int(80000),
+          "mp1LFzGuktsHMG3u2JAqF2yuPxMmSG5s2Ucn": tez_to_int(80000),
+          "mp15hLaHj4CMLRwRsXcZMoFoDcAB3EzoCphi": tez_to_int(80000),
+          "mp1SV58iGEZAHL7SJwZpVq224VdczDFrqon9": tez_to_int(80000),
+          "mp1EUueLqZ1iQaMDP4RsWcPGGwtXcpXTkb98": tez_to_int(80000),
+        }
 
     commitments = genesis_commitments(wallets, blind)
 

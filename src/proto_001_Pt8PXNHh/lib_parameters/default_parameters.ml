@@ -91,14 +91,14 @@ let constants_test =
     }
 
 let bootstrap_accounts_strings =
-  [ "edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav";
-    "edpktzNbDAUjUk697W7gYg2CRuBQjyPxbEg8dLccYYwKSKvkPvjtV9";
-    "edpkuTXkJDGcFd5nh6VvMz8phXxU3Bi7h6hqgywNFi1vZTfQNnS1RV";
-    "edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU";
-    "edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n" ]
+  [ "edpktyrhPtpHe9L99NrTCMCAqPLJeLB5d93qDThhtz8noE68kAACQr";
+    "edpkuBaqbY28mt1ycXoW4sai1L4uyRjaa6BmLgjiHAWEFQ3k14yVpb";
+    "edpkuVrEh8PgvPhNpraufKJF45NQ76pGbhWBHfsRFQ1gL7tXQF9B5Y";
+    "edpku5or2xS8BQ2deKoA2htmDZ4tyQptQ4USpAkqX4raLRBGHY62Yu";
+    "edpku6G3HftKoxMjMSwR9NyV3TatjbDsq4QqV1ycVu53Lmjhs8iSbP" ]
 
-let mine_bootstrap_balance = Mine_repr.of_mutez_exn 4_000_000_000_000L
-let bootstrap_balance = Tez_repr.of_mutez_exn 1_000_000_000_000L
+let mine_bootstrap_balance = Mine_repr.of_mutez_exn 8_000_000_000_000L
+let bootstrap_balance = Tez_repr.of_mutez_exn 1L
 
 let bootstrap_accounts =
   List.map
@@ -121,16 +121,11 @@ let commitments =
     Data_encoding.Json.from_string
       {json|
   [
-    [ "bmp1bRL4X5BWo2Fj4EsBdUwexXqgTf75uf1qa", "23932454669343" ],
-    [ "bmp1SxjV1syBgftgKy721czKi3arVkVwYUFSv", "72954577464032" ],
-    [ "bmp1LtoNCjiW23txBTenALaf5H6NKF1L3c1gw", "217487035428348" ],
-    [ "bmp1SUd3mMhEBcWudrn8u361MVAec4WYCcFoy", "4092742372031" ],
-    [ "bmp1MvBXf4orko1tsGmzkjLbpYSgnwUjEe81r", "17590039016550" ],
-    [ "bmp1LoDZ3zsjgG3k3cqTpUMc9bsXbchu9qMXT", "26322312350555" ],
-    [ "bmp1RMfq456hFV5AeDiZcQuZhoMv2dMpb9hpP", "244951387881443" ],
-    [ "bmp1Y9roTh4A7PsMBkp8AgdVFrqUDNaBE59y1", "80065050465525" ],
-    [ "bmp1Q1N2ePwhVw5ED3aaRVek6EBzYs1GDkSVD", "3569618927693" ],
-    [ "bmp1VFFVsVMYHd5WfaDTAt92BeQYGK8Ri4eLy", "9034781424478" ]
+    [ "bmp1U7vHEGkuNbGYg42nUV9qL18aCrJf983Ji", "80000000000" ],
+    [ "bmp1Cx9gmg4ASQTkwdrjG1vQkiyCDMa3CDJ4C", "80000000000" ],
+    [ "bmp1DJBB2ZryDW1ZKK8V8uhaziGVWSWr4T39E", "80000000000" ],
+    [ "bmp16ktx4babeeYuq79DZgNphCRcVDFp6xBL1", "80000000000" ],
+    [ "bmp1FB2BMGcbq3r9ZtxdMxjG9GgxfCHBCzwBw", "80000000000" ]
   ]|json}
   in
   match json_result with
