@@ -318,13 +318,13 @@ obtain the same value retrieved before::
 In our migration example above, we can inspect the json output of a
 specific contract::
 
-  $ curl -s localhost:8732/chains/main/blocks/head/context/raw/json/contracts/index/tz3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5 | jq .
+  $ curl -s localhost:8732/chains/main/blocks/head/context/raw/json/contracts/index/mp3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5 | jq .
   {
     "balance": "2913645407940",
     "big_map": [],
     "change": "2705745048",
     "counter": "0",
-    "delegate": "tz3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5",
+    "delegate": "mp3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5",
     "delegate_desactivation": 125,
     "delegated": [],
     "frozen_balance": [],
@@ -353,7 +353,7 @@ public keys using ``utop`` and the functions ``of_b58check`` and
   Contract_repr.Index.to_path c [] |>
   String.concat "/"
   ;;
-  # b58check_to_path "tz3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5" ;;
+  # b58check_to_path "mp3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5" ;;
   ff/18/cc/02/32/fc/0002ab07ab920a19a555c8b8d93070d5a21dd1ff33fe
 
   # let path_to_b58check p =
@@ -362,7 +362,7 @@ public keys using ``utop`` and the functions ``of_b58check`` and
   Contract_repr.to_b58check c
   ;;
   # path_to_b58check "ff/18/cc/02/32/fc/0002ab07ab920a19a555c8b8d93070d5a21dd1ff33fe"  ;;
-  "tz3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5"
+  "mp3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5"
 
 On the other hand, we could have inspected the data corresponding to
 the same key above with ``raw/bytes``, as we do below::

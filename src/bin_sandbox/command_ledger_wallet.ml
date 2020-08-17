@@ -723,7 +723,7 @@ let delegation_tests state ~client ~src ~with_rejections ~protocol_kind
           command
         >>= fun res ->
         expect_from_output
-          ~message:"tz123-delegation"
+          ~message:"mp123-delegation"
           res
           ~expectation:
             ( match user_answer with
@@ -834,28 +834,28 @@ let transaction_tests state ~client ~src ~with_rejections ~protocol_kind
   let module Acc = Tezos_protocol.Account in
   let random_account = Acc.of_name "random-account-for-transaction-test" in
   test_transaction
-    ~name:"transaction-to-random-tz1"
+    ~name:"transaction-to-random-mp1"
     ~dst_pkh:(Acc.pubkey_hash random_account)
     ~dst_name:(Acc.pubkey_hash random_account)
     ~storage_limit:277
     (* First time: there is a reveal *) ()
   >>= fun () ->
   test_transaction
-    ~name:"transaction-to-random-tz1-again"
+    ~name:"transaction-to-random-mp1-again"
     ~dst_pkh:(Acc.pubkey_hash random_account)
     ~dst_name:(Acc.pubkey_hash random_account)
     ~storage_limit:0
     (* no moa reveal *) ()
   >>= fun () ->
   test_transaction
-    ~name:"transaction-to-random-tz1-fee-no-storage-limit"
+    ~name:"transaction-to-random-mp1-fee-no-storage-limit"
     ~dst_pkh:(Acc.pubkey_hash random_account)
     ~dst_name:(Acc.pubkey_hash random_account)
     ~fee:2
     ()
   >>= fun () ->
   test_transaction
-    ~name:"transaction-to-random-tz1-fee-storage-limit"
+    ~name:"transaction-to-random-mp1-fee-storage-limit"
     ~dst_pkh:(Acc.pubkey_hash random_account)
     ~dst_name:(Acc.pubkey_hash random_account)
     ~fee:2
@@ -1054,7 +1054,7 @@ let basic_contract_operations_tests state ~client ~src ~with_rejections
     ~amount:"1"
     ~parameter:"address"
     ~delegate
-    ~init_storage:"\"tz1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU\""
+    ~init_storage:"\"mp1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU\""
     ()
   >>= fun () ->
   ( match protocol_kind with
@@ -1341,7 +1341,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
                        [ ("kind", `String "transaction");
                          ("source", `String src);
                          ( "destination",
-                           `String "tz2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F" );
+                           `String "mp2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F" );
                          ("amount", `String (Int.to_string 100));
                          ( "fee",
                            `String
@@ -1368,7 +1368,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       state
       ~client:(client 0)
       ~src:(Tezos_protocol.Account.pubkey_hash ledger_account)
-      ~dest:"tz2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F"
+      ~dest:"mp2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F"
       ~n
       ()
     >>= fun batch_transaction_bytes ->

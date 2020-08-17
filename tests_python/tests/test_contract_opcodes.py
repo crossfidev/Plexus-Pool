@@ -438,10 +438,10 @@ class TestContractOpcodes:
             # Convert a public key to a public key hash
             ('hash_key.tz', 'None',
              '"edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav"',
-             '(Some "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx")'),
+             '(Some "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx")'),
             ('hash_key.tz', 'None',
              '"edpkuJqtDcA2m2muMxViSM47MPsGQzmyjnNTawUPqR8vZTAMcx61ES"',
-             '(Some "tz1XPTDmvT3vVE5Uunngmixm7gj7zmdbPq6k")'),
+             '(Some "mp1XPTDmvT3vVE5Uunngmixm7gj7zmdbPq6k")'),
 
             # Test timestamp operations
             ('add_timestamp_delta.tz', 'None',
@@ -476,15 +476,15 @@ class TestContractOpcodes:
             # Test pack/unpack
             ('packunpack_rev.tz', 'Unit',
              '(Pair -1  (Pair 1 (Pair "foobar" (Pair 0x00AABBCC (Pair 1000 ' +
-             '(Pair False (Pair "tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5" ' +
+             '(Pair False (Pair "mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5" ' +
              '(Pair "2019-09-09T08:35:33Z" ' +
-             '"tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"))))))))', 'Unit'),
+             '"mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"))))))))', 'Unit'),
 
             ('packunpack_rev.tz', 'Unit',
              '(Pair -1  (Pair 1 (Pair "foobar" (Pair 0x00AABBCC (Pair 1000 ' +
-             '(Pair False (Pair "tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5" ' +
+             '(Pair False (Pair "mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5" ' +
              '(Pair "2019-09-09T08:35:33Z" ' +
-             '"tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"))))))))', 'Unit'),
+             '"mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"))))))))', 'Unit'),
 
             ('packunpack_rev_cty.tz', 'Unit',
              '(Pair "edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9' +
@@ -493,7 +493,7 @@ class TestContractOpcodes:
              'V2w8ayB5dMJzrYCHhD8C7" (Pair (Some "edsigthTzJ8X7MPmN' +
              'eEwybRAvdxS1pupqcM5Mk4uCuyZAe7uEk68YpuGDeViW8wSXMrCi5' +
              'CwoNgqs8V2w8ayB5dMJzrYCHhD8C7") (Pair { Unit }  (Pair' +
-             ' { True }  (Pair (Pair 19 10) (Pair (Left "tz1cxcwwnz' +
+             ' { True }  (Pair (Pair 19 10) (Pair (Left "mp1cxcwwnz' +
              'ENRdhe2Kb8ZdTrdNy4bFNyScx5") (Pair { Elt 0 "foo" ; El' +
              't 1 "bar" }  { PACK } )))))))))',
              'Unit'),
@@ -558,11 +558,11 @@ class TestContractOpcodes:
              ' }'),
 
             # Test ADDRESS
-            ('address.tz', 'None', '"tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"',
-             '(Some "tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5")'),
+            ('address.tz', 'None', '"mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"',
+             '(Some "mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5")'),
 
             # Test (CONTRACT unit)
-            ('contract.tz', 'Unit', '"tz1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"',
+            ('contract.tz', 'Unit', '"mp1cxcwwnzENRdhe2Kb8ZdTrdNy4bFNyScx5"',
              'Unit'),
 
             # Test create_contract

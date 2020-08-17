@@ -324,10 +324,10 @@ protocols Athens and Babylon, and then use a diffing tool.
 The ``source`` field of manager operations is now a public key hash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In Babylon, only tz1, tz2 and tz3 accounts can be the source of
+In Babylon, only mp1, mp2 and mp3 accounts can be the source of
 manager operations (transaction, origination, delegation,
 reveal). These operations currently contain a source contract, that is
-a byte ``0`` followed by a public key hash for a tz1, tz2 or tz3, or a
+a byte ``0`` followed by a public key hash for a mp1, mp2 or mp3, or a
 byte ``1`` followed by a contract hash for a KT1. This first byte
 disappears since the KT1 case is now impossible.
 
@@ -335,14 +335,14 @@ Transactions now have an entrypoint
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In Athens, the transaction operation ends in either a byte ``0``,
-equivalent to sending ``Unit``, and sufficient for transaction to tz1,
-tz2 or tz3 accounts, or a byte ``1``, followed by the smart contract
+equivalent to sending ``Unit``, and sufficient for transaction to mp1,
+mp2 or mp3 accounts, or a byte ``1``, followed by the smart contract
 parameter (four bytes of size followed by the serialized Michelson
 data).
 
 In Babylon, the transaction operation ends in either a byte ``0``,
 equivalent to sending ``Unit`` to entrypoint ``%default``, and
-sufficient for transaction to tz1, tz2 or tz3 accounts, or a byte
+sufficient for transaction to mp1, mp2 or mp3 accounts, or a byte
 ``1``, followed by the entrypoint, and then the smart contract
 parameter (four bytes of size followed by the serialized Michelson
 data).
@@ -557,7 +557,7 @@ typechecking depends on the contract's code.
 
 The gas cost for each kind of transfer operation is as follow:
 
-- implicit account (tz1|tz2|tz3...) → implicit account :  10207 gas
+- implicit account (mp1|mp2|mp3...) → implicit account :  10207 gas
 - implicit account → originated manager.tz : 15285 gas
 - originated manager.tz → implicit account : 26183 gas
 - originated manager.tz → originated manager.tz : 44625 gas
@@ -1108,8 +1108,8 @@ Accounts rehaul
     `CREATE_ACCOUNT` and adding entrypoints for `CREATE_CONTRACT`).
 
     This change will impact all users of the RPC API as well as anyone who
-    forges operations. The source of manager operations is now a tz1, tz2
-    or tz3, and no longer a KT1. The manager field and the spendable and
+    forges operations. The source of manager operations is now a mp1, mp2
+    or mp3, and no longer a KT1. The manager field and the spendable and
     delegatable flags disappear from the origination operation format
     (JSON and binary) as well as everywhere in the RPC API.
 
@@ -1144,7 +1144,7 @@ Accounts rehaul
 
     Contains BREAKING CHANGES (see end of message).
 
-    Implicit accounts (tz1, tz2, tz3) can directly set their
+    Implicit accounts (mp1, mp2, mp3) can directly set their
     delegate. Furthermore implicit accounts have the ability to delete
     their delegate by sending a "delegate" transaction with an empty
     delegate field.  This specific patch does not impact the ability for
@@ -1155,10 +1155,10 @@ Accounts rehaul
     signature allows that both implicit and originated accounts can be
     stored in the set.
 
-    Explorers and wallets should handle the delegation from tz1, tz2 and
-    tz3 accounts. RPC `/context/delegates/<pkh>/delegated_contracts` (and
-    composite RPC `/context/delegates/<pkh>/`) can now contain tz1, tz2
-    and tz3 addresses.
+    Explorers and wallets should handle the delegation from mp1, mp2 and
+    mp3 accounts. RPC `/context/delegates/<pkh>/delegated_contracts` (and
+    composite RPC `/context/delegates/<pkh>/`) can now contain mp1, mp2
+    and mp3 addresses.
 
 
 Migration

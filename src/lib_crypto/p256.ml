@@ -41,7 +41,7 @@ module Public_key_hash = struct
   end
 end
 
-let () = Base58.check_encoded_prefix Public_key_hash.b58check_encoding "tz3" 36
+let () = Base58.check_encoded_prefix Public_key_hash.b58check_encoding "mp3" 36
 
 open Uecc
 

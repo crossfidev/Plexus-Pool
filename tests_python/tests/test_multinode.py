@@ -64,5 +64,5 @@ class TestManualBaking:
                 client, operation_hashes)
 
     def test_balance(self, clients: List[Client]):
-        bal = clients[0].get_balance('tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx')
+        bal = clients[0].get_balance('mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx')
         assert bal == 3998987.998717

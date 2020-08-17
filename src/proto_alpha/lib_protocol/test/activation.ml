@@ -49,16 +49,16 @@ open Test_tez
  *         blinded_public_key_hash=Blinded_public_key_hash.of_b58check_exn bpkh ;
  *         amount = Tez_repr.of_mutez_exn (Int64.of_string a)}
  *     )
- *     [ ( "btz1bRL4X5BWo2Fj4EsBdUwexXqgTf75uf1qa", "23932454669343" ) ;
- *       ( "btz1SxjV1syBgftgKy721czKi3arVkVwYUFSv", "72954577464032" ) ;
- *       ( "btz1LtoNCjiW23txBTenALaf5H6NKF1L3c1gw", "217487035428349" ) ;
- *       ( "btz1SUd3mMhEBcWudrn8u361MVAec4WYCcFoy", "4092742372031" ) ;
- *       ( "btz1MvBXf4orko1tsGmzkjLbpYSgnwUjEe81r", "17590039016550" ) ;
- *       ( "btz1LoDZ3zsjgG3k3cqTpUMc9bsXbchu9qMXT", "26322312350555" ) ;
- *       ( "btz1RMfq456hFV5AeDiZcQuZhoMv2dMpb9hpP", "244951387881443" ) ;
- *       ( "btz1Y9roTh4A7PsMBkp8AgdVFrqUDNaBE59y1", "80065050465525" ) ;
- *       ( "btz1Q1N2ePwhVw5ED3aaRVek6EBzYs1GDkSVD", "3569618927693" ) ;
- *       ( "btz1VFFVsVMYHd5WfaDTAt92BeQYGK8Ri4eLy", "9034781424478" ) ;
+ *     [ ( "bmp1bRL4X5BWo2Fj4EsBdUwexXqgTf75uf1qa", "23932454669343" ) ;
+ *       ( "bmp1SxjV1syBgftgKy721czKi3arVkVwYUFSv", "72954577464032" ) ;
+ *       ( "bmp1LtoNCjiW23txBTenALaf5H6NKF1L3c1gw", "217487035428349" ) ;
+ *       ( "bmp1SUd3mMhEBcWudrn8u361MVAec4WYCcFoy", "4092742372031" ) ;
+ *       ( "bmp1MvBXf4orko1tsGmzkjLbpYSgnwUjEe81r", "17590039016550" ) ;
+ *       ( "bmp1LoDZ3zsjgG3k3cqTpUMc9bsXbchu9qMXT", "26322312350555" ) ;
+ *       ( "bmp1RMfq456hFV5AeDiZcQuZhoMv2dMpb9hpP", "244951387881443" ) ;
+ *       ( "bmp1Y9roTh4A7PsMBkp8AgdVFrqUDNaBE59y1", "80065050465525" ) ;
+ *       ( "bmp1Q1N2ePwhVw5ED3aaRVek6EBzYs1GDkSVD", "3569618927693" ) ;
+ *       ( "bmp1VFFVsVMYHd5WfaDTAt92BeQYGK8Ri4eLy", "9034781424478" ) ;
  *     ] *)
 
 type secret_account = {
@@ -118,7 +118,7 @@ let secrets () =
           "success" ],
         "0f39ed0b656509c2ecec4771712d9cddefe2afac",
         "23932454669343",
-        "tz1MawerETND6bqJqx8GV3YHUrvMBCDasRBF",
+        "mp1MawerETND6bqJqx8GV3YHUrvMBCDasRBF",
         "z0eZHQQGKt",
         "cjgfoqmk.wpxnvnup@tezos.example.org" );
       ( [ "flag";
@@ -138,7 +138,7 @@ let secrets () =
           "practice" ],
         "41f98b15efc63fa893d61d7d6eee4a2ce9427ac4",
         "72954577464032",
-        "tz1X4maqF9tC1Yn4jULjHRAyzjAtc25Z68TX",
+        "mp1X4maqF9tC1Yn4jULjHRAyzjAtc25Z68TX",
         "MHErskWPE6",
         "oklmcktr.ztljnpzc@tezos.example.org" );
       ( [ "library";
@@ -158,7 +158,7 @@ let secrets () =
           "finger" ],
         "411dfef031eeecc506de71c9df9f8e44297cf5ba",
         "217487035428348",
-        "tz1SWBY7rWMutEuWS54Pt33MkzAS6eWkUuTc",
+        "mp1SWBY7rWMutEuWS54Pt33MkzAS6eWkUuTc",
         "0AO6BzQNfN",
         "ctgnkvqm.kvtiybky@tezos.example.org" );
       ( [ "cruel";
@@ -178,7 +178,7 @@ let secrets () =
           "milk" ],
         "08d7d355bc3391d12d140780b39717d9f46fcf87",
         "4092742372031",
-        "tz1amUjiZaevaxQy5wKn4SSRvVoERCip3nZS",
+        "mp1amUjiZaevaxQy5wKn4SSRvVoERCip3nZS",
         "9kbZ7fR6im",
         "bnyxxzqr.tdszcvqb@tezos.example.org" );
       ( [ "opera";
@@ -198,7 +198,7 @@ let secrets () =
           "edge" ],
         "9b7cad042fba557618bdc4b62837c5f125b50e56",
         "17590039016550",
-        "tz1Zaee3QBtD4ErY1SzqUvyYTrENrExu6yQM",
+        "mp1Zaee3QBtD4ErY1SzqUvyYTrENrExu6yQM",
         "suxT5H09yY",
         "iilkhohu.otnyuvna@tezos.example.org" );
       ( [ "token";
@@ -218,7 +218,7 @@ let secrets () =
           "cart" ],
         "124c0ca217f11ffc6c7b76a743d867c8932e5afd",
         "26322312350555",
-        "tz1geDUUhfXK1EMj7VQdRjug1MoFe6gHWnCU",
+        "mp1geDUUhfXK1EMj7VQdRjug1MoFe6gHWnCU",
         "4odVdLykaa",
         "kwhlglvr.slriitzy@tezos.example.org" );
       ( [ "shield";
@@ -238,7 +238,7 @@ let secrets () =
           "vapor" ],
         "ac7a2125beea68caf5266a647f24dce9fea018a7",
         "244951387881443",
-        "tz1h3nY7jcZciJgAwRhWcrEwqfVp7VQoffur",
+        "mp1h3nY7jcZciJgAwRhWcrEwqfVp7VQoffur",
         "A6yeMqBFG8",
         "lvrmlbyj.yczltcxn@tezos.example.org" );
       ( [ "waste";
@@ -258,7 +258,7 @@ let secrets () =
           "liar" ],
         "2b3e94be133a960fa0ef87f6c0922c19f9d87ca2",
         "80065050465525",
-        "tz1VzL4Xrb3fL3ckvqCWy6bdGMzU2w9eoRqs",
+        "mp1VzL4Xrb3fL3ckvqCWy6bdGMzU2w9eoRqs",
         "oVZqpq60sk",
         "rfodmrha.zzdndvyk@tezos.example.org" );
       ( [ "fiber";
@@ -278,7 +278,7 @@ let secrets () =
           "age" ],
         "dac31640199f2babc157aadc0021cd71128ca9ea",
         "3569618927693",
-        "tz1RUHg536oRKhPLFfttcB5gSWAhh4E9TWjX",
+        "mp1RUHg536oRKhPLFfttcB5gSWAhh4E9TWjX",
         "FfytQTTVbu",
         "owecikdy.gxnyttya@tezos.example.org" );
       ( [ "print";
@@ -298,7 +298,7 @@ let secrets () =
           "exclude" ],
         "bb841227f250a066eb8429e56937ad504d7b34dd",
         "9034781424478",
-        "tz1M1LFbgctcPWxstrao9aLr2ECW1fV4pH5u",
+        "mp1M1LFbgctcPWxstrao9aLr2ECW1fV4pH5u",
         "zknAl3lrX2",
         "ettilrvh.zsrqrbud@tezos.example.org" ) ]
 
@@ -486,7 +486,7 @@ let invalid_activation_inexistent_pkh () =
   let ({activation_code; _} as _first_one) = List.hd secrets in
   let inexistent_pkh =
     Signature.Public_key_hash.of_b58check_exn
-      "tz1PeQHGKPWSpNoozvxgqLN9TFsj6rDqNV3o"
+      "mp1PeQHGKPWSpNoozvxgqLN9TFsj6rDqNV3o"
   in
   Op.activation (B blk) inexistent_pkh activation_code
   >>=? fun operation ->

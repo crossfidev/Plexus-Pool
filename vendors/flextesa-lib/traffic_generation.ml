@@ -123,7 +123,7 @@ end
 module Forge = struct
   let batch_transfer
       ?(protocol_kind : Tezos_protocol.Protocol_kind.t = `Babylon)
-      ?(counter = 0) ?(dst = [("tz2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F", 1)])
+      ?(counter = 0) ?(dst = [("mp2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F", 1)])
       ~src ~fee ~branch n : Ezjsonm.value =
     let open Ezjsonm in
     ignore protocol_kind ;

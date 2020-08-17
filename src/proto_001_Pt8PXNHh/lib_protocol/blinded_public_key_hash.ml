@@ -31,14 +31,14 @@ module H =
 
       let title = "A blinded public key hash"
 
-      let b58check_prefix = "\001\002\049\223"
+      let b58check_prefix = "\001\001\071\163"
 
       let size = Some Ed25519.Public_key_hash.size
     end)
 
 include H
 
-let () = Base58.check_encoded_prefix b58check_encoding "btz1" 37
+let () = Base58.check_encoded_prefix b58check_encoding "bmp1" 37
 
 let of_ed25519_pkh activation_code pkh =
   hash_bytes ~key:activation_code [Ed25519.Public_key_hash.to_bytes pkh]

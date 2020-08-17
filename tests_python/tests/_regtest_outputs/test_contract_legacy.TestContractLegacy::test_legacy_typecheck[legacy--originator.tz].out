@@ -10,7 +10,7 @@ Ill typed contract:
   07:       { PUSH mutez 5000000 ;
   08:         PUSH bool True ; # delegatable
   09:         NONE key_hash ; # delegate
-  10:         PUSH key_hash "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" ; # manager
+  10:         PUSH key_hash "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" ; # manager
   11:         CREATE_ACCOUNT ;
   12:         SWAP ; DIP { SWAP ; DIP { CONS } } ;
   13:         SWAP ; DIP { SWAP ; DIP { CONS } } ;

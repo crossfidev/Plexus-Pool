@@ -13,7 +13,7 @@ While creating accounts currently requires a .257 tez burn, there is
 currently no cost to create implicit accounts, despite them occupying
 space in the context.
 This patch adjusts the cost to .257 tez for both regular (KT1) and
-implicit (tz1) accounts.
+implicit (mp1) accounts.
 
 Error handling for nonce revelation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

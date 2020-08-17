@@ -78,26 +78,26 @@ let json_to_file json file =
 
 let alias_pkh_pk_list =
   [ ( "foundation1",
-      "tz3RDC3Jdn4j15J7bBHZd29EUee9gVB1CxD9",
+      "mp3RDC3Jdn4j15J7bBHZd29EUee9gVB1CxD9",
       "p2pk67wVncLFS1DQDm2gVR45sYCzQSXTtqn3bviNYXVCq6WRoqtxHXL" );
     ( "foundation2",
-      "tz3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5",
+      "mp3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5",
       "p2pk66n1NmhPDEkcf9sXEKe9kBoTwBoTYxke1hx16aTRVq8MoXuwNqo" );
     ( "foundation3",
-      "tz3RB4aoyjov4KEVRbuhvQ1CKJgBJMWhaeB8",
+      "mp3RB4aoyjov4KEVRbuhvQ1CKJgBJMWhaeB8",
       "p2pk67NECc8vGK4eLbXGEgBZGhk53x1pCMbgnFEgLxZEMGDtzVcFQok" );
     ( "foundation4",
-      "tz3bTdwZinP8U1JmSweNzVKhmwafqWmFWRfk",
+      "mp3bTdwZinP8U1JmSweNzVKhmwafqWmFWRfk",
       "p2pk6796esaR3dNr8jUx8S7xxZdRvpYSrhHMg6NagjwMRJHsERMiUKM" );
     ( "foundation5",
-      "tz3NExpXn9aPNZPorRE4SdjJ2RGrfbJgMAaV",
+      "mp3NExpXn9aPNZPorRE4SdjJ2RGrfbJgMAaV",
       "p2pk66iTZwLmRPshQgUr2HE3RUzSFwAN5MNaBQ5rfduT1dGKXd25pNN" );
     ( "foundation6",
-      "tz3UoffC7FG7zfpmvmjUmUeAaHvzdcUvAj6r",
+      "mp3UoffC7FG7zfpmvmjUmUeAaHvzdcUvAj6r",
       "p2pk65ffAqpYT6Et73DXdNqudthwmSNzNyzL3Wdn2EYuiiMwoPu6vFJ" );
     ( "foundation7",
-      "tz3WMqdzXqRWXwyvj5Hp2H7QEepaUuS7vd9K",
+      "mp3WMqdzXqRWXwyvj5Hp2H7QEepaUuS7vd9K",
       "p2pk67Cwb5Ke6oSmqeUbJxURXMe3coVnH9tqPiB2xD84CYhHbBKs4oM" );
     ( "foundation8",
-      "tz3VEZ4k6a4Wx42iyev6i2aVAptTRLEAivNN",
+      "mp3VEZ4k6a4Wx42iyev6i2aVAptTRLEAivNN",
       "p2pk67uapBxwkM1JNasGJ6J3rozzYELgrtcqxKZwZLjvsr4XcAr4FqC" ) ]

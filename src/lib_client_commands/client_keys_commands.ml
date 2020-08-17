@@ -115,12 +115,12 @@ let gen_keys_containing ?(encrypted = false) ?(prefix = false) ?(force = false)
             >>= fun () ->
             let matches =
               if prefix then
-                let containing_tz1 = List.map (( ^ ) "tz1") containing in
+                let containing_mp1 = List.map (( ^ ) "mp1") containing in
                 fun key ->
                   List.exists
                     (fun containing ->
                       String.sub key 0 (String.length containing) = containing)
-                    containing_tz1
+                    containing_mp1
               else
                 let re = Re.Str.regexp (String.concat "\\|" containing) in
                 fun key ->
@@ -309,7 +309,7 @@ let commands version : Client_context.full Clic.command list =
              (switch
                 ~long:"prefix"
                 ~short:'P'
-                ~doc:"the key must begin with tz1[word]"
+                ~doc:"the key must begin with mp1[word]"
                 ())
              (force_switch ()))
           ( prefixes ["gen"; "vanity"; "keys"]
@@ -336,7 +336,7 @@ let commands version : Client_context.full Clic.command list =
              (switch
                 ~long:"prefix"
                 ~short:'P'
-                ~doc:"the key must begin with tz1[word]"
+                ~doc:"the key must begin with mp1[word]"
                 ())
              (force_switch ())
              (encrypted_switch ()))

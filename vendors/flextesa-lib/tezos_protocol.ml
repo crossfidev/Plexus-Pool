@@ -307,7 +307,7 @@ let cli_term state =
                     ~docv:"NAME,PUBKEY,PUBKEY-HASH,PRIVATE-URI@MUTEZ-AMOUNT"
                     ~doc:
                       "Add a custom bootstrap account, e.g. \
-                       `LedgerBaker,edpku...,tz1YPS...,ledger://crouching-tiger.../ed25519/0'/0'@20_000_000_000`."))))
+                       `LedgerBaker,edpku...,mp1YPS...,ledger://crouching-tiger.../ed25519/0'/0'@20_000_000_000`."))))
   $ Arg.(
       pure (fun x -> `Blocks_per_voting_period x)
       $ value

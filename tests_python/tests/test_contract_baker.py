@@ -41,7 +41,7 @@ class TestOriginationCall:
 
     def test_call(self, client: Client, session: dict):
         contract = session['contract']
-        bootstrap3 = '"tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU"'
+        bootstrap3 = '"mp1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU"'
         transfer = client.call('bootstrap2', contract,
                                ['--arg', bootstrap3])
         client.bake('bootstrap5', BAKE_ARGS)

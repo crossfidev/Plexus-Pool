@@ -1,4 +1,4 @@
-tests/test_contract_legacy.py::TestContractLegacy::test_contract_input_output[create_contract_rootname.tz-Unit-Left "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"-Unit]
+tests/test_contract_legacy.py::TestContractLegacy::test_contract_input_output[create_contract_rootname.tz-Unit-Left "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"-Unit]
 
 storage
   Unit
@@ -21,9 +21,9 @@ emitted operations
     
   trace
     - location: 8 (remaining gas: 1038187 units remaining)
-      [ (Pair (Left "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv") Unit)  	 ]
+      [ (Pair (Left "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv") Unit)  	 ]
     - location: 9 (remaining gas: 1038187 units remaining)
-      [ (Left "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv")  	@parameter ]
+      [ (Left "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv")  	@parameter ]
     - location: 14 (remaining gas: 1038186 units remaining)
       [ "dummy"  	 ]
     - location: 17 (remaining gas: 1038185 units remaining)
@@ -51,7 +51,7 @@ emitted operations
         100000000  	
         "dummy"  	 ]
     - location: 12 (remaining gas: 1038184 units remaining)
-      [ "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"  	@parameter.left
+      [ "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"  	@parameter.left
         None  	
         False  	
         False  	

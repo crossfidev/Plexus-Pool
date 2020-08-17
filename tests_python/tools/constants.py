@@ -17,31 +17,31 @@ GENESIS_SK = "edsk31vznjHSSpGExDMHYASz45VZqXN4DPxvsa4hAyY8dHM28cZzp6"
 
 IDENTITIES = {
     'bootstrap1': {
-        'identity': "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx",
+        'identity': "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx",
         'public': "edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav",
         'secret': ("unencrypted:"
                    "edsk3gUfUPyBSfrS9CCgmCiQsTCHGkviBDusMxDJstFtojtc1zcpsh")
     },
     'bootstrap2': {
-        'identity': "tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN",
+        'identity': "mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN",
         'public': "edpktzNbDAUjUk697W7gYg2CRuBQjyPxbEg8dLccYYwKSKvkPvjtV9",
         'secret': ("unencrypted:"
                    "edsk39qAm1fiMjgmPkw1EgQYkMzkJezLNewd7PLNHTkr6w9XA2zdfo")
     },
     'bootstrap3': {
-        'identity': "tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU",
+        'identity': "mp1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU",
         'public': "edpkuTXkJDGcFd5nh6VvMz8phXxU3Bi7h6hqgywNFi1vZTfQNnS1RV",
         'secret': ("unencrypted:"
                    "edsk4ArLQgBTLWG5FJmnGnT689VKoqhXwmDPBuGx3z4cvwU9MmrPZZ")
     },
     'bootstrap4': {
-        'identity': "tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv",
+        'identity': "mp1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv",
         'public': "edpkuFrRoDSEbJYgxRtLx2ps82UdaYc1WwfS9sE11yhauZt5DgCHbU",
         'secret': ("unencrypted:"
                    "edsk2uqQB9AY4FvioK2YMdfmyMrer5R8mGFyuaLLFfSRo8EoyNdht3")
     },
     'bootstrap5': {
-        'identity': "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv",
+        'identity': "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv",
         'public': "edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n",
         'secret': ("unencrypted:"
                    "edsk4QLrcijEffxV31gGdN2HU7UpyJjA8drFoNcmnB28n89YjPNRFm")

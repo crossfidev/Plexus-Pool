@@ -134,7 +134,7 @@ class TestContractOnchainOpcodes:
         client.set_regtest(None)
 
         init_with_transfer(client, path.join(OPCODES_CONTRACT_PATH, 'self.tz'),
-                           '"tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx"',
+                           '"mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx"',
                            1000, 'bootstrap1')
 
         client.transfer(0, 'bootstrap1', 'self',

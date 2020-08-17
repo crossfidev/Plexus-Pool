@@ -62,11 +62,11 @@ def test_retrieve_addresses(mockup_client: Client):
     """
     addresses = mockup_client.get_known_addresses().wallet
     assert addresses == {
-        'bootstrap1': 'tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-        'bootstrap2': 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-        'bootstrap3': 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-        'bootstrap4': 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-        'bootstrap5': 'tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv',
+        'bootstrap1': 'mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+        'bootstrap2': 'mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
+        'bootstrap3': 'mp1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
+        'bootstrap4': 'mp1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
+        'bootstrap5': 'mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv',
     }
 
 
@@ -568,20 +568,20 @@ def test_transfer_rpc(mockup_client: Client):
     transferred = 1.0
     transferred_mutz = transferred * 1000000
 
-    def get_balance(tz1):
+    def get_balance(mp1):
         res = mockup_client.rpc('get',
                                 f'chains/main/blocks/head/'
-                                f'context/contracts/{tz1}/balance')
+                                f'context/contracts/{mp1}/balance')
         return float(res)
 
     addresses = mockup_client.get_known_addresses()
-    giver_tz1 = addresses.wallet[giver]
-    recvr_tz1 = addresses.wallet[receiver]
-    giver_balance_before = get_balance(giver_tz1)
-    receiver_balance_before = get_balance(recvr_tz1)
+    giver_mp1 = addresses.wallet[giver]
+    recvr_mp1 = addresses.wallet[receiver]
+    giver_balance_before = get_balance(giver_mp1)
+    receiver_balance_before = get_balance(recvr_mp1)
     mockup_client.transfer(transferred, giver, receiver)
-    giver_balance_after = get_balance(giver_tz1)
-    receiver_balance_after = get_balance(recvr_tz1)
+    giver_balance_after = get_balance(giver_mp1)
+    receiver_balance_after = get_balance(recvr_mp1)
 
     assert giver_balance_after < giver_balance_before - transferred_mutz
     assert receiver_balance_after == receiver_balance_before + transferred_mutz

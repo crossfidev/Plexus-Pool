@@ -67,11 +67,11 @@ You can now use standard commands, such as:
 ::
 
     $ mockup-client list known addresses
-    bootstrap5: tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv (unencrypted sk known)
-    bootstrap4: tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv (unencrypted sk known)
-    bootstrap3: tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU (unencrypted sk known)
-    bootstrap2: tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN (unencrypted sk known)
-    bootstrap1: tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx (unencrypted sk known)
+    bootstrap5: mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv (unencrypted sk known)
+    bootstrap4: mp1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv (unencrypted sk known)
+    bootstrap3: mp1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU (unencrypted sk known)
+    bootstrap2: mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN (unencrypted sk known)
+    bootstrap1: mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx (unencrypted sk known)
 
 ::
 
@@ -87,23 +87,23 @@ You can now use standard commands, such as:
     and/or an external block explorer to make sure that it has been included.
     This sequence of operations was run:
       Manager signed operations:
-        From: tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx
+        From: mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx
         Fee to the baker: ꜩ0.001282
         Expected counter: 2
         Gas limit: 10307
         Storage limit: 0 bytes
         Balance updates:
-          tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx ........... -ꜩ0.001282
-          fees(tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU,0) ... +ꜩ0.001282
+          mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx ........... -ꜩ0.001282
+          fees(mp1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU,0) ... +ꜩ0.001282
         Transaction:
           Amount: ꜩ100
-          From: tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx
-          To: tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN
+          From: mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx
+          To: mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN
           This transaction was successfully applied
           Consumed gas: 10207
           Balance updates:
-            tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx ... -ꜩ100
-            tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN ... +ꜩ100
+            mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx ... -ꜩ100
+            mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN ... +ꜩ100
 
 ::
 

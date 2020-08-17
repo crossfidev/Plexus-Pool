@@ -50,7 +50,7 @@ let activator =
 
 let bootstrap1 =
   {
-    identity = "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx";
+    identity = "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx";
     alias = "bootstrap1";
     secret =
       "unencrypted:edsk3gUfUPyBSfrS9CCgmCiQsTCHGkviBDusMxDJstFtojtc1zcpsh";
@@ -58,7 +58,7 @@ let bootstrap1 =
 
 let bootstrap2 =
   {
-    identity = "tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN";
+    identity = "mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN";
     alias = "bootstrap2";
     secret =
       "unencrypted:edsk39qAm1fiMjgmPkw1EgQYkMzkJezLNewd7PLNHTkr6w9XA2zdfo";
@@ -66,7 +66,7 @@ let bootstrap2 =
 
 let bootstrap3 =
   {
-    identity = "tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU";
+    identity = "mp1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU";
     alias = "bootstrap3";
     secret =
       "unencrypted:edsk4ArLQgBTLWG5FJmnGnT689VKoqhXwmDPBuGx3z4cvwU9MmrPZZ";
@@ -74,7 +74,7 @@ let bootstrap3 =
 
 let bootstrap4 =
   {
-    identity = "tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv";
+    identity = "mp1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv";
     alias = "bootstrap4";
     secret =
       "unencrypted:edsk2uqQB9AY4FvioK2YMdfmyMrer5R8mGFyuaLLFfSRo8EoyNdht3";
@@ -82,7 +82,7 @@ let bootstrap4 =
 
 let bootstrap5 =
   {
-    identity = "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv";
+    identity = "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv";
     alias = "bootstrap5";
     secret =
       "unencrypted:edsk4QLrcijEffxV31gGdN2HU7UpyJjA8drFoNcmnB28n89YjPNRFm";

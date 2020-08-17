@@ -22,11 +22,11 @@ class TestContractLegacy:
         [   # FORMAT: assert_output contract_file storage input expected_result
 
             ('create_contract.tz', 'Unit',
-             'Left "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"', 'Unit'),
+             'Left "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"', 'Unit'),
             ('create_contract_rootname.tz', 'Unit',
-             'Left "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"', 'Unit'),
+             'Left "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"', 'Unit'),
             ('create_account.tz', 'None',
-             'Left "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"', 'None'),
+             'Left "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"', 'None'),
             ('steps_to_quota.tz', '0', '100', '1039126'),
         ])
     def test_contract_input_output(self,
@@ -73,7 +73,7 @@ class TestContractLegacy:
         contract = path.join(LEGACY_CONTRACT_PATH,
                              'create_contract_flags.tz')
 
-        arg = ('(Pair "tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"'
+        arg = ('(Pair "mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv"'
                f'(Pair {spendable} {delegatable}))')
         output = client_regtest.run_script(contract, 'Unit', arg)
 

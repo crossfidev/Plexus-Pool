@@ -72,7 +72,7 @@ class Sandbox:
         `-002-PsYLVpVv`.
 
         `identities` map aliases to dict of the form
-        { 'identity': "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx",
+        { 'identity': "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx",
             'public': "edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav",
             'secret': "unencrypted:edsk3gUfUPy...") }
         """

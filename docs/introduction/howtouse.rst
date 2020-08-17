@@ -226,15 +226,15 @@ system, on Zeronet and Carthagenet test networks you can obtain free tez from a
 `faucet <https://faucet.tzalpha.net>`__.
 
 This will provide a wallet in the form of a JSON file
-``tz1__xxxxxxxxx__.json``, that can be activated with the following
+``mp1__xxxxxxxxx__.json``, that can be activated with the following
 command::
 
-    tezos-client activate account alice with "tz1__xxxxxxxxx__.json"
+    tezos-client activate account alice with "mp1__xxxxxxxxx__.json"
 
 If you use the ``alphanet.sh`` script (renamed as ``carthagenet.sh``
 to run Carthagenet test network for instance), you should prefix the file
 with ``container:`` in order to copy it into the docker image:
-``./carthagenet.sh client activate account alice with "container:tz1__xxxxxxxxx__.json"``
+``./carthagenet.sh client activate account alice with "container:mp1__xxxxxxxxx__.json"``
 
 Let's check the balance of the new account with::
 
@@ -287,32 +287,32 @@ produced, here's an excerpt::
   ...
   Simulation result:
     Manager signed operations:
-      From: tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
+      From: mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
       Fee to the baker: ꜩ0.001259
       ...
       Balance updates:
-        tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ............ -ꜩ0.001259
-        fees(tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU,72) ... +ꜩ0.001259
+        mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ............ -ꜩ0.001259
+        fees(mp1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU,72) ... +ꜩ0.001259
       Revelation of manager public key:
-        Contract: tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
+        Contract: mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
         Key: edpkuK4o4ZGyNHKrQqAox7hELeKEceg5isH18CCYUaQ3tF7xZ8HW3X
         ...
     Manager signed operations:
-      From: tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
+      From: mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
       Fee to the baker: ꜩ0.001179
       ...
       Balance updates:
-        tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ............ -ꜩ0.001179
-        fees(tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU,72) ... +ꜩ0.001179
+        mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ............ -ꜩ0.001179
+        fees(mp1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU,72) ... +ꜩ0.001179
       Transaction:
         Amount: ꜩ1
-        From: tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
-        To: tz1Rk5HA9SANn3bjo4qMXTZettPjjKMG14Ph
+        From: mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w
+        To: mp1Rk5HA9SANn3bjo4qMXTZettPjjKMG14Ph
         ...
         Balance updates:
-          tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ... -ꜩ1
-          tz1Rk5HA9SANn3bjo4qMXTZettPjjKMG14Ph ... +ꜩ1
-          tz1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ... -ꜩ0.257
+          mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ... -ꜩ1
+          mp1Rk5HA9SANn3bjo4qMXTZettPjjKMG14Ph ... +ꜩ1
+          mp1RjtZUVeLhADFHDL8UwDZA6vjWWhojpu5w ... -ꜩ0.257
 
 The client does a bit of magic to simplify our life and here we see
 that many details were automatically set for us.
@@ -320,7 +320,7 @@ Surprisingly, our transfer operation resulted in `two` operations,
 first a `revelation` and then a transfer.
 Alice's address, obtained from the faucet, is already present on the
 blockchain, but only in the form of a `public key hash`
-``tz1Rj...5w``.
+``mp1Rj...5w``.
 In order to sign operations Alice needs to first reveal the `public
 key` ``edpkuk...3X`` behind the hash, so that other users can verify
 her signatures.
@@ -338,8 +338,8 @@ client selects a default for us.
 
 The last important bit of our receipt are the balance updates which
 resume which address is being debited or credit of a certain amount.
-We see in this case that baker ``tz1Ke...yU`` is being credited one
-fee for each operation, that Bob's address ``tz1Rk...Ph`` gets 1 tez
+We see in this case that baker ``mp1Ke...yU`` is being credited one
+fee for each operation, that Bob's address ``mp1Rk...Ph`` gets 1 tez
 and that Alice pays the two fees, the transfer and the burn.
 
 Now that we have a clear picture of what we are going to pay we can
@@ -370,7 +370,7 @@ Implicit Accounts and Smart Contracts
 
 In Tezos there are two kinds of accounts: *implicit accounts* and *smart contracts*.
 
--  The implicit accounts are the *tz1*, *tz2*, and *tz3* we have used
+-  The implicit accounts are the *mp1*, *mp2*, and *mp3* we have used
    up to now. They are created with a transfer operation to the
    account public key hash.
 

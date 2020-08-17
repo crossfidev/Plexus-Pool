@@ -534,11 +534,11 @@ class TestMiniScenarios:
         originate(client, session, path, 'Unit', 1000)
 
     def test_default_account_transfer_then_bake(self, client: Client):
-        tz1 = IDENTITIES['bootstrap4']['identity']
+        mp1 = IDENTITIES['bootstrap4']['identity']
         client.transfer(0, "bootstrap1", "default_account",
-                        ['-arg', f'"{tz1}"', '--burn-cap', '10'])
+                        ['-arg', f'"{mp1}"', '--burn-cap', '10'])
         client.bake('bootstrap5', BAKE_ARGS)
-        account = 'tz1SuakBpFdG9b4twyfrSMqZzruxhpMeSrE5'
+        account = 'mp1SuakBpFdG9b4twyfrSMqZzruxhpMeSrE5'
         client.transfer(0, "bootstrap1", "default_account",
                         ['-arg', f'"{account}"', '--burn-cap', '10'])
         client.bake('bootstrap5', BAKE_ARGS)

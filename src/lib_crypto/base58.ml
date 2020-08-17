@@ -355,11 +355,11 @@ module Prefix = struct
   let context_hash = "\079\199" (* Co(52) *)
 
   (* 20 *)
-  let ed25519_public_key_hash = "\006\161\159" (* tz1(36) *)
+  let ed25519_public_key_hash = "\005\183\099" (* mp1(36) *)
 
-  let secp256k1_public_key_hash = "\006\161\161" (* tz2(36) *)
+  let secp256k1_public_key_hash = "\005\183\102" (* mp2(36) *)
 
-  let p256_public_key_hash = "\006\161\164" (* tz3(36) *)
+  let p256_public_key_hash = "\005\183\104" (* mp3(36) *)
 
   (* 16 *)
   let cryptobox_public_key_hash = "\153\103" (* id(30) *)

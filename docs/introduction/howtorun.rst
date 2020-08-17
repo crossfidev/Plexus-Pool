@@ -211,7 +211,7 @@ cycle, up to 5 cycles in the future.
 
 ::
 
-   tezos-client rpc get /chains/main/blocks/head/helpers/baking_rights\?cycle=300\&delegate=tz1_xxxxxxxxxxx\&max_priority=2
+   tezos-client rpc get /chains/main/blocks/head/helpers/baking_rights\?cycle=300\&delegate=mp1_xxxxxxxxxxx\&max_priority=2
 
 Sometimes a delegate skips its turn so it is worth considering also
 baking rights at priority 2 like in the example above.

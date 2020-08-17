@@ -81,12 +81,12 @@ preconfigured accounts which can be listed with:
 
    $ tezos-client list known addresses
 
-     activator: tz1TGu6TN5GSez2ndXXeDX6LgUDvLzPLqgYV (unencrypted sk known)
-     bootstrap5: tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv (unencrypted sk known)
-     bootstrap4: tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv (unencrypted sk known)
-     bootstrap3: tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU (unencrypted sk known)
-     bootstrap2: tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN (unencrypted sk known)
-     bootstrap1: tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx (unencrypted sk known)
+     activator: mp1TGu6TN5GSez2ndXXeDX6LgUDvLzPLqgYV (unencrypted sk known)
+     bootstrap5: mp1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv (unencrypted sk known)
+     bootstrap4: mp1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv (unencrypted sk known)
+     bootstrap3: mp1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU (unencrypted sk known)
+     bootstrap2: mp1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN (unencrypted sk known)
+     bootstrap1: mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx (unencrypted sk known)
 
 We can run the following command to transfer some Tez from one account to
 another:

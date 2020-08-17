@@ -130,7 +130,7 @@ class TestGuestBook:
 
         init_with_transfer(
             client, contract,
-            '{ Elt "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" None }', 100,
+            '{ Elt "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" None }', 100,
             'bootstrap1')
 
         assert_transfer_failwith(client, 0, 'bootstrap2', 'guestbook',
@@ -141,7 +141,7 @@ class TestGuestBook:
         bake(client)
         assert_storage_contains(
             client, 'guestbook',
-            '{ Elt "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" (Some "Coucou") }')
+            '{ Elt "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" (Some "Coucou") }')
 
         assert_transfer_failwith(
             client, 0, 'bootstrap3', 'guestbook',

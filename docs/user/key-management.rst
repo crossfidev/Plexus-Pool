@@ -39,13 +39,13 @@ You can follow the instructions to import the ledger private key and
 you can choose between the root or a derived address.
 We can confirm the addition by listing known addresses::
 
-   ./tezos-client import secret key my_ledger ledger://tz1XXXXXXXXXX
+   ./tezos-client import secret key my_ledger ledger://mp1XXXXXXXXXX
    ./tezos-client list known addresses
 
 Optional: we can check that our ledger signs correctly using the
 following command and confirming on the device::
 
-   tezos-client show ledger path ledger://tz1XXXXXXXXXX
+   tezos-client show ledger path ledger://mp1XXXXXXXXXX
 
 The address can now be used as any other with the exception that
 during an operation the device will prompt you to confirm when it's
@@ -100,10 +100,10 @@ of the signer.
 
    home~$ tezos-signer gen keys alice
    home~$ cat ~/.tezos-signer/public_key_hashs
-   [ { "name": "alice", "value": "tz1abc..." } ]
+   [ { "name": "alice", "value": "mp1abc..." } ]
    home~$ tezos-signer launch socket signer -a home-ip
 
-   vps~$ tezos-client import secret key alice tcp://home-ip:7732/tz1abc...
+   vps~$ tezos-client import secret key alice tcp://home-ip:7732/mp1abc...
 
 Every time the client on *vps* needs to sign an operation for
 *alice*, it sends a signature request to the remote signer on

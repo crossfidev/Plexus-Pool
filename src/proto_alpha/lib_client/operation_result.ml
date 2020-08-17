@@ -139,7 +139,7 @@ let pp_balance_updates ppf = function
   | balance_updates ->
       let open Delegate in
       (* For dry runs, the baker's key is zero
-         (tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU). Instead of printing this
+         (mp1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU). Instead of printing this
          key hash, we want to make the result more informative. *)
       let pp_baker ppf baker =
         if Signature.Public_key_hash.equal baker Signature.Public_key_hash.zero

@@ -39,8 +39,8 @@ tokens (and be the destinations of transactions).
 
   - An implicit account is a non programmable account, whose tokens
     are spendable and delegatable by a public key. Its address is
-    directly the public key hash, and starts with ``tz1``, ``tz2`` or
-    ``tz3``.
+    directly the public key hash, and starts with ``mp1``, ``mp2`` or
+    ``mp3``.
   - A smart contract is a programmable account. A transaction to such
     an address can provide data, and can fail for reasons decided by
     its Michelson code. Its address is a unique hash that depends on

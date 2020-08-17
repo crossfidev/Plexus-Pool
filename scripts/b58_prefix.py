@@ -25,7 +25,7 @@ if __name__ == '__main__':
     prefix = sys.argv[1]
     length = int(sys.argv[2])
     target = b58dec(prefix)
-
+    print(target)
     shift = 8*(length+4)
 
     for m in range(1,1000):
@@ -35,10 +35,10 @@ if __name__ == '__main__':
         hi = hi >> shift
         if hi >= lo:
             # test
-            for bt in '\x00\xff':
-                s = bitcoin.bin_to_b58check(bt * length, magicbyte=lo)
-                assert s.startswith(prefix)
-                assert len(s) == m + len(prefix)
+            # for bt in '\x00\xff':
+            #     s = bitcoin.bin_to_b58check(bt * length, magicbyte=lo)
+            #     assert s.startswith(prefix)
+            #     assert len(s) == m + len(prefix)
 
-            print m + len(prefix), lo, asciidec(lo)
+            print (m + len(prefix), lo, asciidec(lo))
             exit(0)

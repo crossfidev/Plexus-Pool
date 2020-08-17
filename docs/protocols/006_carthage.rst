@@ -309,4 +309,4 @@ Detailed Changelog
 ::
 
    Add an optimisation that make the instruction cheaper in gas for
-   implicit contracts (tz1, tz2, tz3) by saving an I/O.
+   implicit contracts (mp1, mp2, mp3) by saving an I/O.

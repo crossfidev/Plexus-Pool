@@ -41,7 +41,7 @@ module Public_key_hash = struct
   end
 end
 
-let () = Base58.check_encoded_prefix Public_key_hash.b58check_encoding "tz2" 36
+let () = Base58.check_encoded_prefix Public_key_hash.b58check_encoding "mp2" 36
 
 open Libsecp256k1.External
 

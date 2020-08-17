@@ -19,7 +19,7 @@ Ill typed contract:
   16:            code { DROP; UNIT ; NIL operation ; PAIR } } ;
   17:        # simulate create_contract but typecheck for dev
   18:        # DROP 6;
-  19:        # PUSH address "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx";
+  19:        # PUSH address "mp1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx";
   20:        # NONE key_hash; SET_DELEGATE @origination;
   21:        DIP { DROP };
   22: 
