@@ -109,6 +109,17 @@ and _ successful_manager_operation_result =
       allocated_destination_contract : bool;
     }
       -> Kind.transaction successful_manager_operation_result
+  | MineTransaction_result : {
+      storage : Script.expr option;
+      big_map_diff : Contract.big_map_diff option;
+      balance_updates : Delegate.balance_updates;
+      originated_contracts : Contract.t list;
+      consumed_gas : Z.t;
+      storage_size : Z.t;
+      paid_storage_size_diff : Z.t;
+      allocated_destination_contract : bool;
+    }
+      -> Kind.mineTransaction successful_manager_operation_result
   | Origination_result : {
       big_map_diff : Contract.big_map_diff option;
       balance_updates : Delegate.balance_updates;

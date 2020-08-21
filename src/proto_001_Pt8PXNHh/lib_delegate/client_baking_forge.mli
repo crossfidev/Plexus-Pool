@@ -78,7 +78,7 @@ val forge_block :
   ?operations:Operation.packed list ->
   ?best_effort:bool ->
   ?sort:bool ->
-  ?minimal_fees:Tez.t ->
+  ?minimal_fees:Mine.t ->
   ?minimal_nanotez_per_gas_unit:Z.t ->
   ?minimal_nanotez_per_byte:Z.t ->
   ?timestamp:Time.Protocol.t ->
@@ -95,7 +95,7 @@ val forge_block :
 val create :
   #Protocol_client_context.full ->
   user_activated_upgrades:User_activated.upgrades ->
-  ?minimal_fees:Tez.t ->
+  ?minimal_fees:Mine.t ->
   ?minimal_nanotez_per_gas_unit:Z.t ->
   ?minimal_nanotez_per_byte:Z.t ->
   ?max_priority:int ->

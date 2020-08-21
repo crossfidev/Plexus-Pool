@@ -526,7 +526,7 @@ module Constants : sig
     endorsement_security_deposit : Mine.t;
     baking_reward_per_endorsement : Tez.t list;
     endorsement_reward : Tez.t list;
-    cost_per_byte : Tez.t;
+    cost_per_byte : Mine.t;
     hard_storage_limit_per_operation : Z.t;
     test_chain_duration : int64;
     quorum_min : int32;
@@ -562,7 +562,7 @@ module Constants : sig
 
   val hard_gas_limit_per_block : context -> Z.t
 
-  val cost_per_byte : context -> Tez.t
+  val cost_per_byte : context -> Mine.t
 
   val hard_storage_limit_per_operation : context -> Z.t
 
@@ -1057,6 +1057,7 @@ module Kind : sig
   type reveal = Reveal_kind
 
   type transaction = Transaction_kind
+  type mineTransaction = MineTransaction_kind
 
   type origination = Origination_kind
 
@@ -1065,6 +1066,7 @@ module Kind : sig
   type 'a manager =
     | Reveal_manager_kind : reveal manager
     | Transaction_manager_kind : transaction manager
+    | MineTransaction_manager_kind : mineTransaction manager
     | Origination_manager_kind : origination manager
     | Delegation_manager_kind : delegation manager
 end
@@ -1122,7 +1124,7 @@ and _ contents =
       -> Kind.ballot contents
   | Manager_operation : {
       source : Signature.Public_key_hash.t;
-      fee : Tez.tez;
+      fee : Mine.mine;
       counter : counter;
       operation : 'kind manager_operation;
       gas_limit : Z.t;
@@ -1139,6 +1141,13 @@ and _ manager_operation =
       destination : Contract.contract;
     }
       -> Kind.transaction manager_operation
+  | MineTransaction : {
+      amount : Mine.mine;
+      parameters : Script.lazy_expr;
+      entrypoint : string;
+      destination : Contract.contract;
+    }
+      -> Kind.mineTransaction manager_operation
   | Origination : {
       delegate : Signature.Public_key_hash.t option;
       script : Script.t;
@@ -1180,10 +1189,10 @@ type packed_internal_operation =
 val manager_kind : 'kind manager_operation -> 'kind Kind.manager
 
 module Fees : sig
-  val origination_burn : context -> (context * Tez.t) tzresult Lwt.t
+  val origination_burn : context -> (context * Mine.t) tzresult Lwt.t
 
   val record_paid_storage_space :
-    context -> Contract.t -> (context * Z.t * Z.t * Tez.t) tzresult Lwt.t
+    context -> Contract.t -> (context * Z.t * Z.t * Mine.t) tzresult Lwt.t
 
   val start_counting_storage_fees : context -> context
 
@@ -1288,6 +1297,7 @@ module Operation : sig
     val reveal_case : Kind.reveal Kind.manager case
 
     val transaction_case : Kind.transaction Kind.manager case
+    val mine_transaction_case : Kind.mineTransaction Kind.manager case
 
     val origination_case : Kind.origination Kind.manager case
 
@@ -1309,6 +1319,7 @@ module Operation : sig
       val reveal_case : Kind.reveal case
 
       val transaction_case : Kind.transaction case
+      val mine_transaction_case : Kind.mineTransaction case
 
       val origination_case : Kind.origination case
 

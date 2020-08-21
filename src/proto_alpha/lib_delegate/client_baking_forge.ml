@@ -48,7 +48,7 @@ let managers_index = 3
 let default_max_priority = 64
 
 let default_minimal_fees =
-  match Tez.of_mutez 100L with None -> assert false | Some t -> t
+  match Mine.of_mutez 100L with None -> assert false | Some t -> t
 
 let default_minimal_nanotez_per_gas_unit = Z.of_int 100
 
@@ -67,7 +67,7 @@ type state = {
   (* lazy-initialisation with retry-on-error *)
   constants : Constants.t;
   (* Minimal operation fee required to include an operation in a block *)
-  minimal_fees : Tez.t;
+  minimal_fees : Mine.t;
   (* Minimal operation fee per gas required to include an operation in a block *)
   minimal_nanotez_per_gas_unit : Z.t;
   (* Minimal operation fee per byte required to include an operation in a block *)
@@ -258,10 +258,10 @@ let get_manager_operation_gas_and_fee op =
   fold_left_s
     (fun ((total_fee, total_gas) as acc) -> function
       | Contents (Manager_operation {fee; gas_limit; _}) ->
-          (Lwt.return @@ Environment.wrap_error @@ Tez.(total_fee +? fee))
+          (Lwt.return @@ Environment.wrap_error @@ Mine.(total_fee +? fee))
           >>=? fun total_fee -> return (total_fee, Z.add total_gas gas_limit)
       | _ -> return acc)
-    (Tez.zero, Z.zero)
+    (Mine.zero, Z.zero)
     l
 
 (* Sort operation considering potential gas and storage usage.
@@ -273,7 +273,7 @@ let sort_manager_operations ~max_size ~hard_gas_limit_per_block ~minimal_fees
     let size = Data_encoding.Binary.length Operation.encoding op in
     let size_f = Q.of_int size in
     let gas_f = Q.of_bigint gas in
-    let fee_f = Q.of_int64 (Tez.to_mutez fee) in
+    let fee_f = Q.of_int64 (Mine.to_mutez fee) in
     let size_ratio = Q.(size_f / Q.of_int max_size) in
     let gas_ratio = Q.(gas_f / Q.of_bigint hard_gas_limit_per_block) in
     (size, gas, Q.(fee_f / max size_ratio gas_ratio))
@@ -282,12 +282,12 @@ let sort_manager_operations ~max_size ~hard_gas_limit_per_block ~minimal_fees
     (fun op ->
       get_manager_operation_gas_and_fee op
       >>=? fun (fee, gas) ->
-      if Tez.(fee < minimal_fees) then return_none
+      if Mine.(fee < minimal_fees) then return_none
       else
         let ((size, gas, _ratio) as weight) = compute_weight op (fee, gas) in
         let open Environment in
         let fees_in_nanotez =
-          Z.mul (Z.of_int64 (Tez.to_mutez fee)) (Z.of_int 1000)
+          Z.mul (Z.of_int64 (Mine.to_mutez fee)) (Z.of_int 1000)
         in
         let enough_fees_for_gas =
           let minimal_fees_in_nanotez =

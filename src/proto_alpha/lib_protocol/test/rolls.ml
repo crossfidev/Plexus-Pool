@@ -192,10 +192,10 @@ let deactivation_then_empty_then_self_delegation () =
   let sink_contract = Contract.implicit_contract sink_account.pkh in
   Context.get_constants (B b)
   >>=? fun {parametric = {origination_size; cost_per_byte; _}; _} ->
-  Tez.(cost_per_byte *? Int64.of_int origination_size)
+  Mine.(cost_per_byte *? Int64.of_int origination_size)
   >>?= fun origination_burn ->
   let amount =
-    match Tez.(balance -? origination_burn) with
+    match Mine.(balance -? origination_burn) with
     | Ok r ->
         r
     | Error _ ->
@@ -228,10 +228,10 @@ let deactivation_then_empty_then_self_delegation_then_recredit () =
   let sink_contract = Contract.implicit_contract sink_account.pkh in
   Context.get_constants (B b)
   >>=? fun {parametric = {origination_size; cost_per_byte; _}; _} ->
-  Tez.(cost_per_byte *? Int64.of_int origination_size)
+  Mine.(cost_per_byte *? Int64.of_int origination_size)
   >>?= fun origination_burn ->
   let amount =
-    match Tez.(balance -? origination_burn) with
+    match Mine.(balance -? origination_burn) with
     | Ok r ->
         r
     | Error _ ->

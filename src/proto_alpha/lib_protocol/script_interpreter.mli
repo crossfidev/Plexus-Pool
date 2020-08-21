@@ -55,6 +55,7 @@ type step_constants = {
   payer : Contract.t;
   self : Contract.t;
   amount : Tez.t;
+  mine_amount : Mine.t;
   chain_id : Chain_id.t;
 }
 

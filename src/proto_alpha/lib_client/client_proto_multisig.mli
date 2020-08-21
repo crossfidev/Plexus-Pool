@@ -48,7 +48,7 @@ val originate_multisig :
   ?confirmations:int ->
   ?dry_run:bool ->
   ?branch:int ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:Z.t ->
   ?storage_limit:Z.t ->
   ?verbose_signing:bool ->
@@ -87,7 +87,7 @@ val call_multisig :
   action:multisig_action ->
   signatures:Signature.t list ->
   amount:Tez.t ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:Z.t ->
   ?storage_limit:Z.t ->
   ?counter:Z.t ->
@@ -111,7 +111,7 @@ val call_multisig_on_bytes :
   bytes:Bytes.t ->
   signatures:Signature.t list ->
   amount:Tez.t ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:Z.t ->
   ?storage_limit:Z.t ->
   ?counter:Z.t ->

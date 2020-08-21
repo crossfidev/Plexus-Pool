@@ -124,7 +124,7 @@ module Forge : sig
       source:public_key_hash ->
       ?sourcePubKey:public_key ->
       counter:counter ->
-      fee:Tez.t ->
+      fee:Mine.t ->
       gas_limit:Z.t ->
       storage_limit:Z.t ->
       packed_manager_operation list ->
@@ -137,7 +137,7 @@ module Forge : sig
       source:public_key_hash ->
       sourcePubKey:public_key ->
       counter:counter ->
-      fee:Tez.t ->
+      fee:Mine.t ->
       unit ->
       MBytes.t shell_tzresult Lwt.t
 
@@ -154,7 +154,24 @@ module Forge : sig
       ?parameters:Script.expr ->
       gas_limit:Z.t ->
       storage_limit:Z.t ->
-      fee:Tez.t ->
+      fee:Mine.t ->
+      unit ->
+      MBytes.t shell_tzresult Lwt.t
+
+    val mineTransaction :
+      'a #RPC_context.simple ->
+      'a ->
+      branch:Block_hash.t ->
+      source:public_key_hash ->
+      ?sourcePubKey:public_key ->
+      counter:counter ->
+      amount:Mine.t ->
+      destination:Contract.t ->
+      ?entrypoint:string ->
+      ?parameters:Script.expr ->
+      gas_limit:Z.t ->
+      storage_limit:Z.t ->
+      fee:Mine.t ->
       unit ->
       MBytes.t shell_tzresult Lwt.t
 
@@ -170,7 +187,7 @@ module Forge : sig
       script:Script.t ->
       gas_limit:Z.t ->
       storage_limit:Z.t ->
-      fee:Tez.t ->
+      fee:Mine.t ->
       unit ->
       MBytes.t shell_tzresult Lwt.t
 
@@ -181,7 +198,7 @@ module Forge : sig
       source:public_key_hash ->
       ?sourcePubKey:public_key ->
       counter:counter ->
-      fee:Tez.t ->
+      fee:Mine.t ->
       public_key_hash option ->
       MBytes.t shell_tzresult Lwt.t
   end

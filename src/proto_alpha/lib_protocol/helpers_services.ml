@@ -244,7 +244,7 @@ module Scripts = struct
         let ctxt = Gas.set_limit ctxt gas in
         let step_constants =
           let open Script_interpreter in
-          {source; payer; self = dummy_contract; amount; chain_id}
+          {source; payer; self = dummy_contract; amount; mine_amount = Mine.zero; chain_id}
         in
         Script_interpreter.execute
           ctxt
@@ -294,7 +294,7 @@ module Scripts = struct
         let ctxt = Gas.set_limit ctxt gas in
         let step_constants =
           let open Script_interpreter in
-          {source; payer; self = dummy_contract; amount; chain_id}
+          {source; payer; self = dummy_contract; amount; mine_amount = Mine.zero; chain_id}
         in
         Script_interpreter.trace
           ctxt
@@ -433,7 +433,7 @@ module Scripts = struct
           (* signature check unplugged from here *)
           Contract.increment_counter ctxt source
           >>=? fun ctxt ->
-          Contract.spend ctxt (Contract.implicit_contract source) fee
+          Contract.mine_spend ctxt (Contract.implicit_contract source) fee
           >>=? fun ctxt -> return ctxt
         in
         let rec partial_precheck_manager_contents_list :
@@ -690,6 +690,27 @@ module Forge = struct
         ~gas_limit
         ~storage_limit
         [Manager (Transaction {amount; parameters; destination; entrypoint})]
+
+    let mineTransaction ctxt block ~branch ~source ?sourcePubKey ~counter ~amount
+        ~destination ?(entrypoint = "default") ?parameters ~gas_limit
+        ~storage_limit ~fee () =
+      let parameters =
+        Option.unopt_map
+          ~f:Script.lazy_expr
+          ~default:Script.unit_parameter
+          parameters
+      in
+      operations
+        ctxt
+        block
+        ~branch
+        ~source
+        ?sourcePubKey
+        ~counter
+        ~fee
+        ~gas_limit
+        ~storage_limit
+        [Manager (MineTransaction {amount; parameters; destination; entrypoint})]
 
     let origination ctxt block ~branch ~source ?sourcePubKey ~counter ~balance
         ?delegatePubKey ~script ~gas_limit ~storage_limit ~fee () =

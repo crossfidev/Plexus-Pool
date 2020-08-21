@@ -102,7 +102,7 @@ type parametric = {
   endorsement_security_deposit : Mine_repr.t;
   baking_reward_per_endorsement : Tez_repr.t list;
   endorsement_reward : Tez_repr.t list;
-  cost_per_byte : Tez_repr.t;
+  cost_per_byte : Mine_repr.t;
   hard_storage_limit_per_operation : Z.t;
   test_chain_duration : int64;
   (* in seconds *)
@@ -224,7 +224,7 @@ let parametric_encoding =
              (req "baking_reward_per_endorsement" (list Tez_repr.encoding)))
           (obj9
              (req "endorsement_reward" (list Tez_repr.encoding))
-             (req "cost_per_byte" Tez_repr.encoding)
+             (req "cost_per_byte" Mine_repr.encoding)
              (req "hard_storage_limit_per_operation" z)
              (req "test_chain_duration" int64)
              (req "quorum_min" int32)

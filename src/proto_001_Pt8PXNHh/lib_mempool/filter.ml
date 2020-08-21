@@ -37,14 +37,14 @@ let nanotez_enc =
     Data_encoding.z
 
 type config = {
-  minimal_fees : Tez.t;
+  minimal_fees : Mine.t;
   minimal_nanotez_per_gas_unit : nanotez;
   minimal_nanotez_per_byte : nanotez;
   allow_script_failure : bool;
 }
 
 let default_minimal_fees =
-  match Tez.of_mutez 100L with None -> assert false | Some t -> t
+  match Mine.of_mutez 100L with None -> assert false | Some t -> t
 
 let default_minimal_nanotez_per_gas_unit = Z.of_int 100
 
@@ -72,7 +72,7 @@ let config_encoding : config Data_encoding.t =
         allow_script_failure;
       })
     (obj4
-       (dft "minimal_fees" Tez.encoding default_minimal_fees)
+       (dft "minimal_fees" Mine.encoding default_minimal_fees)
        (dft
           "minimal_nanotez_per_gas_unit"
           nanotez_enc
@@ -101,12 +101,12 @@ let get_manager_operation_gas_and_fee contents =
         | Error _ as e ->
             e
         | Ok (total_fee, total_gas) -> (
-          match Tez.(total_fee +? fee) with
+          match Mine.(total_fee +? fee) with
           | Ok total_fee ->
               Ok (total_fee, Z.add total_gas gas_limit)
           | Error _ as e ->
               e ) ) | _ -> acc)
-    (Ok (Tez.zero, Z.zero))
+    (Ok (Mine.zero, Z.zero))
     l
 
 let pre_filter_manager :
@@ -117,10 +117,10 @@ let pre_filter_manager :
       false
   | Ok (fee, gas) ->
       let fees_in_nanotez =
-        Z.mul (Z.of_int64 (Tez.to_mutez fee)) (Z.of_int 1000)
+        Z.mul (Z.of_int64 (Mine.to_mutez fee)) (Z.of_int 1000)
       in
       let minimal_fees_in_nanotez =
-        Z.mul (Z.of_int64 (Tez.to_mutez config.minimal_fees)) (Z.of_int 1000)
+        Z.mul (Z.of_int64 (Mine.to_mutez config.minimal_fees)) (Z.of_int 1000)
       in
       let minimal_fees_for_gas_in_nanotez =
         Z.mul config.minimal_nanotez_per_gas_unit gas

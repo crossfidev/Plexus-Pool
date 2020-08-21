@@ -548,7 +548,7 @@ let apply_manager_operation_content :
               >>=? fun (ctxt, origination_burn) ->
               return
                 ( ctxt,
-                  [(Delegate.Contract payer, Delegate.Debited origination_burn)],
+                  [(Delegate.Contract payer, Delegate.MineDebited origination_burn)],
                   true ) ) )
       >>=? fun (ctxt, maybe_burn_balance_update, allocated_destination_contract)
                ->
@@ -608,7 +608,7 @@ let apply_manager_operation_content :
           >>=? fun ctxt ->
           let step_constants =
             let open Script_interpreter in
-            {source; payer; self = destination; amount; chain_id}
+            {source; payer; self = destination; amount; mine_amount = Mine.zero; chain_id}
           in
           Script_interpreter.execute
             ctxt
@@ -633,7 +633,7 @@ let apply_manager_operation_content :
                 big_map_diff;
                 balance_updates =
                   Delegate.cleanup_balance_updates
-                    [ (Contract payer, Debited fees);
+                    [ (Contract payer, MineDebited fees);
                       (Contract source, Debited amount);
                       (Contract destination, Credited amount) ];
                 originated_contracts;
@@ -644,6 +644,118 @@ let apply_manager_operation_content :
               }
           in
           return (ctxt, result, operations) )
+  | MineTransaction {amount; parameters; destination; entrypoint} -> (
+    Contract.mine_spend ctxt source amount
+    >>=? fun ctxt ->
+    ( match Contract.is_implicit destination with
+    | None ->
+        return (ctxt, [], false)
+    | Some _ -> (
+        Contract.allocated ctxt destination
+        >>=? function
+        | true ->
+            return (ctxt, [], false)
+        | false ->
+            Fees.origination_burn ctxt
+            >>=? fun (ctxt, origination_burn) ->
+            return
+              ( ctxt,
+                [(Delegate.Contract payer, Delegate.MineDebited origination_burn)],
+                true ) ) )
+    >>=? fun (ctxt, maybe_burn_balance_update, allocated_destination_contract)
+              ->
+    Contract.credit ctxt destination Tez.zero amount
+    >>=? fun ctxt ->
+    Contract.get_script ctxt destination
+    >>=? fun (ctxt, script) ->
+    match script with
+    | None ->
+        ( match entrypoint with
+        | "default" ->
+            return ()
+        | entrypoint ->
+            fail (Script_tc_errors.No_such_entrypoint entrypoint) )
+        >>=? (fun () ->
+                Script.force_decode ctxt parameters
+                >>=? fun (arg, ctxt) ->
+                (* see [note] *)
+                (* [note]: for toplevel ops, cost is nil since the
+              lazy value has already been forced at precheck, so
+              we compute and consume the full cost again *)
+                let cost_arg = Script.deserialized_cost arg in
+                Lwt.return (Gas.consume ctxt cost_arg)
+                >>=? fun ctxt ->
+                match Micheline.root arg with
+                | Prim (_, D_Unit, [], _) ->
+                    (* Allow [Unit] parameter to non-scripted contracts. *)
+                    return ctxt
+                | _ ->
+                    fail
+                      (Script_interpreter.Bad_contract_parameter destination))
+        >>=? fun ctxt ->
+        let result =
+          MineTransaction_result
+            {
+              storage = None;
+              big_map_diff = None;
+              balance_updates =
+                Delegate.cleanup_balance_updates
+                  ( [ (Delegate.Contract source, Delegate.MineDebited amount);
+                      (Contract destination, MineCredited amount) ]
+                  @ maybe_burn_balance_update );
+              originated_contracts = [];
+              consumed_gas = Gas.consumed ~since:before_operation ~until:ctxt;
+              storage_size = Z.zero;
+              paid_storage_size_diff = Z.zero;
+              allocated_destination_contract;
+            }
+        in
+        return (ctxt, result, [])
+    | Some script ->
+        Script.force_decode ctxt parameters
+        >>=? fun (parameter, ctxt) ->
+        (* see [note] *)
+        let cost_parameter = Script.deserialized_cost parameter in
+        Lwt.return (Gas.consume ctxt cost_parameter)
+        >>=? fun ctxt ->
+        let step_constants =
+          let open Script_interpreter in
+          {source; payer; self = destination; amount = Tez.zero; mine_amount = amount; chain_id}
+        in
+        Script_interpreter.execute
+          ctxt
+          mode
+          step_constants
+          ~script
+          ~parameter
+          ~entrypoint
+        >>=? fun {ctxt; storage; big_map_diff; operations} ->
+        Contract.update_script_storage ctxt destination storage big_map_diff
+        >>=? fun ctxt ->
+        Fees.record_paid_storage_space ctxt destination
+        >>=? fun (ctxt, new_size, paid_storage_size_diff, fees) ->
+        Contract.originated_from_current_nonce
+          ~since:before_operation
+          ~until:ctxt
+        >>=? fun originated_contracts ->
+        let result =
+          MineTransaction_result
+            {
+              storage = Some storage;
+              big_map_diff;
+              balance_updates =
+                Delegate.cleanup_balance_updates
+                  [ (Contract payer, MineDebited fees);
+                    (Contract source, MineDebited amount);
+                    (Contract destination, MineCredited amount) ];
+              originated_contracts;
+              consumed_gas = Gas.consumed ~since:before_operation ~until:ctxt;
+              storage_size = new_size;
+              paid_storage_size_diff;
+              allocated_destination_contract;
+            }
+        in
+        return (ctxt, result, operations) )
   | Origination {delegate; script; preorigination; credit} ->
       Script.force_decode ctxt script.storage
       >>=? fun (unparsed_storage, ctxt) ->
@@ -709,8 +821,8 @@ let apply_manager_operation_content :
             big_map_diff;
             balance_updates =
               Delegate.cleanup_balance_updates
-                [ (Contract payer, Debited fees);
-                  (Contract payer, Debited origination_burn);
+                [ (Contract payer, MineDebited fees);
+                  (Contract payer, MineDebited origination_burn);
                   (Contract source, Debited credit);
                   (Contract contract, Credited credit) ];
             originated_contracts = [contract];
@@ -826,8 +938,8 @@ let precheck_manager_contents (type kind) ctxt chain_id raw_operation
   >>=? fun () ->
   Contract.increment_counter ctxt source
   >>=? fun ctxt ->
-  Contract.spend ctxt (Contract.implicit_contract source) fee
-  >>=? fun ctxt -> add_fees ctxt fee >>=? fun ctxt -> return ctxt
+  Contract.mine_spend ctxt (Contract.implicit_contract source) fee
+  >>=? fun ctxt -> add_mine_fees ctxt fee >>=? fun ctxt -> return ctxt
 
 let apply_manager_contents (type kind) ctxt mode chain_id
     (op : kind Kind.manager contents) :
@@ -902,8 +1014,8 @@ let rec mark_skipped :
            {
              balance_updates =
                Delegate.cleanup_balance_updates
-                 [ (Contract source, Debited fee);
-                   (Fees (baker, level.cycle), Credited fee) ];
+                 [ (Contract source, MineDebited fee);
+                   (Fees (baker, level.cycle), MineCredited fee) ];
              operation_result = skipped_operation_result operation;
              internal_operation_results = [];
            })
@@ -914,8 +1026,8 @@ let rec mark_skipped :
             {
               balance_updates =
                 Delegate.cleanup_balance_updates
-                  [ (Contract source, Debited fee);
-                    (Fees (baker, level.cycle), Credited fee) ];
+                  [ (Contract source, MineDebited fee);
+                    (Fees (baker, level.cycle), MineCredited fee) ];
               operation_result = skipped_operation_result operation;
               internal_operation_results = [];
             },
@@ -958,8 +1070,8 @@ let rec apply_manager_contents_list_rec :
           {
             balance_updates =
               Delegate.cleanup_balance_updates
-                [ (Contract source, Debited fee);
-                  (Fees (baker, level.cycle), Credited fee) ];
+                [ (Contract source, MineDebited fee);
+                  (Fees (baker, level.cycle), MineCredited fee) ];
             operation_result;
             internal_operation_results;
           }
@@ -975,8 +1087,8 @@ let rec apply_manager_contents_list_rec :
               {
                 balance_updates =
                   Delegate.cleanup_balance_updates
-                    [ (Contract source, Debited fee);
-                      (Fees (baker, level.cycle), Credited fee) ];
+                    [ (Contract source, MineDebited fee);
+                      (Fees (baker, level.cycle), MineCredited fee) ];
                 operation_result;
                 internal_operation_results;
               }
@@ -989,8 +1101,8 @@ let rec apply_manager_contents_list_rec :
               {
                 balance_updates =
                   Delegate.cleanup_balance_updates
-                    [ (Contract source, Debited fee);
-                      (Fees (baker, level.cycle), Credited fee) ];
+                    [ (Contract source, MineDebited fee);
+                      (Fees (baker, level.cycle), MineCredited fee) ];
                 operation_result;
                 internal_operation_results;
               }

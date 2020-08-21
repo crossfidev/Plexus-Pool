@@ -60,6 +60,35 @@ let pp_manager_operation_content (type kind) source internal pp_result ppf
           Michelson_v1_printer.print_expr
           expr ) ;
       pp_result ppf result ; Format.fprintf ppf "@]"
+  | MineTransaction {destination; amount; parameters; entrypoint} ->
+      Format.fprintf
+        ppf
+        "@[<v 2>%s:@,Amount: %s%a@,From: %a@,To: %a"
+        (if internal then "Internal transaction" else "Transaction")
+        Client_proto_args.tez_sym
+        Mine.pp
+        amount
+        Contract.pp
+        source
+        Contract.pp
+        destination ;
+      ( match entrypoint with
+      | "default" ->
+          ()
+      | _ ->
+          Format.fprintf ppf "@,Entrypoint: %s" entrypoint ) ;
+      ( if not (Script_repr.is_unit_parameter parameters) then
+        let expr =
+          Option.unopt_exn
+            (Failure "ill-serialized argument")
+            (Data_encoding.force_decode parameters)
+        in
+        Format.fprintf
+          ppf
+          "@,Parameter: @[<v 0>%a@]"
+          Michelson_v1_printer.print_expr
+          expr ) ;
+      pp_result ppf result ; Format.fprintf ppf "@]"
   | Origination {delegate; credit; script = {code; storage}; preorigination = _}
     ->
       Format.fprintf
@@ -250,6 +279,61 @@ let pp_manager_operation_contents_and_result ppf
           pp_balance_updates
           balance_updates
   in
+  let pp_mine_transaction_result
+      (MineTransaction_result
+        { balance_updates;
+          consumed_gas;
+          storage;
+          originated_contracts;
+          storage_size;
+          paid_storage_size_diff;
+          big_map_diff;
+          allocated_destination_contract = _ }) =
+    ( match originated_contracts with
+    | [] ->
+        ()
+    | contracts ->
+        Format.fprintf
+          ppf
+          "@,@[<v 2>Originated contracts:@,%a@]"
+          (Format.pp_print_list Contract.pp)
+          contracts ) ;
+    ( match storage with
+    | None ->
+        ()
+    | Some expr ->
+        Format.fprintf
+          ppf
+          "@,@[<hv 2>Updated storage:@ %a@]"
+          Michelson_v1_printer.print_expr
+          expr ) ;
+    ( match big_map_diff with
+    | None | Some [] ->
+        ()
+    | Some diff ->
+        Format.fprintf
+          ppf
+          "@,@[<v 2>Updated big_maps:@ %a@]"
+          Michelson_v1_printer.print_big_map_diff
+          diff ) ;
+    if storage_size <> Z.zero then
+      Format.fprintf ppf "@,Storage size: %s bytes" (Z.to_string storage_size) ;
+    if paid_storage_size_diff <> Z.zero then
+      Format.fprintf
+        ppf
+        "@,Paid storage size diff: %s bytes"
+        (Z.to_string paid_storage_size_diff) ;
+    Format.fprintf ppf "@,Consumed gas: %s" (Z.to_string consumed_gas) ;
+    match balance_updates with
+    | [] ->
+        ()
+    | balance_updates ->
+        Format.fprintf
+          ppf
+          "@,Balance updates:@,  %a"
+          pp_balance_updates
+          balance_updates
+  in
   let pp_origination_result
       (Origination_result
         { big_map_diff;
@@ -326,6 +410,15 @@ let pp_manager_operation_contents_and_result ppf
           "@[<v 0>This transaction was BACKTRACKED, its expected effects (as \
            follow) were NOT applied.@]" ;
         pp_transaction_result tx
+    | Applied (MineTransaction_result _ as tx) ->
+        Format.fprintf ppf "This transaction was successfully applied" ;
+        pp_mine_transaction_result tx
+    | Backtracked ((MineTransaction_result _ as tx), _errs) ->
+        Format.fprintf
+          ppf
+          "@[<v 0>This transaction was BACKTRACKED, its expected effects (as \
+           follow) were NOT applied.@]" ;
+        pp_mine_transaction_result tx
     | Applied (Origination_result _ as op) ->
         Format.fprintf ppf "This origination was successfully applied" ;
         pp_origination_result op
@@ -347,7 +440,7 @@ let pp_manager_operation_contents_and_result ppf
     Signature.Public_key_hash.pp
     source
     Client_proto_args.tez_sym
-    Tez.pp
+    Mine.pp
     fee
     (Z.to_string counter)
     (Z.to_string gas_limit)

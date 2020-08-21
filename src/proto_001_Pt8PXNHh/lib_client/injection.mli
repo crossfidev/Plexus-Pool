@@ -31,12 +31,12 @@ type 'kind preapply_result =
   Operation_hash.t * 'kind operation * 'kind operation_metadata
 
 type fee_parameter = {
-  minimal_fees : Tez.t;
+  minimal_fees : Mine.t;
   minimal_nanotez_per_byte : Z.t;
   minimal_nanotez_per_gas_unit : Z.t;
   force_low_fee : bool;
-  fee_cap : Tez.t;
-  burn_cap : Tez.t;
+  fee_cap : Mine.t;
+  burn_cap : Mine.t;
 }
 
 val dummy_fee_parameter : fee_parameter
@@ -82,7 +82,7 @@ val inject_manager_operation :
   source:Signature.Public_key_hash.t ->
   src_pk:Signature.public_key ->
   src_sk:Client_keys.sk_uri ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:Z.t ->
   ?storage_limit:Z.t ->
   ?counter:Z.t ->

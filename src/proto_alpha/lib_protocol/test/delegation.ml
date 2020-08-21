@@ -306,10 +306,10 @@ let delegate_to_bootstrap_by_origination ~fee () =
   Context.get_constants (I i)
   >>=? fun {parametric = {origination_size; cost_per_byte; _}; _} ->
   (* 0.257tz *)
-  Tez.(cost_per_byte *? Int64.of_int origination_size)
+  Mine.(cost_per_byte *? Int64.of_int origination_size)
   >>?= fun origination_burn ->
   Lwt.return
-    (Tez.( +? ) fee origination_burn >>? Tez.( +? ) Op.dummy_script_cost)
+    (Mine.( +? ) fee origination_burn >>? Mine.( +? ) Op.dummy_script_cost)
   >>=? fun total_fee ->
   if fee > balance then
     Incremental.add_operation i op
@@ -499,9 +499,9 @@ let unregistered_delegate_key_init_origination ~fee () =
   >>=? fun (op, orig_contract) ->
   Context.get_constants (I i)
   >>=? fun {parametric = {origination_size; cost_per_byte; _}; _} ->
-  Tez.(cost_per_byte *? Int64.of_int origination_size)
+  Mine.(cost_per_byte *? Int64.of_int origination_size)
   >>?= fun origination_burn ->
-  Lwt.return (Tez.( +? ) fee origination_burn)
+  Lwt.return (Mine.( +? ) fee origination_burn)
   >>=? fun _total_fee ->
   (* FIXME unused variable *)
   Context.Contract.balance (I i) bootstrap

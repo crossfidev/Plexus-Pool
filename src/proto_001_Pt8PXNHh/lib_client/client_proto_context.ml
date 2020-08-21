@@ -96,7 +96,7 @@ let transfer (cctxt : #full) ~chain ~block ?confirmations ?dry_run
 let reveal cctxt ~chain ~block ?confirmations ?dry_run ?verbose_signing ?branch
     ~source ~src_pk ~src_sk ?fee ~fee_parameter () =
   let (compute_fee, fee) =
-    match fee with None -> (true, Tez.zero) | Some fee -> (false, fee)
+    match fee with None -> (true, Mine.zero) | Some fee -> (false, fee)
   in
   Alpha_services.Contract.counter cctxt (chain, block) source
   >>=? fun pcounter ->

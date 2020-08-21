@@ -46,7 +46,7 @@ val set_delegate :
   ?verbose_signing:bool ->
   ?branch:int ->
   fee_parameter:Injection.fee_parameter ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   source:public_key_hash ->
   src_pk:public_key ->
   src_sk:Client_keys.sk_uri ->
@@ -75,7 +75,7 @@ val transfer :
   ?entrypoint:string ->
   ?arg:string ->
   amount:Tez.t ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:counter ->
   ?storage_limit:counter ->
   ?counter:counter ->

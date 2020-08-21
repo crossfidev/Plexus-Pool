@@ -39,7 +39,7 @@ end
 module Baker : sig
   val run :
     #Protocol_client_context.full ->
-    ?minimal_fees:Tez.t ->
+    ?minimal_fees:Mine.t ->
     ?minimal_nanotez_per_gas_unit:Z.t ->
     ?minimal_nanotez_per_byte:Z.t ->
     ?max_priority:int ->

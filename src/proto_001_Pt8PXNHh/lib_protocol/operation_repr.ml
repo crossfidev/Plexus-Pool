@@ -44,6 +44,8 @@ module Kind = struct
 
   type transaction = Transaction_kind
 
+  type mineTransaction = MineTransaction_kind
+
   type origination = Origination_kind
 
   type delegation = Delegation_kind
@@ -51,6 +53,7 @@ module Kind = struct
   type 'a manager =
     | Reveal_manager_kind : reveal manager
     | Transaction_manager_kind : transaction manager
+    | MineTransaction_manager_kind : mineTransaction manager
     | Origination_manager_kind : origination manager
     | Delegation_manager_kind : delegation manager
 end
@@ -112,7 +115,7 @@ and _ contents =
       -> Kind.ballot contents
   | Manager_operation : {
       source : Signature.public_key_hash;
-      fee : Tez_repr.tez;
+      fee : Mine_repr.mine;
       counter : counter;
       operation : 'kind manager_operation;
       gas_limit : Z.t;
@@ -129,6 +132,13 @@ and _ manager_operation =
       destination : Contract_repr.contract;
     }
       -> Kind.transaction manager_operation
+  | MineTransaction : {
+      amount : Mine_repr.mine;
+      parameters : Script_repr.lazy_expr;
+      entrypoint : string;
+      destination : Contract_repr.contract;
+    }
+      -> Kind.mineTransaction manager_operation
   | Origination : {
       delegate : Signature.Public_key_hash.t option;
       script : Script_repr.t;
@@ -148,6 +158,8 @@ let manager_kind : type kind. kind manager_operation -> kind Kind.manager =
       Kind.Reveal_manager_kind
   | Transaction _ ->
       Kind.Transaction_manager_kind
+  | MineTransaction _ ->
+      Kind.MineTransaction_manager_kind
   | Origination _ ->
       Kind.Origination_manager_kind
   | Delegation _ ->
@@ -347,6 +359,46 @@ module Encoding = struct
           inj = (fun key -> Delegation key);
         }
 
+    let mine_transaction_case =
+      MCase
+        {
+          tag = 4;
+          name = "mine_transaction";
+          encoding =
+            obj3
+              (req "amount" Mine_repr.encoding)
+              (req "destination" Contract_repr.encoding)
+              (opt
+                  "parameters"
+                  (obj2
+                    (req "entrypoint" entrypoint_encoding)
+                    (req "value" Script_repr.lazy_expr_encoding)));
+          select =
+            (function Manager (MineTransaction _ as op) -> Some op | _ -> None);
+          proj =
+            (function
+            | MineTransaction {amount; destination; parameters; entrypoint} ->
+                let parameters =
+                  if
+                    Script_repr.is_unit_parameter parameters
+                    && Compare.String.(entrypoint = "default")
+                  then None
+                  else Some (entrypoint, parameters)
+                in
+                (amount, destination, parameters));
+          inj =
+            (fun (amount, destination, parameters) ->
+              let (entrypoint, parameters) =
+                match parameters with
+                | None ->
+                    ("default", Script_repr.unit_parameter)
+                | Some (entrypoint, value) ->
+                    (entrypoint, value)
+              in
+              MineTransaction {amount; destination; parameters; entrypoint});
+        }
+        
+
     let encoding =
       let make (MCase {tag; name; encoding; select; proj; inj}) =
         case
@@ -361,6 +413,7 @@ module Encoding = struct
         ~tag_size:`Uint8
         [ make reveal_case;
           make transaction_case;
+          make mine_transaction_case;
           make origination_case;
           make delegation_case ]
   end
@@ -530,7 +583,7 @@ module Encoding = struct
   let manager_encoding =
     obj5
       (req "source" Signature.Public_key_hash.encoding)
-      (req "fee" Tez_repr.encoding)
+      (req "fee" Mine_repr.encoding)
       (req "counter" (check_size 10 n))
       (req "gas_limit" (check_size 10 n))
       (req "storage_limit" (check_size 10 n))
@@ -580,6 +633,9 @@ module Encoding = struct
   let delegation_case =
     make_manager_case 110 Manager_operations.delegation_case
 
+  let mine_transaction_case =
+    make_manager_case 111 Manager_operations.mine_transaction_case
+
   let contents_encoding =
     let make (Case {tag; name; encoding; select; proj; inj}) =
       case
@@ -600,6 +656,7 @@ module Encoding = struct
            make ballot_case;
            make reveal_case;
            make transaction_case;
+           make mine_transaction_case;
            make origination_case;
            make delegation_case ]
 
@@ -775,6 +832,10 @@ let equal_manager_operation_kind :
   | (Transaction _, Transaction _) ->
       Some Eq
   | (Transaction _, _) ->
+      None
+  | (MineTransaction _, MineTransaction _) ->
+      Some Eq
+  | (MineTransaction _, _) ->
       None
   | (Origination _, Origination _) ->
       Some Eq

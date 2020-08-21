@@ -29,7 +29,7 @@ open Alpha_context
 (** Mine a block *)
 val bake_block :
   #Protocol_client_context.full ->
-  ?minimal_fees:Tez.t ->
+  ?minimal_fees:Mine.t ->
   ?minimal_nanotez_per_gas_unit:Z.t ->
   ?minimal_nanotez_per_byte:Z.t ->
   ?force:bool ->

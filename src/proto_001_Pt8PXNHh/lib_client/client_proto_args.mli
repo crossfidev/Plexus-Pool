@@ -32,7 +32,7 @@ val tez_sym : string
 
 val init_arg : (string, full) Clic.arg
 
-val fee_arg : (Tez.t option, full) Clic.arg
+val fee_arg : (Mine.t option, full) Clic.arg
 
 val counter_arg : (Z.t option, full) Clic.arg
 
@@ -50,7 +50,7 @@ val delegate_arg : (Signature.Public_key_hash.t option, full) Clic.arg
 
 val max_priority_arg : (int option, full) Clic.arg
 
-val minimal_fees_arg : (Tez.tez, full) Clic.arg
+val minimal_fees_arg : (Mine.mine, full) Clic.arg
 
 val minimal_nanotez_per_gas_unit_arg : (Z.t, full) Clic.arg
 
@@ -58,9 +58,9 @@ val minimal_nanotez_per_byte_arg : (Z.t, full) Clic.arg
 
 val force_low_fee_arg : (bool, full) Clic.arg
 
-val fee_cap_arg : (Tez.t, full) Clic.arg
+val fee_cap_arg : (Mine.t, full) Clic.arg
 
-val burn_cap_arg : (Tez.t, full) Clic.arg
+val burn_cap_arg : (Mine.t, full) Clic.arg
 
 val no_waiting_for_endorsements_arg : (bool, full) Clic.arg
 
@@ -81,11 +81,20 @@ val no_confirmation : (bool, full) Clic.arg
 val tez_arg :
   default:string -> parameter:string -> doc:string -> (Tez.t, full) Clic.arg
 
+val mine_arg :
+  default:string -> parameter:string -> doc:string -> (Mine.t, full) Clic.arg
+
 val tez_param :
   name:string ->
   desc:string ->
   ('a, full) Clic.params ->
   (Tez.t -> 'a, full) Clic.params
+
+val mine_param :
+  name:string ->
+  desc:string ->
+  ('a, full) Clic.params ->
+  (Mine.t -> 'a, full) Clic.params
 
 val signature_parameter : (Signature.t, full) Clic.parameter
 

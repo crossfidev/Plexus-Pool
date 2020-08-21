@@ -37,7 +37,7 @@ type protocol_constants_overrides = {
   hard_gas_limit_per_operation : Z.t option;
   hard_gas_limit_per_block : Z.t option;
   hard_storage_limit_per_operation : Z.t option;
-  cost_per_byte : Protocol.Tez_repr.t option;
+  cost_per_byte : Protocol.Mine_repr.t option;
   chain_id : Chain_id.t option;
   timestamp : Time.Protocol.t option;
 }
@@ -135,7 +135,7 @@ let protocol_constants_overrides_encoding =
        (opt "hard_gas_limit_per_operation" z)
        (opt "hard_gas_limit_per_block" z)
        (opt "hard_storage_limit_per_operation" z)
-       (opt "cost_per_byte" Protocol.Tez_repr.encoding)
+       (opt "cost_per_byte" Protocol.Mine_repr.encoding)
        (opt "chain_id" Chain_id.encoding)
        (opt "initial_timestamp" Time.Protocol.encoding))
 
@@ -270,7 +270,7 @@ let apply_protocol_overrides (cctxt : Tezos_client_base.Client_context.full)
       o.hard_gas_limit_per_block
       (pp_opt_custom "hard_storage_limit_per_operation" Z.pp_print)
       o.hard_storage_limit_per_operation
-      (pp_opt_custom "cost_per_byte" Protocol.Tez_repr.pp)
+      (pp_opt_custom "cost_per_byte" Protocol.Mine_repr.pp)
       o.cost_per_byte
   else Lwt.return_unit )
   >>= fun () ->

@@ -68,31 +68,31 @@ let get_manager_operation_gas_and_fee contents =
         | Error _ as e ->
             e
         | Ok (total_fee, total_gas) -> (
-          match Tez.(total_fee +? fee) with
+          match Mine.(total_fee +? fee) with
           | Ok total_fee ->
               Ok (total_fee, Z.add total_gas gas_limit)
           | Error _ as e ->
               e ) ) | _ -> acc)
-    (Ok (Tez.zero, Z.zero))
+    (Ok (Mine.zero, Z.zero))
     l
 
 type fee_parameter = {
-  minimal_fees : Tez.t;
+  minimal_fees : Mine.t;
   minimal_nanotez_per_byte : Z.t;
   minimal_nanotez_per_gas_unit : Z.t;
   force_low_fee : bool;
-  fee_cap : Tez.t;
-  burn_cap : Tez.t;
+  fee_cap : Mine.t;
+  burn_cap : Mine.t;
 }
 
 let dummy_fee_parameter =
   {
-    minimal_fees = Tez.zero;
+    minimal_fees = Mine.zero;
     minimal_nanotez_per_byte = Z.zero;
     minimal_nanotez_per_gas_unit = Z.zero;
     force_low_fee = false;
-    fee_cap = Tez.one;
-    burn_cap = Tez.zero;
+    fee_cap = Mine.one;
+    burn_cap = Mine.zero;
   }
 
 let check_fees :
@@ -107,27 +107,27 @@ let check_fees :
   | Error _ ->
       assert false (* FIXME *)
   | Ok (fee, gas) ->
-      if Tez.compare fee config.fee_cap > 0 then
+      if Mine.compare fee config.fee_cap > 0 then
         cctxt#error
           "The proposed fee (%s%a) are higher than the configured fee cap \
            (%s%a).@\n\
           \ Use `--fee-cap %a` to emit this operation anyway."
           Client_proto_args.tez_sym
-          Tez.pp
+          Mine.pp
           fee
           Client_proto_args.tez_sym
-          Tez.pp
+          Mine.pp
           config.fee_cap
-          Tez.pp
+          Mine.pp
           fee
         >>= fun () -> exit 1
       else
         (* *)
         let fees_in_nanotez =
-          Z.mul (Z.of_int64 (Tez.to_mutez fee)) (Z.of_int 1000)
+          Z.mul (Z.of_int64 (Mine.to_mutez fee)) (Z.of_int 1000)
         in
         let minimal_fees_in_nanotez =
-          Z.mul (Z.of_int64 (Tez.to_mutez config.minimal_fees)) (Z.of_int 1000)
+          Z.mul (Z.of_int64 (Mine.to_mutez config.minimal_fees)) (Z.of_int 1000)
         in
         let minimal_fees_for_gas_in_nanotez =
           Z.mul config.minimal_nanotez_per_gas_unit gas
@@ -144,7 +144,7 @@ let check_fees :
         in
         let estimated_fees =
           match
-            Tez.of_mutez
+            Mine.of_mutez
               (Z.to_int64
                  (Z.div
                     (Z.add (Z.of_int 999) estimated_fees_in_nanotez)
@@ -164,10 +164,10 @@ let check_fees :
              by default (%s%a).@\n\
             \ Use `--force-low-fee` to emit this operation anyway."
             Client_proto_args.tez_sym
-            Tez.pp
+            Mine.pp
             fee
             Client_proto_args.tez_sym
-            Tez.pp
+            Mine.pp
             estimated_fees
           >>= fun () -> exit 1
         else Lwt.return_unit
@@ -319,6 +319,8 @@ let estimated_gas_single (type kind)
     match result with
     | Applied (Transaction_result {consumed_gas; _}) ->
         Ok consumed_gas
+    | Applied (MineTransaction_result {consumed_gas; _}) ->
+        Ok consumed_gas
     | Applied (Origination_result {consumed_gas; _}) ->
         Ok consumed_gas
     | Applied (Reveal_result {consumed_gas}) ->
@@ -347,6 +349,12 @@ let estimated_storage_single (type kind) origination_size
     match result with
     | Applied
         (Transaction_result
+          {paid_storage_size_diff; allocated_destination_contract; _}) ->
+        if allocated_destination_contract then
+          Ok (Z.add paid_storage_size_diff origination_size)
+        else Ok paid_storage_size_diff
+    | Applied
+        (MineTransaction_result
           {paid_storage_size_diff; allocated_destination_contract; _}) ->
         if allocated_destination_contract then
           Ok (Z.add paid_storage_size_diff origination_size)
@@ -395,6 +403,8 @@ let originated_contracts_single (type kind)
       =
     match result with
     | Applied (Transaction_result {originated_contracts; _}) ->
+        Ok originated_contracts
+    | Applied (MineTransaction_result {originated_contracts; _}) ->
         Ok originated_contracts
     | Applied (Origination_result {originated_contracts; _}) ->
         Ok originated_contracts
@@ -544,7 +554,7 @@ let may_patch_limits (type kind) (cctxt : #Protocol_client_context.full)
         in
         let minimal_fees_in_nanotez =
           Z.mul
-            (Z.of_int64 (Tez.to_mutez fee_parameter.minimal_fees))
+            (Z.of_int64 (Mine.to_mutez fee_parameter.minimal_fees))
             (Z.of_int 1000)
         in
         let minimal_fees_for_gas_in_nanotez =
@@ -560,7 +570,7 @@ let may_patch_limits (type kind) (cctxt : #Protocol_client_context.full)
                minimal_fees_for_size_in_nanotez
         in
         match
-          Tez.of_mutez
+          Mine.of_mutez
             (Z.to_int64
                (Z.div (Z.add (Z.of_int 999) fees_in_nanotez) (Z.of_int 1000)))
         with
@@ -648,20 +658,20 @@ let may_patch_limits (type kind) (cctxt : #Protocol_client_context.full)
       >>=? (fun storage ->
              Lwt.return
                (Environment.wrap_error
-                  Tez.(cost_per_byte *? Z.to_int64 storage))
+                  Mine.(cost_per_byte *? Z.to_int64 storage))
              >>=? fun burn ->
-             if Tez.(burn > fee_parameter.burn_cap) then
+             if Mine.(burn > fee_parameter.burn_cap) then
                cctxt#error
                  "The operation will burn %s%a which is higher than the \
                   configured burn cap (%s%a).@\n\
                  \ Use `--burn-cap %a` to emit this operation."
                  Client_proto_args.tez_sym
-                 Tez.pp
+                 Mine.pp
                  burn
                  Client_proto_args.tez_sym
-                 Tez.pp
+                 Mine.pp
                  fee_parameter.burn_cap
-                 Tez.pp
+                 Mine.pp
                  burn
                >>= fun () -> exit 1
              else return_unit)
@@ -833,7 +843,7 @@ let inject_manager_operation cctxt ~chain ~block ?branch ?confirmations
         false
   in
   let (compute_fee, fee) =
-    match fee with None -> (true, Tez.zero) | Some fee -> (false, fee)
+    match fee with None -> (true, Mine.zero) | Some fee -> (false, fee)
   in
   match key with
   | None when not (is_reveal operation) -> (
@@ -842,7 +852,7 @@ let inject_manager_operation cctxt ~chain ~block ?branch ?confirmations
           ( Manager_operation
               {
                 source;
-                fee = Tez.zero;
+                fee = Mine.zero;
                 counter;
                 gas_limit = Z.of_int 10_000;
                 storage_limit = Z.zero;

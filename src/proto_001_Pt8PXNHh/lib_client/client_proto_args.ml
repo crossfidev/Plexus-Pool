@@ -207,6 +207,14 @@ let tez_parameter param =
       | None ->
           fail (Bad_tez_arg (param, s)))
 
+let mine_parameter param =
+  parameter (fun _ s ->
+      match Mine.of_string s with
+      | Some tez ->
+          return tez
+      | None ->
+          fail (Bad_tez_arg (param, s)))
+
 let tez_arg ~default ~parameter ~doc =
   default_arg
     ~long:parameter
@@ -215,6 +223,14 @@ let tez_arg ~default ~parameter ~doc =
     ~default
     (tez_parameter ("--" ^ parameter))
 
+let mine_arg ~default ~parameter ~doc =
+  default_arg
+    ~long:parameter
+    ~placeholder:"amount"
+    ~doc
+    ~default
+    (mine_parameter ("--" ^ parameter))
+
 let tez_param ~name ~desc next =
   Clic.param
     ~name
@@ -222,12 +238,19 @@ let tez_param ~name ~desc next =
     (tez_parameter name)
     next
 
+let mine_param ~name ~desc next =
+  Clic.param
+    ~name
+    ~desc:(desc ^ " in \xEA\x9C\xA9\n" ^ tez_format)
+    (mine_parameter name)
+    next
+
 let fee_arg =
   arg
     ~long:"fee"
     ~placeholder:"amount"
     ~doc:"fee in \xEA\x9C\xA9 to pay to the baker"
-    (tez_parameter "--fee")
+    (mine_parameter "--fee")
 
 let gas_limit_arg =
   arg
@@ -284,7 +307,7 @@ let max_priority_arg =
          try return (int_of_string s) with _ -> fail (Bad_max_priority s)))
 
 let default_minimal_fees =
-  match Tez.of_mutez 100L with None -> assert false | Some t -> t
+  match Mine.of_mutez 100L with None -> assert false | Some t -> t
 
 let default_minimal_nanotez_per_gas_unit = Z.of_int 100
 
@@ -295,9 +318,9 @@ let minimal_fees_arg =
     ~long:"minimal-fees"
     ~placeholder:"amount"
     ~doc:"exclude operations with fees lower than this threshold (in tez)"
-    ~default:(Tez.to_string default_minimal_fees)
+    ~default:(Mine.to_string default_minimal_fees)
     (parameter (fun _ s ->
-         match Tez.of_string s with
+         match Mine.of_string s with
          | Some t ->
              return t
          | None ->
@@ -338,7 +361,7 @@ let fee_cap_arg =
     ~default:"1.0"
     ~doc:"Set the fee cap"
     (parameter (fun _ s ->
-         match Tez.of_string s with
+         match Mine.of_string s with
          | Some t ->
              return t
          | None ->
@@ -351,7 +374,7 @@ let burn_cap_arg =
     ~default:"0"
     ~doc:"Set the burn cap"
     (parameter (fun _ s ->
-         match Tez.of_string s with
+         match Mine.of_string s with
          | Some t ->
              return t
          | None ->

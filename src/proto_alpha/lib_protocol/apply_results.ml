@@ -60,6 +60,17 @@ type _ successful_manager_operation_result =
       allocated_destination_contract : bool;
     }
       -> Kind.transaction successful_manager_operation_result
+  | MineTransaction_result : {
+      storage : Script.expr option;
+      big_map_diff : Contract.big_map_diff option;
+      balance_updates : Delegate.balance_updates;
+      originated_contracts : Contract.t list;
+      consumed_gas : Z.t;
+      storage_size : Z.t;
+      paid_storage_size_diff : Z.t;
+      allocated_destination_contract : bool;
+    }
+      -> Kind.mineTransaction successful_manager_operation_result
   | Origination_result : {
       big_map_diff : Contract.big_map_diff option;
       balance_updates : Delegate.balance_updates;
@@ -247,6 +258,70 @@ module Manager_result = struct
             paid_storage_size_diff;
             allocated_destination_contract;
           })
+  
+  let mine_transaction_case =
+    make
+      ~op_case:Operation.Encoding.Manager_operations.mine_transaction_case
+      ~encoding:
+        (obj8
+            (opt "storage" Script.expr_encoding)
+            (opt "big_map_diff" Contract.big_map_diff_encoding)
+            (dft "balance_updates" Delegate.balance_updates_encoding [])
+            (dft "originated_contracts" (list Contract.encoding) [])
+            (dft "consumed_gas" z Z.zero)
+            (dft "storage_size" z Z.zero)
+            (dft "paid_storage_size_diff" z Z.zero)
+            (dft "allocated_destination_contract" bool false))
+      ~iselect:(function
+        | Internal_operation_result
+            (({operation = MineTransaction _; _} as op), res) ->
+            Some (op, res)
+        | _ ->
+            None)
+      ~select:(function
+        | Successful_manager_result (MineTransaction_result _ as op) ->
+            Some op
+        | _ ->
+            None)
+      ~kind:Kind.MineTransaction_manager_kind
+      ~proj:(function
+        | MineTransaction_result
+            { storage;
+              big_map_diff;
+              balance_updates;
+              originated_contracts;
+              consumed_gas;
+              storage_size;
+              paid_storage_size_diff;
+              allocated_destination_contract } ->
+            ( storage,
+              big_map_diff,
+              balance_updates,
+              originated_contracts,
+              consumed_gas,
+              storage_size,
+              paid_storage_size_diff,
+              allocated_destination_contract ))
+      ~inj:
+        (fun ( storage,
+                big_map_diff,
+                balance_updates,
+                originated_contracts,
+                consumed_gas,
+                storage_size,
+                paid_storage_size_diff,
+                allocated_destination_contract ) ->
+        MineTransaction_result
+          {
+            storage;
+            big_map_diff;
+            balance_updates;
+            originated_contracts;
+            consumed_gas;
+            storage_size;
+            paid_storage_size_diff;
+            allocated_destination_contract;
+          })
 
   let origination_case =
     make
@@ -352,6 +427,7 @@ let internal_operation_result_encoding :
   @@ union
        [ make Manager_result.reveal_case;
          make Manager_result.transaction_case;
+         make Manager_result.mine_transaction_case;
          make Manager_result.origination_case;
          make Manager_result.delegation_case ]
 
@@ -404,6 +480,10 @@ let equal_manager_kind :
   | (Kind.Transaction_manager_kind, Kind.Transaction_manager_kind) ->
       Some Eq
   | (Kind.Transaction_manager_kind, _) ->
+      None
+  | (Kind.MineTransaction_manager_kind, Kind.MineTransaction_manager_kind) ->
+      Some Eq
+  | (Kind.MineTransaction_manager_kind, _) ->
       None
   | (Kind.Origination_manager_kind, Kind.Origination_manager_kind) ->
       Some Eq
@@ -697,6 +777,17 @@ module Encoding = struct
             Some (op, res)
         | _ ->
             None)
+  
+  let mine_transaction_case =
+    make_manager_case
+      Operation.Encoding.mine_transaction_case
+      Manager_result.mine_transaction_case
+      (function
+        | Contents_and_result
+            ((Manager_operation {operation = MineTransaction _; _} as op), res) ->
+            Some (op, res)
+        | _ ->
+            None)
 
   let origination_case =
     make_manager_case
@@ -748,6 +839,7 @@ let contents_result_encoding =
          make ballot_case;
          make reveal_case;
          make transaction_case;
+         make mine_transaction_case;
          make origination_case;
          make delegation_case ]
 
@@ -783,6 +875,7 @@ let contents_and_result_encoding =
          make ballot_case;
          make reveal_case;
          make transaction_case;
+         make mine_transaction_case;
          make origination_case;
          make delegation_case ]
 
@@ -949,9 +1042,17 @@ let kind_equal :
       Manager_operation_result
         {operation_result = Applied (Transaction_result _); _} ) ->
       Some Eq
+  | ( Manager_operation {operation = MineTransaction _; _},
+      Manager_operation_result
+        {operation_result = Applied (MineTransaction_result _); _} ) ->
+      Some Eq
   | ( Manager_operation {operation = Transaction _; _},
       Manager_operation_result
         {operation_result = Backtracked (Transaction_result _, _); _} ) ->
+      Some Eq
+  | ( Manager_operation {operation = MineTransaction _; _},
+      Manager_operation_result
+        {operation_result = Backtracked (MineTransaction_result _, _); _} ) ->
       Some Eq
   | ( Manager_operation {operation = Transaction _; _},
       Manager_operation_result
@@ -964,7 +1065,14 @@ let kind_equal :
         { operation_result = Skipped Alpha_context.Kind.Transaction_manager_kind;
           _ } ) ->
       Some Eq
+  | ( Manager_operation {operation = MineTransaction _; _},
+      Manager_operation_result
+        { operation_result = Skipped Alpha_context.Kind.MineTransaction_manager_kind;
+          _ } ) ->
+      Some Eq
   | (Manager_operation {operation = Transaction _; _}, _) ->
+      None
+  | (Manager_operation {operation = MineTransaction _; _}, _) ->
       None
   | ( Manager_operation {operation = Origination _; _},
       Manager_operation_result

@@ -43,6 +43,8 @@ module Kind : sig
   type reveal = Reveal_kind
 
   type transaction = Transaction_kind
+  
+  type mineTransaction = MineTransaction_kind
 
   type origination = Origination_kind
 
@@ -51,6 +53,7 @@ module Kind : sig
   type 'a manager =
     | Reveal_manager_kind : reveal manager
     | Transaction_manager_kind : transaction manager
+    | MineTransaction_manager_kind : mineTransaction manager
     | Origination_manager_kind : origination manager
     | Delegation_manager_kind : delegation manager
 end
@@ -112,7 +115,7 @@ and _ contents =
       -> Kind.ballot contents
   | Manager_operation : {
       source : Signature.Public_key_hash.t;
-      fee : Tez_repr.tez;
+      fee : Mine_repr.mine;
       counter : counter;
       operation : 'kind manager_operation;
       gas_limit : Z.t;
@@ -129,6 +132,13 @@ and _ manager_operation =
       destination : Contract_repr.contract;
     }
       -> Kind.transaction manager_operation
+  | MineTransaction : {
+      amount : Mine_repr.mine;
+      parameters : Script_repr.lazy_expr;
+      entrypoint : string;
+      destination : Contract_repr.contract;
+    }
+      -> Kind.mineTransaction manager_operation
   | Origination : {
       delegate : Signature.Public_key_hash.t option;
       script : Script_repr.t;
@@ -241,6 +251,7 @@ module Encoding : sig
   val reveal_case : Kind.reveal Kind.manager case
 
   val transaction_case : Kind.transaction Kind.manager case
+  val mine_transaction_case : Kind.mineTransaction Kind.manager case
 
   val origination_case : Kind.origination Kind.manager case
 
@@ -261,6 +272,7 @@ module Encoding : sig
     val reveal_case : Kind.reveal case
 
     val transaction_case : Kind.transaction case
+    val mine_transaction_case : Kind.mineTransaction case
 
     val origination_case : Kind.origination case
 

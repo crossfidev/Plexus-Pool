@@ -83,7 +83,7 @@ val set_delegate :
   ?confirmations:int ->
   ?dry_run:bool ->
   ?verbose_signing:bool ->
-  ?fee:Tez.tez ->
+  ?fee:Mine.mine ->
   public_key_hash ->
   src_pk:public_key ->
   manager_sk:Client_keys.sk_uri ->
@@ -98,7 +98,7 @@ val register_as_delegate :
   ?confirmations:int ->
   ?dry_run:bool ->
   ?verbose_signing:bool ->
-  ?fee:Tez.tez ->
+  ?fee:Mine.mine ->
   manager_sk:Client_keys.sk_uri ->
   fee_parameter:Injection.fee_parameter ->
   public_key ->
@@ -119,7 +119,7 @@ val originate_contract :
   ?dry_run:bool ->
   ?verbose_signing:bool ->
   ?branch:int ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:Z.t ->
   ?storage_limit:Z.t ->
   delegate:public_key_hash option ->
@@ -148,7 +148,7 @@ val transfer :
   ?entrypoint:string ->
   ?arg:string ->
   amount:Tez.t ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   ?gas_limit:Z.t ->
   ?storage_limit:Z.t ->
   ?counter:Z.t ->
@@ -168,7 +168,7 @@ val reveal :
   source:public_key_hash ->
   src_pk:public_key ->
   src_sk:Client_keys.sk_uri ->
-  ?fee:Tez.t ->
+  ?fee:Mine.t ->
   fee_parameter:Injection.fee_parameter ->
   unit ->
   Kind.reveal Kind.manager Injection.result tzresult Lwt.t
