@@ -157,6 +157,30 @@ val transfer :
   (Kind.transaction Kind.manager Injection.result * Contract.t list) tzresult
   Lwt.t
 
+val mine_transfer :
+  #Protocol_client_context.full ->
+  chain:Shell_services.chain ->
+  block:Shell_services.block ->
+  ?confirmations:int ->
+  ?dry_run:bool ->
+  ?verbose_signing:bool ->
+  ?branch:int ->
+  source:public_key_hash ->
+  src_pk:public_key ->
+  src_sk:Client_keys.sk_uri ->
+  destination:Contract.t ->
+  ?entrypoint:string ->
+  ?arg:string ->
+  amount:Mine.t ->
+  ?fee:Mine.t ->
+  ?gas_limit:Z.t ->
+  ?storage_limit:Z.t ->
+  ?counter:Z.t ->
+  fee_parameter:Injection.fee_parameter ->
+  unit ->
+  (Kind.mineTransaction Kind.manager Injection.result * Contract.t list) tzresult
+  Lwt.t
+
 val reveal :
   #Protocol_client_context.full ->
   chain:Shell_services.chain ->

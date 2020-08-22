@@ -93,6 +93,41 @@ let transfer (cctxt : #full) ~chain ~block ?confirmations ?dry_run
   Lwt.return (Injection.originated_contracts (Single_result result))
   >>=? fun contracts -> return (res, contracts)
 
+let mine_transfer (cctxt : #full) ~chain ~block ?confirmations ?dry_run
+    ?verbose_signing ?branch ~source ~src_pk ~src_sk ~destination
+    ?(entrypoint = "default") ?arg ~amount ?fee ?gas_limit ?storage_limit
+    ?counter ~fee_parameter () =
+  ( match arg with
+  | Some arg ->
+      parse_expression arg >>=? fun {expanded = arg; _} -> return_some arg
+  | None ->
+      return_none )
+  >>=? fun parameters ->
+  let parameters =
+    Option.fold ~some:Script.lazy_expr ~none:Script.unit_parameter parameters
+  in
+  let contents = MineTransaction {amount; parameters; destination; entrypoint} in
+  Injection.inject_manager_operation
+    cctxt
+    ~chain
+    ~block
+    ?confirmations
+    ?dry_run
+    ?verbose_signing
+    ?branch
+    ~source
+    ?fee
+    ?gas_limit
+    ?storage_limit
+    ?counter
+    ~src_pk
+    ~src_sk
+    ~fee_parameter
+    contents
+  >>=? fun ((_oph, _op, result) as res) ->
+  Lwt.return (Injection.originated_contracts (Single_result result))
+  >>=? fun contracts -> return (res, contracts)
+
 let reveal cctxt ~chain ~block ?confirmations ?dry_run ?verbose_signing ?branch
     ~source ~src_pk ~src_sk ?fee ~fee_parameter () =
   let (compute_fee, fee) =

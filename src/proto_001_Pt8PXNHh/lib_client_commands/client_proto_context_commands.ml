@@ -190,6 +190,89 @@ let transfer_command amount source destination cctxt
         cctxt
   >>= function None -> return_unit | Some (_res, _contracts) -> return_unit
 
+let mine_transfer_command amount source destination cctxt
+    ( fee,
+      dry_run,
+      verbose_signing,
+      gas_limit,
+      storage_limit,
+      counter,
+      arg,
+      no_print_source,
+      minimal_fees,
+      minimal_nanotez_per_byte,
+      minimal_nanotez_per_gas_unit,
+      force_low_fee,
+      fee_cap,
+      burn_cap,
+      entrypoint ) =
+  let fee_parameter =
+    {
+      Injection.minimal_fees;
+      minimal_nanotez_per_byte;
+      minimal_nanotez_per_gas_unit;
+      force_low_fee;
+      fee_cap;
+      burn_cap;
+    }
+  in
+  ( match Contract.is_implicit source with
+  | None ->
+      let contract = source in
+      Managed_contract.get_contract_manager cctxt source
+      >>=? fun source ->
+      Client_keys.get_key cctxt source
+      >>=? fun (_, src_pk, src_sk) ->
+      Managed_contract.mine_transfer
+        cctxt
+        ~chain:cctxt#chain
+        ~block:cctxt#block
+        ?confirmations:cctxt#confirmations
+        ~dry_run
+        ~verbose_signing
+        ~fee_parameter
+        ?fee
+        ~contract
+        ~source
+        ~src_pk
+        ~src_sk
+        ~destination
+        ?entrypoint
+        ?arg
+        ~amount
+        ?gas_limit
+        ?storage_limit
+        ?counter
+        ()
+  | Some source ->
+      Client_keys.get_key cctxt source
+      >>=? fun (_, src_pk, src_sk) ->
+      mine_transfer
+        cctxt
+        ~chain:cctxt#chain
+        ~block:cctxt#block
+        ?confirmations:cctxt#confirmations
+        ~dry_run
+        ~verbose_signing
+        ~fee_parameter
+        ~source
+        ?fee
+        ~src_pk
+        ~src_sk
+        ~destination
+        ?entrypoint
+        ?arg
+        ~amount
+        ?gas_limit
+        ?storage_limit
+        ?counter
+        () )
+  >>= report_michelson_errors
+        ~no_print_source
+        ~msg:"transfer simulation failed"
+        cctxt
+  >>= function None -> return_unit | Some (_res, _contracts) -> return_unit
+
 let commands version () =
   let open Clic in
   [ command
@@ -745,6 +828,75 @@ let commands version () =
            (_, destination)
            cctxt ->
         transfer_command
+          amount
+          source
+          destination
+          cctxt
+          ( fee,
+            dry_run,
+            verbose_signing,
+            gas_limit,
+            storage_limit,
+            counter,
+            arg,
+            no_print_source,
+            minimal_fees,
+            minimal_nanotez_per_byte,
+            minimal_nanotez_per_gas_unit,
+            force_low_fee,
+            fee_cap,
+            burn_cap,
+            entrypoint ));
+    command
+      ~group
+      ~desc:"Transfer mine tokens / call a smart contract."
+      (args15
+          fee_arg
+          dry_run_switch
+          verbose_signing_switch
+          gas_limit_arg
+          storage_limit_arg
+          counter_arg
+          arg_arg
+          no_print_source_flag
+          minimal_fees_arg
+          minimal_nanotez_per_byte_arg
+          minimal_nanotez_per_gas_unit_arg
+          force_low_fee_arg
+          fee_cap_arg
+          burn_cap_arg
+          entrypoint_arg)
+      ( prefixes ["mine_transfer"]
+      @@ mine_param ~name:"qty" ~desc:"amount taken from source"
+      @@ prefix "from"
+      @@ ContractAlias.destination_param
+            ~name:"src"
+            ~desc:"name of the source contract"
+      @@ prefix "to"
+      @@ ContractAlias.destination_param
+            ~name:"dst"
+            ~desc:"name/literal of the destination contract"
+      @@ stop )
+      (fun ( fee,
+              dry_run,
+              verbose_signing,
+              gas_limit,
+              storage_limit,
+              counter,
+              arg,
+              no_print_source,
+              minimal_fees,
+              minimal_nanotez_per_byte,
+              minimal_nanotez_per_gas_unit,
+              force_low_fee,
+              fee_cap,
+              burn_cap,
+              entrypoint )
+            amount
+            (_, source)
+            (_, destination)
+            cctxt ->
+        mine_transfer_command
           amount
           source
           destination

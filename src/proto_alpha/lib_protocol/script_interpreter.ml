@@ -1113,6 +1113,43 @@ let rec step :
                 big_map_diff ),
               rest ),
           ctxt )
+  | ( Transfer_mine_tokens,
+      Item (p, Item (amount, Item ((tp, (destination, entrypoint)), rest))) )
+    ->
+      Lwt.return (Gas.consume ctxt Interp_costs.transfer)
+      >>=? fun ctxt ->
+      collect_big_maps ctxt tp p
+      >>=? fun (to_duplicate, ctxt) ->
+      let to_update = no_big_map_id in
+      extract_big_map_diff
+        ctxt
+        Optimized
+        tp
+        p
+        ~to_duplicate
+        ~to_update
+        ~temporary:true
+      >>=? fun (p, big_map_diff, ctxt) ->
+      unparse_data ctxt Optimized tp p
+      >>=? fun (p, ctxt) ->
+      let operation =
+        MineTransaction
+          {
+            amount;
+            destination;
+            entrypoint;
+            parameters = Script.lazy_expr (Micheline.strip_locations p);
+          }
+      in
+      Lwt.return (fresh_internal_nonce ctxt)
+      >>=? fun (ctxt, nonce) ->
+      logged_return
+        ( Item
+            ( ( Internal_operation
+                  {source = step_constants.self; operation; nonce},
+                big_map_diff ),
+              rest ),
+          ctxt )
   | ( Create_account,
       Item (manager, Item (delegate, Item (_delegatable, Item (credit, rest))))
     ) ->

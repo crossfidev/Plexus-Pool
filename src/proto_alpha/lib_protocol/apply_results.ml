@@ -1060,6 +1060,12 @@ let kind_equal :
             Failed (Alpha_context.Kind.Transaction_manager_kind, _);
           _ } ) ->
       Some Eq
+  | ( Manager_operation {operation = MineTransaction _; _},
+      Manager_operation_result
+        { operation_result =
+            Failed (Alpha_context.Kind.MineTransaction_manager_kind, _);
+          _ } ) ->
+      Some Eq
   | ( Manager_operation {operation = Transaction _; _},
       Manager_operation_result
         { operation_result = Skipped Alpha_context.Kind.Transaction_manager_kind;

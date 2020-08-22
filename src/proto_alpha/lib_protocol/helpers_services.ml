@@ -393,6 +393,33 @@ module Scripts = struct
               trace Apply.Gas_quota_exceeded_init_deserialize
               @@ Script.force_decode ctxt arg
               >>|? fun (_arg, ctxt) -> ctxt
+          | MineTransaction {parameters; _} ->
+              (* Here the data comes already deserialized, so we need to fake the deserialization to mimic apply *)
+              let arg_bytes =
+                Data_encoding.Binary.to_bytes_exn
+                  Script.lazy_expr_encoding
+                  parameters
+              in
+              let arg =
+                match
+                  Data_encoding.Binary.of_bytes
+                    Script.lazy_expr_encoding
+                    arg_bytes
+                with
+                | Some arg ->
+                    arg
+                | None ->
+                    assert false
+              in
+              (* Fail quickly if not enough gas for minimal deserialization cost *)
+              Lwt.return
+              @@ record_trace Apply.Gas_quota_exceeded_init_deserialize
+              @@ Gas.check_enough ctxt (Script.minimal_deserialize_cost arg)
+              >>=? fun () ->
+              (* Fail if not enough gas for complete deserialization cost *)
+              trace Apply.Gas_quota_exceeded_init_deserialize
+              @@ Script.force_decode ctxt arg
+              >>|? fun (_arg, ctxt) -> ctxt
           | Origination {script; _} ->
               (* Here the data comes already deserialized, so we need to fake the deserialization to mimic apply *)
               let script_bytes =

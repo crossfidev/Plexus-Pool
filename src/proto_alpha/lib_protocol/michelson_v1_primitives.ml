@@ -116,6 +116,7 @@ type prim =
   | I_SUB
   | I_SWAP
   | I_TRANSFER_TOKENS
+  | I_TRANSFER_MINE_TOKENS
   | I_SET_DELEGATE
   | I_UNIT
   | I_UPDATE
@@ -332,6 +333,8 @@ let string_of_prim = function
       "SWAP"
   | I_TRANSFER_TOKENS ->
       "TRANSFER_TOKENS"
+  | I_TRANSFER_MINE_TOKENS ->
+      "TRANSFER_MINE_TOKENS"
   | I_SET_DELEGATE ->
       "SET_DELEGATE"
   | I_UNIT ->
@@ -570,6 +573,8 @@ let prim_of_string = function
       ok I_SWAP
   | "TRANSFER_TOKENS" ->
       ok I_TRANSFER_TOKENS
+  | "TRANSFER_MINE_TOKENS" ->
+      ok I_TRANSFER_MINE_TOKENS
   | "SET_DELEGATE" ->
       ok I_SET_DELEGATE
   | "UNIT" ->
@@ -775,6 +780,7 @@ let prim_encoding =
          ("SUB", I_SUB);
          ("SWAP", I_SWAP);
          ("TRANSFER_TOKENS", I_TRANSFER_TOKENS);
+         ("TRANSFER_MINE_TOKENS", I_TRANSFER_MINE_TOKENS);
          ("SET_DELEGATE", I_SET_DELEGATE);
          ("UNIT", I_UNIT);
          (* /!\ NEW INSTRUCTIONS MUST BE ADDED AT THE END OF THE STRING_ENUM, FOR BACKWARD COMPATIBILITY OF THE ENCODING. *)

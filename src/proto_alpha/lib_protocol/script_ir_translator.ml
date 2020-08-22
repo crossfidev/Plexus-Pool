@@ -81,6 +81,8 @@ let rec comparable_type_size : type t a. (t, a) comparable_struct -> int =
       1
   | Mutez_key _ ->
       1
+  | Mumine_key _ ->
+      1
   | Bool_key _ ->
       1
   | Key_hash_key _ ->
@@ -108,6 +110,8 @@ let rec type_size : type t. t ty -> int =
   | String_t _ ->
       1
   | Mutez_t _ ->
+      1
+  | Mumine_t _ ->
       1
   | Key_hash_t _ ->
       1
@@ -367,6 +371,8 @@ let number_of_generated_growing_types : type b a. (b, a) instr -> int =
       1
   | Transfer_tokens ->
       1
+  | Transfer_mine_tokens ->
+      1
   | Create_account ->
       0
   | Implicit_account ->
@@ -521,6 +527,7 @@ let namespace = function
   | I_SUB
   | I_SWAP
   | I_TRANSFER_TOKENS
+  | I_TRANSFER_MINE_TOKENS
   | I_SET_DELEGATE
   | I_UNIT
   | I_UPDATE
@@ -602,6 +609,8 @@ let rec compare_comparable :
       wrap_compare Compare.Bool.compare
   | Mutez_key _ ->
       wrap_compare Tez.compare
+  | Mumine_key _ ->
+      wrap_compare Mine.compare
   | Key_hash_key _ ->
       wrap_compare Signature.Public_key_hash.compare
   | Int_key _ ->
@@ -757,6 +766,8 @@ let rec ty_of_comparable_ty : type a s. (a, s) comparable_struct -> a ty =
       Bytes_t tname
   | Mutez_key tname ->
       Mutez_t tname
+  | Mumine_key tname ->
+      Mumine_t tname
   | Bool_key tname ->
       Bool_t tname
   | Key_hash_key tname ->
@@ -811,6 +822,8 @@ let rec comparable_ty_of_ty : type a. a ty -> a comparable_ty option = function
           Some (Pair_key ((Bytes_key tname, al), (rty, ar), pname))
       | Some (Mutez_key tname) ->
           Some (Pair_key ((Mutez_key tname, al), (rty, ar), pname))
+      | Some (Mumine_key tname) ->
+          Some (Pair_key ((Mumine_key tname, al), (rty, ar), pname))
       | Some (Bool_key tname) ->
           Some (Pair_key ((Bool_key tname, al), (rty, ar), pname))
       | Some (Key_hash_key tname) ->
@@ -843,6 +856,8 @@ let rec unparse_comparable_ty :
   | Bytes_key tname ->
       Prim (-1, T_bytes, [], unparse_type_annot tname)
   | Mutez_key tname ->
+      Prim (-1, T_mutez, [], unparse_type_annot tname)
+  | Mumine_key tname ->
       Prim (-1, T_mutez, [], unparse_type_annot tname)
   | Bool_key tname ->
       Prim (-1, T_bool, [], unparse_type_annot tname)
@@ -879,6 +894,8 @@ let rec unparse_ty_no_lwt :
   | Bytes_t tname ->
       return ctxt (T_bytes, [], unparse_type_annot tname)
   | Mutez_t tname ->
+      return ctxt (T_mutez, [], unparse_type_annot tname)
+  | Mumine_t tname ->
       return ctxt (T_mutez, [], unparse_type_annot tname)
   | Bool_t tname ->
       return ctxt (T_bool, [], unparse_type_annot tname)
@@ -992,6 +1009,8 @@ let name_of_ty : type a. a ty -> type_annot option = function
   | Bytes_t tname ->
       tname
   | Mutez_t tname ->
+      tname
+  | Mumine_t tname ->
       tname
   | Bool_t tname ->
       tname
@@ -1119,6 +1138,8 @@ let rec ty_eq :
   | (Signature_t _, Signature_t _) ->
       ok Eq ctxt 0
   | (Mutez_t _, Mutez_t _) ->
+      ok Eq ctxt 0
+  | (Mumine_t _, Mumine_t _) ->
       ok Eq ctxt 0
   | (Timestamp_t _, Timestamp_t _) ->
       ok Eq ctxt 0
@@ -1279,6 +1300,8 @@ let merge_types :
         >|? fun tname -> (Signature_t tname, ctxt)
     | (Mutez_t tn1, Mutez_t tn2) ->
         merge_type_annot ~legacy tn1 tn2 >|? fun tname -> (Mutez_t tname, ctxt)
+    | (Mumine_t tn1, Mumine_t tn2) ->
+        merge_type_annot ~legacy tn1 tn2 >|? fun tname -> (Mumine_t tname, ctxt)
     | (Timestamp_t tn1, Timestamp_t tn2) ->
         merge_type_annot ~legacy tn1 tn2
         >|? fun tname -> (Timestamp_t tname, ctxt)
@@ -1419,6 +1442,8 @@ let has_big_map : type t. t ty -> bool = function
   | Bytes_t _ ->
       false
   | Mutez_t _ ->
+      false
+  | Mumine_t _ ->
       false
   | Key_hash_t _ ->
       false
@@ -1594,6 +1619,11 @@ let rec parse_comparable_ty :
           ok
             ( Ex_comparable_ty
                 (Pair_key ((Mutez_key tname, left_annot), right, pname)),
+              ctxt )
+      | Mumine_key tname ->
+          ok
+            ( Ex_comparable_ty
+                (Pair_key ((Mumine_key tname, left_annot), right, pname)),
               ctxt )
       | Bool_key tname ->
           ok
@@ -2009,6 +2039,8 @@ let check_packable ~legacy loc root =
         ok ()
     | Mutez_t _ ->
         ok ()
+    | Mumine_t _ ->
+        ok ()
     | Key_hash_t _ ->
         ok ()
     | Key_t _ ->
@@ -2375,6 +2407,21 @@ let rec parse_data :
             return (tez, ctxt)
       with _ -> error () >>=? fail )
   | (Mutez_t _, expr) ->
+      traced (fail (Invalid_kind (location expr, [Int_kind], kind expr)))
+  | (Mumine_t _, Int (_, v)) -> (
+      Lwt.return
+        ( Gas.consume ctxt Typecheck_costs.tez
+        >>? fun ctxt ->
+        Gas.consume ctxt Michelson_v1_gas.Cost_of.Legacy.z_to_int64 )
+      >>=? fun ctxt ->
+      try
+        match Mine.of_mutez (Z.to_int64 v) with
+        | None ->
+            raise Exit
+        | Some mine ->
+            return (mine, ctxt)
+      with _ -> error () >>=? fail )
+  | (Mumine_t _, expr) ->
       traced (fail (Invalid_kind (location expr, [Int_kind], kind expr)))
   (* Timestamps *)
   | (Timestamp_t _, Int (_, v))
@@ -4343,6 +4390,14 @@ and parse_instr :
       parse_var_annot loc annot
       >>=? fun annot ->
       typed ctxt loc Transfer_tokens (Item_t (Operation_t None, rest, annot))
+  | ( Prim (loc, I_TRANSFER_MINE_TOKENS, [], annot),
+      Item_t (p, Item_t (Mumine_t _, Item_t (Contract_t (cp, _), rest, _), _), _)
+    ) ->
+      check_item_ty ctxt p cp loc I_TRANSFER_MINE_TOKENS 1 4
+      >>=? fun (Eq, _, ctxt) ->
+      parse_var_annot loc annot
+      >>=? fun annot ->
+      typed ctxt loc Transfer_mine_tokens (Item_t (Operation_t None, rest, annot))
   | ( Prim (loc, I_SET_DELEGATE, [], annot),
       Item_t (Option_t (Key_hash_t _, _, _), rest, _) ) ->
       parse_var_annot loc annot
@@ -4702,6 +4757,7 @@ and parse_instr :
             | I_LE
             | I_GE
             | I_TRANSFER_TOKENS
+            | I_TRANSFER_MINE_TOKENS
             | I_CREATE_ACCOUNT
             | I_SET_DELEGATE
             | I_NOW
@@ -4805,6 +4861,10 @@ and parse_instr :
       serialize_stack_for_error ctxt stack
       >>=? fun (stack, _ctxt) ->
       fail (Bad_stack (loc, I_TRANSFER_TOKENS, 4, stack))
+  | (Prim (loc, I_TRANSFER_MINE_TOKENS, [], _), stack) ->
+      serialize_stack_for_error ctxt stack
+      >>=? fun (stack, _ctxt) ->
+      fail (Bad_stack (loc, I_TRANSFER_MINE_TOKENS, 4, stack))
   | ( Prim
         ( loc,
           ( ( I_DROP
@@ -4911,6 +4971,7 @@ and parse_instr :
              I_LE;
              I_GE;
              I_TRANSFER_TOKENS;
+             I_TRANSFER_MINE_TOKENS;
              I_CREATE_ACCOUNT;
              I_CREATE_CONTRACT;
              I_NOW;
@@ -5523,6 +5584,9 @@ let rec unparse_data :
   | (Mutez_t _, v) ->
       Lwt.return (Gas.consume ctxt Unparse_costs.tez)
       >>=? fun ctxt -> return (Int (-1, Z.of_int64 (Tez.to_mutez v)), ctxt)
+  | (Mumine_t _, v) ->
+      Lwt.return (Gas.consume ctxt Unparse_costs.tez)
+      >>=? fun ctxt -> return (Int (-1, Z.of_int64 (Mine.to_mutez v)), ctxt)
   | (Key_t _, k) -> (
       Lwt.return (Gas.consume ctxt Unparse_costs.key)
       >>=? fun ctxt ->
@@ -5977,6 +6041,8 @@ let rec extract_big_map_updates :
       return (ctxt, v, ids, acc)
   | (Mutez_t _, v) ->
       return (ctxt, v, ids, acc)
+  | (Mumine_t _, v) ->
+      return (ctxt, v, ids, acc)
   | (Key_hash_t _, v) ->
       return (ctxt, v, ids, acc)
   | (Key_t _, v) ->
@@ -6053,6 +6119,8 @@ let collect_big_maps ctxt ty x =
     | (Bytes_t _, _) ->
         ok (acc, ctxt)
     | (Mutez_t _, _) ->
+        ok (acc, ctxt)
+    | (Mumine_t _, _) ->
         ok (acc, ctxt)
     | (Key_hash_t _, _) ->
         ok (acc, ctxt)

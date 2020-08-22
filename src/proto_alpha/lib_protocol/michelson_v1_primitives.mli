@@ -116,6 +116,7 @@ type prim =
   | I_SUB
   | I_SWAP
   | I_TRANSFER_TOKENS
+  | I_TRANSFER_MINE_TOKENS
   | I_SET_DELEGATE
   | I_UNIT
   | I_UPDATE

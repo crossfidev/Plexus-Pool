@@ -64,7 +64,7 @@ let pp_manager_operation_content (type kind) source internal pp_result ppf
       Format.fprintf
         ppf
         "@[<v 2>%s:@,Amount: %s%a@,From: %a@,To: %a"
-        (if internal then "Internal transaction" else "Transaction")
+        (if internal then "Internal transaction" else "MineTransaction")
         Client_proto_args.tez_sym
         Mine.pp
         amount

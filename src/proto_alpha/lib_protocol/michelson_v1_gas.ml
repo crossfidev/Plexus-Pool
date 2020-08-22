@@ -64,6 +64,8 @@ module Cost_of = struct
         Signature.Public_key_hash.size
     | Mutez_key _ ->
         8
+    | Mumine_key _ ->
+        8
     | Pair_key ((l, _), (r, _), _) ->
         let (lval, rval) = v in
         size_of_comparable l lval + size_of_comparable r rval
@@ -353,6 +355,8 @@ module Cost_of = struct
       | Bytes_key _ ->
           compare_bytes x y
       | Mutez_key _ ->
+          compare_tez x y
+      | Mumine_key _ ->
           compare_tez x y
       | Int_key _ ->
           compare_zint x y
@@ -645,6 +649,8 @@ module Cost_of = struct
       | Contract _ ->
           alloc_cost 2
       | Transfer_tokens ->
+          alloc_cost 1
+      | Transfer_mine_tokens ->
           alloc_cost 1
       | Create_account ->
           alloc_cost 2

@@ -177,6 +177,14 @@ let build_lambda_for_implicit ~delegate ~amount =
     delegate
     (Tez.to_mutez amount)
 
+let mine_build_lambda_for_implicit ~delegate ~amount =
+  let (`Hex delegate) = Signature.Public_key_hash.to_hex delegate in
+  Format.asprintf
+    "{ DROP ; NIL operation ;PUSH key_hash 0x%s; IMPLICIT_ACCOUNT;PUSH mumine \
+      %Ld ;UNIT;TRANSFER_MINE_TOKENS ; CONS }"
+    delegate
+    (Mine.to_mutez amount)
+
 let build_lambda_for_originated ~destination ~entrypoint ~amount
     ~parameter_type ~parameter =
   let destination =
@@ -198,6 +206,37 @@ let build_lambda_for_originated ~destination ~entrypoint ~amount
     Format.asprintf
       "{ DROP ; NIL operation ;PUSH address 0x%s; CONTRACT %s %a; \
        ASSERT_SOME;PUSH mutez %Ld ;PUSH %a %a;TRANSFER_TOKENS ; CONS }"
+      destination
+      entrypoint
+      Michelson_v1_printer.print_expr
+      parameter_type
+      amount
+      Michelson_v1_printer.print_expr
+      parameter_type
+      Michelson_v1_printer.print_expr
+      parameter
+
+let mine_build_lambda_for_originated ~destination ~entrypoint ~amount
+    ~parameter_type ~parameter =
+  let destination =
+    Data_encoding.Binary.to_bytes_exn Contract.encoding destination
+  in
+  let amount = Mine.to_mutez amount in
+  let (`Hex destination) = Hex.of_bytes destination in
+  let entrypoint = match entrypoint with "default" -> "" | s -> "%" ^ s in
+  if parameter_type = t_unit then
+    Format.asprintf
+      "{ DROP ; NIL operation ;PUSH address 0x%s; CONTRACT %s %a; \
+        ASSERT_SOME;PUSH mumine %Ld ;UNIT;TRANSFER_MINE_TOKENS ; CONS }"
+      destination
+      entrypoint
+      Michelson_v1_printer.print_expr
+      parameter_type
+      amount
+  else
+    Format.asprintf
+      "{ DROP ; NIL operation ;PUSH address 0x%s; CONTRACT %s %a; \
+        ASSERT_SOME;PUSH mumine %Ld ;PUSH %a %a;TRANSFER_MINE_TOKENS ; CONS }"
       destination
       entrypoint
       Michelson_v1_printer.print_expr
@@ -264,6 +303,84 @@ let transfer (cctxt : #full) ~chain ~block ?confirmations ?dry_run
   let operation =
     Transaction
       {amount = Tez.zero; parameters; entrypoint; destination = contract}
+  in
+  Injection.inject_manager_operation
+    cctxt
+    ~chain
+    ~block
+    ?confirmations
+    ?dry_run
+    ?verbose_signing
+    ?branch
+    ~source
+    ?fee
+    ?gas_limit
+    ?storage_limit
+    ?counter
+    ~src_pk
+    ~src_sk
+    ~fee_parameter
+    operation
+  >>=? fun ((_oph, _op, result) as res) ->
+  Lwt.return (Injection.originated_contracts (Single_result result))
+  >>=? fun contracts -> return (res, contracts)
+
+let mine_transfer (cctxt : #full) ~chain ~block ?confirmations ?dry_run
+    ?verbose_signing ?branch ~source ~src_pk ~src_sk ~contract ~destination
+    ?(entrypoint = "default") ?arg ~amount ?fee ?gas_limit ?storage_limit
+    ?counter ~fee_parameter () :
+    (Kind.mineTransaction Kind.manager Injection.result * Contract.t list) tzresult
+    Lwt.t =
+  ( match Alpha_context.Contract.is_implicit destination with
+  | Some delegate when entrypoint = "default" ->
+      return @@ mine_build_lambda_for_implicit ~delegate ~amount
+  | Some _ ->
+      cctxt#error
+        "Implicit accounts have no entrypoints. (targeted entrypoint %%%s on \
+         contract %a)"
+        entrypoint
+        Contract.pp
+        destination
+  | None ->
+      Michelson_v1_entrypoints.contract_entrypoint_type
+        cctxt
+        ~chain
+        ~block
+        ~contract:destination
+        ~entrypoint
+      >>=? (function
+             | None ->
+                 cctxt#error
+                   "Contract %a has no entrypoint named %s"
+                   Contract.pp
+                   destination
+                   entrypoint
+             | Some parameter_type ->
+                 return parameter_type)
+      >>=? fun parameter_type ->
+      ( match arg with
+      | Some arg ->
+          Lwt.return @@ Micheline_parser.no_parsing_error
+          @@ Michelson_v1_parser.parse_expression arg
+          >>=? fun {expanded = arg; _} -> return_some arg
+      | None ->
+          return_none )
+      >>=? fun parameter ->
+      let parameter = Option.value ~default:d_unit parameter in
+      return
+      @@ mine_build_lambda_for_originated
+           ~destination
+           ~entrypoint
+           ~amount
+           ~parameter_type
+           ~parameter )
+  >>=? fun lambda ->
+  parse lambda
+  >>=? fun parameters ->
+  let entrypoint = "do" in
+  let operation =
+    MineTransaction
+      {amount = Mine.zero; parameters; entrypoint; destination = contract}
   in
   Injection.inject_manager_operation
     cctxt

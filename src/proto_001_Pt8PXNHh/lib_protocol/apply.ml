@@ -909,6 +909,16 @@ let precheck_manager_contents (type kind) ctxt chain_id raw_operation
       trace Gas_quota_exceeded_init_deserialize
       @@ Script.force_decode ctxt parameters
       >>|? fun (_arg, ctxt) -> ctxt
+  | MineTransaction {parameters; _} ->
+      (* Fail quickly if not enough gas for minimal deserialization cost *)
+      Lwt.return
+      @@ record_trace Gas_quota_exceeded_init_deserialize
+      @@ Gas.check_enough ctxt (Script.minimal_deserialize_cost parameters)
+      >>=? fun () ->
+      (* Fail if not enough gas for complete deserialization cost *)
+      trace Gas_quota_exceeded_init_deserialize
+      @@ Script.force_decode ctxt parameters
+      >>|? fun (_arg, ctxt) -> ctxt
   | Origination {script; _} ->
       (* Fail quickly if not enough gas for minimal deserialization cost *)
       Lwt.return

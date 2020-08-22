@@ -52,6 +52,7 @@ type (_, _) comparable_struct =
   | String_key : type_annot option -> (string, _) comparable_struct
   | Bytes_key : type_annot option -> (MBytes.t, _) comparable_struct
   | Mutez_key : type_annot option -> (Tez.t, _) comparable_struct
+  | Mumine_key : type_annot option -> (Mine.t, _) comparable_struct
   | Bool_key : type_annot option -> (bool, _) comparable_struct
   | Key_hash_key : type_annot option -> (public_key_hash, _) comparable_struct
   | Timestamp_key :
@@ -122,6 +123,7 @@ and 'ty ty =
   | String_t : type_annot option -> string ty
   | Bytes_t : type_annot option -> MBytes.t ty
   | Mutez_t : type_annot option -> Tez.t ty
+  | Mumine_t : type_annot option -> Mine.t ty
   | Key_hash_t : type_annot option -> public_key_hash ty
   | Key_t : type_annot option -> public_key ty
   | Timestamp_t : type_annot option -> Script_timestamp.t ty
@@ -346,6 +348,10 @@ and ('bef, 'aft) instr =
       -> (address * 'rest, 'p typed_contract option * 'rest) instr
   | Transfer_tokens
       : ( 'arg * (Tez.t * ('arg typed_contract * 'rest)),
+          operation * 'rest )
+        instr
+  | Transfer_mine_tokens
+      : ( 'arg * (Mine.t * ('arg typed_contract * 'rest)),
           operation * 'rest )
         instr
   | Create_account

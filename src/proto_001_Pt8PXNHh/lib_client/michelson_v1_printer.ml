@@ -370,6 +370,8 @@ let ocaml_constructor_of_prim =
       "I_SWAP"
   | I_TRANSFER_TOKENS ->
       "I_TRANSFER_TOKENS"
+  | I_TRANSFER_MINE_TOKENS ->
+      "I_TRANSFER_MINE_TOKENS"
   | I_SET_DELEGATE ->
       "I_SET_DELEGATE"
   | I_UNIT ->
