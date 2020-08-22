@@ -777,14 +777,14 @@ let mine_spend c contract amount =
                 delete c contract ) )
 
 let credit c contract amount mine_amount  =
-  ( if Tez_repr.(amount <> Tez_repr.zero) then return c
+  ( if Tez_repr.(amount <> Tez_repr.zero) || Mine_repr.(mine_amount <> Mine_repr.zero) then return c
   else
     Storage.Contract.Code.mem c contract
     >>=? fun (c, target_has_code) ->
     fail_unless target_has_code (Empty_transaction contract)
     >>=? fun () -> return c )
   >>=? fun c ->
-  Storage.Contract.Balance.get_option c contract
+  Storage.Contract.MineBalance.get_option c contract
   >>=? function
   | None -> (
     match Contract_repr.is_implicit contract with
@@ -792,10 +792,16 @@ let credit c contract amount mine_amount  =
         fail (Non_existing_contract contract)
     | Some manager ->
         create_implicit c manager ~balance:amount ~mine_balance:mine_amount )
-  | Some balance ->
+  | Some mine_balance ->
+      Storage.Contract.Balance.get c contract
+      >>=? fun balance ->
       Lwt.return Tez_repr.(amount +? balance)
       >>=? fun balance ->
       Storage.Contract.Balance.set c contract balance
+      >>=? fun c ->
+      Lwt.return Mine_repr.(mine_amount +? mine_balance)
+      >>=? fun mine_balance ->
+      Storage.Contract.MineBalance.set c contract mine_balance
       >>=? fun c -> Roll_storage.Contract.add_amount c contract mine_amount
 
 
