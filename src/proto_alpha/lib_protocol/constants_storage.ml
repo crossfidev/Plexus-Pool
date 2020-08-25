@@ -109,11 +109,57 @@ let endorsement_security_deposit c =
 
 let baking_reward_per_endorsement c =
   let constants = Raw_context.constants c in
-  constants.baking_reward_per_endorsement
+  let level = Raw_context.current_level c in
+  if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 
+    (Int32.add 1_209_600l (Int32.mul constants.blocks_per_cycle (Int32.of_int constants.preserved_cycles)))) then
+    List.map
+      (fun s -> (match Tez_repr.(s /? 8L) with 
+        Ok t -> t | 
+        Error _ -> assert false))
+      constants.baking_reward_per_endorsement
+  else if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 
+    (Int32.add 518_400l (Int32.mul constants.blocks_per_cycle (Int32.of_int constants.preserved_cycles)))) then
+    List.map
+      (fun s -> (match Tez_repr.(s /? 4L) with 
+        Ok t -> t | 
+        Error _ -> assert false))
+      constants.baking_reward_per_endorsement
+  else if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 
+    (Int32.add 172_800l (Int32.mul constants.blocks_per_cycle (Int32.of_int constants.preserved_cycles)))) then
+    List.map
+      (fun s -> (match Tez_repr.(s /? 2L) with 
+        Ok t -> t | 
+        Error _ -> assert false))
+      constants.baking_reward_per_endorsement
+  else
+    constants.baking_reward_per_endorsement
 
 let endorsement_reward c =
   let constants = Raw_context.constants c in
-  constants.endorsement_reward
+  let level = Raw_context.current_level c in
+  if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 
+    (Int32.add 1_209_600l (Int32.mul constants.blocks_per_cycle (Int32.of_int constants.preserved_cycles)))) then
+    List.map
+      (fun s -> (match Tez_repr.(s /? 8L) with 
+        Ok t -> t | 
+        Error _ -> assert false))
+      constants.endorsement_reward
+  else if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 
+    (Int32.add 518_400l (Int32.mul constants.blocks_per_cycle (Int32.of_int constants.preserved_cycles)))) then
+    List.map
+      (fun s -> (match Tez_repr.(s /? 4L) with 
+        Ok t -> t | 
+        Error _ -> assert false))
+      constants.endorsement_reward
+  else if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 
+    (Int32.add 172_800l (Int32.mul constants.blocks_per_cycle (Int32.of_int constants.preserved_cycles)))) then
+    List.map
+      (fun s -> (match Tez_repr.(s /? 2L) with 
+        Ok t -> t | 
+        Error _ -> assert false))
+      constants.endorsement_reward
+  else
+    constants.endorsement_reward
 
 let test_chain_duration c =
   let constants = Raw_context.constants c in

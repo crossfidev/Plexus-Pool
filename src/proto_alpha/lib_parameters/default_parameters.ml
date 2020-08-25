@@ -29,27 +29,27 @@ let constants_mainnet =
   Constants_repr.
     {
       preserved_cycles = 5;
-      blocks_per_cycle = 4096l;
+      blocks_per_cycle = 1440l;
       blocks_per_commitment = 32l;
       blocks_per_roll_snapshot = 256l;
       blocks_per_voting_period = 32768l;
       time_between_blocks = List.map Period_repr.of_seconds_exn [60L; 40L];
-      endorsers_per_block = 32;
+      endorsers_per_block = 30;
       hard_gas_limit_per_operation = Z.of_int 1_040_000;
       hard_gas_limit_per_block = Z.of_int 10_400_000;
       proof_of_work_threshold = Int64.(sub (shift_left 1L 46) 1L);
       tokens_per_roll = Tez_repr.zero;
-      mine_tokens_per_roll = Mine_repr.(mul_exn one 8_000);
+      mine_tokens_per_roll = Mine_repr.(mul_exn one 1_000_000);
       michelson_maximum_type_size = 1000;
-      seed_nonce_revelation_tip =
-        (match Tez_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false);
+      seed_nonce_revelation_tip = Tez_repr.zero;
+        (* (match Tez_repr.(one /? 8L) with Ok c -> c | Error _ -> assert false); *)
       origination_size = 257;
-      block_security_deposit = Mine_repr.(mul_exn one 512);
-      endorsement_security_deposit = Mine_repr.(mul_exn one 64);
+      block_security_deposit = Mine_repr.(mul_exn one 60000);
+      endorsement_security_deposit = Mine_repr.(mul_exn one 2000);
       baking_reward_per_endorsement =
-        Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 187_500L];
+        Tez_repr.[of_mutez_exn 10_000_000L; of_mutez_exn 1_500_000L];
       endorsement_reward =
-        Tez_repr.[of_mutez_exn 1_250_000L; of_mutez_exn 833_333L];
+        Tez_repr.[of_mutez_exn 10_000_000L; of_mutez_exn 6_666_000L];
       hard_storage_limit_per_operation = Z.of_int 60_000;
       cost_per_byte = Mine_repr.of_mutez_exn 1_000L;
       test_chain_duration = Int64.mul 32768L 60L;
