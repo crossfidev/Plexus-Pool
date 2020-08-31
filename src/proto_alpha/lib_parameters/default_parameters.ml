@@ -91,14 +91,10 @@ let constants_test =
     }
 
 let bootstrap_accounts_strings =
-  [ "edpktyrhPtpHe9L99NrTCMCAqPLJeLB5d93qDThhtz8noE68kAACQr";
-    "edpkuBaqbY28mt1ycXoW4sai1L4uyRjaa6BmLgjiHAWEFQ3k14yVpb";
-    "edpkuVrEh8PgvPhNpraufKJF45NQ76pGbhWBHfsRFQ1gL7tXQF9B5Y";
-    "edpku5or2xS8BQ2deKoA2htmDZ4tyQptQ4USpAkqX4raLRBGHY62Yu";
-    "edpku6G3HftKoxMjMSwR9NyV3TatjbDsq4QqV1ycVu53Lmjhs8iSbP" ]
+  [ "edpktyrhPtpHe9L99NrTCMCAqPLJeLB5d93qDThhtz8noE68kAACQr" ]
 
-let mine_bootstrap_balance = Mine_repr.of_mutez_exn 8_000_000_000_000L
-let bootstrap_balance = Tez_repr.of_mutez_exn 1L
+let mine_bootstrap_balance = Mine_repr.of_mutez_exn 259_200_000_000_000_000L
+let bootstrap_balance = Tez_repr.zero
 
 let bootstrap_accounts =
   List.map
@@ -121,11 +117,7 @@ let commitments =
     Data_encoding.Json.from_string
       {json|
   [
-    [ "bmp1U7vHEGkuNbGYg42nUV9qL18aCrJf983Ji", "80000000000" ],
-    [ "bmp1Cx9gmg4ASQTkwdrjG1vQkiyCDMa3CDJ4C", "80000000000" ],
-    [ "bmp1DJBB2ZryDW1ZKK8V8uhaziGVWSWr4T39E", "80000000000" ],
-    [ "bmp16ktx4babeeYuq79DZgNphCRcVDFp6xBL1", "80000000000" ],
-    [ "bmp1FB2BMGcbq3r9ZtxdMxjG9GgxfCHBCzwBw", "80000000000" ]
+    [ "bmp1U7vHEGkuNbGYg42nUV9qL18aCrJf983Ji", "2592000000000000" ]
   ]|json}
   in
   match json_result with

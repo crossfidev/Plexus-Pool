@@ -82,7 +82,7 @@ let blockchain_network_mainnet =
   make_blockchain_network
     ~alias:"mainnet"
     {
-      time = Time.Protocol.of_notation_exn "2018-06-30T16:07:32Z";
+      time = Time.Protocol.of_notation_exn "2020-08-30T00:00:00Z";
       block =
         Block_hash.of_b58check_exn
           "BLockGenesisGenesisGenesisGenesisGenesisf79b5d1CoW2";
