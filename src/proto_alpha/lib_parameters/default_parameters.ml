@@ -51,7 +51,7 @@ let constants_mainnet =
       endorsement_reward =
         Tez_repr.[of_mutez_exn 10_000_000L; of_mutez_exn 6_666_000L];
       hard_storage_limit_per_operation = Z.of_int 60_000;
-      cost_per_byte = Mine_repr.of_mutez_exn 1_000L;
+      cost_per_byte = Mine_repr.of_mutez_exn 1_000_000L;
       test_chain_duration = Int64.mul 32768L 60L;
       quorum_min = 20_00l;
       (* quorum is in centile of a percentage *)
@@ -90,23 +90,153 @@ let constants_test =
       delay_per_missing_endorsement = Period_repr.of_seconds_exn 1L;
     }
 
-let bootstrap_accounts_strings =
-  [ "edpktyrhPtpHe9L99NrTCMCAqPLJeLB5d93qDThhtz8noE68kAACQr" ]
+type bootstrap_accounts_strings = { pk : string; mine_amount: Mine_repr.t }
 
-let mine_bootstrap_balance = Mine_repr.of_mutez_exn 259_200_000_000_000_000L
+let bootstrap_accounts_strings =
+  [ 
+    { 
+      pk = "edpktyrhPtpHe9L99NrTCMCAqPLJeLB5d93qDThhtz8noE68kAACQr"; 
+      mine_amount = Mine_repr.of_mutez_exn 178_848_000_000_000_000L
+    };
+    { 
+      pk = "edpkuhBnXw3jLAz1fsUrRWwMdEzxULUwwHozQQpRSmhbB1njSRRNeJ"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuqk189GDocesVp9sTNZJi4rL2mdTJf3jrcpdw1x5WzVA3ELWVA"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuCNTbwVyM52VexJsdLm5J93Wbo8GddkB83MNtgmvokgdNrzVAh"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpktwYJM7QtHvzzrgv1Lqgaif3wZbqJjXmU7e9vr2GuaRMRUUL7MD"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuBVeNzHpsVhjujndaRU3KkT1DgKcjx6rS3gNPQomtJJ9gURfyE"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuWoRCbAjov2AJBWkCsogw6AtSwKdiCHXrvXrPJGSscTzaN3VQL"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpku1RkBHHW5KthSjAVjuSFh2FSYGyZ8ddbdwms2SD5je1k4ha8cX"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvYXrnKJJNC7bCs5Z3gxmSLpaUyWJGhASJxZVeukfuECZzqWUkH"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkutn48twPLT5ziEkQJYoWYHdqXBvrZbHrXwne6FukW1MmzjtPnN"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuRdy1a53bqoCEmiy5nc9LzEKUFZZwHhyinrj7KoLdB8oAi6qus"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpktnbXfA47jGanZo5Ypcr8R1krL2GAvdyh9n5aYh14oMKduiJZGu"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkv685gwm6JnFiGaygigwSEC5oFFAb2MgooJLjKpWJB7LB6krND2"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkub95XjEbGQWknyF6ShV65BDuG2QJfMYFdJufNQD4hUsMBGPU9p"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkudZ1pfe5sD7Eqiyyyv4PKF1JbiDBva5MGjHPwHR3VYqq4sod1i"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkukAmW7X2mtd6aynGgGxvZSCKf5wAUKKBcbtvtYV19poQna7yJP"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvNbWjmKrJKYnmuRoowwu7iFGV4m21gicHiUYym5fmcjNkKHtgs"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvRZLkxLTjrfLpEuhgBfudfgKD4w5BnY4s9W5F5TfQRens7pB3R"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpku9GxxKZwkkUTS1o3CBAKBaZF8XgyXuk3zLkKQ6K3ULiqZwnL5E"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvJr4Fo5s19uDibQYQpWvgKiEtdA2PzFm8yHthoTL38Roua95G9"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpktuYqEc7grSCVK7GcFuAWdJK7U5riTafdEa7zN5awC9ayzPUpeg"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpktervQif2tGmfUv4ymqsrPYM2jK18hByCo3FnEnAZDtySNYVXyX"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvXJ9GxLwfS7KqFxo5DojdNf6TjuLNFzhb9EW5JriSAijaPZALN"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpktiVANm5mk4yaRPzKk1KiEmNZM9SHvZYZC2ezivXPZyqK4W2Lsy"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvHceq2f2XzbEJq6WzafUcfsyLUCTPz2Np5twkHcMLckGUMGon7"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuY6dGw3y913CJkKMXKNHgX8RaSMPbUD6QSYZ7UdLyknjtkwJY1"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuyjumZ7htWYceHcjmd9Dvm9PBwTH3YxQvnE2k555nicd1Ui3YK"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvHF4LTxVu9SPRZNHjWpxyrYbFn1gRaZqEb8ghHh9a82aVb83gz"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuC6SABjEYdMAhc8e6phK37GirKvVn88k5idKeDaUj3BWgpCnMh"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkvZxufQ7LY9145G1m6VdxLGSjDt8y71YrJTFJBS87FCov6rWL9z"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpku12x8b2oSkjPxg8Q8j3gCvS4ncCxQPNFJF56q8GkJKGYgbs3s3"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+    { 
+      pk = "edpkuZGcWz74e33wT4kjqJYrsnG4TiZxAmKVmjHaU7Cp45f9BsWDmf"; 
+      mine_amount = Mine_repr.of_mutez_exn 2_592_000_000_000_000L
+    };
+  ]
+
 let bootstrap_balance = Tez_repr.zero
 
 let bootstrap_accounts =
   List.map
     (fun s ->
-      let public_key = Signature.Public_key.of_b58check_exn s in
+      let public_key = Signature.Public_key.of_b58check_exn s.pk in
       let public_key_hash = Signature.Public_key.hash public_key in
       Parameters_repr.
         {
           public_key_hash;
           public_key = Some public_key;
           amount = bootstrap_balance;
-          mine_amount = mine_bootstrap_balance;
+          mine_amount = s.mine_amount;
         })
     bootstrap_accounts_strings
 
