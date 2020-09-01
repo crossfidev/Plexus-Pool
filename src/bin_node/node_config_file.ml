@@ -94,7 +94,10 @@ let blockchain_network_mainnet =
     ~old_chain_name:"MINEPLEX_BETANET_2018-06-30T16:07:32Z"
     ~incompatible_chain_name:"INCOMPATIBLE"
     ~sandboxed_chain_name:"SANDBOXED_MINEPLEX_MAINNET"
-    ~default_bootstrap_peers:["192.168.0.104"]
+    ~default_bootstrap_peers:
+      [ "bootstrap1.mineplex.io"; 
+        "bootstrap2.mineplex.io"; 
+        "bootstrap3.mineplex.io" ]
 
 let blockchain_network_carthagenet =
   make_blockchain_network
