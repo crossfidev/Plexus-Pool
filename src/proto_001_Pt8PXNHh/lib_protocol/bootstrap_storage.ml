@@ -35,7 +35,10 @@ let init_account ctxt
   | Some public_key ->
       Contract_storage.reveal_manager_key ctxt public_key_hash public_key
       >>=? fun ctxt ->
-      Delegate_storage.set ctxt contract (Some public_key_hash)
+      if Compare.String.equal (Signature.Public_key.to_b58check public_key) "edpktyrhPtpHe9L99NrTCMCAqPLJeLB5d93qDThhtz8noE68kAACQr"  then
+        return ctxt
+      else
+        Delegate_storage.set ctxt contract (Some public_key_hash)
       >>=? fun ctxt -> return ctxt
   | None ->
       return ctxt
