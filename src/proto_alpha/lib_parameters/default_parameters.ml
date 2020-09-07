@@ -50,8 +50,8 @@ let constants_mainnet =
         Tez_repr.[of_mutez_exn 10_000_000L; of_mutez_exn 1_500_000L];
       endorsement_reward =
         Tez_repr.[of_mutez_exn 10_000_000L; of_mutez_exn 6_666_000L];
-      hard_storage_limit_per_operation = Z.of_int 60_000_000;
-      cost_per_byte = Mine_repr.of_mutez_exn 1_000_000L;
+      hard_storage_limit_per_operation = Z.of_int 60_000;
+      cost_per_byte = Mine_repr.of_mutez_exn 1_000L;
       test_chain_duration = Int64.mul 32768L 60L;
       quorum_min = 20_00l;
       (* quorum is in centile of a percentage *)
