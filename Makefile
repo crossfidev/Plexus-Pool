@@ -46,17 +46,17 @@ endif
 		$(foreach p, $(active_protocol_directories), src/proto_$(p)/lib_parameters/mainnet-parameters.json) \
 		$(foreach p, $(active_protocol_directories), src/proto_$(p)/lib_parameters/sandbox-parameters.json) \
 		$(foreach p, $(active_protocol_directories), src/proto_$(p)/lib_parameters/test-parameters.json)
-	@cp _build/default/src/bin_node/main.exe tezos-node
-	@cp _build/default/src/bin_validation/main_validator.exe tezos-validator
-	@cp _build/default/src/bin_client/main_client.exe tezos-client
-	@cp _build/default/src/bin_client/main_admin.exe tezos-admin-client
-	@cp _build/default/src/bin_signer/main_signer.exe tezos-signer
-	@cp _build/default/src/bin_codec/codec.exe tezos-codec
-	@cp _build/default/src/lib_protocol_compiler/main_native.exe tezos-protocol-compiler
+	@cp _build/default/src/bin_node/main.exe mineplex-node
+	@cp _build/default/src/bin_validation/main_validator.exe mineplex-validator
+	@cp _build/default/src/bin_client/main_client.exe mineplex-client
+	@cp _build/default/src/bin_client/main_admin.exe mineplex-admin-client
+	@cp _build/default/src/bin_signer/main_signer.exe mineplex-signer
+	@cp _build/default/src/bin_codec/codec.exe mineplex-codec
+	@cp _build/default/src/lib_protocol_compiler/main_native.exe mineplex-protocol-compiler
 	@for p in $(active_protocol_directories) ; do \
-	   cp _build/default/src/proto_$$p/bin_baker/main_baker_$$p.exe tezos-baker-`echo $$p | tr -- _ -` ; \
-	   cp _build/default/src/proto_$$p/bin_endorser/main_endorser_$$p.exe tezos-endorser-`echo $$p | tr -- _ -` ; \
-	   cp _build/default/src/proto_$$p/bin_accuser/main_accuser_$$p.exe tezos-accuser-`echo $$p | tr -- _ -` ; \
+	   cp _build/default/src/proto_$$p/bin_baker/main_baker_$$p.exe mineplex-baker-`echo $$p | tr -- _ -` ; \
+	   cp _build/default/src/proto_$$p/bin_endorser/main_endorser_$$p.exe mineplex-endorser-`echo $$p | tr -- _ -` ; \
+	   cp _build/default/src/proto_$$p/bin_accuser/main_accuser_$$p.exe mineplex-accuser-`echo $$p | tr -- _ -` ; \
 	   cp _build/default/src/proto_$$p/lib_parameters/mainnet-parameters.json src/proto_$$p/parameters/mainnet-parameters.json ; \
 	   cp _build/default/src/proto_$$p/lib_parameters/sandbox-parameters.json src/proto_$$p/parameters/sandbox-parameters.json ; \
 	   cp _build/default/src/proto_$$p/lib_parameters/test-parameters.json src/proto_$$p/parameters/test-parameters.json ; \
@@ -95,12 +95,12 @@ $(addsuffix .test,${PACKAGES}): %.test:
 .PHONY: doc-html
 doc-html: all
 	@dune build @doc
-	@./tezos-client -protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/tezos-client.html
-	@./tezos-admin-client man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/tezos-admin-client.html
-	@./tezos-signer man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/tezos-signer.html
-	@./tezos-baker-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/tezos-baker-alpha.html
-	@./tezos-endorser-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/tezos-endorser-alpha.html
-	@./tezos-accuser-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/tezos-accuser-alpha.html
+	@./mineplex-client -protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-client.html
+	@./mineplex-admin-client man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-admin-client.html
+	@./mineplex-signer man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-signer.html
+	@./mineplex-baker-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-baker-alpha.html
+	@./mineplex-endorser-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-endorser-alpha.html
+	@./mineplex-accuser-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-accuser-alpha.html
 	@mkdir -p $$(pwd)/docs/_build/api/odoc
 	@rm -rf $$(pwd)/docs/_build/api/odoc/*
 	@cp -r $$(pwd)/_build/default/_doc/* $$(pwd)/docs/_build/api/odoc/
@@ -127,7 +127,7 @@ coverage-report-summary:
 .PHONY: build-sandbox
 build-sandbox:
 	@dune build src/bin_sandbox/main.exe
-	@cp _build/default/src/bin_sandbox/main.exe tezos-sandbox
+	@cp _build/default/src/bin_sandbox/main.exe mineplex-sandbox
 
 .PHONY: build-test
 build-test: build-sandbox
@@ -237,15 +237,15 @@ coverage-clean:
 clean: coverage-clean
 	@-dune clean
 	@-rm -f \
-		tezos-node \
-		tezos-validator \
-		tezos-client \
-		tezos-signer \
-		tezos-admin-client \
-		tezos-codec \
-		tezos-protocol-compiler \
-		tezos-sandbox \
-	  $(foreach p, $(active_protocol_versions), tezos-baker-$(p) tezos-endorser-$(p) tezos-accuser-$(p)) \
+		mineplex-node \
+		mineplex-validator \
+		mineplex-client \
+		mineplex-signer \
+		mineplex-admin-client \
+		mineplex-codec \
+		mineplex-protocol-compiler \
+		mineplex-sandbox \
+	  $(foreach p, $(active_protocol_versions), mineplex-baker-$(p) mineplex-endorser-$(p) mineplex-accuser-$(p)) \
 	  $(foreach p, $(active_protocol_directories), src/proto_$(p)/parameters/sandbox-parameters.json src/proto_$(p)/parameters/test-parameters.json)
 	@-${MAKE} -C docs clean
-	@-rm -f docs/api/tezos-{baker,endorser,accuser}-alpha.html docs/api/tezos-{admin-,}client.html docs/api/tezos-signer.html
+	@-rm -f docs/api/mineplex-{baker,endorser,accuser}-alpha.html docs/api/mineplex-{admin-,}client.html docs/api/mineplex-signer.html
