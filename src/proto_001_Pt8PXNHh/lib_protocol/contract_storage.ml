@@ -531,6 +531,8 @@ let delete c contract =
       >>=? fun c ->
       Storage.Contract.Balance.delete c contract
       >>=? fun c ->
+      Storage.Contract.MineBalance.delete c contract
+      >>=? fun c ->
       Storage.Contract.Manager.delete c contract
       >>=? fun c ->
       Storage.Contract.Counter.delete c contract
@@ -723,6 +725,8 @@ let update_script_storage c contract storage big_map_diff =
 let spend c contract amount =
   Storage.Contract.Balance.get c contract
   >>=? fun balance ->
+  Storage.Contract.MineBalance.get c contract
+  >>=? fun mine_balance ->
   match Tez_repr.(balance -? amount) with
   | Error _ ->
       fail (Balance_too_low (contract, balance, amount))
@@ -733,27 +737,31 @@ let spend c contract amount =
       >>=? fun c ->
       if Tez_repr.(new_balance > Tez_repr.zero) then return c
       else
-        match Contract_repr.is_implicit contract with
-        | None ->
-            return c (* Never delete originated contracts *)
-        | Some pkh -> (
-            Delegate_storage.get c contract
-            >>=? function
-            | Some pkh' ->
-                if Signature.Public_key_hash.equal pkh pkh' then return c
-                else
-                  (* Delegated implicit accounts cannot be emptied *)
-                  fail (Empty_implicit_delegated_contract pkh)
-            | None ->
-                (* Delete empty implicit contract *)
-                delete c contract ) )
+        if Mine_repr.(mine_balance > Mine_repr.zero) then return c
+        else
+          match Contract_repr.is_implicit contract with
+          | None ->
+              return c (* Never delete originated contracts *)
+          | Some pkh -> (
+              Delegate_storage.get c contract
+              >>=? function
+              | Some pkh' ->
+                  if Signature.Public_key_hash.equal pkh pkh' then return c
+                  else
+                    (* Delegated implicit accounts cannot be emptied *)
+                    fail (Empty_implicit_delegated_contract pkh)
+              | None ->
+                  (* Delete empty implicit contract *)
+                  delete c contract ) )
 
 let mine_spend c contract amount =
   Storage.Contract.MineBalance.get c contract
+  >>=? fun mine_balance ->
+  Storage.Contract.Balance.get c contract
   >>=? fun balance ->
-  match Mine_repr.(balance -? amount) with
+  match Mine_repr.(mine_balance -? amount) with
   | Error _ ->
-      fail (MineBalance_too_low (contract, balance, amount))
+      fail (MineBalance_too_low (contract, mine_balance, amount))
   | Ok new_balance -> (
       Storage.Contract.MineBalance.set c contract new_balance
       >>=? fun c ->
@@ -761,20 +769,22 @@ let mine_spend c contract amount =
       >>=? fun c ->
       if Mine_repr.(new_balance > Mine_repr.zero) then return c
       else
-        match Contract_repr.is_implicit contract with
-        | None ->
-            return c (* Never delete originated contracts *)
-        | Some pkh -> (
-            Delegate_storage.get c contract
-            >>=? function
-            | Some pkh' ->
-                if Signature.Public_key_hash.equal pkh pkh' then return c
-                else
-                  (* Delegated implicit accounts cannot be emptied *)
-                  fail (Empty_implicit_delegated_contract pkh)
-            | None ->
-                (* Delete empty implicit contract *)
-                delete c contract ) )
+        if Tez_repr.(balance > Tez_repr.zero) then return c
+        else
+          match Contract_repr.is_implicit contract with
+          | None ->
+              return c (* Never delete originated contracts *)
+          | Some pkh -> (
+              Delegate_storage.get c contract
+              >>=? function
+              | Some pkh' ->
+                  if Signature.Public_key_hash.equal pkh pkh' then return c
+                  else
+                    (* Delegated implicit accounts cannot be emptied *)
+                    fail (Empty_implicit_delegated_contract pkh)
+              | None ->
+                  (* Delete empty implicit contract *)
+                  delete c contract ) )
 
 let credit c contract amount mine_amount  =
   ( if Tez_repr.(amount <> Tez_repr.zero) || Mine_repr.(mine_amount <> Mine_repr.zero) then return c
