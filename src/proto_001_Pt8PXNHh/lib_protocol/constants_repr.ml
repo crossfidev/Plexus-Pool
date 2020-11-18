@@ -37,6 +37,10 @@ let max_proposals_per_delegate = 20
 
 let max_operation_data_length = 16 * 1024 (* 16kB *)
 
+module Updates = struct
+  let removing_empty_address = 58983l
+end
+
 type fixed = {
   proof_of_work_nonce_size : int;
   nonce_length : int;
