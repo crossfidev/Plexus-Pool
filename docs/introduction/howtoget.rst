@@ -23,6 +23,7 @@ A Windows port is feasible and might be developed in the future.
 
 Set up environment
 ------------------
+
 ::
    sudo apt install -y rsync git m4 build-essential patch unzip wget pkg-config libgmp-dev libev-dev libhidapi-dev libffi-dev opam jq
    add-apt-repository ppa:avsm/ppa
@@ -32,12 +33,14 @@ Set up environment
 
 So, you need to add new user (Working sudo you can face with something problems).
 ---------------------------------------------------------------------------------
+
 ::
    sudo adduser mineplex
    su mineplex
 
 Get the sources
 ---------------
+
 ::
    cd ~
    git clone https://github.com/mineplexio/Plexus-Pool.git -b mineplex-beta-protocol mineplex.blockchain
@@ -46,6 +49,7 @@ Get the sources
 
 Install rustup
 --------------
+
 ::
    opam init --bare
     
