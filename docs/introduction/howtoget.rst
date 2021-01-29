@@ -24,7 +24,7 @@ A Windows port is feasible and might be developed in the future.
 Set up environment
 ------------------
 
-.. code-block:: bash
+.. code-block:: sh
    sudo apt install -y rsync git m4 build-essential patch unzip wget pkg-config libgmp-dev libev-dev libhidapi-dev libffi-dev opam jq
    add-apt-repository ppa:avsm/ppa
    apt update
