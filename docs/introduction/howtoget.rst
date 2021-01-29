@@ -23,7 +23,6 @@ A Windows port is feasible and might be developed in the future.
 
 Set up environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 ::
    sudo apt install -y rsync git m4 build-essential patch unzip wget pkg-config libgmp-dev libev-dev libhidapi-dev libffi-dev opam jq
    add-apt-repository ppa:avsm/ppa
@@ -38,7 +37,6 @@ So, you need to add new user (Working sudo you can face with something problems)
 
 Get the sources
 ---------------
-
 ::
    cd ~
    git clone https://github.com/mineplexio/Plexus-Pool.git -b mineplex-beta-protocol mineplex.blockchain
@@ -47,7 +45,6 @@ Get the sources
 
 Install rustup
 ---------------
-
 ::
    opam init --bare
     
@@ -63,7 +60,6 @@ Install Mineplex dependencies
 --------------------------
 
 Install the OCaml compiler and the libraries which Mineplex depends on::
-
    make build-deps
 
 
@@ -72,7 +68,6 @@ Compile
 
 Once the dependencies are done we can update opam's environment to
 refer to the new switch and compile the project::
-
    eval $(opam env)
    mkdir src/proto_001_Pt8PXNHh/parameters
    make
