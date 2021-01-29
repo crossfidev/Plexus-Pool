@@ -522,6 +522,7 @@ let create_implicit c manager ~balance ~mine_balance =
     ()
 
 let delete c contract =
+  let level = Raw_context.current_level c in
   match Contract_repr.is_implicit contract with
   | None ->
       (* For non implicit contract Big_map should be cleared *)
@@ -530,6 +531,15 @@ let delete c contract =
       Delegate_storage.remove c contract
       >>=? fun c ->
       Storage.Contract.Balance.delete c contract
+      >>=? fun c ->
+        (* Compatibilities for syncronize of Mineplex *)
+        (if 
+          Compare.Int32.((Raw_level_repr.to_int32 level.level) >= Constants_repr.Updates.removing_empty_address)
+        then
+          Storage.Contract.MineBalance.delete c contract
+        else begin
+          return c
+        end);
       >>=? fun c ->
       Storage.Contract.Manager.delete c contract
       >>=? fun c ->
@@ -721,8 +731,11 @@ let update_script_storage c contract storage big_map_diff =
   Storage.Contract.Used_storage_space.set c contract new_size
 
 let spend c contract amount =
+  let level = Raw_context.current_level c in
   Storage.Contract.Balance.get c contract
   >>=? fun balance ->
+  Storage.Contract.MineBalance.get c contract
+  >>=? fun mine_balance ->
   match Tez_repr.(balance -? amount) with
   | Error _ ->
       fail (Balance_too_low (contract, balance, amount))
@@ -733,27 +746,36 @@ let spend c contract amount =
       >>=? fun c ->
       if Tez_repr.(new_balance > Tez_repr.zero) then return c
       else
-        match Contract_repr.is_implicit contract with
-        | None ->
-            return c (* Never delete originated contracts *)
-        | Some pkh -> (
-            Delegate_storage.get c contract
-            >>=? function
-            | Some pkh' ->
-                if Signature.Public_key_hash.equal pkh pkh' then return c
-                else
-                  (* Delegated implicit accounts cannot be emptied *)
-                  fail (Empty_implicit_delegated_contract pkh)
-            | None ->
-                (* Delete empty implicit contract *)
-                delete c contract ) )
+        if
+          (* Compatibilities for syncronize of Mineplex *)
+          Compare.Int32.((Raw_level_repr.to_int32 level.level) >= Constants_repr.Updates.removing_empty_address) && 
+          Mine_repr.(mine_balance > Mine_repr.zero) 
+        then return c
+        else
+          match Contract_repr.is_implicit contract with
+          | None ->
+              return c (* Never delete originated contracts *)
+          | Some pkh -> (
+              Delegate_storage.get c contract
+              >>=? function
+              | Some pkh' ->
+                  if Signature.Public_key_hash.equal pkh pkh' then return c
+                  else
+                    (* Delegated implicit accounts cannot be emptied *)
+                    fail (Empty_implicit_delegated_contract pkh)
+              | None ->
+                  (* Delete empty implicit contract *)
+                  delete c contract ) )
 
 let mine_spend c contract amount =
+  let level = Raw_context.current_level c in
   Storage.Contract.MineBalance.get c contract
+  >>=? fun mine_balance ->
+  Storage.Contract.Balance.get c contract
   >>=? fun balance ->
-  match Mine_repr.(balance -? amount) with
+  match Mine_repr.(mine_balance -? amount) with
   | Error _ ->
-      fail (MineBalance_too_low (contract, balance, amount))
+      fail (MineBalance_too_low (contract, mine_balance, amount))
   | Ok new_balance -> (
       Storage.Contract.MineBalance.set c contract new_balance
       >>=? fun c ->
@@ -761,20 +783,26 @@ let mine_spend c contract amount =
       >>=? fun c ->
       if Mine_repr.(new_balance > Mine_repr.zero) then return c
       else
-        match Contract_repr.is_implicit contract with
-        | None ->
-            return c (* Never delete originated contracts *)
-        | Some pkh -> (
-            Delegate_storage.get c contract
-            >>=? function
-            | Some pkh' ->
-                if Signature.Public_key_hash.equal pkh pkh' then return c
-                else
-                  (* Delegated implicit accounts cannot be emptied *)
-                  fail (Empty_implicit_delegated_contract pkh)
-            | None ->
-                (* Delete empty implicit contract *)
-                delete c contract ) )
+        if 
+          (* Compatibilities for syncronize of Mineplex *)
+          Compare.Int32.((Raw_level_repr.to_int32 level.level) >= Constants_repr.Updates.removing_empty_address) && 
+          Tez_repr.(balance > Tez_repr.zero)
+        then return c
+        else
+          match Contract_repr.is_implicit contract with
+          | None ->
+              return c (* Never delete originated contracts *)
+          | Some pkh -> (
+              Delegate_storage.get c contract
+              >>=? function
+              | Some pkh' ->
+                  if Signature.Public_key_hash.equal pkh pkh' then return c
+                  else
+                    (* Delegated implicit accounts cannot be emptied *)
+                    fail (Empty_implicit_delegated_contract pkh)
+              | None ->
+                  (* Delete empty implicit contract *)
+                  delete c contract ) )
 
 let credit c contract amount mine_amount  =
   ( if Tez_repr.(amount <> Tez_repr.zero) || Mine_repr.(mine_amount <> Mine_repr.zero) then return c
