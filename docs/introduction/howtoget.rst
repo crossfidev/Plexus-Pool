@@ -35,7 +35,6 @@ So, you need to add new user (Working sudo you can face with something problems)
    su mineplex
 
 Get the sources
----------------
 ::
    cd ~
    git clone https://github.com/mineplexio/Plexus-Pool.git -b mineplex-beta-protocol mineplex.blockchain
