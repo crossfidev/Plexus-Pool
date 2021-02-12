@@ -177,4 +177,6 @@ let min_proposal_quorum c =
   let constants = Raw_context.constants c in
   constants.min_proposal_quorum
 
-let parametric c = Raw_context.constants c
+let parametric c =
+  let constants = Raw_context.constants c in
+  {constants with baking_reward_per_endorsement = (baking_reward_per_endorsement c); endorsement_reward = (endorsement_reward c)}
