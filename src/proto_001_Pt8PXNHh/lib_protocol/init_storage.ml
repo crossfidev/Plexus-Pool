@@ -56,8 +56,8 @@ let prepare_first_block ctxt ~typecheck ~level ~timestamp ~fitness =
   | Alpha_previous ->
       Logging.log_notice "\nAlpha_previous STITCHING!\n" ;
       return ctxt
-  | Carthage_006 ->
-      Logging.log_notice "\narthage_006 STITCHING!\n" ;
+  | D_001 ->
+      Logging.log_notice "\nD_001 STITCHING!\n" ;
       return ctxt
 
 let prepare ctxt ~level ~predecessor_timestamp ~timestamp ~fitness =

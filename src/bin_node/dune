@@ -47,6 +47,12 @@
             (select void_for_linking-001-Pt8PXNHh-mempool from
               (tezos-mempool-001-Pt8PXNHh -> void_for_linking)
               (-> void_for_linking))
+            (select void_for_linking-002-Pt4xzupC from
+              (tezos-embedded-protocol-002-Pt4xzupC -> void_for_linking)
+              (-> void_for_linking))
+            (select void_for_linking-002-Pt4xzupC-mempool from
+              (tezos-mempool-002-Pt4xzupC -> void_for_linking)
+              (-> void_for_linking))
             cmdliner
             tls)
  (flags (:standard -open Tezos_base__TzPervasives

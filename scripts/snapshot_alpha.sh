@@ -28,16 +28,18 @@ fi
 
 # create a temporary directory until the hash is known
 # this is equivalent to `cp src/proto_alpha/ src/proto_${version}` but only for versioned files
-mkdir /tmp/tezos_proto_snapshot
-git archive HEAD src/proto_alpha/ | tar -x -C /tmp/tezos_proto_snapshot
-mv /tmp/tezos_proto_snapshot/src/proto_alpha src/proto_${version}
-rm -rf /tmp/tezos_proto_snapshot
+
+cp -R src/proto_alpha/ src/proto_${version}
+# mkdir /tmp/tezos_proto_snapshot
+# git archive HEAD src/proto_alpha/ | tar -x -C /tmp/tezos_proto_snapshot
+# mv /tmp/tezos_proto_snapshot/src/proto_alpha src/proto_${version}
+# rm -rf /tmp/tezos_proto_snapshot
 
 # set current version
 sed -i.old.old -e 's/let version_value = "alpha_current"/let version_value = "'${current}'"/' \
     src/proto_${version}/lib_protocol/raw_context.ml
 
-long_hash=$(./tezos-protocol-compiler -hash-only src/proto_${version}/lib_protocol)
+long_hash=$(./mineplex-protocol-compiler -hash-only src/proto_${version}/lib_protocol)
 short_hash=$(echo $long_hash | head -c 8)
 
 if [ -d src/proto_${version}_${short_hash} ] ; then

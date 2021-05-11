@@ -70,7 +70,7 @@ duplicate_and_replace ${pattern} ${replacement} active_protocol_versions
 
 # activate in client to bake and use RPCs
 duplicate_and_replace -${pattern} -${replacement} \
-    src/bin_client/tezos-client.opam
+    src/bin_client/mineplex-client.opam
 duplicate_and_replace_when_2_occ -${pattern} -${replacement} \
     src/bin_client/dune
 
@@ -78,6 +78,6 @@ duplicate_and_replace_when_2_occ -${pattern} -${replacement} \
 duplicate_and_replace_when_2_occ -${pattern} -${replacement} \
     src/bin_node/dune
 duplicate_and_replace -${pattern} -${replacement} \
-    src/bin_node/tezos-node.opam
+    src/bin_node/mineplex-node.opam
 duplicate_and_replace -${pattern} -${replacement} \
-    src/bin_validation/{dune,tezos-validator.opam}
+    src/bin_validation/{dune,mineplex-validator.opam}

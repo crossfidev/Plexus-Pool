@@ -25,6 +25,8 @@ depends: [
   "tezos-embedded-protocol-000-Ps9mPmXa"
   "tezos-embedded-protocol-001-Pt8PXNHh"
   "tezos-mempool-001-Pt8PXNHh"
+  "tezos-embedded-protocol-002-Pt4xzupC"
+  "tezos-mempool-002-Pt4xzupC"
   "cmdliner"
   "tls"
   "cstruct"

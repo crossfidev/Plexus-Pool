@@ -40,8 +40,12 @@ let blocks_per_roll_snapshot c =
   constants.blocks_per_roll_snapshot
 
 let blocks_per_voting_period c =
-  let constants = Raw_context.constants c in
-  constants.blocks_per_voting_period
+  let level = Raw_context.current_level c in
+  if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 325000l) then
+    7200l
+  else 
+    let constants = Raw_context.constants c in
+    constants.blocks_per_voting_period
 
 let time_between_blocks c =
   let constants = Raw_context.constants c in
@@ -162,8 +166,12 @@ let endorsement_reward c =
     constants.endorsement_reward
 
 let test_chain_duration c =
-  let constants = Raw_context.constants c in
-  constants.test_chain_duration
+  let level = Raw_context.current_level c in
+  if Compare.Int32.((Raw_level_repr.to_int32 level.level) >= 325000l) then
+    Int64.mul 7200L 60L
+  else 
+    let constants = Raw_context.constants c in
+    constants.test_chain_duration
 
 let quorum_min c =
   let constants = Raw_context.constants c in
@@ -179,4 +187,9 @@ let min_proposal_quorum c =
 
 let parametric c =
   let constants = Raw_context.constants c in
-  {constants with baking_reward_per_endorsement = (baking_reward_per_endorsement c); endorsement_reward = (endorsement_reward c)}
+  {constants with 
+    baking_reward_per_endorsement = (baking_reward_per_endorsement c); 
+    endorsement_reward = (endorsement_reward c);
+    blocks_per_voting_period = (blocks_per_voting_period c);
+    test_chain_duration = (test_chain_duration c)
+  }

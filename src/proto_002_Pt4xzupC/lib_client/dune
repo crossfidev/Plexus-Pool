@@ -1,0 +1,23 @@
+(library
+ (name tezos_client_002_Pt4xzupC)
+ (public_name tezos-client-002-Pt4xzupC)
+ (libraries tezos-base
+            tezos-protocol-002-Pt4xzupC
+            tezos-shell-services
+            tezos-client-base
+            tezos-mockup-registration
+            tezos-rpc
+            tezos-signer-backends
+            tezos-protocol-002-Pt4xzupC-parameters)
+ (library_flags (:standard -linkall))
+ (flags (:standard -open Tezos_base__TzPervasives
+                   -open Tezos_shell_services
+                   -open Tezos_client_base
+                   -open Tezos_protocol_002_Pt4xzupC
+                   -open Tezos_protocol_002_Pt4xzupC_parameters
+                   -open Tezos_rpc)))
+
+(alias
+ (name runtest_lint)
+ (deps (glob_files *.ml{,i}))
+ (action (run %{lib:tezos-tooling:lint.sh} %{deps})))

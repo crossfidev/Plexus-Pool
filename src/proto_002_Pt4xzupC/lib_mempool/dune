@@ -1,0 +1,14 @@
+(library
+ (name tezos_mempool_002_Pt4xzupC)
+ (public_name tezos-mempool-002-Pt4xzupC)
+ (libraries tezos-base
+            tezos-embedded-protocol-002-Pt4xzupC
+            tezos-protocol-002-Pt4xzupC)
+ (flags (:standard -open Tezos_base__TzPervasives
+                   -open Tezos_embedded_protocol_002_Pt4xzupC
+                   -open Tezos_protocol_002_Pt4xzupC)))
+
+(alias
+ (name runtest_lint)
+ (deps (glob_files *.ml{,i}))
+ (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
