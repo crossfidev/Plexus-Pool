@@ -125,7 +125,7 @@ internet. With the following command it is available uniquely on the
 
 ::
 
-   ./mineplex-node run  --data-dir ~/mineplex-mainnet --rpc-addr 127.0.0.1:8732 --connections 15
+   ./mineplex-node run  --data-dir ~/mineplex-mainnet --rpc-addr 127.0.0.1:8732 --connections 15 --history-mode=archive
 
 Client
 ------
