@@ -524,7 +524,22 @@ let prepare ~level ~predecessor_timestamp ~timestamp ~fitness ctxt =
   >>=? fun fitness ->
   check_inited ctxt
   >>=? fun () ->
-  get_constants ctxt
+  (if Compare.Int32.((Raw_level_repr.to_int32 level) >= 354000l) then
+    get_constants ctxt
+    >>=? fun c ->
+    let constants =
+      Constants_repr.
+        {
+          c with
+          block_security_deposit = Mine_repr.(mul_exn one 6000);
+          endorsement_security_deposit = Mine_repr.(mul_exn one 200);
+        }
+    in
+    set_constants ctxt constants
+    >>= fun ctxt ->
+    get_constants ctxt
+  else 
+    get_constants ctxt)
   >>=? fun constants ->
   get_first_level ctxt
   >>=? fun first_level ->
