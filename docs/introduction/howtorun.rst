@@ -162,7 +162,7 @@ the node data directory for performance reasons.
 Let's launch the daemon pointing to the standard node directory and
 baking for user *bob*::
 
-   ./mineplex-baker-001-Pt8PXNHh run with local node ~/mineplex-mainnet bob
+   ./mineplex-baker-002-Pt4xzupC run with local node ~/mineplex-mainnet bob
 
 Endorser
 ~~~~~~~~
@@ -176,7 +176,7 @@ all accounts.
 
 ::
 
-   ./mineplex-endorser-001-Pt8PXNHh run
+   ./mineplex-endorser-002-Pt4xzupC run
 
 Accuser
 ~~~~~~~
@@ -194,7 +194,7 @@ cause the offender to loose its security deposit.
 
 ::
 
-   ./mineplex-accuser-001-Pt8PXNHh run
+   ./mineplex-accuser-002-Pt4xzupC run
 
 Remember that having two bakers or endorsers running connected to the
 same account could lead to double baking/endorsing and the loss of all

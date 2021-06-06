@@ -20,7 +20,7 @@ After a successful compilation, you should have the following binaries:
   (see :ref:`signer`);
 
 The daemons are suffixed with the name of the protocol that they are
-bound to. For instance, ``mineplex-baker-001-Pt8PXNHh`` is the baker
+bound to. For instance, ``mineplex-baker-002-Pt4xzupC`` is the baker
 for the Main protocol.
 
 Node
