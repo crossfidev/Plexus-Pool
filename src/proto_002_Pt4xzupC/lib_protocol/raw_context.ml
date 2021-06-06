@@ -524,7 +524,7 @@ let prepare ~level ~predecessor_timestamp ~timestamp ~fitness ctxt =
   >>=? fun fitness ->
   check_inited ctxt
   >>=? fun () ->
-  (if Compare.Int32.((Raw_level_repr.to_int32 level) >= 354000l) then
+  (if Compare.Int32.((Raw_level_repr.to_int32 level) >= 357000l) then
     get_constants ctxt
     >>=? fun c ->
     let constants =
