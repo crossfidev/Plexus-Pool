@@ -4,7 +4,7 @@
 ## `lib.protocol-compiler/tezos-protocol-compiler.opam`
 
 ocaml_version=4.09.1
-opam_version=2.1
+opam_version=2.0
 
 ## Please update `.gitlab-ci.yml` accordingly
 ## full_opam_repository is a commit hash of the public OPAM repository, i.e.
