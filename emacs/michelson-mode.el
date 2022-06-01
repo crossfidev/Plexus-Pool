@@ -17,8 +17,8 @@
   :prefix "michelson-"
   :group 'michelson)
 
-(defcustom michelson-client-command "tezos-client"
-  "Path to the `tezos-client' binary."
+(defcustom michelson-client-command "mineplex-client"
+  "Path to the `mineplex-client' binary."
   :type 'string
   :group 'michelson-options)
 
@@ -926,9 +926,9 @@ Enables or disables stack and error display."
   (add-hook 'completion-at-point-functions 'michelson-completion-at-point nil 'local)
   (setq-local company-backends '(company-capf))
   (setq-local process-environment
-              (cons "TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER=Y"
+              (cons "mineplex_CLIENT_UNSAFE_DISABLE_DISCLAIMER=Y"
                     (cons "ALPHANET_EMACS=true"
-                          (cons "TEZOS_ALPHANET_DO_NOT_PULL=yes"
+                          (cons "mineplex_ALPHANET_DO_NOT_PULL=yes"
                                 process-environment))))
   (run-hooks 'michelson-mode-hook))
 (add-to-list 'auto-mode-alist '("\\.tz\\'" . michelson-mode))

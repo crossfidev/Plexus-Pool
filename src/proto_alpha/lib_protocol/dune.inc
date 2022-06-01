@@ -3,7 +3,7 @@
 ;
 ;        /!\ /!\ Do not modify this file /!\ /!\
 ;
-; but the original template in `tezos-protocol-compiler`
+; but the original template in `mineplex-protocol-compiler`
 ;
 
 
@@ -12,7 +12,7 @@
  (action
   (write-file %{targets}
               "module Name = struct let name = \"alpha\" end
-include Tezos_protocol_environment.MakeV0(Name)()
+include mineplex_protocol_environment.MakeV0(Name)()
 module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
 ")))
 
@@ -89,10 +89,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    voting_services.mli voting_services.ml
    alpha_services.mli alpha_services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action
   (with-stdout-to %{targets}
-                  (chdir %{workspace_root} (run %{bin:tezos-embedded-protocol-packer} "%{src_dir}" "alpha")))))
+                  (chdir %{workspace_root} (run %{bin:mineplex-embedded-protocol-packer} "%{src_dir}" "alpha")))))
 
 (rule
  (targets functor.ml)
@@ -167,10 +167,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    voting_services.mli voting_services.ml
    alpha_services.mli alpha_services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action (with-stdout-to %{targets}
                          (chdir %{workspace_root}
-                                (run %{bin:tezos-protocol-compiler.tezos-protocol-packer} %{src_dir})))))
+                                (run %{bin:mineplex-protocol-compiler.mineplex-protocol-packer} %{src_dir})))))
 
 (rule
  (targets protocol.ml)
@@ -247,29 +247,29 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    main.mli main.ml)
  (action
   (write-file %{targets}
-    "module Environment = Tezos_protocol_environment_alpha.Environment
-let hash = Tezos_crypto.Protocol_hash.of_b58check_exn \"ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK\"
+    "module Environment = mineplex_protocol_environment_alpha.Environment
+let hash = mineplex_crypto.Protocol_hash.of_b58check_exn \"ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK\"
 let name = Environment.Name.name
-include Tezos_raw_protocol_alpha
-include Tezos_raw_protocol_alpha.Main
+include mineplex_raw_protocol_alpha
+include mineplex_raw_protocol_alpha.Main
 ")))
 
 (library
- (name tezos_protocol_environment_alpha)
- (public_name tezos-protocol-alpha.environment)
+ (name mineplex_protocol_environment_alpha)
+ (public_name mineplex-protocol-alpha.environment)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-environment)
+ (libraries mineplex-protocol-environment)
  (modules Environment))
 
 (library
- (name tezos_raw_protocol_alpha)
- (public_name tezos-protocol-alpha.raw)
- (libraries tezos_protocol_environment_alpha)
+ (name mineplex_raw_protocol_alpha)
+ (public_name mineplex-protocol-alpha.raw)
+ (libraries mineplex_protocol_environment_alpha)
  (library_flags (:standard -linkall))
  (flags (:standard -nopervasives -nostdlib
                    -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a
-                   -open Tezos_protocol_environment_alpha__Environment
+                   -open mineplex_protocol_environment_alpha__Environment
                    -open Pervasives
                    -open Error_monad))
  (modules
@@ -346,53 +346,53 @@ include Tezos_raw_protocol_alpha.Main
 
 (install
  (section lib)
- (package tezos-protocol-alpha)
- (files (TEZOS_PROTOCOL as raw/TEZOS_PROTOCOL)))
+ (package mineplex-protocol-alpha)
+ (files (mineplex_PROTOCOL as raw/mineplex_PROTOCOL)))
 
 (library
- (name tezos_protocol_alpha)
- (public_name tezos-protocol-alpha)
+ (name mineplex_protocol_alpha)
+ (public_name mineplex-protocol-alpha)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_alpha)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_alpha)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Protocol))
 
 (library
- (name tezos_protocol_alpha_functor)
- (public_name tezos-protocol-alpha.functor)
+ (name mineplex_protocol_alpha_functor)
+ (public_name mineplex-protocol-alpha.functor)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_alpha)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_alpha)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Functor))
 
 (library
- (name tezos_embedded_protocol_alpha)
- (public_name tezos-embedded-protocol-alpha)
+ (name mineplex_embedded_protocol_alpha)
+ (public_name mineplex-embedded-protocol-alpha)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-alpha
-            tezos-protocol-updater
-            tezos-protocol-environment)
+ (libraries mineplex-protocol-alpha
+            mineplex-protocol-updater
+            mineplex-protocol-environment)
  (flags (:standard -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a))
  (modules Registerer))
 
 (alias
  (name runtest_compile_protocol)
- (action (run %{bin:tezos-protocol-compiler} -no-hash-check .)))
+ (action (run %{bin:mineplex-protocol-compiler} -no-hash-check .)))
 
 (alias
  (name runtest_sandbox)
- (deps .tezos_protocol_alpha.objs/native/tezos_protocol_alpha.cmx))
+ (deps .mineplex_protocol_alpha.objs/native/mineplex_protocol_alpha.cmx))
 
 (alias
  (name runtest)
- (package tezos-protocol-alpha)
+ (package mineplex-protocol-alpha)
  (deps (alias runtest_sandbox)))

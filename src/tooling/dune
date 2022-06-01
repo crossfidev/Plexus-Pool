@@ -1,8 +1,8 @@
 (library
- (name tezos_tooling)
- (public_name tezos-tooling))
+ (name mineplex_tooling)
+ (public_name mineplex-tooling))
 
 (install
- (package tezos-tooling)
+ (package mineplex-tooling)
  (section libexec)
  (files (lint.sh as lint.sh)))

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -142,12 +142,12 @@ let assert_valid_operations_hash shell_header operations =
     Operation_list_list_hash.compute
       (List.map
          Operation_list_hash.compute
-         (List.map (List.map Tezos_base.Operation.hash) operations))
+         (List.map (List.map mineplex_base.Operation.hash) operations))
   in
   fail_unless
     (Operation_list_list_hash.equal
        operations_hash
-       shell_header.Tezos_base.Block_header.operations_hash)
+       shell_header.mineplex_base.Block_header.operations_hash)
     (failure "Client_baking_forge.inject_block: inconsistent header.")
 
 let compute_endorsing_power cctxt ~chain ~block operations =
@@ -176,7 +176,7 @@ let inject_block cctxt ?(force = false) ?seed_nonce_hash ~chain ~shell_header
     ~priority ~delegate_pkh ~delegate_sk ~level operations =
   assert_valid_operations_hash shell_header operations
   >>=? fun () ->
-  let block = `Hash (shell_header.Tezos_base.Block_header.predecessor, 0) in
+  let block = `Hash (shell_header.mineplex_base.Block_header.predecessor, 0) in
   forge_block_header
     cctxt
     ~chain
@@ -225,7 +225,7 @@ let inject_block cctxt ?(force = false) ?seed_nonce_hash ~chain ~shell_header
             -% t operations_tag operations)
       >>= fun () -> return block_hash
 
-type error += Failed_to_preapply of Tezos_base.Operation.t * error list
+type error += Failed_to_preapply of mineplex_base.Operation.t * error list
 
 type error += Forking_test_chain
 
@@ -236,7 +236,7 @@ let () =
     ~title:"Fail to preapply an operation"
     ~description:""
     ~pp:(fun ppf (op, err) ->
-      let h = Tezos_base.Operation.hash op in
+      let h = mineplex_base.Operation.hash op in
       Format.fprintf
         ppf
         "@[Failed to preapply %a:@ @[<v 4>%a@]@]"
@@ -246,7 +246,7 @@ let () =
         err)
     Data_encoding.(
       obj2
-        (req "operation" (dynamic_size Tezos_base.Operation.encoding))
+        (req "operation" (dynamic_size mineplex_base.Operation.encoding))
         (req "error" RPC_error.encoding))
     (function Failed_to_preapply (hash, err) -> Some (hash, err) | _ -> None)
     (fun (hash, err) -> Failed_to_preapply (hash, err))
@@ -313,7 +313,7 @@ let sort_manager_operations ~max_size ~hard_gas_limit_per_block ~minimal_fees
        operations)
 
 let retain_operations_up_to_quota operations quota =
-  let {Tezos_protocol_environment.max_op; max_size} = quota in
+  let {mineplex_protocol_environment.max_op; max_size} = quota in
   let operations =
     match max_op with Some n -> List.sub operations n | None -> operations
   in
@@ -438,7 +438,7 @@ let unopt_operations cctxt chain mempool = function
         let ops = ops_of_mempool mpool in
         return ops
     | Some file ->
-        Tezos_stdlib_unix.Lwt_utils_unix.Json.read_file file
+        mineplex_stdlib_unix.Lwt_utils_unix.Json.read_file file
         >>=? fun json ->
         let mpool =
           Data_encoding.Json.destruct
@@ -534,7 +534,7 @@ let merge_preapps (old : error Preapply_result.t)
 
 let error_of_op (result : error Preapply_result.t) op =
   let op = forge op in
-  let h = Tezos_base.Operation.hash op in
+  let h = mineplex_base.Operation.hash op in
   try
     Some
       (Failed_to_preapply (op, snd @@ Operation_hash.Map.find h result.refused))
@@ -721,7 +721,7 @@ let filter_and_apply_operations cctxt state ~chain ~block block_info ~priority
 (* Build the block header : mimics node prevalidation *)
 let finalize_block_header shell_header ~timestamp validation_result operations
     =
-  let {Tezos_protocol_environment.context; fitness; message; _} =
+  let {mineplex_protocol_environment.context; fitness; message; _} =
     validation_result
   in
   let validation_passes = List.length Main.validation_passes in
@@ -747,7 +747,7 @@ let finalize_block_header shell_header ~timestamp validation_result operations
   >>=? fun context ->
   let context = Context.hash ~time:timestamp ?message context in
   let header =
-    Tezos_base.Block_header.
+    mineplex_base.Block_header.
       {
         shell_header with
         level = Int32.succ shell_header.level;
@@ -1144,7 +1144,7 @@ let build_block cctxt ~user_activated_upgrades state seed_nonce_hash
       >>=? fun (operations, overflowing_ops) ->
       let next_version =
         match
-          Tezos_base.Block_header.get_forced_protocol_upgrade
+          mineplex_base.Block_header.get_forced_protocol_upgrade
             ~user_activated_upgrades
             ~level:(Raw_level.to_int32 next_level.Level.level)
         with

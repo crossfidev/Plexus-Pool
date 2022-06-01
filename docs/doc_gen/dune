@@ -1,16 +1,16 @@
 (executables
  (names rpc_doc
         p2p_doc)
- (libraries tezos-base
-            tezos-stdlib-unix
-            tezos-shell
-            tezos-protocol-updater
-            tezos-embedded-protocol-alpha
+ (libraries mineplex-base
+            mineplex-stdlib-unix
+            mineplex-shell
+            mineplex-protocol-updater
+            mineplex-embedded-protocol-alpha
             re)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_stdlib_unix
-                   -open Tezos_shell
-                   -open Tezos_protocol_updater
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_stdlib_unix
+                   -open mineplex_shell
+                   -open mineplex_protocol_updater
                    -linkall)))
 
 (alias
@@ -21,4 +21,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

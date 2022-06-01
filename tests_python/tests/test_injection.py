@@ -15,8 +15,8 @@ def clients(sandbox):
     yield sandbox.all_clients()
 
 
-PROTO = f'{paths.TEZOS_HOME}/src/bin_client/test/proto_test_injection'
-COMPILER = (f'{paths.TEZOS_HOME}/_build/default/src/lib_protocol_compiler/'
+PROTO = f'{paths.mineplex_HOME}/src/bin_client/test/proto_test_injection'
+COMPILER = (f'{paths.mineplex_HOME}/_build/default/src/lib_protocol_compiler/'
             'main_native.exe')
 PARAMS = ['-p', 'ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im']
 

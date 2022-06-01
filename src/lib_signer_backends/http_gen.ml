@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -44,19 +44,19 @@ struct
     let scheme = scheme
 
     let title =
-      "Built-in tezos-signer using remote signer through hardcoded " ^ scheme
+      "Built-in mineplex-signer using remote signer through hardcoded " ^ scheme
       ^ " requests."
 
     let description =
       "Valid locators are of this form:\n" ^ " - " ^ scheme
       ^ "://host/mp1...\n" ^ " - " ^ scheme
       ^ "://host:port/path/to/service/mp1...\n"
-      ^ "Environment variable TEZOS_SIGNER_HTTP_HEADERS can be specified to \
+      ^ "Environment variable mineplex_SIGNER_HTTP_HEADERS can be specified to \
          add headers to the requests (only 'host' and custom 'x-...' headers \
          are supported)."
 
     let headers =
-      match Sys.getenv_opt "TEZOS_SIGNER_HTTP_HEADERS" with
+      match Sys.getenv_opt "mineplex_SIGNER_HTTP_HEADERS" with
       | None ->
           None
       | Some contents ->
@@ -67,7 +67,7 @@ struct
                  match String.index_opt line ':' with
                  | None ->
                      Stdlib.failwith
-                       "Http signer: invalid TEZOS_SIGNER_HTTP_HEADERS \
+                       "Http signer: invalid mineplex_SIGNER_HTTP_HEADERS \
                         environment variable, missing colon"
                  | Some pos ->
                      let header = String.trim (String.sub line 0 pos) in
@@ -78,7 +78,7 @@ struct
                           || String.sub header 0 2 <> "x-" )
                      then
                        Stdlib.failwith
-                         "Http signer: invalid TEZOS_SIGNER_HTTP_HEADERS \
+                         "Http signer: invalid mineplex_SIGNER_HTTP_HEADERS \
                           environment variable, only 'host' or 'x-' headers \
                           are supported" ;
                      let value =

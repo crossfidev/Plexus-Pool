@@ -27,7 +27,7 @@ let commands = Commands.commands ()
 
 let home = try Sys.getenv "HOME" with Not_found -> "/tmp"
 
-let default_base_dir = Filename.concat home ".tezos-client"
+let default_base_dir = Filename.concat home ".mineplex-client"
 
 let base_dir_arg =
   let open Clic in
@@ -37,7 +37,7 @@ let base_dir_arg =
     ~placeholder:"path"
     ~doc:
       ( "data directory\n\
-         The directory where the Tezos codec will output logs.\n\
+         The directory where the mineplex codec will output logs.\n\
          By default: '" ^ default_base_dir ^ "'." )
     (parameter (fun _ctxt x -> return x))
 

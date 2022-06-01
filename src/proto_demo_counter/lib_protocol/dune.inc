@@ -3,7 +3,7 @@
 ;
 ;        /!\ /!\ Do not modify this file /!\ /!\
 ;
-; but the original template in `tezos-protocol-compiler`
+; but the original template in `mineplex-protocol-compiler`
 ;
 
 
@@ -12,7 +12,7 @@
  (action
   (write-file %{targets}
               "module Name = struct let name = \"demo-counter\" end
-include Tezos_protocol_environment.MakeV0(Name)()
+include mineplex_protocol_environment.MakeV0(Name)()
 module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
 ")))
 
@@ -28,10 +28,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    apply.mli apply.ml
    services.mli services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action
   (with-stdout-to %{targets}
-                  (chdir %{workspace_root} (run %{bin:tezos-embedded-protocol-packer} "%{src_dir}" "demo_counter")))))
+                  (chdir %{workspace_root} (run %{bin:mineplex-embedded-protocol-packer} "%{src_dir}" "demo_counter")))))
 
 (rule
  (targets functor.ml)
@@ -45,10 +45,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    apply.mli apply.ml
    services.mli services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action (with-stdout-to %{targets}
                          (chdir %{workspace_root}
-                                (run %{bin:tezos-protocol-compiler.tezos-protocol-packer} %{src_dir})))))
+                                (run %{bin:mineplex-protocol-compiler.mineplex-protocol-packer} %{src_dir})))))
 
 (rule
  (targets protocol.ml)
@@ -64,29 +64,29 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    main.mli main.ml)
  (action
   (write-file %{targets}
-    "module Environment = Tezos_protocol_environment_demo_counter.Environment
-let hash = Tezos_crypto.Protocol_hash.of_b58check_exn \"ProtoDemoCounterDemoCounterDemoCounterDemoCou4LSpdT\"
+    "module Environment = mineplex_protocol_environment_demo_counter.Environment
+let hash = mineplex_crypto.Protocol_hash.of_b58check_exn \"ProtoDemoCounterDemoCounterDemoCounterDemoCou4LSpdT\"
 let name = Environment.Name.name
-include Tezos_raw_protocol_demo_counter
-include Tezos_raw_protocol_demo_counter.Main
+include mineplex_raw_protocol_demo_counter
+include mineplex_raw_protocol_demo_counter.Main
 ")))
 
 (library
- (name tezos_protocol_environment_demo_counter)
- (public_name tezos-protocol-demo-counter.environment)
+ (name mineplex_protocol_environment_demo_counter)
+ (public_name mineplex-protocol-demo-counter.environment)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-environment)
+ (libraries mineplex-protocol-environment)
  (modules Environment))
 
 (library
- (name tezos_raw_protocol_demo_counter)
- (public_name tezos-protocol-demo-counter.raw)
- (libraries tezos_protocol_environment_demo_counter)
+ (name mineplex_raw_protocol_demo_counter)
+ (public_name mineplex-protocol-demo-counter.raw)
+ (libraries mineplex_protocol_environment_demo_counter)
  (library_flags (:standard -linkall))
  (flags (:standard -nopervasives -nostdlib
                    -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a
-                   -open Tezos_protocol_environment_demo_counter__Environment
+                   -open mineplex_protocol_environment_demo_counter__Environment
                    -open Pervasives
                    -open Error_monad))
  (modules
@@ -102,53 +102,53 @@ include Tezos_raw_protocol_demo_counter.Main
 
 (install
  (section lib)
- (package tezos-protocol-demo-counter)
- (files (TEZOS_PROTOCOL as raw/TEZOS_PROTOCOL)))
+ (package mineplex-protocol-demo-counter)
+ (files (mineplex_PROTOCOL as raw/mineplex_PROTOCOL)))
 
 (library
- (name tezos_protocol_demo_counter)
- (public_name tezos-protocol-demo-counter)
+ (name mineplex_protocol_demo_counter)
+ (public_name mineplex-protocol-demo-counter)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_demo_counter)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_demo_counter)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Protocol))
 
 (library
- (name tezos_protocol_demo_counter_functor)
- (public_name tezos-protocol-demo-counter.functor)
+ (name mineplex_protocol_demo_counter_functor)
+ (public_name mineplex-protocol-demo-counter.functor)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_demo_counter)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_demo_counter)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Functor))
 
 (library
- (name tezos_embedded_protocol_demo_counter)
- (public_name tezos-embedded-protocol-demo-counter)
+ (name mineplex_embedded_protocol_demo_counter)
+ (public_name mineplex-embedded-protocol-demo-counter)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-demo-counter
-            tezos-protocol-updater
-            tezos-protocol-environment)
+ (libraries mineplex-protocol-demo-counter
+            mineplex-protocol-updater
+            mineplex-protocol-environment)
  (flags (:standard -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a))
  (modules Registerer))
 
 (alias
  (name runtest_compile_protocol)
- (action (run %{bin:tezos-protocol-compiler} -no-hash-check .)))
+ (action (run %{bin:mineplex-protocol-compiler} -no-hash-check .)))
 
 (alias
  (name runtest_sandbox)
- (deps .tezos_protocol_demo_counter.objs/native/tezos_protocol_demo_counter.cmx))
+ (deps .mineplex_protocol_demo_counter.objs/native/mineplex_protocol_demo_counter.cmx))
 
 (alias
  (name runtest)
- (package tezos-protocol-demo-counter)
+ (package mineplex-protocol-demo-counter)
  (deps (alias runtest_sandbox)))

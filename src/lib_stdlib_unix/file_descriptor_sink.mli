@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** An implementation of {!Tezos_base.Internal_event.SINK} which
+(** An implementation of {!mineplex_base.Internal_event.SINK} which
     writes the events as JSON into a single file-descriptor.
 
     It is registered with the URI scheme ["file-descriptor-path"] to
@@ -34,7 +34,7 @@
     Available options are
 
     - ["level-at-least"] the minimal log-level that the sink will
-      output (see {!Tezos_event_logging.Internal_event.level}).
+      output (see {!mineplex_event_logging.Internal_event.level}).
     - ["format"] the output format used to separate JSON records:
       acceptable values are ["one-per-line"] (the default), and
       ["netstring"] (see {{:https://en.wikipedia.org/wiki/Netstring}The
@@ -51,13 +51,13 @@
 
     Examples:
 
-    - ["export TEZOS_EVENTS_CONFIG=file-descriptor-path:///the/path/to/write.log?format=one-per-line&level-at-least=notice&with-pid=true&chmod=0o640"]:
+    - ["export mineplex_EVENTS_CONFIG=file-descriptor-path:///the/path/to/write.log?format=one-per-line&level-at-least=notice&with-pid=true&chmod=0o640"]:
       Executables will write all log events of level at least [Notice]
       to a file ["/the/path/to/write-XXXX.log"] where ["XXXX"] is the
       process ID, the file will be also readable by the user's group ([0o640]).
-    - ["export TEZOS_EVENTS_CONFIG=file-descriptor-stderr://?format=netstring"]
+    - ["export mineplex_EVENTS_CONFIG=file-descriptor-stderr://?format=netstring"]
       Executables will write to [stderr].
-    - ["export TEZOS_EVENTS_CONFIG=file-descriptor-path:///dev/fd/4?format=netstring"]
+    - ["export mineplex_EVENTS_CONFIG=file-descriptor-path:///dev/fd/4?format=netstring"]
       Executables will write to the [4] file-descriptor likely opened
       by a parent monitoring process (non-standard feature available
       on mainstream UNIX hosts, e.g. Linux and MacOSX).

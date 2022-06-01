@@ -95,7 +95,7 @@ To run a ``full`` node you can either use the command line arguments:
 
 .. code-block:: console
 
-   tezos-node run --history-mode full
+   mineplex-node run --history-mode full
 
 or use your configuration file as described in :ref:`here <node-conf>`:
 
@@ -111,7 +111,7 @@ You can then verify that your history mode is set to full by using the checkpoin
 
 .. code-block:: console
 
-   tezos-client rpc get /chains/main/checkpoint
+   mineplex-client rpc get /chains/main/checkpoint
 
 .. code-block:: json
 
@@ -131,7 +131,7 @@ To run a ``rolling`` node you can either use the command line arguments:
 
 .. code-block:: console
 
-   tezos-node run --history-mode experimental-rolling
+   mineplex-node run --history-mode experimental-rolling
 
 or use your configuration file as described in :ref:`here <node-conf>`:
 
@@ -146,7 +146,7 @@ Please note that the ``rolling`` mode is still an experimental feature.
 In this mode, the new checkpoint RPC will also give you the save point
 (the oldest block that contains all the data) and caboose (the oldest
 pruned block).
-``$ tezos rpc get /chains/main/checkpoint``
+``$ mineplex rpc get /chains/main/checkpoint``
 
 .. _Set up an archive node:
 
@@ -154,7 +154,7 @@ Setting up a node in archive mode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To run an ``archive`` node you can use the command line arguments:
-``$ tezos-node run --history-mode archive``
+``$ mineplex-node run --history-mode archive``
 
 Or the configuration file:
 ``{ "shell": {"history_mode": "archive"} }``
@@ -183,7 +183,7 @@ choices:
 - import a ``full`` snapshot using the ``--reconstruct`` option (see
   :ref:`snapshots`),
 
-- use the dedicated command ``tezos-node reconstruct`` if you already
+- use the dedicated command ``mineplex-node reconstruct`` if you already
   have ``full`` storage.
 
 However, it is not possible to switch from ``rolling`` to ``full`` or

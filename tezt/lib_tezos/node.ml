@@ -113,7 +113,7 @@ let () =
   next_port := 19732 ;
   next_color := 0
 
-let create ?(path = Constant.tezos_node) ?name ?color ?data_dir ?event_pipe
+let create ?(path = Constant.mineplex_node) ?name ?color ?data_dir ?event_pipe
     ?net_port ?rpc_port () =
   let name = match name with None -> fresh_name () | Some name -> name in
   let color =
@@ -342,7 +342,7 @@ let run ?(expected_pow = 0) ?(single_process = false) ?bootstrap_threshold
       ~name:node.name
       ~color:node.color
       ~env:
-        [("TEZOS_EVENTS_CONFIG", "file-descriptor-path://" ^ node.event_pipe)]
+        [("mineplex_EVENTS_CONFIG", "file-descriptor-path://" ^ node.event_pipe)]
       node.path
       args
   in

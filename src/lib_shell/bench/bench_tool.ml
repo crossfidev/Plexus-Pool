@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -68,7 +68,7 @@ let parse_param_file name =
   if not (Sys.file_exists name) then
     failwith "Parameters : Inexistent JSON file"
   else
-    Tezos_stdlib_unix.Lwt_utils_unix.Json.read_file name
+    mineplex_stdlib_unix.Lwt_utils_unix.Json.read_file name
     >>=? fun json ->
     match Data_encoding.Json.destruct Parameters_repr.encoding json with
     | exception exn ->

@@ -1,11 +1,11 @@
 open Internal_pervasives
-(** Wrapper around the [tezos-admin-client] application. *)
+(** Wrapper around the [mineplex-admin-client] application. *)
 
-type t = private {id: string; port: int; exec: Tezos_executable.t}
-(** [t] is very similar to {!Tezos_client.t}. *)
+type t = private {id: string; port: int; exec: mineplex_executable.t}
+(** [t] is very similar to {!mineplex_client.t}. *)
 
-val of_client : exec:Tezos_executable.t -> Tezos_client.t -> t
-val of_node : exec:Tezos_executable.t -> Tezos_node.t -> t
+val of_client : exec:mineplex_executable.t -> mineplex_client.t -> t
+val of_node : exec:mineplex_executable.t -> mineplex_node.t -> t
 
 val make_command :
      < env_config: Environment_configuration.t ; paths: Paths.t ; .. >

@@ -41,8 +41,8 @@ let fresh_name () =
 
 let () = Test.declare_reset_function @@ fun () -> next_name := 1
 
-let create ?(path = Constant.tezos_client)
-    ?(admin_path = Constant.tezos_admin_client) ?name
+let create ?(path = Constant.mineplex_client)
+    ?(admin_path = Constant.mineplex_admin_client) ?name
     ?(color = Log.Color.FG.blue) ?base_dir ?node () =
   let name = match name with None -> fresh_name () | Some name -> name in
   let base_dir =

@@ -1,0 +1,3044 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Wed Jun  1 10:43:54 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+OPAM_SWITCH_PREFIX = /Users/m.rysnik/.opam/4.11.1
+# environment
+OCAML_TOPLEVEL_PATH = /Users/m.rysnik/.opam/4.11.1/lib/toplevel
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+OCAML_LSP_SERVER_LOG = -
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile (from `Makefile', line 21)
+COVERAGE_REPORT := _coverage_report
+# makefile
+CURDIR := /Users/m.rysnik/Chain/mineplex.blockchain
+# makefile
+ 
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{},"_languagePackSupport":true}
+# environment
+RGX = #\|----
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 5)
+active_protocol_directories := 001_Pt8PXNHh 002_Pt4xzupC alpha
+# makefile (from `Makefile', line 7)
+current_opam_version := 2.1.2
+# makefile (from `scripts/version.sh', line 1)
+MAKEFILE_LIST :=  Makefile scripts/version.sh
+# makefile (from `Makefile', line 4)
+active_protocol_versions := 001-Pt8PXNHh 002-Pt4xzupC alpha
+# makefile (from `Makefile', line 18)
+DOCKER_DEPS_IMAGE_NAME := registry.gitlab.com/tezos/opam-repository
+# makefile (from `Makefile', line 14)
+DOCKER_BARE_IMAGE_NAME := tezos-bare
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# makefile (from `scripts/version.sh', line 20)
+COVERAGE_OUTPUT = _coverage_output
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/rd/r_55hb6j3bvf_cpwdcgk0d280000gn/T/vscode-ipc-340af129-a0a1-4381-a058-1114da151830.sock
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /Users/m.rysnik/.opam/4.11.1/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# makefile (from `Makefile', line 72)
+DUNE_INCS = $(patsubst %,%/lib_protocol/dune.inc, ${PROTOCOLS})
+# makefile (from `Makefile', line 20)
+DOCKER_DEPS_MINIMAL_IMAGE_VERSION := minimal--3718dd48d5e502c0fe8fc64ed4bf6b0c8040fadc
+# makefile (from `scripts/version.sh', line 16)
+opam_repository_url = https://gitlab.com/tezos/opam-repository.git
+# makefile (from `Makefile', line 11)
+DOCKER_IMAGE_VERSION := latest
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.klFQwMr4hS/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+AWS_API_KEY_GIFT_CARD = okv6IIZR5B4hdxb1lBGoea59q9myMhhT7Gv21w3T
+# environment
+VSCODE_PIPE_LOGGING = true
+# makefile (from `Makefile', line 16)
+DOCKER_DEBUG_IMAGE_NAME := tezos-debug
+# environment
+PWD = /Users/m.rysnik/Chain/mineplex.blockchain
+# makefile (from `Makefile', line 69)
+TEZOS_PROTOCOL_FILES = $(wildcard src/proto_*/lib_protocol/TEZOS_PROTOCOL)
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# makefile (from `Makefile', line 13)
+DOCKER_BUILD_IMAGE_VERSION := latest
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/m.rysnik
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/m.rysnik/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+# environment
+LOGNAME = m.rysnik
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+ZSH = /Users/m.rysnik/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# makefile (from `scripts/version.sh', line 6)
+ocaml_version = 4.09.1
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = m.rysnik
+# environment
+CAML_LD_LIBRARY_PATH = /Users/m.rysnik/.opam/4.11.1/lib/stublibs:/Users/m.rysnik/.opam/4.11.1/lib/ocaml/stublibs:/Users/m.rysnik/.opam/4.11.1/lib/ocaml
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from `Makefile', line 19)
+DOCKER_DEPS_IMAGE_VERSION := 3718dd48d5e502c0fe8fc64ed4bf6b0c8040fadc
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# makefile (from `Makefile', line 15)
+DOCKER_BARE_IMAGE_VERSION := latest
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/rd/r_55hb6j3bvf_cpwdcgk0d280000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/m.rysnik/Library/Application Support/Code/1.67.2-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.33110957.33110963
+# makefile (from `scripts/version.sh', line 15)
+opam_repository_tag = 3718dd48d5e502c0fe8fc64ed4bf6b0c8040fadc
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# makefile (from `Makefile', line 22)
+MERLIN_INSTALLED := 1
+# makefile (from `Makefile', line 2)
+PACKAGES := tezos-requester tezos-validation tezos-version tezos-validator tezos-p2p-services tezos-client-commands tezos-embedded-protocol-demo-counter tezos-protocol-demo-counter tezos-client-demo-counter tezos-tooling tezos-codec tezos-stdlib tezos-workers tezos-micheline tezos-embedded-protocol-genesis tezos-protocol-genesis tezos-client-genesis tezos-mockup tezos-mockup-registration tezos-mockup-commands tezos-shell tezos-signer-services tezos-protocol-compiler tezos-event-logging tezos-signer tezos-clic tezos-embedded-protocol-genesis-carthagenet tezos-protocol-genesis-carthagenet tezos-client-genesis-carthagenet tezos-embedded-protocol-000-Ps9mPmXa tezos-protocol-000-Ps9mPmXa tezos-client-000-Ps9mPmXa tezos-client-alpha-commands tezos-baker-alpha tezos-mempool-alpha tezos-endorser-alpha-commands tezos-baking-alpha-commands tezos-accuser-alpha-commands tezos-baking-alpha tezos-protocol-alpha-parameters tezos-alpha-test-helpers tezos-protocol-alpha tezos-protocol-alpha-tests tezos-embedded-protocol-alpha tezos-client-alpha tezos-endorser-alpha tezos-accuser-alpha tezos-crypto tezos-lwt-result-stdlib tezos-p2p tezos-client-002-Pt4xzupC-commands tezos-baker-002-Pt4xzupC tezos-mempool-002-Pt4xzupC tezos-baking-002-Pt4xzupC tezos-baking-002-Pt4xzupC-commands tezos-accuser-002-Pt4xzupC-commands tezos-endorser-002-Pt4xzupC-commands tezos-protocol-002-Pt4xzupC-parameters tezos-protocol-002-Pt4xzupC tezos-002-Pt4xzupC-test-helpers tezos-embedded-protocol-002-Pt4xzupC tezos-protocol-002-Pt4xzupC-tests tezos-client-002-Pt4xzupC tezos-endorser-002-Pt4xzupC tezos-accuser-002-Pt4xzupC tezos-protocol-demo-noops tezos-embedded-protocol-demo-noops tezos-client-base tezos-client tezos-error-monad tezos-shell-services tezos-node tezos-rpc-http-client tezos-rpc-http tezos-rpc-http-server tezos-rpc-http-client-unix tezos-base tezos-protocol-updater tezos-shell-context tezos-protocol-environment-packer tezos-protocol-environment-sigs tezos-protocol-environment tezos-protocol-environment-structs tezos-stdlib-unix tezos-client-001-Pt8PXNHh-commands tezos-baker-001-Pt8PXNHh tezos-mempool-001-Pt8PXNHh tezos-endorser-001-Pt8PXNHh-commands tezos-baking-001-Pt8PXNHh tezos-baking-001-Pt8PXNHh-commands tezos-accuser-001-Pt8PXNHh-commands tezos-protocol-001-Pt8PXNHh-parameters tezos-protocol-001-Pt8PXNHh tezos-001-Pt8PXNHh-test-helpers tezos-embedded-protocol-001-Pt8PXNHh tezos-protocol-001-Pt8PXNHh-tests tezos-client-001-Pt8PXNHh tezos-endorser-001-Pt8PXNHh tezos-accuser-001-Pt8PXNHh tezos-signer-backends tezos-storage tezos-client-base-unix tezos-test-services tezos-rpc ledgerwallet-tezos ledgerwallet flextesa tezos-lmdb uecc
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x7:0x31
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# makefile (from `Makefile', line 70)
+PROTOCOLS = $(patsubst %/lib_protocol/TEZOS_PROTOCOL,%,${TEZOS_PROTOCOL_FILES})
+# makefile (from `scripts/version.sh', line 7)
+opam_version = 2.1
+# environment
+PAGER = less
+# makefile (from `Makefile', line 10)
+DOCKER_IMAGE_NAME := tezos
+# environment
+LC_ALL = C
+# makefile (from `Makefile', line 28)
+current_ocaml_version := 4.09.1
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# makefile (from `Makefile', line 17)
+DOCKER_DEBUG_IMAGE_VERSION := latest
+# makefile (from `scripts/version.sh', line 17)
+opam_repository = $opam_repository_url#$opam_repository_tag
+# makefile (from `scripts/version.sh', line 12)
+full_opam_repository_tag = ab47b82abdc03e43c67b45b714806ca4d43d7091
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+ 
+MAKELEVEL := 0
+# environment
+LANG = C
+# makefile (from `Makefile', line 12)
+DOCKER_BUILD_IMAGE_NAME := tezos_build
+# environment
+VSCODE_PID = 11409
+# variable set hash-table stats:
+# Load=100/1024=10%, Rehash=0, Collisions=2/165=1%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# src/proto_genesis_carthagenet/lib_protocol (device 16777220, inode 29960132): 14 files, no impossibilities so far.
+# src/proto_demo_counter/lib_protocol (device 16777220, inode 29960063): 28 files, no impossibilities so far.
+# . (device 16777220, inode 29957222): 34 files, no impossibilities.
+# src/proto_demo_noops/lib_protocol (device 16777220, inode 29960091): 11 files, no impossibilities so far.
+# src/proto_001_Pt8PXNHh/lib_protocol (device 16777220, inode 32220753): 130 files, no impossibilities so far.
+# src/proto_genesis/lib_protocol (device 16777220, inode 29960110): 14 files, no impossibilities so far.
+# src/proto_000_Ps9mPmXa/lib_protocol (device 16777220, inode 29958463): 14 files, no impossibilities so far.
+# src/proto_alpha/lib_protocol (device 16777220, inode 29959873): 131 files, no impossibilities so far.
+# src/proto_002_Pt4xzupC/lib_protocol (device 16777220, inode 32221055): 131 files, no impossibilities so far.
+
+# 507 files, no impossibilities in 9 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+src/proto_demo_noops/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-protocol-demo-counter.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-demo-counter'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-endorser-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-genesis.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-genesis'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mockup-registration.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mockup-registration'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-codec.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-codec'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-genesis-carthagenet.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-genesis-carthagenet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-genesis-carthagenet.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-genesis-carthagenet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-accuser-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+coverage-report-summary:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 125):
+	@bisect-ppx-report summary --coverage-path ${COVERAGE_OUTPUT}
+	
+
+tezos-endorser-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+coverage-report:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 120):
+	@bisect-ppx-report html -o ${COVERAGE_REPORT} --coverage-path ${COVERAGE_OUTPUT}
+	@echo "Report should be available in ${COVERAGE_REPORT}/index.html"
+ 
+	
+
+tezos-baker-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baker-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-stdlib-unix.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-stdlib-unix'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-002-Pt4xzupC-parameters.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-002-Pt4xzupC-parameters'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-rpc-http-server.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http-server'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+src/proto_genesis/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+build-test: build-sandbox
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 134):
+	@dune build @buildtest
+	
+
+tezos-shell-services.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-shell-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-p2p.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-p2p'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-shell-context.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-shell-context'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+docker-image-bare:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 199):
+	@docker build \
+	-t $(DOCKER_BARE_IMAGE_NAME):$(DOCKER_BARE_IMAGE_VERSION) \
+	--build-arg=BASE_IMAGE=$(DOCKER_DEPS_IMAGE_NAME) \
+	--build-arg=BASE_IMAGE_VERSION=$(DOCKER_DEPS_MINIMAL_IMAGE_VERSION) \
+	--build-arg=BASE_IMAGE_VERSION_NON_MIN=$(DOCKER_DEPS_IMAGE_VERSION) \
+	--build-arg BUILD_IMAGE=$(DOCKER_BUILD_IMAGE_NAME) \
+	--build-arg BUILD_IMAGE_VERSION=$(DOCKER_BUILD_IMAGE_VERSION) \
+	--target=bare \
+	.
+	
+
+tezos-endorser-001-Pt8PXNHh-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-lwt-result-stdlib.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-lwt-result-stdlib'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mempool-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mempool-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-base.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-base'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-accuser-alpha-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-alpha-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-test-services.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-test-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+ 
+tezos-protocol-updater.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-updater'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-002-Pt4xzupC-tests.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-002-Pt4xzupC-tests'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+all: generate_dune
+#  Phony target (prerequisite of .PHONY).
+#  Command-line target.
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := all
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := generate_dune
+# automatic
+# | := 
+# automatic
+# < := generate_dune
+# automatic
+# ^ := generate_dune
+# automatic
+# ? := generate_dune
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/17=6%
+#  commands to execute (from `Makefile', line 35):
+	@dune build \
+	src/bin_node/main.exe \
+	src/bin_validation/main_validator.exe \
+	src/bin_client/main_client.exe \
+	src/bin_client/main_admin.exe \
+	src/bin_signer/main_signer.exe \
+	src/bin_codec/codec.exe \
+	src/lib_protocol_compiler/main_native.exe \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/bin_baker/main_baker_$(p).exe) \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/bin_endorser/main_endorser_$(p).exe) \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/bin_accuser/main_accuser_$(p).exe) \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/lib_parameters/mainnet-parameters.json) \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/lib_parameters/sandbox-parameters.json) \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/lib_parameters/test-parameters.json)
+	@cp _build/default/src/bin_node/main.exe mineplex-node
+	@cp _build/default/src/bin_validation/main_validator.exe mineplex-validator
+	@cp _build/default/src/bin_client/main_client.exe mineplex-client
+	@cp _build/default/src/bin_client/main_admin.exe mineplex-admin-client
+	@cp _build/default/src/bin_signer/main_signer.exe mineplex-signer
+	@cp _build/default/src/bin_codec/codec.exe mineplex-codec
+	@cp _build/default/src/lib_protocol_compiler/main_native.exe mineplex-protocol-compiler
+	@for p in $(active_protocol_directories) ; do \
+	cp _build/default/src/proto_$$p/bin_baker/main_baker_$$p.exe mineplex-baker-`echo $$p | tr -- _ -` ; \
+	cp _build/default/src/proto_$$p/bin_endorser/main_endorser_$$p.exe mineplex-endorser-`echo $$p | tr -- _ -` ; \
+	cp _build/default/src/proto_$$p/bin_accuser/main_accuser_$$p.exe mineplex-accuser-`echo $$p | tr -- _ -` ; \
+	cp _build/default/src/proto_$$p/lib_parameters/mainnet-parameters.json src/proto_$$p/parameters/mainnet-parameters.json ; \
+	cp _build/default/src/proto_$$p/lib_parameters/sandbox-parameters.json src/proto_$$p/parameters/sandbox-parameters.json ; \
+	cp _build/default/src/proto_$$p/lib_parameters/test-parameters.json src/proto_$$p/parameters/test-parameters.json ; \
+	done
+	
+
+tezos-lmdb.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-lmdb'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+.PHONY: all generate_dune all.pkg doc-html dock-html-and-linkcheck coverage-report coverage-report-summary build-sandbox build-test test_protocol_compile tezt tezt-i tezt-c tezt-v check-linting check-python-linting fmt build-deps build-dev-deps docker-image-build docker-image-debug docker-image-bare docker-image-minimal docker-image install uninstall coverage-clean clean
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+tezt-i:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 148):
+	@dune exec tezt/tests/main.exe -- --info
+	
+
+tezos-event-logging.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-event-logging'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-crypto.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-crypto'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+ 
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-baker-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baker-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-endorser-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-storage.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-storage'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+build-deps:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 171):
+	@./scripts/install_build_deps.sh
+	
+
+tezos-embedded-protocol-demo-noops.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-demo-noops'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-rpc.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+flextesa.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `flextesa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-clic.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-clic'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-embedded-protocol-000-Ps9mPmXa.test:
+#  Implicit rule search has not been done.
+ 
+#  Implicit/static pattern stem: `tezos-embedded-protocol-000-Ps9mPmXa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-environment-packer.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment-packer'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-000-Ps9mPmXa.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-000-Ps9mPmXa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-environment-sigs.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment-sigs'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+ledgerwallet-tezos.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `ledgerwallet-tezos'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-demo-counter.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-demo-counter'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-workers.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-workers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-endorser-002-Pt4xzupC-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-embedded-protocol-genesis.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-genesis'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+docker-image: docker-image-build docker-image-debug docker-image-bare docker-image-minimal
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+tezos-embedded-protocol-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-p2p-services.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-p2p-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mempool-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mempool-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-alpha-test-helpers.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-alpha-test-helpers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-001-Pt8PXNHh-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-baking-001-Pt8PXNHh-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+ 
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-alpha-parameters.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-alpha-parameters'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+install:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 225):
+	@dune build @install
+	@dune install
+	
+
+tezos-base.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-base'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+tezos-client-base-unix.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-base-unix'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-requester.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-requester'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+uninstall:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 230):
+	@dune uninstall
+	
+
+tezos-client-demo-counter.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-demo-counter'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-genesis-carthagenet.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-genesis-carthagenet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-genesis.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-genesis'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+doc-html-and-linkcheck: doc-html
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 116):
+	@${MAKE} -C docs all
+	
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-protocol-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+src/proto_000_Ps9mPmXa/lib_protocol/dune.inc:: src/proto_000_Ps9mPmXa/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `000_Ps9mPmXa'
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+tezos-micheline.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-micheline'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-version.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-version'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+ 
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baker-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baker-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-alpha-tests.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-alpha-tests'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+dock-html-and-linkcheck:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+tezos-protocol-compiler.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-compiler'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+test: test_protocol_compile
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 141):
+	@dune build @runtest_dune_template @runtest @runtest_flextesa @runtest_out_of_opam
+	@./scripts/check_opam_test.sh
+	
+
+tezos-rpc-http-client.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http-client'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+src/proto_demo_counter/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-accuser-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mockup.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mockup'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+src/proto_000_Ps9mPmXa/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-signer.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-signer'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-alpha-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-001-Pt8PXNHh-test-helpers.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-001-Pt8PXNHh-test-helpers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+check-linting:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 157):
+	@src/tooling/lint.sh --check-ci
+	@src/tooling/lint.sh --check-scripts
+	@src/tooling/lint.sh --check-ocamlformat
+	@dune build @runtest_lint
+	
+
+tezos-validator.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-validator'
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-shell.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-shell'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-endorser-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+ledgerwallet.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `ledgerwallet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+coverage-clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 234):
+	@-rm -Rf ${COVERAGE_OUTPUT}/*.coverage ${COVERAGE_REPORT}
+	
+
+tezos-error-monad.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-error-monad'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-stdlib.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-stdlib'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-node.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-node'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-accuser-002-Pt4xzupC-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mockup-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mockup-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-002-Pt4xzupC-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-validation.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-validation'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-001-Pt8PXNHh-parameters.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh-parameters'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-error-monad.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-error-monad'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+ 
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-demo-noops.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-demo-noops'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-endorser-alpha-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-environment.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-environment-structs.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment-structs'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-mempool-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mempool-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-000-Ps9mPmXa.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-000-Ps9mPmXa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezt-v:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 152):
+	@dune exec tezt/tests/main.exe -- --verbose
+	
+
+tezos-client-001-Pt8PXNHh-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-tooling.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-tooling'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-endorser-alpha-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-001-Pt8PXNHh-tests.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh-tests'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mockup-registration.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mockup-registration'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+docker-image-minimal:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 211):
+	@docker build \
+	-t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) \
+	--build-arg=BASE_IMAGE=$(DOCKER_DEPS_IMAGE_NAME) \
+	--build-arg=BASE_IMAGE_VERSION=$(DOCKER_DEPS_MINIMAL_IMAGE_VERSION) \
+	--build-arg=BASE_IMAGE_VERSION_NON_MIN=$(DOCKER_DEPS_IMAGE_VERSION) \
+	--build-arg BUILD_IMAGE=$(DOCKER_BUILD_IMAGE_NAME) \
+	--build-arg BUILD_IMAGE_VERSION=$(DOCKER_BUILD_IMAGE_VERSION) \
+	.
+	
+
+tezos-protocol-demo-counter.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-demo-counter'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+ 
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+src/proto_001_Pt8PXNHh/lib_protocol/dune.inc:: src/proto_001_Pt8PXNHh/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `001_Pt8PXNHh'
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+tezos-protocol-genesis.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-genesis'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-genesis-carthagenet.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-genesis-carthagenet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-rpc-http.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-002-Pt4xzupC-test-helpers.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-002-Pt4xzupC-test-helpers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-rpc-http-client-unix.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http-client-unix'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-signer-services.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-signer-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-baker-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baker-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+all.pkg: generate_dune
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 84):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name \*.opam -print))
+	
+
+tezos-rpc-http-server.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http-server'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-shell-services.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-shell-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-codec.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-codec'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+src/proto_001_Pt8PXNHh/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+uecc.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `uecc'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-p2p.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-p2p'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+ledgerwallet.test:
+ 
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `ledgerwallet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-genesis-carthagenet.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-genesis-carthagenet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-endorser-001-Pt8PXNHh-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-lwt-result-stdlib.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-lwt-result-stdlib'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-mempool-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mempool-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+generate_dune: src/proto_000_Ps9mPmXa/lib_protocol/dune.inc src/proto_001_Pt8PXNHh/lib_protocol/dune.inc src/proto_002_Pt4xzupC/lib_protocol/dune.inc src/proto_alpha/lib_protocol/dune.inc src/proto_demo_counter/lib_protocol/dune.inc src/proto_demo_noops/lib_protocol/dune.inc src/proto_genesis/lib_protocol/dune.inc src/proto_genesis_carthagenet/lib_protocol/dune.inc
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-stdlib-unix.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-stdlib-unix'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-002-Pt4xzupC-parameters.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-002-Pt4xzupC-parameters'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+docker-image-build:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 179):
+	@docker build \
+	-t $(DOCKER_BUILD_IMAGE_NAME):$(DOCKER_BUILD_IMAGE_VERSION) \
+	-f build.Dockerfile \
+	--build-arg BASE_IMAGE=$(DOCKER_DEPS_IMAGE_NAME) \
+	--build-arg BASE_IMAGE_VERSION=$(DOCKER_DEPS_IMAGE_VERSION) \
+	.
+	
+
+tezos-client-base.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-base'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-alpha-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+uecc.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `uecc'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-baking-alpha-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-002-Pt4xzupC-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-test-services.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-test-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-crypto.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-crypto'
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-002-Pt4xzupC-tests.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-002-Pt4xzupC-tests'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-lmdb.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-lmdb'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+src/proto_002_Pt4xzupC/lib_protocol/dune.inc:: src/proto_002_Pt4xzupC/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `002_Pt4xzupC'
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+tezt:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 146):
+	@dune exec tezt/tests/main.exe
+	
+
+tezos-embedded-protocol-demo-noops.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-demo-noops'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+src/proto_genesis_carthagenet/lib_protocol/dune.inc:: src/proto_genesis_carthagenet/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `genesis_carthagenet'
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+tezos-002-Pt4xzupC-test-helpers.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-002-Pt4xzupC-test-helpers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+flextesa.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `flextesa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-event-logging.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-event-logging'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+# Not a target:
+scripts/version.sh:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 17:08:49
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-embedded-protocol-000-Ps9mPmXa.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-000-Ps9mPmXa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-environment-packer.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment-packer'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+docker-image-debug:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 188):
+	docker build \
+	-t $(DOCKER_DEBUG_IMAGE_NAME):$(DOCKER_DEBUG_IMAGE_VERSION) \
+	--build-arg BASE_IMAGE=$(DOCKER_DEPS_IMAGE_NAME) \
+	--build-arg BASE_IMAGE_VERSION=$(DOCKER_DEPS_MINIMAL_IMAGE_VERSION) \
+	--build-arg BUILD_IMAGE=$(DOCKER_BUILD_IMAGE_NAME) \
+	--build-arg BUILD_IMAGE_VERSION=$(DOCKER_BUILD_IMAGE_VERSION) \
+	--target=debug \
+	.
+	
+
+tezos-baker-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baker-001-Pt8PXNHh'
+ 
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+clean: coverage-clean
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 238):
+	@-dune clean
+	@-rm -f \
+	mineplex-node \
+	mineplex-validator \
+	mineplex-client \
+	mineplex-signer \
+	mineplex-admin-client \
+	mineplex-codec \
+	mineplex-protocol-compiler \
+	mineplex-sandbox \
+	$(foreach p, $(active_protocol_versions), mineplex-baker-$(p) mineplex-endorser-$(p) mineplex-accuser-$(p)) \
+	$(foreach p, $(active_protocol_directories), src/proto_$(p)/parameters/sandbox-parameters.json src/proto_$(p)/parameters/test-parameters.json)
+	@-${MAKE} -C docs clean
+	@-rm -f docs/api/mineplex-{baker,endorser,accuser}-alpha.html docs/api/mineplex-{admin-,}client.html docs/api/mineplex-signer.html
+	
+
+tezos-storage.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-storage'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+# Not a target:
+src/proto_002_Pt4xzupC/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-protocol-environment-sigs.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment-sigs'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-rpc.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-workers.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-workers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-endorser-002-Pt4xzupC-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+# Not a target:
+src/proto_genesis_carthagenet/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-clic.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-clic'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-p2p-services.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-p2p-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-mempool-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mempool-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-alpha-test-helpers.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-alpha-test-helpers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-000-Ps9mPmXa.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-000-Ps9mPmXa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-001-Pt8PXNHh-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-001-Pt8PXNHh-commands.pkg:
+ 
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-base.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-base'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-base-unix.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-base-unix'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+ledgerwallet-tezos.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `ledgerwallet-tezos'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-requester.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-requester'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-demo-counter.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-demo-counter'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-embedded-protocol-genesis.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-genesis'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-client-demo-counter.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-demo-counter'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+check-python-linting:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 163):
+	@make -C tests_python lint_all
+	
+
+tezos-embedded-protocol-alpha.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-genesis-carthagenet.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-genesis-carthagenet'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-genesis.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-genesis'
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-micheline.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-micheline'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-alpha-parameters.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-alpha-parameters'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-signer-backends.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-signer-backends'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+build-dev-deps:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 175):
+	@./scripts/install_build_deps.sh --dev
+	
+
+build-sandbox:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 129):
+	@dune build src/bin_sandbox/main.exe
+	@cp _build/default/src/bin_sandbox/main.exe mineplex-sandbox
+	
+
+tezos-protocol-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-version.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-version'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-signer.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-signer'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-endorser-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+ 
+#  Implicit/static pattern stem: `tezos-endorser-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-alpha-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+fmt:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 167):
+	@src/tooling/lint.sh --format
+	
+
+tezos-baker-002-Pt4xzupC.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baker-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-alpha-tests.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-alpha-tests'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-updater.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-updater'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-validator.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-validator'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-protocol-compiler.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-compiler'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+src/proto_alpha/lib_protocol/dune.inc:: src/proto_alpha/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `alpha'
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+doc-html: all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 97):
+	@dune build @doc
+	@./mineplex-client -protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-client.html
+ 
+	@./mineplex-admin-client man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-admin-client.html
+	@./mineplex-signer man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-signer.html
+	@./mineplex-baker-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-baker-alpha.html
+	@./mineplex-endorser-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-endorser-alpha.html
+	@./mineplex-accuser-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-accuser-alpha.html
+	@mkdir -p $$(pwd)/docs/_build/api/odoc
+	@rm -rf $$(pwd)/docs/_build/api/odoc/*
+	@cp -r $$(pwd)/_build/default/_doc/* $$(pwd)/docs/_build/api/odoc/
+	@${MAKE} -C docs html
+	@echo '.toc {position: static}' >> $$(pwd)/docs/_build/api/odoc/_html/odoc.css
+	@echo '.content { margin-left: 4ex }' >> $$(pwd)/docs/_build/api/odoc/_html/odoc.css
+	@echo '@media (min-width: 745px) {.content {margin-left: 4ex}}' >> $$(pwd)/docs/_build/api/odoc/_html/odoc.css
+	@sed -e 's/@media only screen and (max-width: 95ex) {/@media only screen and (max-width: 744px) {/' $$(pwd)/docs/_build/api/odoc/_html/odoc.css > $$(pwd)/docs/_build/api/odoc/_html/odoc.css2
+	@mv $$(pwd)/docs/_build/api/odoc/_html/odoc.css2  $$(pwd)/docs/_build/api/odoc/_html/odoc.css
+	
+
+tezos-rpc-http-client.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http-client'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mockup.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mockup'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-signer-backends.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-signer-backends'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-embedded-protocol-001-Pt8PXNHh.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-endorser-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-endorser-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-node.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-node'
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-001-Pt8PXNHh-test-helpers.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-001-Pt8PXNHh-test-helpers'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-accuser-002-Pt4xzupC-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-accuser-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-baking-002-Pt4xzupC-commands.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-baking-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-002-Pt4xzupC-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-002-Pt4xzupC-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-shell.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-shell'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-001-Pt8PXNHh-parameters.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh-parameters'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+test_protocol_compile:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 138):
+	@dune build  @runtest_compile_protocol
+	
+ 
+
+tezos-shell-context.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-shell-context'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+# Not a target:
+src/proto_alpha/lib_protocol/TEZOS_PROTOCOL:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 16:26:54
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+tezos-stdlib.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-stdlib'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-demo-noops.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-demo-noops'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+src/proto_demo_counter/lib_protocol/dune.inc:: src/proto_demo_counter/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `demo_counter'
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+tezos-protocol-environment.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-001-Pt8PXNHh.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-mempool-alpha.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mempool-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-mockup-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-mockup-commands'
+ 
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-validation.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-validation'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-000-Ps9mPmXa.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-000-Ps9mPmXa'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-embedded-protocol-002-Pt4xzupC.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-embedded-protocol-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+src/proto_demo_noops/lib_protocol/dune.inc:: src/proto_demo_noops/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `demo_noops'
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+tezos-protocol-001-Pt8PXNHh-tests.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh-tests'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-protocol-environment-structs.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-protocol-environment-structs'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-rpc-http.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezt-c:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 150):
+	@dune exec tezt/tests/main.exe -- --commands
+	
+
+tezos-rpc-http-client-unix.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-rpc-http-client-unix'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+	
+
+tezos-client-001-Pt8PXNHh-commands.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-client-001-Pt8PXNHh-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-tooling.test:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-tooling'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
+	
+
+tezos-signer-services.pkg:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `tezos-signer-services'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
+ 
+	
+
+src/proto_genesis/lib_protocol/dune.inc:: src/proto_genesis/lib_protocol/TEZOS_PROTOCOL
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `genesis'
+#  Last modified 2022-04-19 10:38:19
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 79):
+	dune build @$(dir $@)/runtest_dune_template --auto-promote
+	touch $@
+	
+
+# files hash-table stats:
+# Load=269/1024=26%, Rehash=0, Collisions=69/370=19%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 2
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4068 / max = 4068 / min = 4068 / avg = 4068
+
+# Finished Make data base on Wed Jun  1 10:43:54 2022
+
+ 

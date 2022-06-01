@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -93,7 +93,7 @@ let build_raw_header_rpc_directory (module Proto : Block_services.PROTO) =
       | None ->
           return
             {
-              Tezos_shell_services.Block_services.current_protocol =
+              mineplex_shell_services.Block_services.current_protocol =
                 next_protocol_hash;
               next_protocol = next_protocol_hash;
             }
@@ -102,7 +102,7 @@ let build_raw_header_rpc_directory (module Proto : Block_services.PROTO) =
           >>= fun protocol_hash ->
           return
             {
-              Tezos_shell_services.Block_services.current_protocol =
+              mineplex_shell_services.Block_services.current_protocol =
                 protocol_hash;
               next_protocol = next_protocol_hash;
             }) ;
@@ -159,8 +159,8 @@ let build_raw_rpc_directory ~user_activated_upgrades
         max_block_header_length = Next_proto.max_block_length;
         operation_list_quota =
           List.map
-            (fun {Tezos_protocol_environment.max_size; max_op} ->
-              {Tezos_shell_services.Block_services.max_size; max_op})
+            (fun {mineplex_protocol_environment.max_size; max_op} ->
+              {mineplex_shell_services.Block_services.max_size; max_op})
             Next_proto.validation_passes;
       }
   in
@@ -258,7 +258,7 @@ let build_raw_rpc_directory ~user_activated_upgrades
       let depth = Option.value ~default:max_int q#depth in
       fail_unless
         (depth >= 0)
-        (Tezos_shell_services.Block_services.Invalid_depth_arg depth)
+        (mineplex_shell_services.Block_services.Invalid_depth_arg depth)
       >>=? fun () ->
       State.Block.context_exn block
       >>= fun context ->
@@ -381,7 +381,7 @@ let build_raw_rpc_directory ~user_activated_upgrades
          >|= fun context ->
          let context = Shell_context.wrap_disk_context context in
          {
-           Tezos_protocol_environment.block_hash = State.Block.hash block;
+           mineplex_protocol_environment.block_hash = State.Block.hash block;
            block_header = State.Block.shell_header block;
            context;
          })

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -39,13 +39,13 @@ class unix_full :
   -> block:Shell_services.block
   -> confirmations:int option
   -> password_filename:string option
-  -> rpc_config:Tezos_rpc_http_client_unix.RPC_client_unix.config
+  -> rpc_config:mineplex_rpc_http_client_unix.RPC_client_unix.config
   -> Client_context.full
 
 class unix_mockup :
   base_dir:string
   -> mem_only:bool
-  -> mockup_env:Tezos_mockup_registration.Registration.mockup_environment
+  -> mockup_env:mineplex_mockup_registration.Registration.mockup_environment
   -> chain_id:Chain_id.t
-  -> rpc_context:Tezos_protocol_environment.rpc_context
+  -> rpc_context:mineplex_protocol_environment.rpc_context
   -> Client_context.full

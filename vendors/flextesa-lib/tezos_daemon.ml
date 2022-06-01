@@ -6,9 +6,9 @@ type args =
   | Accuser : args
 
 type t =
-  { node: Tezos_node.t
-  ; client: Tezos_client.t
-  ; exec: Tezos_executable.t
+  { node: mineplex_node.t
+  ; client: mineplex_client.t
+  ; exec: mineplex_executable.t
   ; args: args
   ; name_tag: string option }
 
@@ -25,36 +25,36 @@ let arg_to_string = function
   | Accuser -> "accuser"
 
 let to_script state (t : t) =
-  let base_dir = Tezos_client.base_dir ~state t.client in
+  let base_dir = mineplex_client.base_dir ~state t.client in
   let call t args =
-    Tezos_executable.call state t.exec
+    mineplex_executable.call state t.exec
       ~path:
         ( base_dir
         // sprintf "exec-%s-%d%s" (arg_to_string t.args)
-             t.node.Tezos_node.rpc_port
+             t.node.mineplex_node.rpc_port
              (Option.value_map t.name_tag ~default:"" ~f:(sprintf "-%s")) )
       args in
   match t.args with
   | Baker key ->
-      let node_path = Tezos_node.data_dir state t.node in
+      let node_path = mineplex_node.data_dir state t.node in
       call t
         [ "--endpoint"
-        ; sprintf "http://localhost:%d" t.node.Tezos_node.rpc_port
+        ; sprintf "http://localhost:%d" t.node.mineplex_node.rpc_port
         ; "--base-dir"; base_dir; "run"; "with"; "local"; "node"; node_path
         ; key ]
   | Endorser key ->
       call t
         [ "--endpoint"
-        ; sprintf "http://localhost:%d" t.node.Tezos_node.rpc_port
+        ; sprintf "http://localhost:%d" t.node.mineplex_node.rpc_port
         ; "--base-dir"; base_dir; "run"; key ]
   | Accuser ->
       call t
         [ "--endpoint"
-        ; sprintf "http://localhost:%d" t.node.Tezos_node.rpc_port
+        ; sprintf "http://localhost:%d" t.node.mineplex_node.rpc_port
         ; "--base-dir"; base_dir; "run"; "--preserved-levels"; "10" ]
 
 let process state (t : t) =
   Running_processes.Process.genspio
-    (sprintf "%s-for-%s%s" (arg_to_string t.args) t.node.Tezos_node.id
+    (sprintf "%s-for-%s%s" (arg_to_string t.args) t.node.mineplex_node.id
        (Option.value_map t.name_tag ~default:"" ~f:(sprintf "-%s")))
     (to_script state t)

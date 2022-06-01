@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -26,7 +26,7 @@
 open Protocol
 open Alpha_context
 open Protocol_client_context
-open Tezos_micheline
+open mineplex_micheline
 open Client_proto_contracts
 open Client_keys
 
@@ -434,10 +434,10 @@ let activate_account (cctxt : #full) ~chain ~block ?confirmations ?dry_run
        Ed25519.Public_key_hash.pp
        key.pkh)
   >>=? fun () ->
-  Tezos_signer_backends.Unencrypted.make_pk pk
+  mineplex_signer_backends.Unencrypted.make_pk pk
   >>=? fun pk_uri ->
-  ( if encrypted then Tezos_signer_backends.Encrypted.encrypt cctxt sk
-  else Tezos_signer_backends.Unencrypted.make_sk sk )
+  ( if encrypted then mineplex_signer_backends.Encrypted.encrypt cctxt sk
+  else mineplex_signer_backends.Unencrypted.make_sk sk )
   >>=? fun sk_uri ->
   Client_keys.register_key cctxt ?force (pkh, pk_uri, sk_uri) name
   >>=? fun () ->

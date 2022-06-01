@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -28,7 +28,7 @@ include Blake2B.Make
           (struct
             let name = "Operation_hash"
 
-            let title = "A Tezos operation ID"
+            let title = "A mineplex operation ID"
 
             let b58check_prefix = Base58.Prefix.operation_hash
 

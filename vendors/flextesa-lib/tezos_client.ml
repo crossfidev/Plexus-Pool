@@ -1,18 +1,18 @@
 open Internal_pervasives
 
-type t = {id: string; port: int; exec: Tezos_executable.t}
+type t = {id: string; port: int; exec: mineplex_executable.t}
 type client = t
 
 let no_node_client ~exec = {id= "C-null"; port= 0; exec}
 
 let of_node ~exec n =
-  let id = sprintf "C-%s" n.Tezos_node.id in
-  let port = n.Tezos_node.rpc_port in
+  let id = sprintf "C-%s" n.mineplex_node.id in
+  let port = n.mineplex_node.rpc_port in
   {id; port; exec}
 
 let base_dir t ~state = Paths.root state // sprintf "Client-base-%s" t.id
 
-open Tezos_executable.Make_cli
+open mineplex_executable.Make_cli
 
 let client_call ?(wait = "none") state t args =
   ("--wait" :: wait :: optf "port" "%d" t.port)
@@ -20,7 +20,7 @@ let client_call ?(wait = "none") state t args =
   @ args
 
 let client_command ?wait state t args =
-  Tezos_executable.call state t.exec
+  mineplex_executable.call state t.exec
     ~path:(base_dir t ~state // "exec-client")
     (client_call ?wait state t args)
 
@@ -121,7 +121,7 @@ let rpc state ~client meth ~path =
 
 let activate_protocol state client protocol =
   let timestamp =
-    match protocol.Tezos_protocol.timestamp_delay with
+    match protocol.mineplex_protocol.timestamp_delay with
     | None -> []
     | Some delay -> (
         let now = Ptime_clock.now () in
@@ -130,33 +130,33 @@ let activate_protocol state client protocol =
             invalid_arg "activate_protocol_script: protocol.timestamp_delay"
         | Some x -> ["--timestamp"; Ptime.to_rfc3339 x] ) in
   Console.say state
-    EF.(wf "Activating protocol %s" protocol.Tezos_protocol.hash)
+    EF.(wf "Activating protocol %s" protocol.mineplex_protocol.hash)
   >>= fun () ->
   import_secret_key state client
-    ~name:(Tezos_protocol.dictator_name protocol)
-    ~key:(Tezos_protocol.dictator_secret_key protocol)
+    ~name:(mineplex_protocol.dictator_name protocol)
+    ~key:(mineplex_protocol.dictator_secret_key protocol)
   >>= fun () ->
   successful_client_cmd state ~client
     ( opt "block" "genesis"
-    @ [ "activate"; "protocol"; protocol.Tezos_protocol.hash; "with"; "fitness"
-      ; sprintf "%d" protocol.Tezos_protocol.expected_pow
+    @ [ "activate"; "protocol"; protocol.mineplex_protocol.hash; "with"; "fitness"
+      ; sprintf "%d" protocol.mineplex_protocol.expected_pow
       ; "and"; "key"
-      ; Tezos_protocol.dictator_name protocol
+      ; mineplex_protocol.dictator_name protocol
       ; "and"; "parameters"
-      ; Tezos_protocol.protocol_parameters_path state protocol ]
+      ; mineplex_protocol.protocol_parameters_path state protocol ]
     @ timestamp )
   >>= fun _ ->
   rpc state ~client `Get ~path:"/chains/main/blocks/head/metadata"
   >>= fun metadata_json ->
   ( match Jqo.field metadata_json ~k:"next_protocol" with
-  | `String hash when String.equal hash protocol.Tezos_protocol.hash ->
+  | `String hash when String.equal hash protocol.mineplex_protocol.hash ->
       return ()
   | exception e ->
       System_error.fail_fatalf "Error getting protocol metadata: %a" Exn.pp e
   | other_value ->
       System_error.fail_fatalf "Error activating protocol: %s Vs %s"
         (Ezjsonm.value_to_string other_value)
-        protocol.Tezos_protocol.hash )
+        protocol.mineplex_protocol.hash )
   >>= fun () -> return ()
 
 let find_applied_in_mempool state ~client ~f =
@@ -239,7 +239,7 @@ let list_known_addresses state ~client =
              | Some matches -> Some (Group.get matches 1, Group.get matches 2)))
 
 module Ledger = struct
-  type hwm = {main: int; test: int; chain: Tezos_crypto.Chain_id.t option}
+  type hwm = {main: int; test: int; chain: mineplex_crypto.Chain_id.t option}
 
   let set_hwm state ~client ~uri ~level =
     successful_client_cmd state ~client
@@ -272,7 +272,7 @@ module Ledger = struct
         ; chain=
             (let v = Re.Group.get matches 2 in
              if String.equal v "'Unspecified'" then None
-             else Some (Tezos_crypto.Chain_id.of_b58check_exn v))
+             else Some (mineplex_crypto.Chain_id.of_b58check_exn v))
         ; test= Int.of_string (Re.Group.get matches 3) }
     with e ->
       failf
@@ -302,7 +302,7 @@ module Ledger = struct
         | None -> ""
         | Some (alias, _) -> alias in
       return
-        (Tezos_protocol.Account.key_pair name ~pubkey ~pubkey_hash
+        (mineplex_protocol.Account.key_pair name ~pubkey ~pubkey_hash
            ~private_key:uri)
     with e ->
       failf "Couldn't understand result of 'show ledger %S': error %S: from %S"
@@ -388,7 +388,7 @@ module Keyed = struct
     >>= fun () ->
     let decoded =
       Option.value_exn ~message:"base58 dec"
-        (Tezos_crypto.Base58.safe_decode to_decode)
+        (mineplex_crypto.Base58.safe_decode to_decode)
       |> Hex.of_string ?ignore:None |> Hex.show in
     say state EF.(desc (shout "DECODED:") (af "%S" decoded))
     >>= fun () ->

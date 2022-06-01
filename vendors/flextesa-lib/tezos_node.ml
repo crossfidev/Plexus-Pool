@@ -9,8 +9,8 @@ type t =
   ; p2p_port: int
   ; (* Ports: *)
     peers: int list
-  ; exec: Tezos_executable.t
-  ; protocol: Tezos_protocol.t
+  ; exec: mineplex_executable.t
+  ; protocol: mineplex_protocol.t
   ; history_mode: [`Full | `Archive | `Rolling] option
   ; single_process: bool
   ; cors_origin: string option
@@ -29,7 +29,7 @@ let ef t =
 let pp fmt t = Easy_format.Pretty.to_formatter fmt (ef t)
 let id t = t.id
 
-let make ?cors_origin ~exec ?(protocol = Tezos_protocol.default ())
+let make ?cors_origin ~exec ?(protocol = mineplex_protocol.default ())
     ?custom_network ?(single_process = true) ?history_mode id
     ~expected_connections ~rpc_port ~p2p_port peers =
   { id
@@ -81,10 +81,10 @@ module Config_file = struct
           ; ( "protocol"
             , string "Ps9mPmXaRzmzk35gbAYNCAw6UXdE2qoABTHbN2oEEc1qM7CwT9P" ) ]
       )
-    ; ("chain_name", string "TEZOS_MAINNET")
-    ; ("old_chain_name", string "TEZOS_BETANET_2018-06-30T16:07:32Z")
+    ; ("chain_name", string "mineplex_MAINNET")
+    ; ("old_chain_name", string "mineplex_BETANET_2018-06-30T16:07:32Z")
     ; ("incompatible_chain_name", string "INCOMPATIBLE")
-    ; ("sandboxed_chain_name", string "SANDBOXED_TEZOS_MAINNET") ]
+    ; ("sandboxed_chain_name", string "SANDBOXED_mineplex_MAINNET") ]
 
   let default_network = network ()
 
@@ -111,7 +111,7 @@ module Config_file = struct
     ; ( "p2p"
       , dict
           [ ( "expected-proof-of-work"
-            , int (Tezos_protocol.expected_pow t.protocol) )
+            , int (mineplex_protocol.expected_pow t.protocol) )
           ; ("listen-addr", ksprintf string "0.0.0.0:%d" t.p2p_port)
           ; ( "limits"
             , dict
@@ -123,10 +123,10 @@ module Config_file = struct
     |> dict |> to_string ~minify:false
 end
 
-open Tezos_executable.Make_cli
+open mineplex_executable.Make_cli
 
 let node_command state t cmd options =
-  Tezos_executable.call state t.exec ~path:(exec_path state t)
+  mineplex_executable.call state t.exec ~path:(exec_path state t)
     ( cmd
     @ opt "config-file" (config_file state t)
     @ opt "data-dir" (data_dir state t)
@@ -147,14 +147,14 @@ let run_command state t =
         ~f:(fun s ->
           flag "cors-header=content-type" @ Fmt.kstr flag "cors-origin=%s" s)
         ~default:[]
-    @ opt "sandbox" (Tezos_protocol.sandbox_path state t.protocol) )
+    @ opt "sandbox" (mineplex_protocol.sandbox_path state t.protocol) )
 
 let start_script state t =
   let open Genspio.EDSL in
   let gen_id =
     node_command state t
       [ "identity"; "generate"
-      ; sprintf "%d" (Tezos_protocol.expected_pow t.protocol) ]
+      ; sprintf "%d" (mineplex_protocol.expected_pow t.protocol) ]
       [] in
   let tmp_config = tmp_file (config_file state t) in
   check_sequence ~verbosity:`Output_all

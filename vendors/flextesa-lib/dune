@@ -12,8 +12,8 @@
     base
     genspio
     ezjsonm
-    tezos-stdlib-unix
-    tezos-crypto
-    tezos-base
+    mineplex-stdlib-unix
+    mineplex-crypto
+    mineplex-base
     ))
 

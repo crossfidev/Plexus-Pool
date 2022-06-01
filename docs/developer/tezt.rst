@@ -1,15 +1,15 @@
 .. _tezt:
 
-Tezt: OCaml Tezos Test Framework
+Tezt: OCaml mineplex Test Framework
 ================================
 
-Tezt is a test framework for Tezos written in OCaml.
+Tezt is a test framework for mineplex written in OCaml.
 It focuses on integration tests that launch external processes
-(in particular Tezos nodes and clients).
+(in particular mineplex nodes and clients).
 
 Its main strengths are:
 
-- tests are written in the same language as Tezos itself (OCaml),
+- tests are written in the same language as mineplex itself (OCaml),
   which reduces context switch for developers;
 
 - tests do not actively poll the node
@@ -45,7 +45,7 @@ And here is how to get the list of tests and their tags::
 Architecture
 ------------
 
-Tezt is composed of some generic, non-Tezos-related modules:
+Tezt is composed of some generic, non-mineplex-related modules:
 
 - a small ``Base`` module with some generally useful "pervasive" functions;
 
@@ -63,7 +63,7 @@ Tezt is composed of some generic, non-Tezos-related modules:
 
 - a ``Test`` module with a ``Test.run`` function, which starts tests and cleans up after them.
 
-Tezt also contains the following Tezos-specific modules:
+Tezt also contains the following mineplex-specific modules:
 
 - a ``Constant`` module with constants such as protocol hashes or identities;
 
@@ -73,13 +73,13 @@ Tezt also contains the following Tezos-specific modules:
 
 - an ``RPC`` module with some RPC implementations.
 
-All those modules can be found in directory ``tezt/lib`` of the Tezos repository.
+All those modules can be found in directory ``tezt/lib`` of the mineplex repository.
 
 How to Write New Tests
 ----------------------
 
 The best way to get started is to have a look at existing tests in directory
-``tezt/tests`` of the Tezos repository.
+``tezt/tests`` of the mineplex repository.
 
 Currently, all tests are part of the same binary ``main.exe``.
 The source of this module is ``tezt/tests/main.ml``.

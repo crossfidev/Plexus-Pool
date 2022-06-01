@@ -1,20 +1,20 @@
 r"""
 Before running this test, make sure that the environment variable
-`TEZOS_BINARIES` is defined, and that it points to a properly
+`mineplex_BINARIES` is defined, and that it points to a properly
 set up directory. The script `scripts/build_branches.py` can be used
 to build the binaries.
 
 Example:
 
-  TEZOS_HOME=~/tezos
-  TEZOS_BINARIES=~/tmp/tezos_binaries
-  TEZOS_BUILD=~/tmp/tezos_build
-  scripts/build_branches.py --clone $TEZOS_HOME --build-dir $TEZOS_BUILD \
-            --bin-dir $TEZOS_BINARIES \
+  mineplex_HOME=~/mineplex
+  mineplex_BINARIES=~/tmp/mineplex_binaries
+  mineplex_BUILD=~/tmp/mineplex_build
+  scripts/build_branches.py --clone $mineplex_HOME --build-dir $mineplex_BUILD \
+            --bin-dir $mineplex_BINARIES \
             d272059bf474018d0c39f5a6e60634a95f0c44aa \
             6718e80254d4cb8d7ad86bce8cf3cb692550c6e7
 
-Note: the test relies (only) on `TEZOS_BINARIES`. The test will be be skipped
+Note: the test relies (only) on `mineplex_BINARIES`. The test will be be skipped
 if the environment variable isn't defined.
 
 TODO this test is a copy and paste from tests/test_baker_endorser.py

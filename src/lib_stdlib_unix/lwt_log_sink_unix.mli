@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -61,6 +61,6 @@ val cfg_encoding : cfg Data_encoding.t
 
 (** Configure the event-logging sink defined in
     {!Internal_event.Lwt_log_sink} by merging the contents of [?cfg]
-    (default: {!default_cfg}) and the value of the ["TEZOS_LOG"]
+    (default: {!default_cfg}) and the value of the ["mineplex_LOG"]
     environment variable. *)
 val initialize : ?cfg:cfg -> unit -> unit Lwt.t

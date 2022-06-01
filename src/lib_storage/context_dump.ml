@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018-2020 Nomadic Labs. <contact@nomadic-labs.com>          *)
 (* Copyright (c) 2018-2020 Tarides <contact@tarides.com>                     *)
 (*                                                                           *)
@@ -25,7 +25,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-let current_version = "tezos-snapshot-1.0.0"
+let current_version = "mineplex-snapshot-1.0.0"
 
 (*****************************************************************************)
 module type Dump_interface = sig
@@ -502,7 +502,7 @@ module Make (I : Dump_interface) = struct
   (* TODO add more info (e.g. nb context item, nb blocks, etc.) *)
   type snapshot_metadata = {
     version : string;
-    mode : Tezos_shell_services.History_mode.t;
+    mode : mineplex_shell_services.History_mode.t;
   }
 
   let snapshot_metadata_encoding =
@@ -512,7 +512,7 @@ module Make (I : Dump_interface) = struct
       (fun (version, mode) -> {version; mode})
       (obj2
          (req "version" string)
-         (req "mode" Tezos_shell_services.History_mode.encoding))
+         (req "mode" mineplex_shell_services.History_mode.encoding))
 
   let write_snapshot_metadata ~mode buf =
     let version = {version = current_version; mode} in
@@ -565,7 +565,7 @@ module Make (I : Dump_interface) = struct
                 let hash = I.tree_hash sub_tree in
                 ( if visited hash then Lwt.return_unit
                 else (
-                  Tezos_stdlib_unix.Utils.display_progress
+                  mineplex_stdlib_unix.Utils.display_progress
                     ~refresh_rate:(!cpt, 1_000)
                     (fun m ->
                       m
@@ -603,12 +603,12 @@ module Make (I : Dump_interface) = struct
             let tree = I.context_tree ctxt in
             fold_tree_path ctxt tree
             >>= fun () ->
-            Tezos_stdlib_unix.Utils.display_progress_end () ;
+            mineplex_stdlib_unix.Utils.display_progress_end () ;
             let parents = I.context_parents ctxt in
             set_root buf bh (I.context_info ctxt) parents block_data ;
             (* Dump pruned blocks *)
             let dump_pruned cpt pruned =
-              Tezos_stdlib_unix.Utils.display_progress
+              mineplex_stdlib_unix.Utils.display_progress
                 ~refresh_rate:(cpt, 1_000)
                 (fun m ->
                   m
@@ -645,7 +645,7 @@ module Make (I : Dump_interface) = struct
               (fun proto -> set_loot buf proto ; maybe_flush ())
               protocol_datas
             >>= fun () ->
-            Tezos_stdlib_unix.Utils.display_progress_end () ;
+            mineplex_stdlib_unix.Utils.display_progress_end () ;
             return_unit
             >>=? fun () ->
             set_end buf ;
@@ -670,7 +670,7 @@ module Make (I : Dump_interface) = struct
     in
     let restore history_mode =
       let rec first_pass batch ctxt cpt =
-        Tezos_stdlib_unix.Utils.display_progress
+        mineplex_stdlib_unix.Utils.display_progress
           ~refresh_rate:(cpt, 1_000)
           (fun m ->
             m
@@ -699,7 +699,7 @@ module Make (I : Dump_interface) = struct
       in
       let rec second_pass pred_header (rev_block_hashes, protocol_datas) todo
           cpt =
-        Tezos_stdlib_unix.Utils.display_progress
+        mineplex_stdlib_unix.Utils.display_progress
           ~refresh_rate:(cpt, 1_000)
           (fun m ->
             m
@@ -742,10 +742,10 @@ module Make (I : Dump_interface) = struct
       in
       I.batch index (fun batch -> first_pass batch (I.make_context index) 0)
       >>=? fun (block_header, block_data) ->
-      Tezos_stdlib_unix.Utils.display_progress_end () ;
+      mineplex_stdlib_unix.Utils.display_progress_end () ;
       second_pass None ([], []) [] 0
       >>=? fun (oldest_header_opt, rev_block_hashes, protocol_datas) ->
-      Tezos_stdlib_unix.Utils.display_progress_end () ;
+      mineplex_stdlib_unix.Utils.display_progress_end () ;
       return
         ( block_header,
           block_data,

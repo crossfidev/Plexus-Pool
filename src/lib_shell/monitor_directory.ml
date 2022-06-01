@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -179,7 +179,7 @@ let build_rpc_directory validator mainchain_validator =
       let next () = Lwt_stream.get stream in
       RPC_answer.return_stream {next; shutdown}) ;
   gen_register0 Monitor_services.S.commit_hash (fun () () ->
-      RPC_answer.return Tezos_version.Current_git_info.commit_hash) ;
+      RPC_answer.return mineplex_version.Current_git_info.commit_hash) ;
   gen_register0 Monitor_services.S.active_chains (fun () () ->
       let (stream, stopper) = Validator.chains_watcher validator in
       let shutdown () = Lwt_watcher.shutdown stopper in

@@ -31,5 +31,5 @@ class local_ctxt :
   -> bool
   -> Registration.mockup_environment
   -> Chain_id.t
-  -> Tezos_protocol_environment.rpc_context
+  -> mineplex_protocol_environment.rpc_context
   -> RPC_context.json

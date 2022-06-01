@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-open Tezos_clic
+open mineplex_clic
 
 let group =
   {Clic.name = "mockup"; title = "Commands for creating mockup environments"}
@@ -37,7 +37,7 @@ let list_mockup_command_handler _ _ =
     available ;
   return ()
 
-let list_mockup_command : Tezos_client_base.Client_context.full Clic.command =
+let list_mockup_command : mineplex_client_base.Client_context.full Clic.command =
   let open Clic in
   command
     ~group

@@ -16,14 +16,14 @@ and are available under a free software license.
 To use the mode, you must load the `michelson-mode.el` file into Emacs.
 Add the following to your `.emacs` file.
 ```elisp
-(load "~/tezos/tezos/emacs/michelson-mode.el" nil t)
+(load "~/mineplex/mineplex/emacs/michelson-mode.el" nil t)
 ```
 
 Before using the Emacs mode, you must configure the `michelson-client-command`.
-If you have compiled the Tezos Git repository,
-set this to be the path to the `tezos-client` binary on your system.
+If you have compiled the mineplex Git repository,
+set this to be the path to the `mineplex-client` binary on your system.
 Make sure you have an up to date version of the client compiled.
-You must also start a tezos node to enable typechecking features.
+You must also start a mineplex node to enable typechecking features.
 This option is recommended because it is faster than operating through
 the docker container.
 
@@ -36,12 +36,12 @@ the Docker script.
 Here are examples of the client configuration:
 ### Without the Docker script
 ```elisp
-(setq michelson-client-command "~/tezos/tezos/tezos-client")
+(setq michelson-client-command "~/mineplex/mineplex/mineplex-client")
 (setq michelson-alphanet nil)
 ```
 ### With the Docker script for Carthagenet
 ```elisp
-(setq michelson-client-command "~/tezos/alphanet/carthagenet.sh client")
+(setq michelson-client-command "~/mineplex/alphanet/carthagenet.sh client")
 (setq michelson-alphanet t)
 ```
 

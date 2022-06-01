@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -227,8 +227,8 @@ let raw_authenticate t ?point_info canceler fd point =
               | P2p_errors.Invalid_auth
               | P2p_errors.Decipher_error
               | P2p_errors.Invalid_message_size
-              | Tezos_base.Data_encoding_wrapper.Encoding_error _
-              | Tezos_base.Data_encoding_wrapper
+              | mineplex_base.Data_encoding_wrapper.Encoding_error _
+              | mineplex_base.Data_encoding_wrapper
                 .Unexpected_size_of_encoded_value
               | P2p_errors.Decoding_error _
               | P2p_errors.Invalid_chunks_size _ ->

@@ -11,7 +11,7 @@ init_sandboxed_client() {
     shift 1
 
     rpc=$((8731 + id))
-    client_dir="$(mktemp -d -t tezos-tmp-client.XXXXXXXX)"
+    client_dir="$(mktemp -d -t mineplex-tmp-client.XXXXXXXX)"
     client_dirs+=("$client_dir")
     signer="$local_signer -d $client_dir"
     if [ -n "$USE_TLS" ]; then
@@ -131,11 +131,11 @@ main () {
         parameters_file="$bin_dir/../proto_006_PsCARTHA/parameters/sandbox-parameters.json"
 
     else
-        # we assume a clean install with tezos-(admin-)client in the path
-        local_client="${local_client:-$(which tezos-client)}"
-        local_admin_client="${local_admin_client:-$(which tezos-admin-client)}"
-        local_signer="${local_signer:-$(which tezos-signer)}"
-        local_compiler="${local_compiler:-$(which tezos-protocol-compiler)}"
+        # we assume a clean install with mineplex-(admin-)client in the path
+        local_client="${local_client:-$(which mineplex-client)}"
+        local_admin_client="${local_admin_client:-$(which mineplex-admin-client)}"
+        local_signer="${local_signer:-$(which mineplex-signer)}"
+        local_compiler="${local_compiler:-$(which mineplex-protocol-compiler)}"
     fi
 
     if [ $# -lt 1 ] || [ "$1" -le 0 ] || [ 10 -le "$1" ]; then
@@ -149,13 +149,13 @@ main () {
 
     mkdir -p $client_dir/bin
 
-    echo '#!/bin/sh' > $client_dir/bin/tezos-client
-    echo "exec $client \"\$@\"" >> $client_dir/bin/tezos-client
-    chmod +x $client_dir/bin/tezos-client
+    echo '#!/bin/sh' > $client_dir/bin/mineplex-client
+    echo "exec $client \"\$@\"" >> $client_dir/bin/mineplex-client
+    chmod +x $client_dir/bin/mineplex-client
 
-    echo '#!/bin/sh' > $client_dir/bin/tezos-admin-client
-    echo "exec $admin_client \"\$@\""  >> $client_dir/bin/tezos-admin-client
-    chmod +x $client_dir/bin/tezos-admin-client
+    echo '#!/bin/sh' > $client_dir/bin/mineplex-admin-client
+    echo "exec $admin_client \"\$@\""  >> $client_dir/bin/mineplex-admin-client
+    chmod +x $client_dir/bin/mineplex-admin-client
 
     for protocol in $(cat $bin_dir/../../active_protocol_versions); do
         protocol_underscore=$(echo $protocol | tr -- - _)
@@ -173,54 +173,54 @@ main () {
             accuser="$local_accuser -base-dir $client_dir -endpoint http://$host:$rpc"
         fi
 
-        echo '#!/bin/sh' > $client_dir/bin/tezos-baker-$protocol
-        echo "exec $baker \"\$@\""  >> $client_dir/bin/tezos-baker-$protocol
-        chmod +x $client_dir/bin/tezos-baker-$protocol
+        echo '#!/bin/sh' > $client_dir/bin/mineplex-baker-$protocol
+        echo "exec $baker \"\$@\""  >> $client_dir/bin/mineplex-baker-$protocol
+        chmod +x $client_dir/bin/mineplex-baker-$protocol
 
-        echo '#!/bin/sh' > $client_dir/bin/tezos-endorser-$protocol
-        echo "exec $endorser \"\$@\""  >> $client_dir/bin/tezos-endorser-$protocol
-        chmod +x $client_dir/bin/tezos-endorser-$protocol
+        echo '#!/bin/sh' > $client_dir/bin/mineplex-endorser-$protocol
+        echo "exec $endorser \"\$@\""  >> $client_dir/bin/mineplex-endorser-$protocol
+        chmod +x $client_dir/bin/mineplex-endorser-$protocol
 
-        echo '#!/bin/sh' > $client_dir/bin/tezos-accuser-$protocol
-        echo "exec $accuser \"\$@\""  >> $client_dir/bin/tezos-accuser-$protocol
-        chmod +x $client_dir/bin/tezos-accuser-$protocol
+        echo '#!/bin/sh' > $client_dir/bin/mineplex-accuser-$protocol
+        echo "exec $accuser \"\$@\""  >> $client_dir/bin/mineplex-accuser-$protocol
+        chmod +x $client_dir/bin/mineplex-accuser-$protocol
     done
 
-    echo '#!/bin/sh' > $client_dir/bin/tezos-signer
-    echo "exec $signer \"\$@\""  >> $client_dir/bin/tezos-signer
-    chmod +x $client_dir/bin/tezos-signer
+    echo '#!/bin/sh' > $client_dir/bin/mineplex-signer
+    echo "exec $signer \"\$@\""  >> $client_dir/bin/mineplex-signer
+    chmod +x $client_dir/bin/mineplex-signer
 
     cat <<EOF
-if type tezos-client-reset >/dev/null 2>&1 ; then tezos-client-reset; fi ;
+if type mineplex-client-reset >/dev/null 2>&1 ; then mineplex-client-reset; fi ;
 PATH="$client_dir/bin:\$PATH" ; export PATH ;
-alias tezos-activate-006-PsCARTHA="$client  -block genesis activate protocol PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
-alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-006-PsCARTHA tezos-client-reset" ;
-alias tezos-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
-trap tezos-client-reset EXIT ;
+alias mineplex-activate-006-PsCARTHA="$client  -block genesis activate protocol PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
+alias mineplex-client-reset="rm -rf \"$client_dir\"; unalias mineplex-activate-006-PsCARTHA mineplex-client-reset" ;
+alias mineplex-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
+trap mineplex-client-reset EXIT ;
 
 EOF
 
     (cat | sed -e 's/^/## /') 1>&2 <<EOF
 
 The client is now properly initialized. In the rest of this shell
-session, you might now run \`tezos-client\` to communicate with a
-tezos node launched with \`launch-sandboxed-node $1\`. For instance:
+session, you might now run \`mineplex-client\` to communicate with a
+mineplex node launched with \`launch-sandboxed-node $1\`. For instance:
 
-  tezos-client rpc get /chains/main/blocks/head/metadata
+  mineplex-client rpc get /chains/main/blocks/head/metadata
 
 Note: if the current protocol version, as reported by the previous
 command, is "ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im", you
 may have to activate in your "sandboxed network" the same economic
 protocol as used by the alphanet by running:
 
-  tezos-activate-006-PsCARTHA
+  mineplex-activate-006-PsCARTHA
 
 Warning: all the client data will be removed when you close this shell
 or if you run this command a second time.
 
 Activate tab completion by running:
 
-  tezos-autocomplete
+  mineplex-autocomplete
 
 EOF
 

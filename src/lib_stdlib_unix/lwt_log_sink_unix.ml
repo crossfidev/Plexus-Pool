@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -207,7 +207,7 @@ let cfg_encoding =
           "rules"
           ~description:
             "Fine-grained logging instructions. Same format as described in \
-             `tezos-node run --help`, DEBUG section. In the example below, \
+             `mineplex-node run --help`, DEBUG section. In the example below, \
              sections 'p2p' and all sections starting by 'client' will have \
              their messages logged up to the debug level, whereas the rest of \
              log sections will be logged up to the notice level."
@@ -240,9 +240,9 @@ let init ?(template = default_template) output =
   Lwt.return_unit
 
 let find_log_rules default =
-  match Sys.(getenv_opt "TEZOS_LOG", getenv_opt "LWT_LOG") with
+  match Sys.(getenv_opt "mineplex_LOG", getenv_opt "LWT_LOG") with
   | (Some rules, None) ->
-      ("environment variable TEZOS_LOG", Some rules)
+      ("environment variable mineplex_LOG", Some rules)
   | (None, Some rules) ->
       ("environment variable LWT_LOG", Some rules)
   | (None, None) ->
@@ -250,9 +250,9 @@ let find_log_rules default =
   | (Some rules, Some _) ->
       Format.eprintf
         "@[<v 2>@{<warning>@{<title>Warning@}@} Both environment variables \
-         TEZOS_LOG and LWT_LOG defined, using TEZOS_LOG.@]@\n\
+         mineplex_LOG and LWT_LOG defined, using mineplex_LOG.@]@\n\
          @." ;
-      ("environment variable TEZOS_LOG", Some rules)
+      ("environment variable mineplex_LOG", Some rules)
 
 let initialize ?(cfg = default_cfg) () =
   Lwt_log_core.add_rule "*" (Internal_event.Level.to_lwt_log cfg.default_level) ;

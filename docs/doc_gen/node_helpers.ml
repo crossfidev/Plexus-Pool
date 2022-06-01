@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -40,9 +40,9 @@ let with_node f =
     let node_config : Node.config =
       {
         genesis;
-        chain_name = Distributed_db_version.Name.of_string "TEZOS_DOCGEN";
+        chain_name = Distributed_db_version.Name.of_string "mineplex_DOCGEN";
         sandboxed_chain_name =
-          Distributed_db_version.Name.of_string "SANDBOXED_TEZOS_DOCGEN";
+          Distributed_db_version.Name.of_string "SANDBOXED_mineplex_DOCGEN";
         user_activated_upgrades = [];
         user_activated_protocol_overrides = [];
         patch_context = None;
@@ -66,7 +66,7 @@ let with_node f =
       None
     >>=? fun node -> f node >>=? fun () -> return ()
   in
-  Lwt_utils_unix.with_tempdir "tezos_rpcdoc_" run
+  Lwt_utils_unix.with_tempdir "mineplex_rpcdoc_" run
   >>= function
   | Ok () ->
       Lwt.return_unit

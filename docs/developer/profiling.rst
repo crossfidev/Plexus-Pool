@@ -1,4 +1,4 @@
-Profiling the Tezos node
+Profiling the mineplex node
 ========================
 
 Memory profiling the OCaml heap
@@ -38,7 +38,7 @@ Memory profiling the OCaml heap
 ::
 
     M-x sturgeon-connect
-    tezos-nodememprof.1234.sturgeon
+    mineplex-nodememprof.1234.sturgeon
 
   (tab-completion works for finding the socket name)
 
@@ -49,7 +49,7 @@ Memory profiling the C heap
 
 ::
 
-    valgrind --tool=massif tezos-node run ...
+    valgrind --tool=massif mineplex-node run ...
 
 - Stop with `Ctrl-C` then display with
 

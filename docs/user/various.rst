@@ -26,7 +26,7 @@ hardware wallet.
 
 ::
 
-   tezos-node run --rpc-addr [::] --private-mode \
+   mineplex-node run --rpc-addr [::] --private-mode \
                                   --no-bootstrap-peers \
                                   --bootstrap-threshold=1 \
                                   --connections 1 \
@@ -40,10 +40,10 @@ Configuration options for the node
 
 ::
 
-   ./tezos-node config init
+   ./mineplex-node config init
 
 This will initialize a configuration file for the node in
-`$HOME/.tezos-node/config.json`, using default values. It only
+`$HOME/.mineplex-node/config.json`, using default values. It only
 specifies that the node will listen to incoming connections on socket
 address ``[::]:9732``.
 
@@ -52,18 +52,18 @@ The easiest way to amend this default configuration is to use
 ::
 
    # Update the config file
-   ./tezos-node config update <…>
+   ./mineplex-node config update <…>
    # Start from an empty cfg file
-   ./tezos-node config reset <…>
+   ./mineplex-node config reset <…>
 
 
-All blockchain data is stored under ``$HOME/.tezos-node/``.  You can
-change this by doing `./tezos-node config update --data-dir
+All blockchain data is stored under ``$HOME/.mineplex-node/``.  You can
+change this by doing `./mineplex-node config update --data-dir
 </somewhere/in/your/disk>`.
 
 To run multiple nodes on the same machine, you can duplicate and edit
-``$HOME/.tezos-node/config.json`` while making sure they don't share
-the same ``data-dir``. Then run your node with `./tezos-node
+``$HOME/.mineplex-node/config.json`` while making sure they don't share
+the same ``data-dir``. Then run your node with `./mineplex-node
 run --config-file=</path/to/alternate_cfg>`.
 
 Here is an example configuration file with all parameters specified.
@@ -79,7 +79,7 @@ writing your own configuration file if needed.
 
       /* Location of the data dir on disk. */
 
-      "data-dir": "/home/tezos/my_data_dir"
+      "data-dir": "/home/mineplex/my_data_dir"
 
       /* Configuration of net parameters */
 
@@ -91,11 +91,11 @@ writing your own configuration file if needed.
 
         "expected-proof-of-work": 24.5,
 
-        /* List of hosts. Tezos can connect to both IPv6 and IPv4
+        /* List of hosts. mineplex can connect to both IPv6 and IPv4
         hosts. If the port is not specified, default port 9732 will be
         assumed. */
 
-        "bootstrap-peers": ["::1:10732", "::ffff:192.168.1.3:9733", "mynode.tezos.com"],
+        "bootstrap-peers": ["::1:10732", "::ffff:192.168.1.3:9733", "mynode.mineplex.com"],
 
         /* Specify if the node is in private mode or not. A node in
         private mode only opens outgoing connections to peers whose
@@ -168,8 +168,8 @@ writing your own configuration file if needed.
 
         /* Certificate and key files (necessary when TLS is used). */
 
-        "crt": "tezos-node.crt",
-        "key": "tezos-node.key"
+        "crt": "mineplex-node.crt",
+        "key": "mineplex-node.key"
       },
 
       /* Configuration of log parameters */
@@ -179,7 +179,7 @@ writing your own configuration file if needed.
         /* Output for the logging function. Either "stdout", "stderr" or
         the name of a log file . */
 
-        "output": "tezos-node.log",
+        "output": "mineplex-node.log",
 
         /* Verbosity level: one of 'fatal', 'error', 'warn', 'notice',
         'info', 'debug'. */
@@ -187,7 +187,7 @@ writing your own configuration file if needed.
         "level": "info",
 
         /* Fine-grained logging instructions. Same format as described in
-        `tezos-node run --help`, DEBUG section. In the example below,
+        `mineplex-node run --help`, DEBUG section. In the example below,
         sections "net" and all sections starting by "client" will have
         their messages logged up to the debug level, whereas the rest of
         log sections will be logged up to the notice level. */
@@ -232,20 +232,20 @@ The last package imports the shell path in Emacs and it is needed
 because we will run a sandboxed node.
 
 Set up the `Michelson mode
-<https://gitlab.com/tezos/tezos/tree/master/emacs>`_ by adding in
+<https://gitlab.com/mineplex/mineplex/tree/master/emacs>`_ by adding in
 your ``.emacs`` :
 
 ::
 
-   (load "~/tezos/tezos/emacs/michelson-mode.el" nil t)
-   (setq michelson-client-command "tezos-client")
+   (load "~/mineplex/mineplex/emacs/michelson-mode.el" nil t)
+   (setq michelson-client-command "mineplex-client")
    (setq michelson-alphanet nil)
 
 Note that the Michelson mode will be chosen automatically by Emacs for
 files with a ``.tz`` or ``.tez`` extension.
 
 Run a :ref:`sandboxed node<sandboxed-mode>` (and activate the Alpha
-protocol with ``tezos-activate-alpha``) so that useful information
+protocol with ``mineplex-activate-alpha``) so that useful information
 about the program can be displayed.
 We can now open our favourite contract ``emacs
 ./src/bin_client/test/contracts/attic/id.tz`` and, when moving the cursor on
@@ -258,7 +258,7 @@ run it locally:
 
 ::
 
-   tezos-client run script ./src/bin_client/test/contracts/attic/id.tz \
+   mineplex-client run script ./src/bin_client/test/contracts/attic/id.tz \
                 on storage '"hello"' and input '"world"'
 
 
@@ -266,12 +266,12 @@ Debugging
 ---------
 
 It is possible to set independent log levels for different logging
-sections in Tezos, as well as specifying an output file for logging. See
+sections in mineplex, as well as specifying an output file for logging. See
 the description of log parameters above as well as documentation under
-the DEBUG section displayed by `tezos-node run –-help`.
+the DEBUG section displayed by `mineplex-node run –-help`.
 
 
-.. _tezos-admin-client:
+.. _mineplex-admin-client:
 
 Admin Client
 ------------
@@ -287,4 +287,4 @@ A useful command to debug a node that is not syncing is:
 
 ::
 
-   tezos-admin-client p2p stat
+   mineplex-admin-client p2p stat

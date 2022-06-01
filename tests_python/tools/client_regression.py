@@ -4,7 +4,7 @@ from client import client
 
 
 class ClientRegression(client.Client):
-    """Client to a Tezos node that intercepts output for regression testing.
+    """Client to a mineplex node that intercepts output for regression testing.
 
     This subclass of Client can be associated with a `regtest` fixture
     as provided by the `pytest-regtest`, using the `set_regtest`

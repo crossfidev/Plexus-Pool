@@ -49,11 +49,11 @@ module Alcotest_protocol_validator = struct
     let eq (p1 : t) (p2 : t) : bool =
       let (module P1) = p1 in
       let (module P2) = p2 in
-      Tezos_base.TzPervasives.Protocol_hash.equal P1.hash P2.hash
+      mineplex_base.TzPervasives.Protocol_hash.equal P1.hash P2.hash
     in
     let pp fmt (p : t) =
       let (module P) = p in
-      Tezos_base.TzPervasives.Protocol_hash.pp fmt P.hash
+      mineplex_base.TzPervasives.Protocol_hash.pp fmt P.hash
     in
     testable pp eq
 end
@@ -68,7 +68,7 @@ let filter = Some section
    validator.  It passes the validator to the test function [f] *)
 let wrap f _switch () =
   with_empty_mock_sink (fun _ ->
-      Lwt_utils_unix.with_tempdir "tezos_test_" (fun test_dir ->
+      Lwt_utils_unix.with_tempdir "mineplex_test_" (fun test_dir ->
           init_chain test_dir
           >>= fun (st, _, _, _) ->
           init_mock_p2p Distributed_db_version.Name.zero

@@ -23,11 +23,11 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-let tezos_client = "./tezos-client"
+let mineplex_client = "./mineplex-client"
 
-let tezos_admin_client = "./tezos-admin-client"
+let mineplex_admin_client = "./mineplex-admin-client"
 
-let tezos_node = "./tezos-node"
+let mineplex_node = "./mineplex-node"
 
 type protocol = {hash : string; parameter_file : string}
 

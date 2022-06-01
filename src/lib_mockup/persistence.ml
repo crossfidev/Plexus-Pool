@@ -28,9 +28,9 @@ let mockup_dirname = "mockup"
 let context_file = "context.json"
 
 let rpc_context_encoding :
-    Tezos_protocol_environment.rpc_context Data_encoding.t =
+    mineplex_protocol_environment.rpc_context Data_encoding.t =
   let open Data_encoding in
-  let open Tezos_protocol_environment in
+  let open mineplex_protocol_environment in
   conv
     (fun {block_hash; block_header; context} ->
       (block_hash, block_header, context))
@@ -45,7 +45,7 @@ module Persistent_mockup_environment = struct
   type t = {
     protocol_hash : Protocol_hash.t;
     chain_id : Chain_id.t;
-    rpc_context : Tezos_protocol_environment.rpc_context;
+    rpc_context : mineplex_protocol_environment.rpc_context;
   }
 
   let encoding =
@@ -90,7 +90,7 @@ let get_registered_mockup :
             "requested protocol not found in available mockup environments" ) )
 
 let default_mockup_context :
-    Tezos_client_base.Client_context.full ->
+    mineplex_client_base.Client_context.full ->
     (Registration.mockup_environment * Registration.mockup_context) tzresult
     Lwt.t =
  fun cctxt ->
@@ -105,7 +105,7 @@ let default_mockup_context :
   >>=? fun rpc_context -> return (mockup, rpc_context)
 
 let init_mockup_context_by_protocol_hash :
-    cctxt:Tezos_client_base.Client_context.full ->
+    cctxt:mineplex_client_base.Client_context.full ->
     protocol_hash:Protocol_hash.t ->
     constants_overrides_json:Data_encoding.json option ->
     bootstrap_accounts_json:Data_encoding.json option ->
@@ -134,7 +134,7 @@ let get_mockup_context_from_disk ~base_dir =
   if not (Sys.file_exists file) then
     failwith "get_mockup_context_from_disk: file %s not found" file
   else
-    Tezos_stdlib_unix.Lwt_utils_unix.Json.read_file file
+    mineplex_stdlib_unix.Lwt_utils_unix.Json.read_file file
     >>=? fun context_json ->
     match Persistent_mockup_environment.of_json context_json with
     | persisted_mockup ->
@@ -150,7 +150,7 @@ let overwrite_mockup ~protocol_hash ~chain_id ~rpc_context ~base_dir =
   else
     Persistent_mockup_environment.(
       to_json {protocol_hash; chain_id; rpc_context})
-    |> Tezos_stdlib_unix.Lwt_utils_unix.Json.write_file context_file
+    |> mineplex_stdlib_unix.Lwt_utils_unix.Json.write_file context_file
 
 type base_dir_class =
   | Base_dir_does_not_exist
@@ -192,11 +192,11 @@ let classify_base_dir base_dir =
     then Base_dir_is_mockup
     else Base_dir_is_nonempty
 
-let create_mockup ~(cctxt : Tezos_client_base.Client_context.full)
+let create_mockup ~(cctxt : mineplex_client_base.Client_context.full)
     ~protocol_hash ~constants_overrides_json ~bootstrap_accounts_json =
   let base_dir = cctxt#get_base_dir in
   let create_base_dir () =
-    Tezos_stdlib_unix.Lwt_utils_unix.create_dir base_dir
+    mineplex_stdlib_unix.Lwt_utils_unix.create_dir base_dir
     >>= fun () ->
     cctxt#message "Created mockup client base dir in %s" base_dir
     >>= fun () -> return_unit
@@ -220,9 +220,9 @@ let create_mockup ~(cctxt : Tezos_client_base.Client_context.full)
     ~bootstrap_accounts_json
   >>=? fun (_mockup_env, (chain_id, rpc_context)) ->
   let mockup_dir = Filename.concat base_dir mockup_dirname in
-  Tezos_stdlib_unix.Lwt_utils_unix.create_dir mockup_dir
+  mineplex_stdlib_unix.Lwt_utils_unix.create_dir mockup_dir
   >>= fun () ->
   let context_file = Filename.concat mockup_dir context_file in
   Persistent_mockup_environment.(
     to_json {protocol_hash; chain_id; rpc_context})
-  |> Tezos_stdlib_unix.Lwt_utils_unix.Json.write_file context_file
+  |> mineplex_stdlib_unix.Lwt_utils_unix.Json.write_file context_file

@@ -1,22 +1,22 @@
 (library
- (name tezos_protocol_001_Pt8PXNHh_parameters)
- (public_name tezos-protocol-001-Pt8PXNHh-parameters)
+ (name mineplex_protocol_001_Pt8PXNHh_parameters)
+ (public_name mineplex-protocol-001-Pt8PXNHh-parameters)
  (modules :standard \ gen)
- (libraries tezos-base
-            tezos-protocol-environment
-            tezos-protocol-001-Pt8PXNHh)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_001_Pt8PXNHh
+ (libraries mineplex-base
+            mineplex-protocol-environment
+            mineplex-protocol-001-Pt8PXNHh)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_001_Pt8PXNHh
                    -linkall))
 )
 
 (executable
  (name gen)
- (libraries tezos-base
-            tezos-protocol-001-Pt8PXNHh-parameters)
+ (libraries mineplex-base
+            mineplex-protocol-001-Pt8PXNHh-parameters)
  (modules gen)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_001_Pt8PXNHh_parameters
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_001_Pt8PXNHh_parameters
                    -linkall)))
 
 (rule
@@ -41,4 +41,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

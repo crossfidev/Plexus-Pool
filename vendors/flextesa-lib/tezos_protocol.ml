@@ -4,24 +4,24 @@ module Key = struct
   module Of_name = struct
     type t =
       { name: string
-      ; pkh: Tezos_crypto.Ed25519.Public_key_hash.t
-      ; pk: Tezos_crypto.Ed25519.Public_key.t
-      ; sk: Tezos_crypto.Ed25519.Secret_key.t }
+      ; pkh: mineplex_crypto.Ed25519.Public_key_hash.t
+      ; pk: mineplex_crypto.Ed25519.Public_key.t
+      ; sk: mineplex_crypto.Ed25519.Secret_key.t }
 
     let make name =
       let seed =
         Bytes.of_string
           (String.concat ~sep:"" (List.init 42 ~f:(fun _ -> name))) in
-      let pkh, pk, sk = Tezos_crypto.Ed25519.generate_key ~seed () in
+      let pkh, pk, sk = mineplex_crypto.Ed25519.generate_key ~seed () in
       {name; pkh; pk; sk}
 
-    let pubkey n = Tezos_crypto.Ed25519.Public_key.to_b58check (make n).pk
+    let pubkey n = mineplex_crypto.Ed25519.Public_key.to_b58check (make n).pk
 
     let pubkey_hash n =
-      Tezos_crypto.Ed25519.Public_key_hash.to_b58check (make n).pkh
+      mineplex_crypto.Ed25519.Public_key_hash.to_b58check (make n).pkh
 
     let private_key n =
-      "unencrypted:" ^ Tezos_crypto.Ed25519.Secret_key.to_b58check (make n).sk
+      "unencrypted:" ^ mineplex_crypto.Ed25519.Secret_key.to_b58check (make n).sk
   end
 end
 
@@ -363,7 +363,7 @@ let cli_term state =
                 ~doc:
                   "Use these protocol parameters instead of the generated \
                    ones (technically this invalidates most other options from \
-                   a tezos-node point of view, use at your own risk)."
+                   a mineplex-node point of view, use at your own risk)."
                 ~docv:"JSON-FILE" ~docs)))
   $ Protocol_kind.cmdliner_term () ~docs
 

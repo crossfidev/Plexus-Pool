@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -41,7 +41,7 @@ open Test_tez
 
 (* Generated commitments and secrets  *)
 
-(* Commitments are hard-coded in {Tezos_proto_alpha_parameters.Default_parameters} *)
+(* Commitments are hard-coded in {mineplex_proto_alpha_parameters.Default_parameters} *)
 
 (* let commitments =
  *   List.map (fun (bpkh, a) ->
@@ -70,13 +70,13 @@ type secret_account = {
 let secrets () =
   (* Exported from proto_alpha client - TODO : remove when relocated to lib_crypto *)
   let read_key mnemonic email password =
-    match Tezos_client_base.Bip39.of_words mnemonic with
+    match mineplex_client_base.Bip39.of_words mnemonic with
     | None ->
         assert false
     | Some t ->
         (* TODO: unicode normalization (NFKD)... *)
         let passphrase = Bytes.(cat (of_string email) (of_string password)) in
-        let sk = Tezos_client_base.Bip39.to_seed ~passphrase t in
+        let sk = mineplex_client_base.Bip39.to_seed ~passphrase t in
         let sk = Bytes.sub sk 0 32 in
         let sk : Signature.Secret_key.t =
           Ed25519
@@ -120,7 +120,7 @@ let secrets () =
         "23932454669343",
         "mp1MawerETND6bqJqx8GV3YHUrvMBCDasRBF",
         "z0eZHQQGKt",
-        "cjgfoqmk.wpxnvnup@tezos.example.org" );
+        "cjgfoqmk.wpxnvnup@mineplex.example.org" );
       ( [ "flag";
           "quote";
           "will";
@@ -140,7 +140,7 @@ let secrets () =
         "72954577464032",
         "mp1X4maqF9tC1Yn4jULjHRAyzjAtc25Z68TX",
         "MHErskWPE6",
-        "oklmcktr.ztljnpzc@tezos.example.org" );
+        "oklmcktr.ztljnpzc@mineplex.example.org" );
       ( [ "library";
           "away";
           "inside";
@@ -160,7 +160,7 @@ let secrets () =
         "217487035428348",
         "mp1SWBY7rWMutEuWS54Pt33MkzAS6eWkUuTc",
         "0AO6BzQNfN",
-        "ctgnkvqm.kvtiybky@tezos.example.org" );
+        "ctgnkvqm.kvtiybky@mineplex.example.org" );
       ( [ "cruel";
           "fluid";
           "damage";
@@ -180,7 +180,7 @@ let secrets () =
         "4092742372031",
         "mp1amUjiZaevaxQy5wKn4SSRvVoERCip3nZS",
         "9kbZ7fR6im",
-        "bnyxxzqr.tdszcvqb@tezos.example.org" );
+        "bnyxxzqr.tdszcvqb@mineplex.example.org" );
       ( [ "opera";
           "divorce";
           "easy";
@@ -200,7 +200,7 @@ let secrets () =
         "17590039016550",
         "mp1Zaee3QBtD4ErY1SzqUvyYTrENrExu6yQM",
         "suxT5H09yY",
-        "iilkhohu.otnyuvna@tezos.example.org" );
+        "iilkhohu.otnyuvna@mineplex.example.org" );
       ( [ "token";
           "similar";
           "ginger";
@@ -220,7 +220,7 @@ let secrets () =
         "26322312350555",
         "mp1geDUUhfXK1EMj7VQdRjug1MoFe6gHWnCU",
         "4odVdLykaa",
-        "kwhlglvr.slriitzy@tezos.example.org" );
+        "kwhlglvr.slriitzy@mineplex.example.org" );
       ( [ "shield";
           "warrior";
           "gorilla";
@@ -240,7 +240,7 @@ let secrets () =
         "244951387881443",
         "mp1h3nY7jcZciJgAwRhWcrEwqfVp7VQoffur",
         "A6yeMqBFG8",
-        "lvrmlbyj.yczltcxn@tezos.example.org" );
+        "lvrmlbyj.yczltcxn@mineplex.example.org" );
       ( [ "waste";
           "open";
           "scan";
@@ -260,7 +260,7 @@ let secrets () =
         "80065050465525",
         "mp1VzL4Xrb3fL3ckvqCWy6bdGMzU2w9eoRqs",
         "oVZqpq60sk",
-        "rfodmrha.zzdndvyk@tezos.example.org" );
+        "rfodmrha.zzdndvyk@mineplex.example.org" );
       ( [ "fiber";
           "next";
           "property";
@@ -280,7 +280,7 @@ let secrets () =
         "3569618927693",
         "mp1RUHg536oRKhPLFfttcB5gSWAhh4E9TWjX",
         "FfytQTTVbu",
-        "owecikdy.gxnyttya@tezos.example.org" );
+        "owecikdy.gxnyttya@mineplex.example.org" );
       ( [ "print";
           "labor";
           "budget";
@@ -300,7 +300,7 @@ let secrets () =
         "9034781424478",
         "mp1M1LFbgctcPWxstrao9aLr2ECW1fV4pH5u",
         "zknAl3lrX2",
-        "ettilrvh.zsrqrbud@tezos.example.org" ) ]
+        "ettilrvh.zsrqrbud@mineplex.example.org" ) ]
 
 let activation_init () =
   Context.init ~with_commitments:true 1

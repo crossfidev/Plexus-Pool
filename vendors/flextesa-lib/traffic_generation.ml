@@ -48,7 +48,7 @@ module Random = struct
   let run state ~protocol ~nodes ~clients ~until_level kind =
     assert (Poly.equal kind `Any) ;
     let tbb =
-      protocol.Tezos_protocol.time_between_blocks |> List.hd
+      protocol.mineplex_protocol.time_between_blocks |> List.hd
       |> Option.value ~default:10 in
     let info fmt =
       Fmt.kstr
@@ -63,7 +63,7 @@ module Random = struct
     let valid_contracts = ref [] in
     let rec loop iteration =
       let client_cmd name l =
-        Tezos_client.client_cmd ~verbose:false state ~client
+        mineplex_client.client_cmd ~verbose:false state ~client
           ~id_prefix:(Fmt.str "randomizer-%04d-%s" iteration name)
           l in
       let continue_or_not () =
@@ -106,7 +106,7 @@ module Random = struct
                        ~f:(fun _ -> Random.int 20 + 40 |> Char.of_int_exn)) )
             | _ -> ("unit", "Unit") in
           Michelson.prepare_origination_of_id_script state ~name ~from
-            ~protocol_kind:protocol.Tezos_protocol.kind ~parameter
+            ~protocol_kind:protocol.mineplex_protocol.kind ~parameter
             ~init_storage ~push_drops
           >>= fun origination ->
           client_cmd (Fmt.str "originate-%s" name) origination
@@ -122,7 +122,7 @@ end
 
 module Forge = struct
   let batch_transfer
-      ?(protocol_kind : Tezos_protocol.Protocol_kind.t = `Babylon)
+      ?(protocol_kind : mineplex_protocol.Protocol_kind.t = `Babylon)
       ?(counter = 0) ?(dst = [("mp2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F", 1)])
       ~src ~fee ~branch n : Ezjsonm.value =
     let open Ezjsonm in
@@ -145,7 +145,7 @@ module Forge = struct
                    ; ("gas_limit", `String (Int.to_string 127))
                    ; ("storage_limit", `String (Int.to_string 277)) ])) ) ]
 
-  let endorsement ?(protocol_kind : Tezos_protocol.Protocol_kind.t = `Babylon)
+  let endorsement ?(protocol_kind : mineplex_protocol.Protocol_kind.t = `Babylon)
       ~branch level : Ezjsonm.value =
     let open Ezjsonm in
     ignore protocol_kind ;

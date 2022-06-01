@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-open Tezos_error_monad.Error_monad
+open mineplex_error_monad.Error_monad
 
 module IntLwtHashtbl = Lwtreslib.Hashtbl.Make_Lwt (struct
   type t = int

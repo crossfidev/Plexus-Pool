@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -24,7 +24,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(* Tezos Command line interface - Configuration and Arguments Parsing *)
+(* mineplex Command line interface - Configuration and Arguments Parsing *)
 
 type error += Invalid_endpoint_arg of string
 
@@ -146,7 +146,7 @@ let () =
 
 let home = try Sys.getenv "HOME" with Not_found -> "/root"
 
-let default_base_dir = Filename.concat home ".tezos-client"
+let default_base_dir = Filename.concat home ".mineplex-client"
 
 let default_chain = `Main
 
@@ -346,7 +346,7 @@ let base_dir_arg () =
     ~placeholder:"path"
     ~doc:
       ( "client data directory\n\
-         The directory where the Tezos client will store all its data.\n\
+         The directory where the mineplex client will store all its data.\n\
          By default: '" ^ default_base_dir ^ "'." )
     (string_parameter ())
 
@@ -451,7 +451,7 @@ let remote_signer_arg () =
     ~short:'R'
     ~placeholder:"uri"
     ~doc:"URI of the remote signer"
-    (parameter (fun _ x -> Tezos_signer_backends_unix.Remote.parse_base_uri x))
+    (parameter (fun _ x -> mineplex_signer_backends_unix.Remote.parse_base_uri x))
 
 let password_filename_arg () =
   arg
@@ -497,7 +497,7 @@ let read_config_file config_file =
 
 let fail_on_non_mockup_dir (cctxt : #Client_context.full) =
   let base_dir = cctxt#get_base_dir in
-  match Tezos_mockup.Persistence.classify_base_dir base_dir with
+  match mineplex_mockup.Persistence.classify_base_dir base_dir with
   | Base_dir_does_not_exist
   | Base_dir_is_file
   | Base_dir_is_nonempty
@@ -505,7 +505,7 @@ let fail_on_non_mockup_dir (cctxt : #Client_context.full) =
       failwith
         "base directory at %s should be a mockup directory for this operation \
          to be allowed (it may contain sensitive data otherwise). What you \
-         likely want is calling `tezos-client --mode mockup --base-dir \
+         likely want is calling `mineplex-client --mode mockup --base-dir \
          /some/dir create mockup` where `/some/dir` is **fresh** and \
          **empty** and redo this operation, specifying `--base-dir /some/dir` \
          this time."
@@ -557,7 +557,7 @@ let commands config_file cfg (protocol_hash_opt : Protocol_hash.t option) =
       (fun () (cctxt : #Client_context.full) ->
         fail_on_non_mockup_dir cctxt
         >>=? fun _ ->
-        Tezos_mockup.Persistence.get_registered_mockup protocol_hash_opt
+        mineplex_mockup.Persistence.get_registered_mockup protocol_hash_opt
         >>=? fun mockup ->
         let (module Mockup) = mockup in
         let json_pp encoding ppf value =
@@ -661,7 +661,7 @@ let commands config_file cfg (protocol_hash_opt : Protocol_hash.t option) =
              mockup_protocol_constants
              protocol_constants_file)
         >>=? fun () ->
-        Tezos_mockup.Persistence.get_registered_mockup protocol_hash_opt
+        mineplex_mockup.Persistence.get_registered_mockup protocol_hash_opt
         >>=? fun mockup ->
         let (module Mockup) = mockup in
         Mockup.default_bootstrap_accounts cctxt
@@ -731,7 +731,7 @@ let default_parsed_config_args =
  * fail).
  *)
 let check_base_dir_for_mode (ctx : #Client_context.full) client_mode base_dir =
-  let open Tezos_mockup.Persistence in
+  let open mineplex_mockup.Persistence in
   let base_dir_class = classify_base_dir base_dir in
   match client_mode with
   | Mode_client -> (
@@ -889,7 +889,7 @@ let parse_config_args (ctx : #Client_context.full) argv =
          "@{<warning>Warning:@}  the --addr --port --tls options are now \
           deprecated; use --endpoint instead\n" ;
        pp_print_flush err_formatter ()) )) ;
-  Tezos_signer_backends_unix.Remote.read_base_uri_from_env ()
+  mineplex_signer_backends_unix.Remote.read_base_uri_from_env ()
   >>=? fun remote_signer_env ->
   let remote_signer =
     let open Option in
@@ -958,7 +958,7 @@ module type Remote_params = sig
   val authenticate :
     Signature.public_key_hash list -> Bytes.t -> Signature.t tzresult Lwt.t
 
-  val logger : Tezos_rpc_http_client_unix.RPC_client_unix.logger
+  val logger : mineplex_rpc_http_client_unix.RPC_client_unix.logger
 end
 
 let other_registrations : (_ -> (module Remote_params) -> _) option =
@@ -967,8 +967,8 @@ let other_registrations : (_ -> (module Remote_params) -> _) option =
       parsed_config_file.Cfg_file.remote_signer
       |> Option.iter (fun signer ->
              Client_keys.register_signer
-               ( module Tezos_signer_backends_unix.Remote.Make
-                          (Tezos_rpc_http_client_unix.RPC_client_unix)
+               ( module mineplex_signer_backends_unix.Remote.Make
+                          (mineplex_rpc_http_client_unix.RPC_client_unix)
                           (struct
                             let default = signer
 

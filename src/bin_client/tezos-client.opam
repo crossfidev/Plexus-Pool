@@ -1,43 +1,43 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-client-base"
+  "mineplex-base"
+  "mineplex-client-base"
 
-  "tezos-client-genesis"
-  "tezos-client-genesis-carthagenet"
+  "mineplex-client-genesis"
+  "mineplex-client-genesis-carthagenet"
 
-  "tezos-client-alpha"
-  "tezos-client-000-Ps9mPmXa"
-  "tezos-client-001-Pt8PXNHh"
-  "tezos-client-002-Pt4xzupC"
+  "mineplex-client-alpha"
+  "mineplex-client-000-Ps9mPmXa"
+  "mineplex-client-001-Pt8PXNHh"
+  "mineplex-client-002-Pt4xzupC"
 
-  "tezos-client-demo-counter"
+  "mineplex-client-demo-counter"
 
-  "tezos-client-alpha-commands"
-  "tezos-client-001-Pt8PXNHh-commands"
-  "tezos-client-002-Pt4xzupC-commands"
+  "mineplex-client-alpha-commands"
+  "mineplex-client-001-Pt8PXNHh-commands"
+  "mineplex-client-002-Pt4xzupC-commands"
 
-  "tezos-baking-alpha-commands"
-  "tezos-baking-001-Pt8PXNHh-commands"
-  "tezos-baking-002-Pt4xzupC-commands"
+  "mineplex-baking-alpha-commands"
+  "mineplex-baking-001-Pt8PXNHh-commands"
+  "mineplex-baking-002-Pt4xzupC-commands"
 
-  "tezos-client-base-unix"
-  "tezos-mockup-commands"
-  "tezos-signer-backends"
-  "tezos-node" { with-test }
-  "tezos-protocol-compiler" { with-test }
-  "tezos-protocol-alpha-parameters" { with-test }
+  "mineplex-client-base-unix"
+  "mineplex-mockup-commands"
+  "mineplex-signer-backends"
+  "mineplex-node" { with-test }
+  "mineplex-protocol-compiler" { with-test }
+  "mineplex-protocol-alpha-parameters" { with-test }
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos: `tezos-client` binary"
+synopsis: "mineplex: `mineplex-client` binary"

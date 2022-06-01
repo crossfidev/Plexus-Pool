@@ -11,10 +11,10 @@
    test_lwt_exit_raise
    test_lwt_exit_raise_exit
    )
- (libraries tezos-stdlib-unix
-            tezos-stdlib
+ (libraries mineplex-stdlib-unix
+            mineplex-stdlib
             lwt.unix)
- (flags (:standard -open Tezos_stdlib_unix)))
+ (flags (:standard -open mineplex_stdlib_unix)))
 
 (alias
  (name buildtest)
@@ -98,7 +98,7 @@
 
 (alias
  (name runtest)
- (package tezos-stdlib-unix)
+ (package mineplex-stdlib-unix)
  (deps (alias runtest_lwt_exit_exit)
        (alias runtest_lwt_exit_exit_escape)
        (alias runtest_lwt_exit_return)
@@ -114,4 +114,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

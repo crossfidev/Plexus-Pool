@@ -1,15 +1,15 @@
 (library
- (name tezos_crypto)
- (public_name tezos-crypto)
- (flags (:standard -open Tezos_stdlib
+ (name mineplex_crypto)
+ (public_name mineplex-crypto)
+ (flags (:standard -open mineplex_stdlib
                    -open Data_encoding
-                   -open Tezos_error_monad
-                   -open Tezos_rpc))
- (libraries tezos-stdlib
+                   -open mineplex_error_monad
+                   -open mineplex_rpc))
+ (libraries mineplex-stdlib
             data-encoding
-            tezos-error-monad
-            tezos-lwt-result-stdlib
-            tezos-rpc
+            mineplex-error-monad
+            mineplex-lwt-result-stdlib
+            mineplex-rpc
             lwt
             hacl-star
             secp256k1-internal
@@ -20,4 +20,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -56,7 +56,7 @@ module Configuration = struct
       activate
 end
 
-let env_var_name = "TEZOS_EVENTS_CONFIG"
+let env_var_name = "mineplex_EVENTS_CONFIG"
 
 let init ?lwt_log_sink ?(configuration = Configuration.default) () =
   let _ =

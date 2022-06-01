@@ -13,7 +13,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(* TEZOS CHANGES
+(* mineplex CHANGES
 
    * Import version 4.06.1
    * Remove [channel], [exit], ...

@@ -34,7 +34,7 @@ let kind_string (kind : [< kind]) =
   | `Client -> "client"
   | `Admin -> "admin-client"
 
-let default_binary t = sprintf "tezos-%s" (kind_string t.kind)
+let default_binary t = sprintf "mineplex-%s" (kind_string t.kind)
 let get t = Option.value t.binary ~default:(default_binary t)
 
 let call state t ~path args =
@@ -49,7 +49,7 @@ let call state t ~path args =
     ( Option.value_map unix_files_sink ~default:[] ~f:(function
         | {matches= None; level_at_least} ->
             [ setenv
-                ~var:(str "TEZOS_EVENTS_CONFIG")
+                ~var:(str "mineplex_EVENTS_CONFIG")
                 (ksprintf str "unix-files://%s?level-at-least=%s"
                    (path // "events") level_at_least) ]
         | _other -> assert false)
@@ -70,5 +70,5 @@ let cli_term ?(extra_doc = "") state kind prefix =
       & info ~docs
           [sprintf "%s-%s-binary" prefix (kind_string kind)]
           ~doc:
-            (sprintf "Binary for the `tezos-%s` to use%s." (kind_string kind)
+            (sprintf "Binary for the `mineplex-%s` to use%s." (kind_string kind)
                extra_doc))

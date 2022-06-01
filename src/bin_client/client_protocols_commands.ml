@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -65,7 +65,7 @@ let commands () =
       (fun () dirname (cctxt : #Client_context.full) ->
         Lwt.catch
           (fun () ->
-            Tezos_base_unix.Protocol_files.read_dir dirname
+            mineplex_base_unix.Protocol_files.read_dir dirname
             >>=? fun (_hash, proto) ->
             Shell_services.Injection.protocol cctxt proto
             >>= function
@@ -99,7 +99,7 @@ let commands () =
       (fun () ph (cctxt : #Client_context.full) ->
         Shell_services.Protocol.contents cctxt ph
         >>=? fun proto ->
-        Tezos_base_unix.Protocol_files.write_dir
+        mineplex_base_unix.Protocol_files.write_dir
           (Protocol_hash.to_short_b58check ph)
           ~hash:ph
           proto

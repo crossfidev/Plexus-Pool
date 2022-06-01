@@ -77,7 +77,7 @@ let request_pp ppf = function
   | Restore_context_integrity ->
       Format.fprintf ppf "restore context integrity"
 
-let magic = Bytes.of_string "TEZOS_FORK_VALIDATOR_MAGIC_0"
+let magic = Bytes.of_string "mineplex_FORK_VALIDATOR_MAGIC_0"
 
 let parameters_encoding =
   let open Data_encoding in
@@ -229,7 +229,7 @@ let recv pout encoding =
   >>= fun () -> Lwt.return (Data_encoding.Binary.of_bytes_exn encoding buf)
 
 let socket_path ~data_dir ~pid =
-  let filename = Format.sprintf "tezos-validation-socket-%d" pid in
+  let filename = Format.sprintf "mineplex-validation-socket-%d" pid in
   Filename.concat data_dir filename
 
 (* To get optimized socket communication of processes on the same

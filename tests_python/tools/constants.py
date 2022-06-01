@@ -2,17 +2,17 @@ import os.path
 import json
 from tools import paths
 
-PARAMETERS_FILE = (f'{paths.TEZOS_HOME}src/proto_alpha/parameters/'
+PARAMETERS_FILE = (f'{paths.mineplex_HOME}src/proto_alpha/parameters/'
                    'test-parameters.json')
 assert os.path.isfile(PARAMETERS_FILE), (f'{PARAMETERS_FILE}'
                                          ' cannot be found; please first run'
-                                         ' `make` in TEZOS_HOME.')
+                                         ' `make` in mineplex_HOME.')
 with open(PARAMETERS_FILE) as f:
     PARAMETERS = json.load(f)
 
 
 # This is the secret key used to activate a protocol from genesis in sandbox
-# mode. The corresponding public key is hard-coded in the tezos node.
+# mode. The corresponding public key is hard-coded in the mineplex node.
 GENESIS_SK = "edsk31vznjHSSpGExDMHYASz45VZqXN4DPxvsa4hAyY8dHM28cZzp6"
 
 IDENTITIES = {
@@ -60,7 +60,7 @@ IDENTITIES_SHORT = {
 
 
 ALPHA = "ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK"
-ALPHA_DAEMON = "alpha"  # tezos-baker-alpha
+ALPHA_DAEMON = "alpha"  # mineplex-baker-alpha
 
 BABYLON = "PsBabyM1eUXZseaJdmXFApDSBqj8YBfwELoxZHHW77EMcAbbwAS"
 BABYLON_DAEMON = "005-PsBabyM1"
@@ -71,7 +71,7 @@ CARTHAGE_DAEMON = "006-PsCARTHA"
 # Protocols supported by the mockup mode
 MOCKUP_PROTOCOLS = [ALPHA, CARTHAGE]
 
-TEZOS_CRT = """
+mineplex_CRT = """
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -81,7 +81,7 @@ Certificate:
         Validity
             Not Before: Mar 30 13:07:24 2018 GMT
             Not After : Mar 27 13:07:24 2028 GMT
-        Subject: CN=tezos
+        Subject: CN=mineplex
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (2048 bit)
@@ -120,7 +120,7 @@ Certificate:
             X509v3 Key Usage:
                 Digital Signature, Key Encipherment
             X509v3 Subject Alternative Name:
-                DNS:tezos
+                DNS:mineplex
     Signature Algorithm: sha256WithRSAEncryption
          2f:23:1a:9e:42:72:2b:57:ec:26:04:a2:a0:22:f3:31:0e:12:
          c4:46:92:95:b6:c7:44:bf:ab:5b:5b:15:c3:69:a3:48:79:be:
@@ -160,7 +160,7 @@ JW2Qvc5BY5FY4xb5CHDFwV9d9w2ld+WjhIJTvzBqEN8csR+ByODHSE10RyFIOoqA
 """
 
 
-TEZOS_KEY = """
+mineplex_KEY = """
 -----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDTYbqBag2PC2+E
 ZcpztcYtiY6DkJ4s4RZfLJ1EACXdonPcQQaB+6EM6RfbY2vCRmO8MUy8dlCgeRXe

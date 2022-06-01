@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -138,11 +138,11 @@ let gen_keys_containing ?(encrypted = false) ?(prefix = false) ?(force = false)
                 @@ Signature.Public_key.hash public_key
               in
               if matches hash then
-                Tezos_signer_backends.Unencrypted.make_pk public_key
+                mineplex_signer_backends.Unencrypted.make_pk public_key
                 >>=? fun pk_uri ->
                 ( if encrypted then
-                  Tezos_signer_backends.Encrypted.encrypt cctxt secret_key
-                else Tezos_signer_backends.Unencrypted.make_sk secret_key )
+                  mineplex_signer_backends.Encrypted.encrypt cctxt secret_key
+                else mineplex_signer_backends.Unencrypted.make_sk secret_key )
                 >>=? fun sk_uri ->
                 register_key
                   cctxt
@@ -215,7 +215,7 @@ let rec input_fundraiser_params (cctxt : #Client_context.io_wallet) =
       let pkh = Signature.Public_key.hash pk in
       let msg =
         Format.asprintf
-          "Your public Tezos address is %a is that correct?"
+          "Your public mineplex address is %a is that correct?"
           Signature.Public_key_hash.pp
           pkh
       in
@@ -228,7 +228,7 @@ let commands version : Client_context.full Clic.command list =
   let encrypted_switch () =
     if
       List.exists
-        (fun (scheme, _) -> scheme = Tezos_signer_backends.Unencrypted.scheme)
+        (fun (scheme, _) -> scheme = mineplex_signer_backends.Unencrypted.scheme)
         (Client_keys.registered_signers ())
     then Clic.switch ~long:"encrypted" ~doc:"Encrypt the key on-disk" ()
     else Clic.constant true
@@ -246,7 +246,7 @@ let commands version : Client_context.full Clic.command list =
          raw secret key for the default `unencrypted` scheme, the path on a \
          hardware security module, an alias for an external agent, etc.\n\
          This command gives the list of signer modules that this version of \
-         the tezos client supports."
+         the mineplex client supports."
       no_options
       (fixed ["list"; "signing"; "schemes"])
       (fun () (cctxt : Client_context.full) ->
@@ -276,9 +276,9 @@ let commands version : Client_context.full Clic.command list =
             Secret_key.of_fresh cctxt force name
             >>=? fun name ->
             let (pkh, pk, sk) = Signature.generate_key ~algo () in
-            Tezos_signer_backends.Unencrypted.make_pk pk
+            mineplex_signer_backends.Unencrypted.make_pk pk
             >>=? fun pk_uri ->
-            Tezos_signer_backends.Encrypted.encrypt cctxt sk
+            mineplex_signer_backends.Encrypted.encrypt cctxt sk
             >>=? fun sk_uri ->
             register_key cctxt ~force (pkh, pk_uri, sk_uri) name)
     | _ ->
@@ -294,10 +294,10 @@ let commands version : Client_context.full Clic.command list =
             Secret_key.of_fresh cctxt force name
             >>=? fun name ->
             let (pkh, pk, sk) = Signature.generate_key ~algo () in
-            Tezos_signer_backends.Unencrypted.make_pk pk
+            mineplex_signer_backends.Unencrypted.make_pk pk
             >>=? fun pk_uri ->
-            ( if encrypted then Tezos_signer_backends.Encrypted.encrypt cctxt sk
-            else Tezos_signer_backends.Unencrypted.make_sk sk )
+            ( if encrypted then mineplex_signer_backends.Encrypted.encrypt cctxt sk
+            else mineplex_signer_backends.Unencrypted.make_sk sk )
             >>=? fun sk_uri ->
             register_key cctxt ~force (pkh, pk_uri, sk_uri) name) );
     ( match version with
@@ -378,7 +378,7 @@ let commands version : Client_context.full Clic.command list =
         >>=? fun () ->
         Lwt.return (Signature.Secret_key.of_b58check (Uri.path sk_uri))
         >>=? fun sk ->
-        Tezos_signer_backends.Encrypted.encrypt cctxt sk
+        mineplex_signer_backends.Encrypted.encrypt cctxt sk
         >>=? fun sk_uri ->
         cctxt#message "Encrypted secret key %a" Uri.pp_hum (sk_uri :> Uri.t)
         >>= fun () -> return_unit);
@@ -411,7 +411,7 @@ let commands version : Client_context.full Clic.command list =
           pk_uri
         >>=? fun (pkh, public_key) ->
         cctxt#message
-          "Tezos address added: %a"
+          "mineplex address added: %a"
           Signature.Public_key_hash.pp
           pkh
         >>= fun () ->
@@ -430,7 +430,7 @@ let commands version : Client_context.full Clic.command list =
             >>=? fun name ->
             input_fundraiser_params cctxt
             >>=? fun sk ->
-            Tezos_signer_backends.Encrypted.encrypt cctxt sk
+            mineplex_signer_backends.Encrypted.encrypt cctxt sk
             >>=? fun sk_uri ->
             Client_keys.neuterize sk_uri
             >>=? fun pk_uri ->
@@ -464,7 +464,7 @@ let commands version : Client_context.full Clic.command list =
           Public_key_hash.add ~force cctxt name pkh
           >>=? fun () ->
           cctxt#message
-            "Tezos address added: %a"
+            "mineplex address added: %a"
             Signature.Public_key_hash.pp
             pkh
           >>= fun () -> Public_key.add ~force cctxt name (pk_uri, public_key));

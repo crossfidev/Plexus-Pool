@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -36,7 +36,7 @@ module Bip32_path = struct
 
   let is_hard n = Int32.logand 0x8000_0000l n <> 0l
 
-  let tezos_root = [hard 44l; hard 1729l]
+  let mineplex_root = [hard 44l; hard 1729l]
 
   let pp_node ppf node =
     match is_hard node with
@@ -122,12 +122,12 @@ module Ledger_commands = struct
   let get_version ~device_info h =
     let buf = Buffer.create 100 in
     let pp = Format.formatter_of_buffer buf in
-    let version = Ledgerwallet_tezos.get_version ~pp h in
+    let version = Ledgerwallet_mineplex.get_version ~pp h in
     debug "%s" (Buffer.contents buf) ;
     match version with
     | Error e ->
         warn
-          "WARNING:@ The device at [%s] is not a Tezos application@ %a"
+          "WARNING:@ The device at [%s] is not a mineplex application@ %a"
           device_info.Hidapi.path
           Ledgerwallet.Transport.pp_error
           e ;
@@ -136,15 +136,15 @@ module Ledger_commands = struct
         ( if (version.major, version.minor) < (1, 4) then
           failwith
             "Version %a of the ledger apps is not supported by this client"
-            Ledgerwallet_tezos.Version.pp
+            Ledgerwallet_mineplex.Version.pp
             version
         else return_unit )
         >>=? fun () ->
-        wrap_ledger_cmd (fun pp -> Ledgerwallet_tezos.get_git_commit ~pp h)
+        wrap_ledger_cmd (fun pp -> Ledgerwallet_mineplex.get_git_commit ~pp h)
         >>=? fun git_commit ->
         log_info
           "Found a %a application at [%s] (git-description: %S)"
-          Ledgerwallet_tezos.Version.pp
+          Ledgerwallet_mineplex.Version.pp
           version
           device_info.path
           git_commit ;
@@ -161,17 +161,17 @@ module Ledger_commands = struct
 
   let public_key_returning_instruction which ?(prompt = false) hidapi curve
       path =
-    let path = Bip32_path.tezos_root @ path in
+    let path = Bip32_path.mineplex_root @ path in
     ( match which with
     | `Get_public_key ->
         wrap_ledger_cmd (fun pp ->
-            Ledgerwallet_tezos.get_public_key ~prompt ~pp hidapi curve path)
+            Ledgerwallet_mineplex.get_public_key ~prompt ~pp hidapi curve path)
     | `Authorize_baking ->
         wrap_ledger_cmd (fun pp ->
-            Ledgerwallet_tezos.authorize_baking ~pp hidapi curve path)
+            Ledgerwallet_mineplex.authorize_baking ~pp hidapi curve path)
     | `Setup (main_chain_id, main_hwm, test_hwm) ->
         wrap_ledger_cmd (fun pp ->
-            Ledgerwallet_tezos.setup_baking
+            Ledgerwallet_mineplex.setup_baking
               ~pp
               hidapi
               curve
@@ -236,13 +236,13 @@ module Ledger_commands = struct
     >>=? fun pk -> return (pkh_of_pk pk, pk)
 
   let get_authorized_path hid version =
-    let open Ledgerwallet_tezos.Version in
+    let open Ledgerwallet_mineplex.Version in
     if version.major < 2 then
-      wrap_ledger_cmd (fun pp -> Ledgerwallet_tezos.get_authorized_key ~pp hid)
+      wrap_ledger_cmd (fun pp -> Ledgerwallet_mineplex.get_authorized_key ~pp hid)
       >|=? fun path -> `Legacy_path path
     else
       wrap_ledger_cmd (fun pp ->
-          Ledgerwallet_tezos.get_authorized_path_and_curve ~pp hid)
+          Ledgerwallet_mineplex.get_authorized_path_and_curve ~pp hid)
       >>= function
       | Error
           (LedgerError
@@ -262,15 +262,15 @@ module Ledger_commands = struct
       Option.fold watermark ~none:base_msg ~some:(fun watermark ->
           Bytes.cat (Signature.bytes_of_watermark watermark) base_msg)
     in
-    let path = Bip32_path.tezos_root @ path in
+    let path = Bip32_path.mineplex_root @ path in
     wrap_ledger_cmd (fun pp ->
-        let {Ledgerwallet_tezos.Version.major; minor; patch; _} = version in
+        let {Ledgerwallet_mineplex.Version.major; minor; patch; _} = version in
         let open Rresult.R.Infix in
         if (major, minor, patch) <= (2, 0, 0) then
-          Ledgerwallet_tezos.sign ~pp hid curve path (Cstruct.of_bytes msg)
+          Ledgerwallet_mineplex.sign ~pp hid curve path (Cstruct.of_bytes msg)
           >>= fun s -> Ok (None, s)
         else
-          Ledgerwallet_tezos.sign_and_hash
+          Ledgerwallet_mineplex.sign_and_hash
             ~pp
             hid
             curve
@@ -315,9 +315,9 @@ module Ledger_commands = struct
         return (Signature.of_p256 signature)
 
   let get_deterministic_nonce hid curve path msg =
-    let path = Bip32_path.tezos_root @ path in
+    let path = Bip32_path.mineplex_root @ path in
     wrap_ledger_cmd (fun pp ->
-        Ledgerwallet_tezos.get_deterministic_nonce
+        Ledgerwallet_mineplex.get_deterministic_nonce
           ~pp
           hid
           curve
@@ -338,7 +338,7 @@ module Ledger_id = struct
   let animals_of_pkh pkh =
     pkh |> Signature.Public_key_hash.to_string |> Ledger_names.crouching_tiger
 
-  let curve = Ledgerwallet_tezos.Ed25519
+  let curve = Ledgerwallet_mineplex.Ed25519
 
   let get hidapi =
     Ledger_commands.get_public_key hidapi curve []
@@ -363,7 +363,7 @@ end
 module Ledger_account = struct
   type t = {
     ledger : Ledger_id.t;
-    curve : Ledgerwallet_tezos.curve;
+    curve : Ledgerwallet_mineplex.curve;
     path : int32 list;
   }
 end
@@ -405,13 +405,13 @@ module Ledger_uri = struct
         None
 
   let derivation_supports_weak_paths = function
-    | Ledgerwallet_tezos.Ed25519 ->
+    | Ledgerwallet_mineplex.Ed25519 ->
         false
-    | Ledgerwallet_tezos.Secp256k1 ->
+    | Ledgerwallet_mineplex.Secp256k1 ->
         true
-    | Ledgerwallet_tezos.Secp256r1 ->
+    | Ledgerwallet_mineplex.Secp256r1 ->
         true
-    | Ledgerwallet_tezos.Bip32_ed25519 ->
+    | Ledgerwallet_mineplex.Bip32_ed25519 ->
         true
 
   let parse ?allow_weak uri : t tzresult Lwt.t =
@@ -430,7 +430,7 @@ module Ledger_uri = struct
     match components with
     | s :: tl ->
         let (curve, more_path) =
-          match Ledgerwallet_tezos.curve_of_string s with
+          match Ledgerwallet_mineplex.curve_of_string s with
           | Some curve ->
               (curve, tl)
           | None ->
@@ -495,7 +495,7 @@ module Ledger_uri = struct
             "ledger://%a/%a/%a"
             Ledger_id.pp
             ledger
-            Ledgerwallet_tezos.pp_curve
+            Ledgerwallet_mineplex.pp_curve
             curve
             Bip32_path.pp_path
             path)
@@ -522,7 +522,7 @@ end
 (** Filters allow early dismissal of HID devices/ledgers which
     searching for a ledger. *)
 module Filter = struct
-  type version_filter = Ledgerwallet_tezos.Version.t * string -> bool
+  type version_filter = Ledgerwallet_mineplex.Version.t * string -> bool
 
   type t = [`None | `Hid_path of string | `Version of string * version_filter]
 
@@ -533,10 +533,10 @@ module Filter = struct
    fun msg app ->
     `Version
       ( msg,
-        fun ({Ledgerwallet_tezos.Version.app_class; _}, _) -> app = app_class
+        fun ({Ledgerwallet_mineplex.Version.app_class; _}, _) -> app = app_class
       )
 
-  let is_baking = is_app "App = Baking" Ledgerwallet_tezos.Version.TezBake
+  let is_baking = is_app "App = Baking" Ledgerwallet_mineplex.Version.TezBake
 
   let pp ppf (f : t) =
     let open Format in
@@ -616,17 +616,17 @@ let use_ledger ?(filter : Filter.t = `None) f =
   go ledgers
 
 let min_version_of_derivation_scheme = function
-  | Ledgerwallet_tezos.Ed25519 ->
+  | Ledgerwallet_mineplex.Ed25519 ->
       (1, 3, 0)
-  | Ledgerwallet_tezos.Secp256k1 ->
+  | Ledgerwallet_mineplex.Secp256k1 ->
       (1, 3, 0)
-  | Ledgerwallet_tezos.Secp256r1 ->
+  | Ledgerwallet_mineplex.Secp256r1 ->
       (1, 3, 0)
-  | Ledgerwallet_tezos.Bip32_ed25519 ->
+  | Ledgerwallet_mineplex.Bip32_ed25519 ->
       (2, 1, 0)
 
 let is_derivation_scheme_supported version curve =
-  Ledgerwallet_tezos.Version.(
+  Ledgerwallet_mineplex.Version.(
     let {major; minor; patch; _} = version in
     (major, minor, patch) >= min_version_of_derivation_scheme curve)
 
@@ -638,7 +638,7 @@ let use_ledger_or_fail ~ledger_uri ?filter ?msg f =
           | `Ledger_account {curve; _} ->
               if is_derivation_scheme_supported version curve then go ()
               else
-                Ledgerwallet_tezos.(
+                Ledgerwallet_mineplex.(
                   failwith
                     "To use derivation scheme %a you need %a or later but \
                      you're using %a."
@@ -698,12 +698,12 @@ module Signer_implementation : Client_keys.SIGNER = struct
        where:\n\
       \ - <animals> is the identifier of the ledger of the form \
        'crouching-tiger-hidden-dragon' and can be obtained with the command \
-       `tezos-client list connected ledgers` (which also provides full \
+       `mineplex-client list connected ledgers` (which also provides full \
        examples).\n\
        - <curve> is the signing curve, e.g. `ed1551`\n\
        - <path> is a BIP32 path anchored at m/%s. The ledger does not yet \
        support non-hardened paths, so each node of the path must be hardened."
-      Bip32_path.(string_of_path tezos_root)
+      Bip32_path.(string_of_path mineplex_root)
 
   let neuterize (sk : sk_uri) = make_pk_uri (sk :> Uri.t)
 
@@ -802,7 +802,7 @@ let generic_commands group =
                       asprintf
                         "Found a %a (git-description: %S) application running \
                          on %s %s at [%s]."
-                        Ledgerwallet_tezos.Version.pp
+                        Ledgerwallet_mineplex.Version.pp
                         version
                         git_commit
                         ( device_info.manufacturer_string
@@ -822,20 +822,20 @@ let generic_commands group =
                     pp_print_text
                       ppf
                       "To use keys at BIP32 path m/44'/1729'/0'/0' (default \
-                       Tezos key path), use one of:" ;
+                       mineplex key path), use one of:" ;
                     pp_close_box ppf () ;
                     pp_print_cut ppf () ;
                     List.iter
                       (fun curve ->
                         fprintf
                           ppf
-                          "  tezos-client import secret key ledger_%s \
+                          "  mineplex-client import secret key ledger_%s \
                            \"ledger://%a/%a/0h/0h\""
                           ( Sys.getenv_opt "USER"
                           |> Option.value ~default:"user" )
                           Ledger_id.pp
                           ledger_id
-                          Ledgerwallet_tezos.pp_curve
+                          Ledgerwallet_mineplex.pp_curve
                           curve ;
                         pp_print_cut ppf ())
                       (List.filter
@@ -870,7 +870,7 @@ let generic_commands group =
               >>= fun () ->
               cctxt#message
                 "* Application: %a (git-description: %S)"
-                Ledgerwallet_tezos.Version.pp
+                Ledgerwallet_mineplex.Version.pp
                 version
                 git_commit
               >>= fun () ->
@@ -878,10 +878,10 @@ let generic_commands group =
               | `Ledger_account {curve; path; _} -> (
                   cctxt#message
                     "* Curve: `%a`"
-                    Ledgerwallet_tezos.pp_curve
+                    Ledgerwallet_mineplex.pp_curve
                     curve
                   >>= fun () ->
-                  let full_path = Bip32_path.tezos_root @ path in
+                  let full_path = Bip32_path.mineplex_root @ path in
                   cctxt#message
                     "* Path: `%s` [%s]"
                     (Bip32_path.string_of_path full_path)
@@ -899,7 +899,7 @@ let generic_commands group =
                     pkh
                   >>= fun () ->
                   match (test_sign, version.app_class) with
-                  | (true, Tezos) -> (
+                  | (true, mineplex) -> (
                       let pkh_bytes = Signature.Public_key_hash.to_bytes pkh in
                       (* Signing requires validation on the device.  *)
                       cctxt#message
@@ -930,13 +930,13 @@ let generic_commands group =
                             pkh
                       | true ->
                           cctxt#message
-                            "Tezos Wallet successfully signed:@ %a."
+                            "mineplex Wallet successfully signed:@ %a."
                             Signature.pp
                             signature
                           >>= fun () -> return_unit )
                   | (true, TezBake) ->
                       failwith
-                        "Option --test-sign only works for the Tezos Wallet \
+                        "Option --test-sign only works for the mineplex Wallet \
                          app."
                   | (false, _) ->
                       return_unit )
@@ -984,7 +984,7 @@ let baking_commands group =
                   >>= fun () ->
                   cctxt#message
                     "@[<v 0>Authorized baking curve: %a@]"
-                    Ledgerwallet_tezos.pp_curve
+                    Ledgerwallet_mineplex.pp_curve
                     ledger_curve
                   >>= fun () ->
                   match ledger_uri with
@@ -992,7 +992,7 @@ let baking_commands group =
                       return_some ()
                   | `Ledger_account {curve; path; _}
                     when curve = ledger_curve
-                         && Bip32_path.tezos_root @ path = ledger_path ->
+                         && Bip32_path.mineplex_root @ path = ledger_path ->
                       cctxt#message
                         "@[<v 0>Authorized baking URI: %a@]"
                         Ledger_uri.pp
@@ -1002,10 +1002,10 @@ let baking_commands group =
                       failwith
                         "Path and curve do not match the ones specified in \
                          the command line: %a & %a"
-                        Ledgerwallet_tezos.pp_curve
+                        Ledgerwallet_mineplex.pp_curve
                         curve
                         Bip32_path.pp_path
-                        (Bip32_path.tezos_root @ path) )));
+                        (Bip32_path.mineplex_root @ path) )));
       Clic.command
         ~group
         ~desc:
@@ -1020,24 +1020,24 @@ let baking_commands group =
             ~filter:Filter.is_baking
             (fun hidapi (version, _git_commit) _device_info _ledger_id ->
               ( match version with
-              | {Ledgerwallet_tezos.Version.app_class = Tezos; _} ->
+              | {Ledgerwallet_mineplex.Version.app_class = mineplex; _} ->
                   failwith
                     "This command (`authorize ledger ...`) only works with \
-                     the Tezos Baking app"
-              | {Ledgerwallet_tezos.Version.app_class = TezBake; major; _}
+                     the mineplex Baking app"
+              | {Ledgerwallet_mineplex.Version.app_class = TezBake; major; _}
                 when major >= 2 ->
                   failwith
                     "This command (`authorize ledger ...`) is@ not compatible \
                      with@ this version of the Ledger@ Baking app (%a >= \
                      2.0.0),@ please use the command@ `setup ledger to bake \
                      for ...`@ from now on."
-                    Ledgerwallet_tezos.Version.pp
+                    Ledgerwallet_mineplex.Version.pp
                     version
               | _ ->
                   cctxt#message
                     "This Ledger Baking app is outdated (%a)@ running@ in \
                      backwards@ compatibility mode."
-                    Ledgerwallet_tezos.Version.pp
+                    Ledgerwallet_mineplex.Version.pp
                     version
                   >>= fun () -> return_unit )
               >>=? fun () ->
@@ -1113,12 +1113,12 @@ let baking_commands group =
             ~ledger_uri
             ~filter:Filter.is_baking
             (fun hidapi (version, _git_commit) _device_info _ledger_id ->
-              (let open Ledgerwallet_tezos.Version in
+              (let open Ledgerwallet_mineplex.Version in
               match version with
-              | {app_class = Tezos; _} ->
+              | {app_class = mineplex; _} ->
                   failwith
                     "This command (`setup ledger ...`) only works with the \
-                     Tezos Baking app"
+                     mineplex Baking app"
               | {app_class = TezBake; major; _} when major < 2 ->
                   failwith
                     "This command (`setup ledger ...`)@ is not@ compatible@ \
@@ -1150,7 +1150,7 @@ let baking_commands group =
                   return chid )
               >>=? fun main_chain_id ->
               Ledger_commands.wrap_ledger_cmd (fun pp ->
-                  Ledgerwallet_tezos.get_all_high_watermarks ~pp hidapi)
+                  Ledgerwallet_mineplex.get_all_high_watermarks ~pp hidapi)
               >>=? fun ( `Main_hwm current_mh,
                          `Test_hwm current_th,
                          `Chain_id current_ci ) ->
@@ -1196,7 +1196,7 @@ let baking_commands group =
             ~filter:Filter.is_baking
             (fun hidapi (_version, _git_commit) _device_info _ledger_id ->
               Ledger_commands.wrap_ledger_cmd (fun pp ->
-                  Ledgerwallet_tezos.deauthorize_baking ~pp hidapi)
+                  Ledgerwallet_mineplex.deauthorize_baking ~pp hidapi)
               >>=? fun () -> return_some ())) ]
 
 (** Commands for high water mark of the Baking app. The
@@ -1229,13 +1229,13 @@ let high_water_mark_commands group watermark_spelling =
             ~filter:Filter.is_baking
             (fun hidapi (version, _git_commit) _device_info _ledger_id ->
               match version.app_class with
-              | Tezos ->
+              | mineplex ->
                   failwith
-                    "Fatal: this operation is only valid with the Tezos \
+                    "Fatal: this operation is only valid with the mineplex \
                      Baking application"
               | TezBake when (not no_legacy_apdu) && version.major < 2 ->
                   Ledger_commands.wrap_ledger_cmd (fun pp ->
-                      Ledgerwallet_tezos.get_high_watermark ~pp hidapi)
+                      Ledgerwallet_mineplex.get_high_watermark ~pp hidapi)
                   >>=? fun hwm ->
                   cctxt#message
                     "The high water mark for@ %a@ is %ld."
@@ -1247,11 +1247,11 @@ let high_water_mark_commands group watermark_spelling =
                   failwith
                     "Cannot get the high water mark with@ \
                      `--no-legacy-instructions` and version %a"
-                    Ledgerwallet_tezos.Version.pp
+                    Ledgerwallet_mineplex.Version.pp
                     version
               | TezBake ->
                   Ledger_commands.wrap_ledger_cmd (fun pp ->
-                      Ledgerwallet_tezos.get_all_high_watermarks ~pp hidapi)
+                      Ledgerwallet_mineplex.get_all_high_watermarks ~pp hidapi)
                   >>=? fun (`Main_hwm mh, `Test_hwm th, `Chain_id ci) ->
                   cctxt#message
                     "The high water mark values for@ %a@ are@ %ld for the \
@@ -1282,14 +1282,14 @@ let high_water_mark_commands group watermark_spelling =
             ~filter:Filter.is_baking
             (fun hidapi (version, _git_commit) _device_info _ledger_id ->
               match version.app_class with
-              | Tezos ->
+              | mineplex ->
                   failwith "Fatal: this operation is only valid with TezBake"
               | TezBake ->
                   Ledger_commands.wrap_ledger_cmd (fun pp ->
-                      Ledgerwallet_tezos.set_high_watermark ~pp hidapi hwm)
+                      Ledgerwallet_mineplex.set_high_watermark ~pp hidapi hwm)
                   >>=? fun () ->
                   Ledger_commands.wrap_ledger_cmd (fun pp ->
-                      Ledgerwallet_tezos.get_high_watermark ~pp hidapi)
+                      Ledgerwallet_mineplex.get_high_watermark ~pp hidapi)
                   >>=? fun new_hwm ->
                   cctxt#message
                     "@[<v 0>%a has now high water mark: %ld@]"

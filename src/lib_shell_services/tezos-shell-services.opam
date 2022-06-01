@@ -1,20 +1,20 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-workers"
-  "tezos-p2p-services"
-  "tezos-version"
+  "mineplex-base"
+  "mineplex-workers"
+  "mineplex-p2p-services"
+  "mineplex-version"
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos: descriptions of RPCs exported by `tezos-shell`"
+synopsis: "mineplex: descriptions of RPCs exported by `mineplex-shell`"

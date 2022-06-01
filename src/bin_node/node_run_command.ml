@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -52,11 +52,11 @@ let () =
     `Permanent
     ~id:"main.run.port_already_in_use"
     ~title:"Cannot start node: RPC port already in use"
-    ~description:"Another tezos node is probably running on the same RPC port."
+    ~description:"Another mineplex node is probably running on the same RPC port."
     ~pp:(fun ppf addrlist ->
       Format.fprintf
         ppf
-        "Another tezos node is probably running on one of these addresses \
+        "Another mineplex node is probably running on one of these addresses \
          (%a). Please choose another RPC port."
         (Format.pp_print_list P2p_point.Id.pp)
         addrlist)
@@ -117,7 +117,7 @@ module Event = struct
     declare_1
       ~section
       ~name:"starting_node"
-      ~msg:"starting the Tezos node"
+      ~msg:"starting the mineplex node"
       ~level:Notice
       ("chain", Distributed_db_version.Name.encoding)
 
@@ -125,7 +125,7 @@ module Event = struct
     declare_0
       ~section
       ~name:"node_is_ready"
-      ~msg:"the Tezos node is now running"
+      ~msg:"the mineplex node is now running"
       ~level:Notice
       ()
 
@@ -133,7 +133,7 @@ module Event = struct
     declare_0
       ~section
       ~name:"shutting_down_node"
-      ~msg:"shutting down the Tezos node"
+      ~msg:"shutting down the mineplex node"
       ~level:Notice
       ()
 
@@ -355,7 +355,7 @@ let run ?verbosity ?sandbox ?checkpoint ~singleprocess
             :: _) ->
             failwith
               "@[Cannot switch from history mode '%a' to '%a'. In order to \
-               change your history mode please refer to the Tezos node \
+               change your history mode please refer to the mineplex node \
                documentation. @]"
               History_mode.pp
               previous_mode
@@ -456,8 +456,8 @@ module Term = struct
     let open Cmdliner in
     let doc =
       "Increase log level. Using $(b,-v) is equivalent to using \
-       $(b,TEZOS_LOG='* -> info'), and $(b,-vv) is equivalent to using \
-       $(b,TEZOS_LOG='* -> debug')."
+       $(b,mineplex_LOG='* -> info'), and $(b,-vv) is equivalent to using \
+       $(b,mineplex_LOG='* -> debug')."
     in
     Arg.(
       value & flag_all
@@ -470,7 +470,7 @@ module Term = struct
        disabled, and constants of the economic protocol can be altered with \
        an optional JSON file which overrides the $(b,genesis_parameters) \
        field of the network configuration. $(b,IMPORTANT): Using sandbox mode \
-       affects the node state and subsequent runs of Tezos node must also use \
+       affects the node state and subsequent runs of mineplex node must also use \
        sandbox mode. In order to run the node in normal mode afterwards, a \
        full reset must be performed (by removing the node's data directory)."
     in
@@ -519,7 +519,7 @@ end
 
 module Manpage = struct
   let command_description =
-    "The $(b,run) command is meant to run the Tezos node. Most of its command \
+    "The $(b,run) command is meant to run the mineplex node. Most of its command \
      line arguments corresponds to config file entries, and will have \
      priority over the latter if used."
 
@@ -533,9 +533,9 @@ module Manpage = struct
     in
     [ `S "DEBUG";
       `P
-        ( "The environment variable $(b,TEZOS_LOG) is used to fine-tune what \
+        ( "The environment variable $(b,mineplex_LOG) is used to fine-tune what \
            is going to be logged. The syntax is \
-           $(b,TEZOS_LOG='<section> -> <level> [ ; ...]') where section is \
+           $(b,mineplex_LOG='<section> -> <level> [ ; ...]') where section is \
            one of $(i," ^ log_sections
         ^ ") and level is one of $(i,fatal), $(i,error), $(i,warn), \
            $(i,notice), $(i,info) or $(i,debug). A $(b,*) can be used as a \
@@ -558,7 +558,7 @@ module Manpage = struct
     description @ Node_shared_arg.Manpage.args @ debug @ examples
     @ Node_shared_arg.Manpage.bugs
 
-  let info = Cmdliner.Term.info ~doc:"Run the Tezos node" ~man "run"
+  let info = Cmdliner.Term.info ~doc:"Run the mineplex node" ~man "run"
 end
 
 let cmd = (Term.term, Manpage.info)

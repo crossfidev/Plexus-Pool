@@ -3,7 +3,7 @@
 ;
 ;        /!\ /!\ Do not modify this file /!\ /!\
 ;
-; but the original template in `tezos-protocol-compiler`
+; but the original template in `mineplex-protocol-compiler`
 ;
 
 
@@ -12,7 +12,7 @@
  (action
   (write-file %{targets}
               "module Name = struct let name = \"000-Ps9mPmXa\" end
-include Tezos_protocol_environment.MakeV0(Name)()
+include mineplex_protocol_environment.MakeV0(Name)()
 module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
 ")))
 
@@ -22,10 +22,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    data.ml
    services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action
   (with-stdout-to %{targets}
-                  (chdir %{workspace_root} (run %{bin:tezos-embedded-protocol-packer} "%{src_dir}" "000_Ps9mPmXa")))))
+                  (chdir %{workspace_root} (run %{bin:mineplex-embedded-protocol-packer} "%{src_dir}" "000_Ps9mPmXa")))))
 
 (rule
  (targets functor.ml)
@@ -33,10 +33,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    data.ml
    services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action (with-stdout-to %{targets}
                          (chdir %{workspace_root}
-                                (run %{bin:tezos-protocol-compiler.tezos-protocol-packer} %{src_dir})))))
+                                (run %{bin:mineplex-protocol-compiler.mineplex-protocol-packer} %{src_dir})))))
 
 (rule
  (targets protocol.ml)
@@ -46,29 +46,29 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    main.mli main.ml)
  (action
   (write-file %{targets}
-    "module Environment = Tezos_protocol_environment_000_Ps9mPmXa.Environment
-let hash = Tezos_crypto.Protocol_hash.of_b58check_exn \"Ps9mPmXaRzmzk35gbAYNCAw6UXdE2qoABTHbN2oEEc1qM7CwT9P\"
+    "module Environment = mineplex_protocol_environment_000_Ps9mPmXa.Environment
+let hash = mineplex_crypto.Protocol_hash.of_b58check_exn \"Ps9mPmXaRzmzk35gbAYNCAw6UXdE2qoABTHbN2oEEc1qM7CwT9P\"
 let name = Environment.Name.name
-include Tezos_raw_protocol_000_Ps9mPmXa
-include Tezos_raw_protocol_000_Ps9mPmXa.Main
+include mineplex_raw_protocol_000_Ps9mPmXa
+include mineplex_raw_protocol_000_Ps9mPmXa.Main
 ")))
 
 (library
- (name tezos_protocol_environment_000_Ps9mPmXa)
- (public_name tezos-protocol-000-Ps9mPmXa.environment)
+ (name mineplex_protocol_environment_000_Ps9mPmXa)
+ (public_name mineplex-protocol-000-Ps9mPmXa.environment)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-environment)
+ (libraries mineplex-protocol-environment)
  (modules Environment))
 
 (library
- (name tezos_raw_protocol_000_Ps9mPmXa)
- (public_name tezos-protocol-000-Ps9mPmXa.raw)
- (libraries tezos_protocol_environment_000_Ps9mPmXa)
+ (name mineplex_raw_protocol_000_Ps9mPmXa)
+ (public_name mineplex-protocol-000-Ps9mPmXa.raw)
+ (libraries mineplex_protocol_environment_000_Ps9mPmXa)
  (library_flags (:standard -linkall))
  (flags (:standard -nopervasives -nostdlib
                    -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a
-                   -open Tezos_protocol_environment_000_Ps9mPmXa__Environment
+                   -open mineplex_protocol_environment_000_Ps9mPmXa__Environment
                    -open Pervasives
                    -open Error_monad))
  (modules
@@ -78,53 +78,53 @@ include Tezos_raw_protocol_000_Ps9mPmXa.Main
 
 (install
  (section lib)
- (package tezos-protocol-000-Ps9mPmXa)
- (files (TEZOS_PROTOCOL as raw/TEZOS_PROTOCOL)))
+ (package mineplex-protocol-000-Ps9mPmXa)
+ (files (mineplex_PROTOCOL as raw/mineplex_PROTOCOL)))
 
 (library
- (name tezos_protocol_000_Ps9mPmXa)
- (public_name tezos-protocol-000-Ps9mPmXa)
+ (name mineplex_protocol_000_Ps9mPmXa)
+ (public_name mineplex-protocol-000-Ps9mPmXa)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_000_Ps9mPmXa)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_000_Ps9mPmXa)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Protocol))
 
 (library
- (name tezos_protocol_000_Ps9mPmXa_functor)
- (public_name tezos-protocol-000-Ps9mPmXa.functor)
+ (name mineplex_protocol_000_Ps9mPmXa_functor)
+ (public_name mineplex-protocol-000-Ps9mPmXa.functor)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_000_Ps9mPmXa)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_000_Ps9mPmXa)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Functor))
 
 (library
- (name tezos_embedded_protocol_000_Ps9mPmXa)
- (public_name tezos-embedded-protocol-000-Ps9mPmXa)
+ (name mineplex_embedded_protocol_000_Ps9mPmXa)
+ (public_name mineplex-embedded-protocol-000-Ps9mPmXa)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-000-Ps9mPmXa
-            tezos-protocol-updater
-            tezos-protocol-environment)
+ (libraries mineplex-protocol-000-Ps9mPmXa
+            mineplex-protocol-updater
+            mineplex-protocol-environment)
  (flags (:standard -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a))
  (modules Registerer))
 
 (alias
  (name runtest_compile_protocol)
- (action (run %{bin:tezos-protocol-compiler}  .)))
+ (action (run %{bin:mineplex-protocol-compiler}  .)))
 
 (alias
  (name runtest_sandbox)
- (deps .tezos_protocol_000_Ps9mPmXa.objs/native/tezos_protocol_000_Ps9mPmXa.cmx))
+ (deps .mineplex_protocol_000_Ps9mPmXa.objs/native/mineplex_protocol_000_Ps9mPmXa.cmx))
 
 (alias
  (name runtest)
- (package tezos-protocol-000-Ps9mPmXa)
+ (package mineplex-protocol-000-Ps9mPmXa)
  (deps (alias runtest_sandbox)))

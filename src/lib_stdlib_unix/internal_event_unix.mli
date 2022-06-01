@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -43,21 +43,21 @@ module Configuration : sig
   (** Parse a json file at [path] into a configuration. *)
   val of_file : string -> t tzresult Lwt.t
 
-  (** Run {!Tezos_base.Internal_event.All_sinks.activate} for every
+  (** Run {!mineplex_base.Internal_event.All_sinks.activate} for every
       URI in the configuration. *)
   val apply : t -> unit tzresult Lwt.t
 end
 
 (** Initialize the internal-event sinks by looking at the
     [?configuration] argument and then at the (whitespace separated) list
-    of URIs in the ["TEZOS_EVENTS_CONFIG"] environment variable, if an URI
+    of URIs in the ["mineplex_EVENTS_CONFIG"] environment variable, if an URI
     does not have a scheme it is expected to be a path to a configuration
     JSON file (cf. {!Configuration.of_file}), e.g.:
-    [export TEZOS_EVENTS_CONFIG="unix-files:///tmp/events-unix debug://"], or
-    [export TEZOS_EVENTS_CONFIG="debug://  /path/to/config.json"].
+    [export mineplex_EVENTS_CONFIG="unix-files:///tmp/events-unix debug://"], or
+    [export mineplex_EVENTS_CONFIG="debug://  /path/to/config.json"].
 
     The function also initializes the {!Lwt_log_sink_unix} module
-    (corresponding to the ["TEZOS_LOG"] environment variable).
+    (corresponding to the ["mineplex_LOG"] environment variable).
 *)
 val init :
   ?lwt_log_sink:Lwt_log_sink_unix.cfg ->

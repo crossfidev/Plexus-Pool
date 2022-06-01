@@ -28,7 +28,7 @@
 (** Modules of this type should be prepared protocol-side and registered here to
     become available to the mockup facility.  *)
 
-type mockup_context = Chain_id.t * Tezos_protocol_environment.rpc_context
+type mockup_context = Chain_id.t * mineplex_protocol_environment.rpc_context
 
 module type Mockup_sig = sig
   type parameters
@@ -41,7 +41,7 @@ module type Mockup_sig = sig
 
   (** Content equivalent to the default value of --bootstrap-acounts *)
   val default_bootstrap_accounts :
-    Tezos_client_base.Client_context.full -> string tzresult Lwt.t
+    mineplex_client_base.Client_context.full -> string tzresult Lwt.t
 
   val default_parameters : parameters
 
@@ -52,17 +52,17 @@ module type Mockup_sig = sig
   module Protocol : sig
     val hash : Protocol_hash.t
 
-    include Tezos_protocol_environment.PROTOCOL
+    include mineplex_protocol_environment.PROTOCOL
   end
 
   module Block_services :
       module type of
-        Tezos_shell_services.Block_services.Make (Protocol) (Protocol)
+        mineplex_shell_services.Block_services.Make (Protocol) (Protocol)
 
-  val directory : Tezos_protocol_environment.rpc_context RPC_directory.t
+  val directory : mineplex_protocol_environment.rpc_context RPC_directory.t
 
   val init :
-    cctxt:Tezos_client_base.Client_context.full ->
+    cctxt:mineplex_client_base.Client_context.full ->
     parameters:parameters ->
     constants_overrides_json:Data_encoding.json option ->
     bootstrap_accounts_json:Data_encoding.json option ->

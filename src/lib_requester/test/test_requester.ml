@@ -658,7 +658,7 @@ let test_full_requester_shutdown _ () =
 
 let () =
   Alcotest_lwt.run
-    "tezos-requester"
+    "mineplex-requester"
     [ ( "all",
         [ Alcotest_lwt.test_case_sync
             "test create: simple"

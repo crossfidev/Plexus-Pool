@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(* Tezos Command line interface - Generic JSON RPC interface *)
+(* mineplex Command line interface - Generic JSON RPC interface *)
 
 open Lwt.Infix
 open Clic
@@ -159,7 +159,7 @@ let random_fill_in ?(show_optionals = true) schema =
       Lwt.return_error msg)
 
 let editor_fill_in ?(show_optionals = true) schema =
-  let tmp = Filename.temp_file "tezos_rpc_call_" ".json" in
+  let tmp = Filename.temp_file "mineplex_rpc_call_" ".json" in
   let rec init () =
     (* write a temp file with instructions *)
     random_fill_in ~show_optionals schema

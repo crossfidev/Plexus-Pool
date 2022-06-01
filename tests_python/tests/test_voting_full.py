@@ -23,11 +23,11 @@ PROTO_A_PATH = f"proto_{PROTO_A_DAEMON.replace('-','_')}"
 PROTO_B = constants.ALPHA
 PROTO_B_DAEMON = constants.ALPHA_DAEMON
 
-PARAMETERS_FILE = (f'{paths.TEZOS_HOME}src/{PROTO_A_PATH}/parameters/'
+PARAMETERS_FILE = (f'{paths.mineplex_HOME}src/{PROTO_A_PATH}/parameters/'
                    'test-parameters.json')
 assert os.path.isfile(PARAMETERS_FILE), (f'{PARAMETERS_FILE}'
                                          ' cannot be found; please first run'
-                                         ' `make` in TEZOS_HOME.')
+                                         ' `make` in mineplex_HOME.')
 with open(PARAMETERS_FILE) as f:
     PARAMETERS = dict(json.load(f))
     PARAMETERS["time_between_blocks"] = [str(BAKING_RATE), "0"]

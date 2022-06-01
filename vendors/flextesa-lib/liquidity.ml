@@ -47,8 +47,8 @@ module Data = struct
   let empty_set = set []
   let key_hash s = rawf "%s" s
   let key s = rawf "%s" s
-  let account_key a = Tezos_protocol.Account.pubkey a |> key
-  let account_key_hash a = Tezos_protocol.Account.pubkey_hash a |> key_hash
+  let account_key a = mineplex_protocol.Account.pubkey a |> key
+  let account_key_hash a = mineplex_protocol.Account.pubkey_hash a |> key_hash
   let signature s = rawf "%s" s
   let bytes s = rawf "0x%s" s
   let some s = fmt (fun ppf -> Fmt.pf ppf "@[<5>(Some %a)@]" pp s)
@@ -90,15 +90,15 @@ module Contract = struct
       (Caml.Filename.quote f)
     >>= fun _ -> return f
 
-  let storage_initialization state t ~tezos_node ~storage =
+  let storage_initialization state t ~mineplex_node ~storage =
     ensure_build_dir state t
     >>= fun dir ->
     let out = dir // sprintf "%s-initial-storage.tz" t.name in
     Running_processes.run_successful_cmdf state
-      "%s -o %s --tezos-node %s --init-storage %s"
+      "%s -o %s --mineplex-node %s --init-storage %s"
       (base_liquidity_command state t)
       (Caml.Filename.quote out)
-      (Caml.Filename.quote tezos_node)
+      (Caml.Filename.quote mineplex_node)
       ( List.map storage ~f:(fun item ->
             Caml.Filename.quote (Data.to_string item))
       |> String.concat ~sep:" " )
@@ -141,11 +141,11 @@ module Contract = struct
 end
 
 module On_chain = struct
-  let tezos_client_keyed_originate_contract ?(force = false)
+  let mineplex_client_keyed_originate_contract ?(force = false)
       ?(transferring = 0) ?(burn_cap = 0.5) state keyed ~name ~source ~storage
       =
-    let client = keyed.Tezos_client.Keyed.client in
-    Tezos_client.successful_client_cmd state ~client
+    let client = keyed.mineplex_client.Keyed.client in
+    mineplex_client.successful_client_cmd state ~client
       ( [ "--wait"; "none"; "originate"; "contract"; name; "for"; keyed.key_name
         ; "transferring"; Int.to_string transferring; "from"; keyed.key_name
         ; "running"; source; "--init"; storage; "--burn-cap"
@@ -155,21 +155,21 @@ module On_chain = struct
   let build_and_deploy ?(burn_cap = 10.1) state contract ~keyed_client ~storage
       ~balance =
     let name = contract.Contract.name in
-    let tezos_node =
-      sprintf "http://localhost:%d" keyed_client.Tezos_client.Keyed.client.port
+    let mineplex_node =
+      sprintf "http://localhost:%d" keyed_client.mineplex_client.Keyed.client.port
     in
     Contract.michelson state contract
     >>= fun michetz ->
-    Contract.storage_initialization state contract ~tezos_node
+    Contract.storage_initialization state contract ~mineplex_node
       ~storage:(List.map storage ~f:snd)
     >>= fun init ->
-    tezos_client_keyed_originate_contract state keyed_client ~name
+    mineplex_client_keyed_originate_contract state keyed_client ~name
       ~transferring:balance ~source:michetz ~storage:init ~burn_cap ~force:true
     >>= fun _ ->
-    Tezos_client.Keyed.bake state keyed_client (sprintf "%s origination" name)
+    mineplex_client.Keyed.bake state keyed_client (sprintf "%s origination" name)
     >>= fun () ->
-    Tezos_client.successful_client_cmd state
-      ~client:keyed_client.Tezos_client.Keyed.client
+    mineplex_client.successful_client_cmd state
+      ~client:keyed_client.mineplex_client.Keyed.client
       ["show"; "known"; "contract"; name]
     >>= fun res ->
     let address = String.strip (String.concat ~sep:"" res#out) in
@@ -187,7 +187,7 @@ module On_chain = struct
   (* This should go to flextesa soon... *)
   let silent_client_cmd state ~client args =
     Running_processes.run_cmdf state "sh -c %s"
-      ( Tezos_client.client_command state client args
+      ( mineplex_client.client_command state client args
       |> Genspio.Compile.to_one_liner |> Caml.Filename.quote )
     >>= fun res ->
     let success = Poly.equal res#status (Lwt_unix.WEXITED 0) in
@@ -197,7 +197,7 @@ module On_chain = struct
       contract ~keyed_client ~entry_point ~data =
     Contract.arguments state contract ~entry_point ~data
     >>= fun low_level_arg ->
-    silent_client_cmd state ~client:keyed_client.Tezos_client.Keyed.client
+    silent_client_cmd state ~client:keyed_client.mineplex_client.Keyed.client
       [ "--wait"; "none"; "transfer"; Int.to_string transferring; "from"
       ; keyed_client.key_name; "to"; contract.name; "--burn-cap"
       ; Float.to_string burn_cap; "--arg"; low_level_arg ]
@@ -274,7 +274,7 @@ module On_chain = struct
       let open Ezjsonm in
       let k, t = key_with_type_json key in
       dict [("key", k); ("type", t)] |> to_string ~minify:false in
-    Tezos_client.rpc state ~client (`Post post_json)
+    mineplex_client.rpc state ~client (`Post post_json)
       ~path:
         (sprintf "/chains/main/blocks/head/context/contracts/%s/big_map_get"
            address)
@@ -299,7 +299,7 @@ module On_chain = struct
               ~f:(fun pm endpoint ->
                 pm
                 >>= fun l ->
-                Tezos_client.rpc state ~client `Get
+                mineplex_client.rpc state ~client `Get
                   ~path:
                     (sprintf "/chains/main/blocks/head/context/contracts/%s/%s"
                        address endpoint)

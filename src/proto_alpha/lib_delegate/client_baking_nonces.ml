@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -136,9 +136,9 @@ let filter_outdated_nonces cctxt ?constants location nonces =
         fun f ->
           f
             "Found too many nonces associated to blocks unknown by the node \
-             in '$TEZOS_CLIENT/%s'. After checking that these blocks were \
+             in '$mineplex_CLIENT/%s'. After checking that these blocks were \
              never included in the chain (e.g. via a block explorer), \
-             consider using `tezos-client filter orphan nonces` to clear them."
+             consider using `mineplex-client filter orphan nonces` to clear them."
           -% s
                Logging.filename_tag
                (Client_baking_files.filename location ^ "s")

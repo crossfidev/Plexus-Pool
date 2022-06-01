@@ -16,8 +16,8 @@ module Data : sig
   val set : t list -> t
   val key_hash : string -> t
   val key : string -> t
-  val account_key : Tezos_protocol.Account.t -> t
-  val account_key_hash : Tezos_protocol.Account.t -> t
+  val account_key : mineplex_protocol.Account.t -> t
+  val account_key_hash : mineplex_protocol.Account.t -> t
   val signature : string -> t
   val bytes : string -> t
   val some : t -> t
@@ -56,7 +56,7 @@ module Contract : sig
        ; runner: Running_processes.State.t
        ; .. >
     -> t
-    -> tezos_node:string
+    -> mineplex_node:string
     -> storage:Data.t list
     -> ( string
        , [> System_error.t | Process_result.Error.t] )
@@ -75,7 +75,7 @@ module Contract : sig
 end
 
 module On_chain : sig
-  val tezos_client_keyed_originate_contract :
+  val mineplex_client_keyed_originate_contract :
        ?force:bool
     -> ?transferring:int
     -> ?burn_cap:float
@@ -85,7 +85,7 @@ module On_chain : sig
        ; env_config: Environment_configuration.t
        ; runner: Running_processes.State.t
        ; .. >
-    -> Tezos_client.Keyed.t
+    -> mineplex_client.Keyed.t
     -> name:string
     -> source:string
     -> storage:string
@@ -103,7 +103,7 @@ module On_chain : sig
        ; runner: Running_processes.State.t
        ; .. >
     -> Contract.t
-    -> keyed_client:Tezos_client.Keyed.t
+    -> keyed_client:mineplex_client.Keyed.t
     -> storage:(string * Data.t) list
     -> balance:int
     -> ( string
@@ -117,7 +117,7 @@ module On_chain : sig
        ; runner: Running_processes.State.t
        ; .. >
        Base_state.t
-    -> client:Tezos_client.t
+    -> client:mineplex_client.t
     -> string list
     -> (bool * Process_result.t, [> System_error.t]) Asynchronous_result.t
 
@@ -136,7 +136,7 @@ module On_chain : sig
        ; runner: Running_processes.State.t
        ; .. >
     -> Contract.t
-    -> keyed_client:Tezos_client.Keyed.t
+    -> keyed_client:mineplex_client.Keyed.t
     -> entry_point:string
     -> data:Data.t
     -> ( Process_result.t
@@ -153,7 +153,7 @@ module On_chain : sig
        ; env_config: Environment_configuration.t
        ; runner: Running_processes.State.t
        ; .. >
-    -> client:Tezos_client.t
+    -> client:mineplex_client.t
     -> address:string
     -> key:[< `Nat of int]
     -> ( < post: string ; result: Ezjsonm.value >
@@ -167,7 +167,7 @@ module On_chain : sig
        ; paths: Paths.t
        ; runner: Running_processes.State.t
        ; .. >
-    -> client:Tezos_client.t
+    -> client:mineplex_client.t
     -> name:string
     -> address:string
     -> pp_error:(   Caml.Format.formatter
@@ -184,7 +184,7 @@ module On_chain : sig
        ; .. >
     -> names:string list
     -> thing:string
-    -> client:Tezos_client.t
+    -> client:mineplex_client.t
     -> name:string
     -> address:string
     -> key_of_string:(   string

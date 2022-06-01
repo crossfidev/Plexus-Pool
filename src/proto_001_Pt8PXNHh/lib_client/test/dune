@@ -1,14 +1,14 @@
 (executables
  (names test_michelson_v1_macros)
- (libraries tezos-base
-            tezos-micheline
-            tezos-protocol-001-Pt8PXNHh
-            tezos-client-001-Pt8PXNHh
+ (libraries mineplex-base
+            mineplex-micheline
+            mineplex-protocol-001-Pt8PXNHh
+            mineplex-client-001-Pt8PXNHh
             alcotest-lwt)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_micheline
-                   -open Tezos_client_001_Pt8PXNHh
-                   -open Tezos_protocol_001_Pt8PXNHh)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_micheline
+                   -open mineplex_client_001_Pt8PXNHh
+                   -open mineplex_protocol_001_Pt8PXNHh)))
 
 
 (alias
@@ -21,10 +21,10 @@
 
 (alias
 (name runtest)
-(package tezos-client-001-Pt8PXNHh)
+(package mineplex-client-001-Pt8PXNHh)
 (deps (alias runtest_michelson_v1_macros)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

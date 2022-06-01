@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-open Tezos_client_base
+open mineplex_client_base
 
 type bootstrap_secret = {name : string; sk_uri : Client_keys.sk_uri}
 
@@ -62,7 +62,7 @@ let add_bootstrap_secret cctxt {name; sk_uri} =
   >>=? fun () ->
   Client_keys.import_secret_key ~io:(cctxt :> Client_context.io_wallet) pk_uri
   >>=? fun (pkh, public_key) ->
-  cctxt#message "Tezos address added: %a" Signature.Public_key_hash.pp pkh
+  cctxt#message "mineplex address added: %a" Signature.Public_key_hash.pp pkh
   >>= fun () ->
   Client_keys.register_key cctxt ~force (pkh, pk_uri, sk_uri) ?public_key name
 
@@ -78,13 +78,13 @@ let bootstrap_secret_encoding =
 
 let bootstrap_secrets_encoding = Data_encoding.list bootstrap_secret_encoding
 
-let populate (cctxt : #Tezos_client_base.Client_context.io_wallet)
+let populate (cctxt : #mineplex_client_base.Client_context.io_wallet)
     bootstrap_accounts_file =
   ( match bootstrap_accounts_file with
   | None ->
       default_bootstrap_accounts
   | Some accounts_file -> (
-      Tezos_stdlib_unix.Lwt_utils_unix.Json.read_file accounts_file
+      mineplex_stdlib_unix.Lwt_utils_unix.Json.read_file accounts_file
       >>=? fun json ->
       match Data_encoding.Json.destruct bootstrap_secrets_encoding json with
       | accounts ->
@@ -93,4 +93,4 @@ let populate (cctxt : #Tezos_client_base.Client_context.io_wallet)
           failwith
             "cannot read definitions of bootstrap accounts in %s"
             accounts_file ) )
-  >>=? Tezos_base.TzPervasives.iter_s (add_bootstrap_secret cctxt)
+  >>=? mineplex_base.TzPervasives.iter_s (add_bootstrap_secret cctxt)

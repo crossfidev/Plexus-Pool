@@ -1,9 +1,9 @@
 (library
  (name yes_wallet_lib)
  (flags (:standard
-          -open Tezos_stdlib
+          -open mineplex_stdlib
           -open Data_encoding))
- (libraries tezos-base
+ (libraries mineplex-base
             lwt.unix
             ezjsonm)
 (modules yes_wallet_lib))

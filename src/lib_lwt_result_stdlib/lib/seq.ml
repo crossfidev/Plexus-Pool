@@ -28,5 +28,5 @@ include Functors.Seq.Make (struct
 
   type out_error = Error_monad.error list
 
-  include Tezos_error_monad.Monad
+  include mineplex_error_monad.Monad
 end)

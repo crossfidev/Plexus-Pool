@@ -29,13 +29,13 @@ val get_registered_mockup :
 (** Returns a mockup environment for the default protocol (which is the first
     in the list of registered protocol, cf [Registration] module). *)
 val default_mockup_context :
-  Tezos_client_base.Client_context.full ->
+  mineplex_client_base.Client_context.full ->
   (Registration.mockup_environment * Registration.mockup_context) tzresult
   Lwt.t
 
 (**  Returns a mockup environment for the specified protocol hash. *)
 val init_mockup_context_by_protocol_hash :
-  cctxt:Tezos_client_base.Client_context.full ->
+  cctxt:mineplex_client_base.Client_context.full ->
   protocol_hash:Protocol_hash.t ->
   constants_overrides_json:Data_encoding.json option ->
   bootstrap_accounts_json:Data_encoding.json option ->
@@ -52,7 +52,7 @@ val get_mockup_context_from_disk :
 (** Initializes an on-disk mockup environment in [base_dir] for the specified
     protocol. *)
 val create_mockup :
-  cctxt:Tezos_client_base.Client_context.full ->
+  cctxt:mineplex_client_base.Client_context.full ->
   protocol_hash:Protocol_hash.t ->
   constants_overrides_json:Data_encoding.json option ->
   bootstrap_accounts_json:Data_encoding.json option ->
@@ -62,7 +62,7 @@ val create_mockup :
 val overwrite_mockup :
   protocol_hash:Protocol_hash.t ->
   chain_id:Chain_id.t ->
-  rpc_context:Tezos_protocol_environment.rpc_context ->
+  rpc_context:mineplex_protocol_environment.rpc_context ->
   base_dir:string ->
   unit tzresult Lwt.t
 

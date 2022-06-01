@@ -1,21 +1,21 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
   "ocamlfind" { build }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-shell-services"
-  "tezos-client-base"
-  "tezos-client-commands"
-  "tezos-protocol-environment"
-  "tezos-protocol-demo-counter"
+  "mineplex-base"
+  "mineplex-shell-services"
+  "mineplex-client-base"
+  "mineplex-client-commands"
+  "mineplex-protocol-environment"
+  "mineplex-protocol-demo-counter"
 ]
 build: [
   [ "dune" "build" "-p" name "-j" jobs ]
 ]
-synopsis: "Tezos/Protocol: protocol specific library for `tezos-client`"
+synopsis: "mineplex/Protocol: protocol specific library for `mineplex-client`"

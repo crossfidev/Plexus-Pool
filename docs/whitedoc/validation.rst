@@ -4,7 +4,7 @@ The validation subsystem
 ========================
 
 This document explains the inner workings of the validation subsystem
-of the Tezos shell, that sits between the peer-to-peer layer and the
+of the mineplex shell, that sits between the peer-to-peer layer and the
 economic protocol. This part is in charge of validating chains, blocks
 and operations that come from the network, and deciding whether they
 are worthy to propagate. It is composed of three main parts: the
@@ -12,7 +12,7 @@ are worthy to propagate. It is composed of three main parts: the
 :ref:`prevalidator<prevalidator_component>`, and
 the :ref:`distributed DB<DDB_component>`.
 
-|Tezos validation diagram|
+|mineplex validation diagram|
 
 .. _validator_component:
 
@@ -118,4 +118,4 @@ The gathering of resources needed for validation is centralized in the
 resource, whose priority depends on the number of peer validators
 requesting it.
 
-.. |Tezos validation diagram| image:: validation.svg
+.. |mineplex validation diagram| image:: validation.svg

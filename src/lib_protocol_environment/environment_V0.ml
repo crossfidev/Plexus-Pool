@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs. <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -29,7 +29,7 @@ open Environment_protocol_T
 
 module type V0 = sig
   include
-    Tezos_protocol_environment_sigs.V0.T
+    mineplex_protocol_environment_sigs.V0.T
       with type Format.formatter = Format.formatter
        and type 'a Data_encoding.t = 'a Data_encoding.t
        and type 'a Data_encoding.lazy_t = 'a Data_encoding.lazy_t
@@ -44,7 +44,7 @@ module type V0 = sig
        and type Context_hash.t = Context_hash.t
        and type Protocol_hash.t = Protocol_hash.t
        and type Time.t = Time.Protocol.t
-       and type MBytes.t = Tezos_protocol_environment_structs.V0.M.MBytes.t
+       and type MBytes.t = mineplex_protocol_environment_structs.V0.M.MBytes.t
        and type Operation.shell_header = Operation.shell_header
        and type Operation.t = Operation.t
        and type Block_header.shell_header = Block_header.shell_header
@@ -88,7 +88,7 @@ module type V0 = sig
        and type validation_state = P.validation_state
 
   class ['chain, 'block] proto_rpc_context :
-    Tezos_rpc.RPC_context.t
+    mineplex_rpc.RPC_context.t
     -> (unit, (unit * 'chain) * 'block) RPC_path.t
     -> ['chain * 'block] RPC_context.simple
 
@@ -127,8 +127,8 @@ struct
   module Nativeint = Nativeint
   module Buffer = Buffer
   module Format = Format
-  module Option = Tezos_protocol_environment_structs.V0.M.Option
-  module MBytes = Tezos_protocol_environment_structs.V0.M.MBytes
+  module Option = mineplex_protocol_environment_structs.V0.M.Option
+  module MBytes = mineplex_protocol_environment_structs.V0.M.MBytes
 
   module Raw_hashes = struct
     let sha256 = Hacl.Hash.SHA256.digest
@@ -144,7 +144,7 @@ struct
     let to_bits ?(pad_to = 0) z =
       let bits = to_bits z in
       let len = Pervasives.((numbits z + 7) / 8) in
-      let full_len = Tezos_stdlib.Compare.Int.max pad_to len in
+      let full_len = mineplex_stdlib.Compare.Int.max pad_to len in
       if full_len = 0 then MBytes.create 0
       else
         let res = MBytes.create full_len in
@@ -336,9 +336,9 @@ struct
   module Signature = Signature
 
   module S = struct
-    module type T = Tezos_base.S.T
+    module type T = mineplex_base.S.T
 
-    module type HASHABLE = Tezos_base.S.HASHABLE
+    module type HASHABLE = mineplex_base.S.HASHABLE
 
     module type MINIMAL_HASH = S.MINIMAL_HASH
 
@@ -378,9 +378,9 @@ struct
       val rpc_arg : t RPC_arg.t
     end
 
-    module type SET = Tezos_protocol_environment_structs.V0.M.S.SET
+    module type SET = mineplex_protocol_environment_structs.V0.M.S.SET
 
-    module type MAP = Tezos_protocol_environment_structs.V0.M.S.MAP
+    module type MAP = mineplex_protocol_environment_structs.V0.M.S.MAP
 
     module type INDEXES = sig
       type t
@@ -495,7 +495,7 @@ struct
   end
 
   module Error_core = struct
-    include Tezos_error_monad.Core_maker.Make (struct
+    include mineplex_error_monad.Core_maker.Make (struct
       let id = Format.asprintf "proto.%s." Param.name
     end)
   end
@@ -508,9 +508,9 @@ struct
     include (
       Error_core :
         sig
-          include Tezos_error_monad.Sig.CORE with type error := unwrapped
+          include mineplex_error_monad.Sig.CORE with type error := unwrapped
 
-          include Tezos_error_monad.Sig.EXT with type error := unwrapped
+          include mineplex_error_monad.Sig.EXT with type error := unwrapped
         end )
 
     let unwrap = function
@@ -530,7 +530,7 @@ struct
     type error_category = [`Branch | `Temporary | `Permanent]
 
     include Error_core
-    include Tezos_error_monad.Monad_maker.Make (Error_core)
+    include mineplex_error_monad.Monad_maker.Make (Error_core)
 
     let ( >>|? ) = ( >|=? ) (* for backward compatibility *)
   end
@@ -837,7 +837,7 @@ struct
   end
 
   module Base58 = struct
-    include Tezos_crypto.Base58
+    include mineplex_crypto.Base58
 
     let simple_encode enc s = simple_encode enc s
 
@@ -916,7 +916,7 @@ struct
     let init c bh = init c bh >|= wrap_error
   end
 
-  class ['chain, 'block] proto_rpc_context (t : Tezos_rpc.RPC_context.t)
+  class ['chain, 'block] proto_rpc_context (t : mineplex_rpc.RPC_context.t)
     (prefix : (unit, (unit * 'chain) * 'block) RPC_path.t) =
     object
       method call_proto_service0
@@ -981,7 +981,7 @@ struct
 
   class ['block] proto_rpc_context_of_directory conv dir :
     ['block] RPC_context.simple =
-    let lookup = new Tezos_rpc.RPC_context.of_directory dir in
+    let lookup = new mineplex_rpc.RPC_context.of_directory dir in
     object
       method call_proto_service0
           : 'm 'q 'i 'o.

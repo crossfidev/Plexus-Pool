@@ -7,13 +7,13 @@ open Rresult
 open Ledgerwallet
 
 module Version = struct
-  type app_class = Tezos | TezBake
+  type app_class = mineplex | TezBake
   let pp_app_class ppf = function
-    | Tezos -> Format.pp_print_string ppf "Tezos Wallet"
-    | TezBake -> Format.pp_print_string ppf "Tezos Baking"
+    | mineplex -> Format.pp_print_string ppf "mineplex Wallet"
+    | TezBake -> Format.pp_print_string ppf "mineplex Baking"
 
   let class_of_int = function
-    | 0 -> Tezos
+    | 0 -> mineplex
     | 1 -> TezBake
     | _ -> invalid_arg "class_of_int"
 
@@ -33,10 +33,10 @@ module Version = struct
   }
 
   type Transport.Status.t +=
-      Tezos_impossible_to_read_version
+      mineplex_impossible_to_read_version
 
   let () = Transport.Status.register_string_f begin function
-      | Tezos_impossible_to_read_version ->
+      | mineplex_impossible_to_read_version ->
           Some "Impossible to read version"
       | _ -> None
     end
@@ -50,7 +50,7 @@ module Version = struct
       R.ok (create ~app_class ~major ~minor ~patch)
     with _ ->
       Transport.app_error
-        ~msg:"Version.read" (R.error Tezos_impossible_to_read_version)
+        ~msg:"Version.read" (R.error mineplex_impossible_to_read_version)
 end
 
 type ins =
@@ -129,11 +129,11 @@ let curve_of_int = function
   | _ -> None
 
 type Transport.Status.t +=
-  | Tezos_invalid_curve_code of int
+  | mineplex_invalid_curve_code of int
   | Payload_too_big of int
 
 let () = Transport.Status.register_string_f begin function
-    | Tezos_invalid_curve_code curve_code ->
+    | mineplex_invalid_curve_code curve_code ->
         Some ("Unrecognized curve code: " ^ string_of_int curve_code)
     | Payload_too_big size ->
         Some (Printf.sprintf "Payload too big: %d bytes" size)
@@ -173,7 +173,7 @@ let get_authorized_path_and_curve ?pp ?buf h =
   let curve_code = Cstruct.get_uint8 payload 0 in
   match curve_of_int curve_code with
   | None ->
-      Transport.app_error ~msg:"get_authorized_path_and_curve" (R.error (Tezos_invalid_curve_code curve_code))
+      Transport.app_error ~msg:"get_authorized_path_and_curve" (R.error (mineplex_invalid_curve_code curve_code))
   | Some curve ->
       let path_components = read_path_with_length (Cstruct.shift payload 1) in
       R.ok (path_components, curve)
@@ -208,7 +208,7 @@ let authorize_baking = get_public_key_like Authorize_baking
 let setup_baking ?pp ?buf h ~main_chain_id ~main_hwm ~test_hwm curve path =
   let nb_derivations = List.length path in
   if nb_derivations > 10 then
-    invalid_arg "Ledgerwallet_tezos.setup: max 10 derivations" ;
+    invalid_arg "Ledgerwallet_mineplex.setup: max 10 derivations" ;
   let lc =
     (* [ chain-id | main-hwm | test-hwm | derivations-path ] *)
     (* derivations-path = [ length | paths ] *)

@@ -32,7 +32,7 @@ class TestOriginationCall:
 
         # Unsolved mistery:
         #    client.wait_for_inclusion(origination.operation_hash)
-        # fails sometimes with tezos-client crashing. Maybe caused with
+        # fails sometimes with mineplex-client crashing. Maybe caused with
         # subprocess captured of forked process output?
         #
         # Safer to poll with `check_block_contain_operations`

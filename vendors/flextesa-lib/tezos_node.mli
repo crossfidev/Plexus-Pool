@@ -8,8 +8,8 @@ type t = private
   ; rpc_port: int
   ; p2p_port: int
   ; peers: int list
-  ; exec: Tezos_executable.t
-  ; protocol: Tezos_protocol.t
+  ; exec: mineplex_executable.t
+  ; protocol: mineplex_protocol.t
   ; history_mode: [`Full | `Archive | `Rolling] option
   ; single_process: bool
   ; cors_origin: string option
@@ -22,8 +22,8 @@ val pp : t Fmt.t
 
 val make :
      ?cors_origin:string
-  -> exec:Tezos_executable.t
-  -> ?protocol:Tezos_protocol.t
+  -> exec:mineplex_executable.t
+  -> ?protocol:mineplex_protocol.t
   -> ?custom_network:[`Json of Ezjsonm.value]
   -> ?single_process:bool
   -> ?history_mode:[`Archive | `Full | `Rolling]
@@ -34,7 +34,7 @@ val make :
   -> int list
   -> t
 (** Create a node value (inert, not started), see 
-   ["tezos-node run --help"] for corresponding parameters.
+   ["mineplex-node run --help"] for corresponding parameters.
 
 - [?single_process]: defaults to [true] (for now since multi-process
   validations still suffers from some bugs).
@@ -70,7 +70,7 @@ val process :
   -> t
   -> Running_processes.Process.t
 
-val protocol : t -> Tezos_protocol.t
+val protocol : t -> mineplex_protocol.t
 
 val connections :
   t list -> [`Duplex of t * t | `From_to of t * t | `Missing of t * int] list

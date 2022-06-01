@@ -2,8 +2,8 @@
 
 configure_client() {
 
-    local client_config="$HOME/.tezos-client/config"
-    mkdir -p "$client_dir" "$HOME/.tezos-client"
+    local client_config="$HOME/.mineplex-client/config"
+    mkdir -p "$client_dir" "$HOME/.mineplex-client"
 
     if [ ! -f "$client_config" ]; then
         "$client" --base-dir "$client_dir" \
@@ -49,7 +49,7 @@ check_image_version() {
     # run has a incompatible version with the blockchain we have stored
     # locally on disk
 
-    local image_version="$(cat "/usr/local/share/tezos/alphanet_version")"
+    local image_version="$(cat "/usr/local/share/mineplex/alphanet_version")"
     echo "Current public chain: $image_version."
     local local_data_version=""
     if [ -f "$node_dir/alphanet_version" ]; then
@@ -69,7 +69,7 @@ check_image_version() {
             mkdir -p "$node_data_dir"
             mv /tmp/identity.json "$node_data_dir/"
         fi
-        cp "/usr/local/share/tezos/alphanet_version" \
+        cp "/usr/local/share/mineplex/alphanet_version" \
            "$node_dir/alphanet_version"
     fi
 

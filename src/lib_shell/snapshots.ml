@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2019 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2019 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs. <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -605,7 +605,7 @@ let compute_predecessors ~genesis_hash oldest_level block_hashes i =
 let check_context_hash_consistency block_validation_result block_header =
   fail_unless
     (Context_hash.equal
-       block_validation_result.Tezos_validation.Block_validation.context_hash
+       block_validation_result.mineplex_validation.Block_validation.context_hash
        block_header.Block_header.shell.context)
     (Snapshot_import_failure "resulting context hash does not match")
 
@@ -618,7 +618,7 @@ let set_history_mode store history_mode =
 let store_new_head chain_state chain_data ~genesis block_header operations
     block_validation_result =
   let ({validation_store; block_metadata; ops_metadata; forking_testchain}
-        : Tezos_validation.Block_validation.result) =
+        : mineplex_validation.Block_validation.result) =
     block_validation_result
   in
   State.Block.store
@@ -774,7 +774,7 @@ let reconstruct_storage store context_index chain_id ~user_activated_upgrades
   let rec reconstruct_chunks level =
     Store.with_atomic_rw store (fun () ->
         let rec reconstruct_chunks level =
-          Tezos_stdlib_unix.Utils.display_progress (fun m ->
+          mineplex_stdlib_unix.Utils.display_progress (fun m ->
               m "Reconstructing contexts: %i/%i" level limit) ;
           if level = limit then return level
           else
@@ -806,13 +806,13 @@ let reconstruct_storage store context_index chain_id ~user_activated_upgrades
                 user_activated_protocol_overrides;
               }
             in
-            Tezos_validation.Block_validation.apply env block_header operations
+            mineplex_validation.Block_validation.apply env block_header operations
             >>=? fun block_validation_result ->
             check_context_hash_consistency
               block_validation_result.validation_store
               block_header
             >>=? fun () ->
-            let { Tezos_validation.Block_validation.validation_store;
+            let { mineplex_validation.Block_validation.validation_store;
                   block_metadata;
                   ops_metadata;
                   _ } =
@@ -860,7 +860,7 @@ let reconstruct_storage store context_index chain_id ~user_activated_upgrades
   >>=? fun () ->
   reconstruct_chunks 0
   >>=? fun _cpt ->
-  Tezos_stdlib_unix.Utils.display_progress_end () ;
+  mineplex_stdlib_unix.Utils.display_progress_end () ;
   Store.Chain.Genesis_hash.read chain_store
   >>=? fun genesis_hash ->
   let new_savepoint = (0l, genesis_hash) in
@@ -1015,7 +1015,7 @@ let import ?(reconstruct = false) ?patch_context ~data_dir
       in
       Lwt_list.fold_left_s
         (fun (cpt, to_write) current_hash ->
-          Tezos_stdlib_unix.Utils.display_progress
+          mineplex_stdlib_unix.Utils.display_progress
             ~refresh_rate:(cpt, 1_000)
             (fun f ->
               f "Computing predecessors table %dK elements%!" (cpt / 1_000)) ;
@@ -1036,7 +1036,7 @@ let import ?(reconstruct = false) ?patch_context ~data_dir
       >>= fun (_, to_write) ->
       write_predecessors_table to_write
       >>= fun () ->
-      Tezos_stdlib_unix.Utils.display_progress_end () ;
+      mineplex_stdlib_unix.Utils.display_progress_end () ;
       (* Process data imported from snapshot *)
       let {Block_data.block_header; operations} = meta in
       let block_hash = Block_header.hash block_header in
@@ -1075,7 +1075,7 @@ let import ?(reconstruct = false) ?patch_context ~data_dir
         }
       in
       (* ... we can now call apply ... *)
-      Tezos_validation.Block_validation.apply env block_header operations
+      mineplex_validation.Block_validation.apply env block_header operations
       >>=? fun block_validation_result ->
       check_context_hash_consistency
         block_validation_result.validation_store

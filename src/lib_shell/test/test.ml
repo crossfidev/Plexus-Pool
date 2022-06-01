@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs <contact@nomadic-labs.com>                *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -26,7 +26,7 @@
 
 let () =
   Alcotest_lwt.run
-    "tezos-state"
+    "mineplex-state"
     [ ("store", Test_store.tests);
       ("state", Test_state.tests);
       ("store checkpoint", Test_store_checkpoint.tests);

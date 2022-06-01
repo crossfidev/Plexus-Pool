@@ -41,7 +41,7 @@ let json_parameter =
       Lwt_unix.file_exists file_or_data
       >>= (function
             | true ->
-                Tezos_stdlib_unix.Lwt_utils_unix.read_file file_or_data
+                mineplex_stdlib_unix.Lwt_utils_unix.read_file file_or_data
             | false ->
                 Lwt.return file_or_data)
       >>= fun data ->
@@ -56,7 +56,7 @@ let bytes_parameter = parameter (fun _ hex -> return (Hex.to_bytes (`Hex hex)))
 let commands () =
   [ command
       ~group
-      ~desc:"List the registered encoding in Tezos."
+      ~desc:"List the registered encoding in mineplex."
       no_options
       (fixed ["list"; "encodings"])
       (fun () (cctxt : #Client_context.printer) ->

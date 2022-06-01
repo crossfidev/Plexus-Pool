@@ -1,23 +1,23 @@
 .. _proof-of-stake:
 
-Proof-of-stake in Tezos
+Proof-of-stake in mineplex
 =======================
 
-This document provides an in-depth description of the Tezos
+This document provides an in-depth description of the mineplex
 proof-of-stake algorithm as implemented in the current protocol
 (namely `PsCARTHA` on `mainnet`).
 
 Brief Overview
 --------------
 
-A blockchain is a linked list of **blocks**. In Tezos, blocks to be
+A blockchain is a linked list of **blocks**. In mineplex, blocks to be
 added to the blockchain are agreed upon through a proof-of-stake
 consensus mechanism. Proof-of-stake means that participants in the
-consensus algorithm are chosen in function of their stake. In Tezos, a
+consensus algorithm are chosen in function of their stake. In mineplex, a
 participant needs to have a minimum stake of 8,000 ꜩ (which is
 called a **roll**). If one does not have enough stake to participate
 on its own or does not want to set up the needed infrastructure, (s)he
-can use **delegation**. Therefore, in Tezos, participants in the
+can use **delegation**. Therefore, in mineplex, participants in the
 consensus algorithm are called **delegates**. There are two roles a
 delegate can have: that of a **baker**, that is a delegate that
 creates blocks, or that of an **endorser**, that is a delegate that
@@ -40,27 +40,27 @@ the notions which are in bold in the text above.
 Further External Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The original design of the proof-of-stake mechanism in Tezos can be
+The original design of the proof-of-stake mechanism in mineplex can be
 found in the `whitepaper
-<https://tezos.com/static/white_paper-2dc8c02267a8fb86bd67a108199441bf.pdf>`_.
+<https://mineplex.com/static/white_paper-2dc8c02267a8fb86bd67a108199441bf.pdf>`_.
 The following blog posts present the intuition behind the changes to the original consensus algorithm:
 
 -  https://blog.nomadic-labs.com/analysis-of-emmy.html,
 -  https://blog.nomadic-labs.com/emmy-an-improved-consensus-algorithm.html,
 -  https://blog.nomadic-labs.com/a-new-reward-formula-for-carthage.html.
 
-Here are a few more resources that present Tezos' proof-of-stake
+Here are a few more resources that present mineplex' proof-of-stake
 mechanism:
 
--  `Proof of Stake <https://learn.tqtezos.com/files/proofofstake.html#consensus>`_
--  `Liquid Proof-of-Stake <https://medium.com/tezos/liquid-proof-of-stake-aec2f7ef1da7>`_
+-  `Proof of Stake <https://learn.tqmineplex.com/files/proofofstake.html#consensus>`_
+-  `Liquid Proof-of-Stake <https://medium.com/mineplex/liquid-proof-of-stake-aec2f7ef1da7>`_
 
 Please note that these external resources may contain outdated information.
 
 Blocks
 ------
 
-The Tezos blockchain is a linked list of blocks. Blocks contain a
+The mineplex blockchain is a linked list of blocks. Blocks contain a
 header, and a list of operations. The header itself decomposes into a
 shell header (common to all protocols) and a protocol specific header.
 
@@ -101,7 +101,7 @@ Protocol header
 Block size
 ~~~~~~~~~~
 
-Tezos does not download blocks all at once, but rather considers
+mineplex does not download blocks all at once, but rather considers
 headers and various types of operations separately.  Transactions are
 limited by a total maximum size of 512kB (that is 5MB every 10 minutes
 at most).
@@ -124,7 +124,7 @@ the head of the chain to the valid block that has the highest fitness.
 Cycles
 ------
 
-Blocks in Tezos are grouped into *cycles* of
+Blocks in mineplex are grouped into *cycles* of
 ``BLOCKS_PER_CYCLE`` = 4,096 blocks. Since blocks are at least
 ``TIME_BETWEEN_BLOCKS[0]`` = one minute apart, this means a cycle lasts *at
 least* 2 days, 20 hours, and 16 minutes. In the following description,
@@ -140,26 +140,26 @@ past (that is *at least* 14 days, 5 hours, and 20 minutes).
 Delegation
 ----------
 
-Tezos uses a delegated proof-of-stake model. The acronym DPOS has come to
+mineplex uses a delegated proof-of-stake model. The acronym DPOS has come to
 designate a specific type of algorithm used, for instance in Bitshares.
-This is *not* the model used in Tezos, though there is a concept
+This is *not* the model used in mineplex, though there is a concept
 of delegation.
 
 Delegates
 ~~~~~~~~~
 
 Tokens are controlled through a private key called the
-*manager key*. Tezos accounts let the manager specify a public
+*manager key*. mineplex accounts let the manager specify a public
 delegate key. This key may be controlled by the managers themselves, or
 by another party. The responsibility of the delegate is to take part in
-the proof-of-stake consensus algorithm and in the governance of Tezos.
+the proof-of-stake consensus algorithm and in the governance of mineplex.
 
 The manager can generally change the delegate at any time, though
 contracts can be marked to specify an immutable delegate. Though
 delegation can be changed dynamically, the change only becomes effective
 after a few cycles.
 
-There are also default accounts in Tezos, which are just the hash of the
+There are also default accounts in mineplex, which are just the hash of the
 public key. These accounts do not have an attached delegate key and do
 not participate in the proof-of-stake algorithm.
 
@@ -233,7 +233,7 @@ Baking
 
 Baking is the action of producing and signing a block.
 In Bitcoin, the right to produce a block is associated with solving a
-proof-of-work puzzle. In Tezos, the right to produce a block in
+proof-of-work puzzle. In mineplex, the right to produce a block in
 cycle ``n`` is assigned to a randomly selected roll in a randomly
 selected roll snapshot from cycle ``n-PRESERVED_CYCLES-2``.
 
@@ -342,7 +342,7 @@ this amount is stored in security deposits. This percentage also gives
 an indication of the minimal amount of tokens a delegate should own in
 order to not miss out on creating a block or an endorsement.  Please
 refer to `this section
-<https://tezos.gitlab.io/introduction/howtorun.html#deposits-and-over-delegation>`_
+<https://mineplex.gitlab.io/introduction/howtorun.html#deposits-and-over-delegation>`_
 of the documentation for a discussion on (over-)delegation.
 
 Inflation

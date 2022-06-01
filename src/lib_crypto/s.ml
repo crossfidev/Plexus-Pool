@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -169,7 +169,7 @@ module type INDEXES = sig
   end
 
   module Error_table : sig
-    include Tezos_lwt_result_stdlib.Lwtreslib.Hashtbl.S_LWT with type key = t
+    include mineplex_lwt_result_stdlib.Lwtreslib.Hashtbl.S_LWT with type key = t
   end
 
   module WeakRingTable : sig

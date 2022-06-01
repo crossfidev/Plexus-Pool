@@ -7,12 +7,12 @@
         test_pvss
         test_crypto_box
         test_deterministic_nonce)
- (libraries tezos-stdlib
-            tezos-crypto
+ (libraries mineplex-stdlib
+            mineplex-crypto
             data-encoding
             alcotest)
- (flags (:standard -open Tezos_stdlib
-                   -open Tezos_crypto
+ (flags (:standard -open mineplex_stdlib
+                   -open mineplex_crypto
                    -open Data_encoding)))
 
 (alias
@@ -60,7 +60,7 @@
 
 (alias
  (name runtest)
- (package tezos-crypto)
+ (package mineplex-crypto)
  (deps (alias runtest_hacl)
        (alias runtest_merkle)
        (alias runtest_base58)
@@ -73,4 +73,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

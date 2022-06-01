@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -29,42 +29,42 @@ module Log = Internal_event.Legacy_logging.Make (struct
 end)
 
 let default_tcp_host =
-  match Sys.getenv_opt "TEZOS_SIGNER_TCP_HOST" with
+  match Sys.getenv_opt "mineplex_SIGNER_TCP_HOST" with
   | None ->
       "localhost"
   | Some host ->
       host
 
 let default_tcp_port =
-  match Sys.getenv_opt "TEZOS_SIGNER_TCP_PORT" with
+  match Sys.getenv_opt "mineplex_SIGNER_TCP_PORT" with
   | None ->
       "7732"
   | Some port ->
       port
 
 let default_https_host =
-  match Sys.getenv_opt "TEZOS_SIGNER_HTTPS_HOST" with
+  match Sys.getenv_opt "mineplex_SIGNER_HTTPS_HOST" with
   | None ->
       "localhost"
   | Some host ->
       host
 
 let default_https_port =
-  match Sys.getenv_opt "TEZOS_SIGNER_HTTPS_PORT" with
+  match Sys.getenv_opt "mineplex_SIGNER_HTTPS_PORT" with
   | None ->
       "443"
   | Some port ->
       port
 
 let default_http_host =
-  match Sys.getenv_opt "TEZOS_SIGNER_HTTP_HOST" with
+  match Sys.getenv_opt "mineplex_SIGNER_HTTP_HOST" with
   | None ->
       "localhost"
   | Some host ->
       host
 
 let default_http_port =
-  match Sys.getenv_opt "TEZOS_SIGNER_HTTP_PORT" with
+  match Sys.getenv_opt "mineplex_SIGNER_HTTP_PORT" with
   | None ->
       "6732"
   | Some port ->
@@ -121,7 +121,7 @@ let may_setup_pidfile = function
       @@ Lwt_lock_file.create ~unlink_on_exit:true pidfile
 
 let commands base_dir require_auth : Client_context.full command list =
-  Tezos_signer_backends_unix.Ledger.commands ()
+  mineplex_signer_backends_unix.Ledger.commands ()
   @ Client_keys_commands.commands None
   @ [ command
         ~group
@@ -162,7 +162,7 @@ let commands base_dir require_auth : Client_context.full command list =
              cctxt ->
           may_setup_pidfile pidfile
           >>=? fun () ->
-          Tezos_signer_backends.Encrypted.decrypt_all cctxt
+          mineplex_signer_backends.Encrypted.decrypt_all cctxt
           >>=? fun () ->
           Socket_daemon.run
             cctxt
@@ -190,7 +190,7 @@ let commands base_dir require_auth : Client_context.full command list =
         (fun (pidfile, magic_bytes, check_high_watermark, path) cctxt ->
           may_setup_pidfile pidfile
           >>=? fun () ->
-          Tezos_signer_backends.Encrypted.decrypt_all cctxt
+          mineplex_signer_backends.Encrypted.decrypt_all cctxt
           >>=? fun () ->
           Socket_daemon.run
             cctxt
@@ -226,7 +226,7 @@ let commands base_dir require_auth : Client_context.full command list =
         (fun (pidfile, magic_bytes, check_high_watermark, host, port) cctxt ->
           may_setup_pidfile pidfile
           >>=? fun () ->
-          Tezos_signer_backends.Encrypted.decrypt_all cctxt
+          mineplex_signer_backends.Encrypted.decrypt_all cctxt
           >>=? fun () ->
           Http_daemon.run_http
             cctxt
@@ -280,7 +280,7 @@ let commands base_dir require_auth : Client_context.full command list =
              cctxt ->
           may_setup_pidfile pidfile
           >>=? fun () ->
-          Tezos_signer_backends.Encrypted.decrypt_all cctxt
+          mineplex_signer_backends.Encrypted.decrypt_all cctxt
           >>=? fun () ->
           Http_daemon.run_https
             cctxt
@@ -321,7 +321,7 @@ let commands base_dir require_auth : Client_context.full command list =
 
 let home = try Sys.getenv "HOME" with Not_found -> "/root"
 
-let default_base_dir = Filename.concat home ".tezos-signer"
+let default_base_dir = Filename.concat home ".mineplex-signer"
 
 let string_parameter () : (string, _) parameter =
   parameter (fun _ x -> return x)
@@ -333,7 +333,7 @@ let base_dir_arg () =
     ~placeholder:"path"
     ~doc:
       ( "signer data directory\n\
-         The directory where the Tezos client will store all its data.\n\
+         The directory where the mineplex client will store all its data.\n\
          By default: '" ^ default_base_dir ^ "'." )
     (string_parameter ())
 

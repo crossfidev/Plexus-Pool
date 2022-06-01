@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -34,7 +34,7 @@
    forward) the events emitted within the code-base.
 *)
 
-open Tezos_error_monad
+open mineplex_error_monad
 open Error_monad
 
 (** {3 Events Definitions and Registration } *)
@@ -530,7 +530,7 @@ module Legacy_logging : sig
       ('a, Format.formatter, unit, unit Lwt.t) format4 -> 'a
   end
 
-  open Tezos_stdlib
+  open mineplex_stdlib
 
   type ('a, 'b) msgf =
     (('a, Format.formatter, unit, 'b) format4 -> ?tags:Tag.set -> 'a) ->
@@ -598,9 +598,9 @@ end
     lwt-log logging framework (see the {!Lwt_log_core} module).
 
     It is activated {i by default} in {!Internal_event_unix.Configuration.default}
-    (in any case it can be activated with [TEZOS_EVENTS_CONFIG="lwt-log://"]. To
+    (in any case it can be activated with [mineplex_EVENTS_CONFIG="lwt-log://"]. To
     configure further how the sink outputs to a file or the user's
-    terminal, one needs to use the [TEZOS_LOG] variable (see also the module
+    terminal, one needs to use the [mineplex_LOG] variable (see also the module
     {!Lwt_log_sink_unix}).
 *)
 module Lwt_log_sink : sig

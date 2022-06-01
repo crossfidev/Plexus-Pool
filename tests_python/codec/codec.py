@@ -14,13 +14,13 @@ def format_command(cmd: List[str]) -> str:
 
 
 class Codec:
-    """Codec for datatypes used in Tezos.
+    """Codec for datatypes used in mineplex.
 
     This class can be used to encode and decode datatypes used in a
-    Tezos node.
+    mineplex node.
 
     This class offers two commands `encode` and `decode`. The encoding
-    name can be obtained using `tezos-codec list encodings`.
+    name can be obtained using `mineplex-codec list encodings`.
     """
     def __init__(self, codec_path: str):
         """
@@ -36,7 +36,7 @@ class Codec:
             check: bool = True) -> str:
         """
         Args:
-            params (list): list of parameters given to the tezos-codec,
+            params (list): list of parameters given to the mineplex-codec,
             check (bool): raises an exception if codec call fails
         """
         cmd = [self._codec] + params

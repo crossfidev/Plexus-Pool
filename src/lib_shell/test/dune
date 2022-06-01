@@ -1,30 +1,30 @@
 (executables
  (names test
         test_locator)
- (libraries tezos-base
-            tezos-storage
-            tezos-shell-context
-            tezos-p2p
-            tezos-p2p-services
-            tezos-protocol-updater
-            tezos-shell
-            tezos-shell-services
-            tezos-embedded-protocol-demo-noops
-            tezos-stdlib-unix
-            tezos-validation
-            tezos-test-services
+ (libraries mineplex-base
+            mineplex-storage
+            mineplex-shell-context
+            mineplex-p2p
+            mineplex-p2p-services
+            mineplex-protocol-updater
+            mineplex-shell
+            mineplex-shell-services
+            mineplex-embedded-protocol-demo-noops
+            mineplex-stdlib-unix
+            mineplex-validation
+            mineplex-test-services
             alcotest-lwt)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_storage
-                   -open Tezos_shell_context
-                   -open Tezos_protocol_updater
-                   -open Tezos_p2p
-                   -open Tezos_p2p_services
-                   -open Tezos_test_services
-                   -open Tezos_shell
-                   -open Tezos_shell_services
-                   -open Tezos_stdlib_unix
-                   -open Tezos_validation)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_storage
+                   -open mineplex_shell_context
+                   -open mineplex_protocol_updater
+                   -open mineplex_p2p
+                   -open mineplex_p2p_services
+                   -open mineplex_test_services
+                   -open mineplex_shell
+                   -open mineplex_shell_services
+                   -open mineplex_stdlib_unix
+                   -open mineplex_validation)))
 
 (alias
  (name buildtest)
@@ -45,11 +45,11 @@
 
 (alias
  (name runtest)
- (package tezos-shell)
+ (package mineplex-shell)
  (deps (alias runtest_shell)
        (alias runtest_locator)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

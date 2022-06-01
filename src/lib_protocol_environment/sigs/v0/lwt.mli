@@ -22,7 +22,7 @@
  * 02111-1307, USA.
  *)
 
-(* TEZOS CHANGES
+(* mineplex CHANGES
 
    * import version 2.4.5
    * Comment a few function that shouldn't be used in the protocol:

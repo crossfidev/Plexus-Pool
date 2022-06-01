@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -27,7 +27,7 @@ module type T = sig
   module P : sig
     val hash : Protocol_hash.t
 
-    include Tezos_protocol_environment.PROTOCOL
+    include mineplex_protocol_environment.PROTOCOL
   end
 
   include module type of struct
@@ -39,7 +39,7 @@ module type T = sig
   end
 
   val complete_b58prefix :
-    Tezos_protocol_environment.Context.t -> string -> string list Lwt.t
+    mineplex_protocol_environment.Context.t -> string -> string list Lwt.t
 end
 
 type t = (module T)
@@ -59,7 +59,7 @@ val get_embedded_sources : Protocol_hash.t -> Protocol.t option
 val get_embedded_sources_exn : Protocol_hash.t -> Protocol.t
 
 module Register_embedded_V0
-    (Env : Tezos_protocol_environment.V0)
+    (Env : mineplex_protocol_environment.V0)
     (Proto : Env.Updater.PROTOCOL) (Source : sig
       val hash : Protocol_hash.t option
 

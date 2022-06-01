@@ -259,10 +259,10 @@ def sign(data: bytes, secret_key: bytes) -> str:
 
 
 def b58_key_to_hex(b58_key: str) -> str:
-    """Translate a tezos b58check key encoding to a hex string.
+    """Translate a mineplex b58check key encoding to a hex string.
 
     Params:
-        b58_sig (str): tezos b58check encoding of a key
+        b58_sig (str): mineplex b58check encoding of a key
 
     Returns:
         str: hex string of key
@@ -272,10 +272,10 @@ def b58_key_to_hex(b58_key: str) -> str:
 
 
 def b58_sig_to_hex(b58_sig: str) -> str:
-    """Translate a tezos b58check signature encoding to a hex string.
+    """Translate a mineplex b58check signature encoding to a hex string.
 
     Params:
-        b58_sig (str): tezos b58check encoding of a signature
+        b58_sig (str): mineplex b58check encoding of a signature
 
     Returns:
         str: hex string of signature
@@ -285,7 +285,7 @@ def b58_sig_to_hex(b58_sig: str) -> str:
 
 
 def hex_sig_to_b58(hexsig: str) -> str:
-    """Translate a hex signature to a tezos b58check encoding.
+    """Translate a hex signature to a mineplex b58check encoding.
 
     Params:
         hexsig (str): hex string encoded signature

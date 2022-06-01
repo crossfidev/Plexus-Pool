@@ -3,7 +3,7 @@
 ;
 ;        /!\ /!\ Do not modify this file /!\ /!\
 ;
-; but the original template in `tezos-protocol-compiler`
+; but the original template in `mineplex-protocol-compiler`
 ;
 
 
@@ -12,7 +12,7 @@
  (action
   (write-file %{targets}
               "module Name = struct let name = \"002-Pt4xzupC\" end
-include Tezos_protocol_environment.MakeV0(Name)()
+include mineplex_protocol_environment.MakeV0(Name)()
 module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
 ")))
 
@@ -89,10 +89,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    voting_services.mli voting_services.ml
    alpha_services.mli alpha_services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action
   (with-stdout-to %{targets}
-                  (chdir %{workspace_root} (run %{bin:tezos-embedded-protocol-packer} "%{src_dir}" "002_Pt4xzupC")))))
+                  (chdir %{workspace_root} (run %{bin:mineplex-embedded-protocol-packer} "%{src_dir}" "002_Pt4xzupC")))))
 
 (rule
  (targets functor.ml)
@@ -167,10 +167,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    voting_services.mli voting_services.ml
    alpha_services.mli alpha_services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action (with-stdout-to %{targets}
                          (chdir %{workspace_root}
-                                (run %{bin:tezos-protocol-compiler.tezos-protocol-packer} %{src_dir})))))
+                                (run %{bin:mineplex-protocol-compiler.mineplex-protocol-packer} %{src_dir})))))
 
 (rule
  (targets protocol.ml)
@@ -247,29 +247,29 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    main.mli main.ml)
  (action
   (write-file %{targets}
-    "module Environment = Tezos_protocol_environment_002_Pt4xzupC.Environment
-let hash = Tezos_crypto.Protocol_hash.of_b58check_exn \"Pt4xzupCszbuxgMSWE2WnReY4aryz1Te3pGN78YEkhjss7C1AMK\"
+    "module Environment = mineplex_protocol_environment_002_Pt4xzupC.Environment
+let hash = mineplex_crypto.Protocol_hash.of_b58check_exn \"Pt4xzupCszbuxgMSWE2WnReY4aryz1Te3pGN78YEkhjss7C1AMK\"
 let name = Environment.Name.name
-include Tezos_raw_protocol_002_Pt4xzupC
-include Tezos_raw_protocol_002_Pt4xzupC.Main
+include mineplex_raw_protocol_002_Pt4xzupC
+include mineplex_raw_protocol_002_Pt4xzupC.Main
 ")))
 
 (library
- (name tezos_protocol_environment_002_Pt4xzupC)
- (public_name tezos-protocol-002-Pt4xzupC.environment)
+ (name mineplex_protocol_environment_002_Pt4xzupC)
+ (public_name mineplex-protocol-002-Pt4xzupC.environment)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-environment)
+ (libraries mineplex-protocol-environment)
  (modules Environment))
 
 (library
- (name tezos_raw_protocol_002_Pt4xzupC)
- (public_name tezos-protocol-002-Pt4xzupC.raw)
- (libraries tezos_protocol_environment_002_Pt4xzupC)
+ (name mineplex_raw_protocol_002_Pt4xzupC)
+ (public_name mineplex-protocol-002-Pt4xzupC.raw)
+ (libraries mineplex_protocol_environment_002_Pt4xzupC)
  (library_flags (:standard -linkall))
  (flags (:standard -nopervasives -nostdlib
                    -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a
-                   -open Tezos_protocol_environment_002_Pt4xzupC__Environment
+                   -open mineplex_protocol_environment_002_Pt4xzupC__Environment
                    -open Pervasives
                    -open Error_monad))
  (modules
@@ -346,53 +346,53 @@ include Tezos_raw_protocol_002_Pt4xzupC.Main
 
 (install
  (section lib)
- (package tezos-protocol-002-Pt4xzupC)
- (files (TEZOS_PROTOCOL as raw/TEZOS_PROTOCOL)))
+ (package mineplex-protocol-002-Pt4xzupC)
+ (files (mineplex_PROTOCOL as raw/mineplex_PROTOCOL)))
 
 (library
- (name tezos_protocol_002_Pt4xzupC)
- (public_name tezos-protocol-002-Pt4xzupC)
+ (name mineplex_protocol_002_Pt4xzupC)
+ (public_name mineplex-protocol-002-Pt4xzupC)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_002_Pt4xzupC)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_002_Pt4xzupC)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Protocol))
 
 (library
- (name tezos_protocol_002_Pt4xzupC_functor)
- (public_name tezos-protocol-002-Pt4xzupC.functor)
+ (name mineplex_protocol_002_Pt4xzupC_functor)
+ (public_name mineplex-protocol-002-Pt4xzupC.functor)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_002_Pt4xzupC)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_002_Pt4xzupC)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Functor))
 
 (library
- (name tezos_embedded_protocol_002_Pt4xzupC)
- (public_name tezos-embedded-protocol-002-Pt4xzupC)
+ (name mineplex_embedded_protocol_002_Pt4xzupC)
+ (public_name mineplex-embedded-protocol-002-Pt4xzupC)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-002-Pt4xzupC
-            tezos-protocol-updater
-            tezos-protocol-environment)
+ (libraries mineplex-protocol-002-Pt4xzupC
+            mineplex-protocol-updater
+            mineplex-protocol-environment)
  (flags (:standard -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a))
  (modules Registerer))
 
 (alias
  (name runtest_compile_protocol)
- (action (run %{bin:tezos-protocol-compiler} -no-hash-check .)))
+ (action (run %{bin:mineplex-protocol-compiler} -no-hash-check .)))
 
 (alias
  (name runtest_sandbox)
- (deps .tezos_protocol_002_Pt4xzupC.objs/native/tezos_protocol_002_Pt4xzupC.cmx))
+ (deps .mineplex_protocol_002_Pt4xzupC.objs/native/mineplex_protocol_002_Pt4xzupC.cmx))
 
 (alias
  (name runtest)
- (package tezos-protocol-002-Pt4xzupC)
+ (package mineplex-protocol-002-Pt4xzupC)
  (deps (alias runtest_sandbox)))

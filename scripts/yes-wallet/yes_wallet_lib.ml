@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2020 Metastate AG <hello@metastate.dev>                     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -30,7 +30,7 @@
    Given a list of aliases and public key hashes:
    - encodes each public key as a fake secret key that can be used
      with the yes-node.patch
-   - creates a 'yes-wallet' directory to be passed to tezos-client -d option
+   - creates a 'yes-wallet' directory to be passed to mineplex-client -d option
  *)
 
 let pkh_json (alias, pkh, _pk) =
@@ -49,7 +49,7 @@ let pk_json (alias, _pkh, pk) =
  *)
 
 let sk_of_pk (pk_s : string) : string =
-  let open Tezos_crypto.Signature in
+  let open mineplex_crypto.Signature in
   let pk = Public_key.of_b58check_exn pk_s in
   let pk_b = Data_encoding.Binary.to_bytes_exn Public_key.encoding pk in
   let sk_b = Bytes.sub pk_b 0 33 in

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -149,7 +149,7 @@ module Connection_message = struct
     let encoded_message_len = Data_encoding.Binary.length encoding message in
     fail_unless
       (encoded_message_len < 1 lsl (Crypto.header_length * 8))
-      Tezos_base.Data_encoding_wrapper.Unexpected_size_of_decoded_buffer
+      mineplex_base.Data_encoding_wrapper.Unexpected_size_of_decoded_buffer
     >>=? fun () ->
     let len = Crypto.header_length + encoded_message_len in
     let buf = Bytes.create len in
@@ -157,11 +157,11 @@ module Connection_message = struct
       Data_encoding.Binary.write encoding message buf Crypto.header_length len
     with
     | Error we ->
-        fail (Tezos_base.Data_encoding_wrapper.Encoding_error we)
+        fail (mineplex_base.Data_encoding_wrapper.Encoding_error we)
     | Ok last ->
         fail_unless
           (last = len)
-          Tezos_base.Data_encoding_wrapper.Unexpected_size_of_encoded_value
+          mineplex_base.Data_encoding_wrapper.Unexpected_size_of_encoded_value
         >>=? fun () ->
         TzEndian.set_int16 buf 0 encoded_message_len ;
         P2p_io_scheduler.write ~canceler fd buf
@@ -210,11 +210,11 @@ module Metadata = struct
         encoded_message_len
     with
     | Error we ->
-        fail (Tezos_base.Data_encoding_wrapper.Encoding_error we)
+        fail (mineplex_base.Data_encoding_wrapper.Encoding_error we)
     | Ok last ->
         fail_unless
           (last = encoded_message_len)
-          Tezos_base.Data_encoding_wrapper.Unexpected_size_of_encoded_value
+          mineplex_base.Data_encoding_wrapper.Unexpected_size_of_encoded_value
         >>=? fun () -> Crypto.write_chunk ~canceler cryptobox_data fd buf
 
   let read ~canceler metadata_config fd cryptobox_data =
@@ -286,11 +286,11 @@ module Ack = struct
       Data_encoding.Binary.write encoding message buf 0 encoded_message_len
     with
     | Error we ->
-        fail (Tezos_base.Data_encoding_wrapper.Encoding_error we)
+        fail (mineplex_base.Data_encoding_wrapper.Encoding_error we)
     | Ok last ->
         fail_unless
           (last = encoded_message_len)
-          Tezos_base.Data_encoding_wrapper.Unexpected_size_of_encoded_value
+          mineplex_base.Data_encoding_wrapper.Unexpected_size_of_encoded_value
         >>=? fun () -> Crypto.write_chunk ?canceler fd cryptobox_data buf
 
   let read ?canceler fd cryptobox_data =
@@ -520,7 +520,7 @@ module Writer = struct
   let encode_message st msg =
     match Data_encoding.Binary.to_bytes st.encoding msg with
     | Error we ->
-        error (Tezos_base.Data_encoding_wrapper.Encoding_error we)
+        error (mineplex_base.Data_encoding_wrapper.Encoding_error we)
     | Ok bytes ->
         ok (Utils.cut st.binary_chunks_size bytes)
 

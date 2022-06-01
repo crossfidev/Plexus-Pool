@@ -1,8 +1,8 @@
 (executable
- (name test_tezos)
- (modules Test_tezos)
- (libraries hex alcotest ledgerwallet-tezos tweetnacl uecc))
+ (name test_mineplex)
+ (modules Test_mineplex)
+ (libraries hex alcotest ledgerwallet-mineplex tweetnacl uecc))
 
 (alias
- (name    runtest-ledgerwallet-tezos)
- (action  (run %{exe:test_tezos.exe})))
+ (name    runtest-ledgerwallet-mineplex)
+ (action  (run %{exe:test_mineplex.exe})))

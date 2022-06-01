@@ -1,10 +1,10 @@
 (library
- (name tezos_error_monad)
- (public_name tezos-error-monad)
- (flags (:standard -open Tezos_stdlib
+ (name mineplex_error_monad)
+ (public_name mineplex-error-monad)
+ (flags (:standard -open mineplex_stdlib
                    -open Data_encoding
                    ))
- (libraries tezos-stdlib
+ (libraries mineplex-stdlib
             data-encoding
             lwt-canceler
             lwt))
@@ -12,4 +12,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

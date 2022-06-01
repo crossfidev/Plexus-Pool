@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -41,7 +41,7 @@ let get_datadir () =
 
 let init dir = datadir := Some dir
 
-let compiler_name = "tezos-protocol-compiler"
+let compiler_name = "mineplex-protocol-compiler"
 
 let do_compile hash p =
   let datadir = get_datadir () in
@@ -52,7 +52,7 @@ let do_compile hash p =
     // Protocol_hash.to_short_b58check hash
     // Format.asprintf "protocol_%a" Protocol_hash.pp hash
   in
-  Tezos_base_unix.Protocol_files.write_dir source_dir ~hash p
+  mineplex_base_unix.Protocol_files.write_dir source_dir ~hash p
   >>=? (fun () ->
          let compiler_command =
            ( Sys.executable_name,
@@ -90,11 +90,11 @@ let do_compile hash p =
       Lwt.return_false )
 
 let compile hash p =
-  if Tezos_protocol_registerer.Registerer.mem hash then Lwt.return_true
+  if mineplex_protocol_registerer.Registerer.mem hash then Lwt.return_true
   else
     do_compile hash p
     >>= fun success ->
-    let loaded = Tezos_protocol_registerer.Registerer.mem hash in
+    let loaded = mineplex_protocol_registerer.Registerer.mem hash in
     if success && not loaded then
       log_error "Internal error while compiling %a" Protocol_hash.pp hash ;
     Lwt.return loaded

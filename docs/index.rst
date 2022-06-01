@@ -1,42 +1,42 @@
-.. Tezos documentation master file, created by
+.. mineplex documentation master file, created by
    sphinx-quickstart on Sat Nov 11 11:08:48 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 
-Welcome to the Tezos Developer Documentation!
+Welcome to the mineplex Developer Documentation!
 =============================================
 
 The Project
 -----------
 
-Tezos is a distributed consensus platform with meta-consensus
-capability. Tezos not only comes to consensus about the state of its ledger,
+mineplex is a distributed consensus platform with meta-consensus
+capability. mineplex not only comes to consensus about the state of its ledger,
 like Bitcoin or Ethereum. It also attempts to come to consensus about how the
 protocol and the nodes should adapt and upgrade.
 
- - Developer documentation is available online at https://tezos.gitlab.io/
+ - Developer documentation is available online at https://mineplex.gitlab.io/
    and is automatically generated from the master branch.
- - The website https://tezos.com/ contains more information about the project.
- - All development happens on GitLab at https://gitlab.com/tezos/tezos
+ - The website https://mineplex.com/ contains more information about the project.
+ - All development happens on GitLab at https://gitlab.com/mineplex/mineplex
 
-The source code of Tezos is placed under the MIT Open Source License.
+The source code of mineplex is placed under the MIT Open Source License.
 
 Latest Release
 --------------
 
-The current version of Tezos is :ref:`version-7`.
+The current version of mineplex is :ref:`version-7`.
 
 The Community
 -------------
 
-- The website of the `Tezos Foundation <https://tezos.foundation/>`_.
-- `Tezos sub-reddit <https://www.reddit.com/r/tezos/>`_ is an
+- The website of the `mineplex Foundation <https://mineplex.foundation/>`_.
+- `mineplex sub-reddit <https://www.reddit.com/r/mineplex/>`_ is an
   important meeting point of the community.
 - Several community-built block explorers are available:
 
     - https://tzstats.com
-    - https://tezos.id
+    - https://mineplex.id
     - https://tezblock.io
     - https://teztracker.everstake.one
     - https://tzkt.io (Baking focused Explorer)
@@ -45,10 +45,10 @@ The Community
     - https://baking-bad.org (Reward Tracker)
     - https://better-call.dev (Smart-contract Explorer)
 
-- A few community-run websites collect useful Tezos links:
+- A few community-run websites collect useful mineplex links:
 
-    - https://www.tezos.help
-    - https://tezos.rocks
+    - https://www.mineplex.help
+    - https://mineplex.rocks
 
 - More resources can be found in the :ref:`support` page.
 
@@ -59,11 +59,11 @@ The Networks
 Mainnet
 ~~~~~~~
 
-The Tezos network is the current incarnation of the Tezos blockchain.
+The mineplex network is the current incarnation of the mineplex blockchain.
 It runs with real tez that have been allocated to the
 donors of July 2017 ICO (see :ref:`activate_fundraiser_account`).
 
-The Tezos network has been live and open since June 30th 2018.
+The mineplex network has been live and open since June 30th 2018.
 
 All the instructions in this documentation are valid for Mainnet
 however we **strongly** encourage users to first try all the
@@ -73,11 +73,11 @@ risks.
 Test Networks
 ~~~~~~~~~~~~~
 
-There are several test networks for the Tezos blockchain with a
+There are several test networks for the mineplex blockchain with a
 faucet to obtain free tez (see :ref:`faucet`).
 It is the reference network for developers wanting to test their
 software before going to beta and for users who want to familiarize
-themselves with Tezos before using their real tez.
+themselves with mineplex before using their real tez.
 
 See the list of test networks in :ref:`test network <test-networks>`.
 

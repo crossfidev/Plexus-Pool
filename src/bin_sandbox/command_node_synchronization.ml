@@ -16,7 +16,7 @@ let run state ~node_exec ~client_exec ~primary_history_mode
     EF.[af "Ready to start"; af "Root path deleted."]
   >>= fun () ->
   let block_interval = 1 in
-  let default_protocol = Tezos_protocol.default () in
+  let default_protocol = mineplex_protocol.default () in
   let baker_list = default_protocol.bootstrap_accounts in
   let protocol =
     {
@@ -27,7 +27,7 @@ let run state ~node_exec ~client_exec ~primary_history_mode
     }
   in
   let primary_node =
-    Tezos_node.make
+    mineplex_node.make
       ~protocol
       ~exec:node_exec
       "primary_node"
@@ -38,7 +38,7 @@ let run state ~node_exec ~client_exec ~primary_history_mode
       [15004]
   in
   let secondary_node =
-    Tezos_node.make
+    mineplex_node.make
       ~protocol
       ~exec:node_exec
       ~history_mode:secondary_history_mode
@@ -56,7 +56,7 @@ let run state ~node_exec ~client_exec ~primary_history_mode
     Interactive_test.Commands.(
       all_defaults state ~nodes:all_nodes
       @ [secret_keys state ~protocol; Log_recorder.Operations.show_all state]) ;
-  let primary_client = Tezos_client.of_node ~exec:client_exec primary_node in
+  let primary_client = mineplex_client.of_node ~exec:client_exec primary_node in
   let pp_hm = function
     | Some `Archive ->
         "archive"
@@ -79,15 +79,15 @@ let run state ~node_exec ~client_exec ~primary_history_mode
   >>= fun _ ->
   let (baker_account, _) = List.hd_exn baker_list in
   let baker =
-    Tezos_client.Keyed.make
+    mineplex_client.Keyed.make
       primary_client
-      ~key_name:(Tezos_protocol.Account.name baker_account)
-      ~secret_key:(Tezos_protocol.Account.private_key baker_account)
+      ~key_name:(mineplex_protocol.Account.name baker_account)
+      ~secret_key:(mineplex_protocol.Account.private_key baker_account)
   in
-  Tezos_client.Keyed.initialize state baker
+  mineplex_client.Keyed.initialize state baker
   >>= fun _ ->
   Loop.n_times (starting_level - 1) (fun i ->
-      Tezos_client.Keyed.bake
+      mineplex_client.Keyed.bake
         state
         baker
         (sprintf "bakery run: [%d/%d]" i starting_level))
@@ -102,12 +102,12 @@ let run state ~node_exec ~client_exec ~primary_history_mode
   Helpers.kill_node state secondary_node
   >>= fun () ->
   Loop.n_times number_of_lonely_bakes (fun i ->
-      Tezos_client.Keyed.bake
+      mineplex_client.Keyed.bake
         state
         baker
         (sprintf "lonely bakery run: [%d/%d]" i number_of_lonely_bakes))
   >>= fun () ->
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
     ~client:primary_client
     `Get
@@ -159,7 +159,7 @@ let run state ~node_exec ~client_exec ~primary_history_mode
   | _ ->
       return () )
   >>= fun () ->
-  let identity_file = Tezos_node.identity_file state primary_node in
+  let identity_file = mineplex_node.identity_file state primary_node in
   System.read_file state identity_file
   >>= fun identity_contents ->
   let identity_json = Ezjsonm.from_string identity_contents in
@@ -167,9 +167,9 @@ let run state ~node_exec ~client_exec ~primary_history_mode
     Ezjsonm.value_to_string @@ Jqo.field ~k:"peer_id" identity_json
   in
   let secondary_client =
-    Tezos_client.of_node ~exec:client_exec secondary_node
+    mineplex_client.of_node ~exec:client_exec secondary_node
   in
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
     ~client:secondary_client
     `Get
@@ -193,7 +193,7 @@ let run state ~node_exec ~client_exec ~primary_history_mode
       return () )
   >>= fun () ->
   Stdlib.Scanf.sscanf primary_node_peer_id "%S" (fun primary_node_peer_id ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client:secondary_client
         `Get
@@ -237,8 +237,8 @@ let cmd () =
                  ~primary_history_mode
                  ~secondary_history_mode
                  ~should_synch) ))
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
     $ Arg.(
         value
         & opt hm_arg `Full

@@ -11,8 +11,8 @@
          --root-path %{env:ROOT_PATH=/tmp/flextesa-acc-sdb/}
          --with-timestamp
          --base-port 10_000
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node} )))
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node} )))
 
 (alias
   (name runtest_sandbox_accusations_simple_double_endorsing)
@@ -22,26 +22,26 @@
          --root-path %{env:ROOT_PATH=/tmp/flextesa-acc-sde/}
          --with-timestamp
          --base-port 20_000
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node} )))
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node} )))
 
 (alias
   (name runtest_sandbox_voting_demo_noops)
-  (deps (package tezos-protocol-demo-noops))
+  (deps (package mineplex-protocol-demo-noops))
   (locks /tcp-port/30000_range)
   (action
     (run %{exe:main.exe} voting
-         %{lib:tezos-protocol-demo-noops:raw/TEZOS_PROTOCOL}
-         %{lib:tezos-protocol-demo-noops:raw/TEZOS_PROTOCOL}
+         %{lib:mineplex-protocol-demo-noops:raw/mineplex_PROTOCOL}
+         %{lib:mineplex-protocol-demo-noops:raw/mineplex_PROTOCOL}
          --root-path %{env:ROOT_PATH=/tmp/flextesa-voting-demo-noops/}
          --base-port 30_000
          --size 3
          --with-timestamp
          --winning-client-is-clueless
-         --winner-client-binary %{bin:tezos-client}
-         --current-client-binary %{bin:tezos-client}
-         --current-admin-client-binary %{bin:tezos-admin-client}
-         --current-node-binary %{bin:tezos-node}
+         --winner-client-binary %{bin:mineplex-client}
+         --current-client-binary %{bin:mineplex-client}
+         --current-admin-client-binary %{bin:mineplex-admin-client}
+         --current-node-binary %{bin:mineplex-node}
          )))
 
 (alias
@@ -57,15 +57,15 @@
          --until 20
          --protocol-hash PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb
          --protocol-kind Carthage
-         --tezos-client %{bin:tezos-client}
-         --tezos-node %{bin:tezos-node}
-         --tezos-baker %{bin:tezos-baker-006-PsCARTHA}
-         --tezos-endorser %{bin:tezos-endorser-006-PsCARTHA}
-         --tezos-accuser %{bin:tezos-accuser-006-PsCARTHA}
+         --mineplex-client %{bin:mineplex-client}
+         --mineplex-node %{bin:mineplex-node}
+         --mineplex-baker %{bin:mineplex-baker-006-PsCARTHA}
+         --mineplex-endorser %{bin:mineplex-endorser-006-PsCARTHA}
+         --mineplex-accuser %{bin:mineplex-accuser-006-PsCARTHA}
          --hard-fork 10:ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK
-         --hard-fork-baker %{bin:tezos-baker-alpha}
-         --hard-fork-endorser %{bin:tezos-endorser-alpha}
-         --hard-fork-accuser %{bin:tezos-accuser-alpha}
+         --hard-fork-baker %{bin:mineplex-baker-alpha}
+         --hard-fork-endorser %{bin:mineplex-endorser-alpha}
+         --hard-fork-accuser %{bin:mineplex-accuser-alpha}
          )))
 
 
@@ -74,7 +74,7 @@
   (locks /tcp-port/50000_range)
   (action
     (run %{exe:main.exe} daemons-upgrade
-         %{lib:tezos-protocol-alpha:raw/TEZOS_PROTOCOL}
+         %{lib:mineplex-protocol-alpha:raw/mineplex_PROTOCOL}
          --root-path %{env:ROOT_PATH=/tmp/flextesa-daemons-upgrade/}
          --base-port 50_000
          --extra-dummy-proposals-batch-size 2
@@ -86,15 +86,15 @@
          --with-timestamp
          --protocol-hash PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb
          --protocol-kind Carthage
-         --tezos-client %{bin:tezos-client}
-         --tezos-admin %{bin:tezos-admin-client}
-         --tezos-node %{bin:tezos-node}
-         --first-baker %{bin:tezos-baker-006-PsCARTHA}
-         --first-endorser %{bin:tezos-endorser-006-PsCARTHA}
-         --first-accuser %{bin:tezos-accuser-006-PsCARTHA}
-         --second-baker %{bin:tezos-baker-alpha}
-         --second-endorser %{bin:tezos-endorser-alpha}
-         --second-accuser %{bin:tezos-accuser-alpha}
+         --mineplex-client %{bin:mineplex-client}
+         --mineplex-admin %{bin:mineplex-admin-client}
+         --mineplex-node %{bin:mineplex-node}
+         --first-baker %{bin:mineplex-baker-006-PsCARTHA}
+         --first-endorser %{bin:mineplex-endorser-006-PsCARTHA}
+         --first-accuser %{bin:mineplex-accuser-006-PsCARTHA}
+         --second-baker %{bin:mineplex-baker-alpha}
+         --second-endorser %{bin:mineplex-endorser-alpha}
+         --second-accuser %{bin:mineplex-accuser-alpha}
          )))
 
 (alias
@@ -102,8 +102,8 @@
   (locks /tcp-port/15000_range)
   (action
     (run %{exe:main.exe} node-synchronization
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node}
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node}
          --primary-history-mode archive
          --secondary-history-mode full
          --should-synch true
@@ -114,8 +114,8 @@
   (locks /tcp-port/15000_range)
   (action
     (run %{exe:main.exe} node-synchronization
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node}
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node}
          --primary-history-mode archive
          --secondary-history-mode rolling
          --should-synch true
@@ -126,8 +126,8 @@
   (locks /tcp-port/15000_range)
   (action
     (run %{exe:main.exe} node-synchronization
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node}
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node}
          --primary-history-mode full
          --secondary-history-mode archive
          --should-synch true
@@ -138,8 +138,8 @@
   (locks /tcp-port/15000_range)
   (action
     (run %{exe:main.exe} node-synchronization
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node}
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node}
          --primary-history-mode full
          --secondary-history-mode rolling
          --should-synch true
@@ -150,8 +150,8 @@
   (locks /tcp-port/15000_range)
   (action
     (run %{exe:main.exe} node-synchronization
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node}
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node}
          --primary-history-mode rolling
          --secondary-history-mode archive
          --should-synch false
@@ -162,8 +162,8 @@
   (locks /tcp-port/15000_range)
   (action
     (run %{exe:main.exe} node-synchronization
-         --tezos-client-binary %{bin:tezos-client}
-         --tezos-node-binary %{bin:tezos-node}
+         --mineplex-client-binary %{bin:mineplex-client}
+         --mineplex-node-binary %{bin:mineplex-node}
          --primary-history-mode rolling
          --secondary-history-mode full
          --should-synch false

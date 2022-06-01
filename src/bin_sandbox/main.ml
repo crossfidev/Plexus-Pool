@@ -6,7 +6,7 @@ module Small_utilities = struct
     let open Cmdliner in
     let open Term in
     ( ( const (fun n ->
-            let open Tezos_protocol.Account in
+            let open mineplex_protocol.Account in
             let account = of_name n in
             Fmt.pr
               "%s,%s,%s,%s\n%!"

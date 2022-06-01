@@ -18,7 +18,7 @@ start_sandboxed_node() {
     if [ -n "$DATA_DIR" ]; then
         node_dir="$DATA_DIR"
     else
-        node_dir="$(mktemp -d -t tezos-node.XXXXXXXX)"
+        node_dir="$(mktemp -d -t mineplex-node.XXXXXXXX)"
         node_dirs+=("$node_dir")
     fi
     peers=("--no-bootstrap-peers")
@@ -46,11 +46,11 @@ EOF
                   --data-dir "$node_dir" \
                   --net-addr "127.0.0.1:$port" \
                   --rpc-addr "127.0.0.1:$rpc" \
-                  --rpc-tls  "${node_dir}/tezos.crt,${node_dir}/tezos.key" \
+                  --rpc-tls  "${node_dir}/mineplex.crt,${node_dir}/mineplex.key" \
                   --expected-pow "$expected_pow" \
                   --connections "$expected_connections"
 
-            cat > "${node_dir}/tezos.crt" <<EOF
+            cat > "${node_dir}/mineplex.crt" <<EOF
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -60,7 +60,7 @@ Certificate:
         Validity
             Not Before: Mar 30 13:07:24 2018 GMT
             Not After : Mar 27 13:07:24 2028 GMT
-        Subject: CN=tezos
+        Subject: CN=mineplex
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (2048 bit)
@@ -99,7 +99,7 @@ Certificate:
             X509v3 Key Usage: 
                 Digital Signature, Key Encipherment
             X509v3 Subject Alternative Name: 
-                DNS:tezos
+                DNS:mineplex
     Signature Algorithm: sha256WithRSAEncryption
          2f:23:1a:9e:42:72:2b:57:ec:26:04:a2:a0:22:f3:31:0e:12:
          c4:46:92:95:b6:c7:44:bf:ab:5b:5b:15:c3:69:a3:48:79:be:
@@ -138,7 +138,7 @@ JW2Qvc5BY5FY4xb5CHDFwV9d9w2ld+WjhIJTvzBqEN8csR+ByODHSE10RyFIOoqA
 -----END CERTIFICATE-----
 EOF
 
-            cat > "${node_dir}/tezos.key" <<EOF
+            cat > "${node_dir}/mineplex.key" <<EOF
 -----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDTYbqBag2PC2+E
 ZcpztcYtiY6DkJ4s4RZfLJ1EACXdonPcQQaB+6EM6RfbY2vCRmO8MUy8dlCgeRXe
@@ -200,7 +200,7 @@ main() {
         local_node="${local_node:-$bin_dir/../../_build/default/src/bin_node/main.exe}"
         sandbox_file="${sandbox_file:-$bin_dir/../../scripts/sandbox.json}"
     else
-        local_node="${local_node:-tezos-node}"
+        local_node="${local_node:-mineplex-node}"
         sandbox_file="${sandbox_file:-sandbox.json}"
     fi
 

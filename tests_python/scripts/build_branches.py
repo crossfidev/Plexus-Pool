@@ -61,10 +61,10 @@ def parse_sexp(sexp):
     return out[0]
 
 
-def opam_env(tezos_build):
+def opam_env(mineplex_build):
     process = subprocess.Popen(['opam', 'env', '--sexp', '--set-switch'],
                                stdout=subprocess.PIPE,
-                               cwd=tezos_build)
+                               cwd=mineplex_build)
     out, _err = process.communicate()
     out_str = out.decode('utf-8')
     env = {x[0]: x[1] for x in parse_sexp(out_str)}
@@ -79,31 +79,31 @@ def run(cmd, cwd, env=None):
         subprocess.run(cmd, check=True, cwd=cwd, env=env)
 
 
-def build(branch, tezos_home, tezos_build, tezos_binaries):
+def build(branch, mineplex_home, mineplex_build, mineplex_binaries):
 
-    if os.listdir(tezos_build):
-        error_msg = f'{tezos_build} is not empty. Should be a git directory'
-        assert os.path.isdir(f"{tezos_build}/.git"), error_msg
+    if os.listdir(mineplex_build):
+        error_msg = f'{mineplex_build} is not empty. Should be a git directory'
+        assert os.path.isdir(f"{mineplex_build}/.git"), error_msg
     else:
-        print_log(f'{tezos_build} is empty. Cloning {tezos_home}')
-        run(['git', 'clone', tezos_home], tezos_build)
+        print_log(f'{mineplex_build} is empty. Cloning {mineplex_home}')
+        run(['git', 'clone', mineplex_home], mineplex_build)
 
-    run(['git', 'clean', '-f'], tezos_build)
-    run(['git', 'reset', '--hard'], tezos_build)
-    run(['git', 'checkout', branch], tezos_build)
-    run(['make', 'build-deps'], tezos_build)
+    run(['git', 'clean', '-f'], mineplex_build)
+    run(['git', 'reset', '--hard'], mineplex_build)
+    run(['git', 'checkout', branch], mineplex_build)
+    run(['make', 'build-deps'], mineplex_build)
 
-    new_env = opam_env(tezos_build)
+    new_env = opam_env(mineplex_build)
     print_log(f'Extending current env with opam env: {new_env}')
     env = {**os.environ, **new_env}
 
-    run(['make'], tezos_build, env=env)
+    run(['make'], mineplex_build, env=env)
 
-    branch_dir = os.path.join(tezos_binaries, branch)
+    branch_dir = os.path.join(mineplex_binaries, branch)
     print_log(f'Copying binaries to {branch_dir}')
     pathlib.Path(branch_dir).mkdir(parents=True, exist_ok=True)
 
-    for filename in glob.glob(f'{tezos_build}/tezos-*'):
+    for filename in glob.glob(f'{mineplex_build}/mineplex-*'):
         dest = os.path.join(branch_dir, os.path.basename(filename))
         if os.path.exists(dest):
             print_log(f"{dest} already exists, don't copy")
@@ -112,21 +112,21 @@ def build(branch, tezos_home, tezos_build, tezos_binaries):
 
 
 def prepare_binaries(
-        tezos_home,
-        tezos_build,
-        tezos_binaries,
+        mineplex_home,
+        mineplex_build,
+        mineplex_binaries,
         branch_list):
     assert branch_list, "branch list is empty"
-    assert os.path.isdir(tezos_binaries), f"{tezos_binaries} doesn't exist"
-    assert os.path.isdir(tezos_build), f"{tezos_build} doesn't exist"
-    assert os.path.isdir(tezos_home), f"{tezos_home} doesn't exist"
+    assert os.path.isdir(mineplex_binaries), f"{mineplex_binaries} doesn't exist"
+    assert os.path.isdir(mineplex_build), f"{mineplex_build} doesn't exist"
+    assert os.path.isdir(mineplex_home), f"{mineplex_home} doesn't exist"
     for branch in branch_list:
-        branch_dir = os.path.join(tezos_binaries, branch)
+        branch_dir = os.path.join(mineplex_binaries, branch)
         if os.path.isdir(branch_dir) and os.listdir(branch_dir):
             print_log(f"Binaries for branch {branch} found. Skip.")
         else:
             print_log(f"Binaries for branch {branch} not found. Build.")
-            build(branch, tezos_home, tezos_build, tezos_binaries)
+            build(branch, mineplex_home, mineplex_build, mineplex_binaries)
 
 
 def main():

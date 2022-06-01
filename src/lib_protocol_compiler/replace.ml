@@ -56,7 +56,7 @@ let warning_message =
 ;
 ;        /!\ /!\ Do not modify this file /!\ /!\
 ;
-; but the original template in `tezos-protocol-compiler`
+; but the original template in `mineplex-protocol-compiler`
 ;
 
 |}
@@ -132,7 +132,7 @@ let read_proto destination final_protocol_file =
       List.map Protocol_hash.of_b58check_exn
       @@ String.split_on_char '\n' final_protocol
     in
-    Tezos_base_unix.Protocol_files.read_dir source_dir
+    mineplex_base_unix.Protocol_files.read_dir source_dir
     >|= function
     | Ok (None, proto) ->
         (Protocol.hash proto, proto, false)
@@ -141,7 +141,7 @@ let read_proto destination final_protocol_file =
     | Error err ->
         Format.kasprintf
           Stdlib.failwith
-          "Failed to read TEZOS_PROTOCOL in %s:@ %a"
+          "Failed to read mineplex_PROTOCOL in %s:@ %a"
           source_dir
           pp_print_error
           err )

@@ -1,5 +1,5 @@
 .. _006_carthage:
-.. _proto-006: https://gitlab.com/nomadic-labs/tezos/-/tree/proto-006
+.. _proto-006: https://gitlab.com/nomadic-labs/mineplex/-/tree/proto-006
 
 Protocol 006_PsCARTHA Carthage
 ==============================
@@ -15,7 +15,7 @@ Gitlab branch.
 
 Test network Carthagenet is available to test Carthage.
 See details in :ref:`Test Networks<test-networks>`
-and instructions to join in :ref:`How to get Tezos<howtoget>`.
+and instructions to join in :ref:`How to get mineplex<howtoget>`.
 
 The code can be found in the Gitlab branch
 `proto-006`_ and its
@@ -30,7 +30,7 @@ to monitor it for updates.
 Baking Daemon
 -------------
 
-The baking daemon requires direct access to the context of the Tezos node.
+The baking daemon requires direct access to the context of the mineplex node.
 The daemon for 006 requires the new context introduced by Irmin2. As such
 bakers that use the default baker need to upgrade to the new storage
 backend in order to be able to run the 006 baking daemons.
@@ -119,7 +119,7 @@ decreased. Unfortunately, a small mistake in the unfolding of the
 is looking for the sequence ``{DUP; CAR; DIP CDR}`` but the unfolding of
 ``UNPAIR`` is actually ``{DUP; CAR; DIP {CDR}}`` (note the extra pair of
 curly braces around ``CDR``). Moreover, the `Babylon gas
-update <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/73>`_ has
+update <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/73>`_ has
 made this peephole optimisation of the ``UNPAIR`` macro much less
 interesting because the gas costs of all stack and pair instructions
 are much lower than in previous protocols. We plan to promote ``UNPAIR``
@@ -204,18 +204,18 @@ can run from this branch::
 List of Merge Requests
 ~~~~~~~~~~~~~~~~~~~~~~
 
-* `Baking RPC <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/108>`_
-* `Baking/Endorsement Formula <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/110>`_
-* `Empty implicit delegated contract <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/112>`_
-* `Gas Limit Increases <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/117>`_
-* `Dead Code Removal <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/118>`_
-* `Comparable Pairs <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/106>`_
-* `Michelson Fix for MAP instruction <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/120>`_
-* `Modified the Emmy+ reward function <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/134>`_
-* `Improve CONTRACT instruction <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/95>`_
-* `Improve BIG_MAP error message <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/121>`_
-* `Check validity of annotations <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/135>`_
-* `Move BIG_MAP initialisation <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/119>`_
+* `Baking RPC <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/108>`_
+* `Baking/Endorsement Formula <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/110>`_
+* `Empty implicit delegated contract <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/112>`_
+* `Gas Limit Increases <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/117>`_
+* `Dead Code Removal <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/118>`_
+* `Comparable Pairs <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/106>`_
+* `Michelson Fix for MAP instruction <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/120>`_
+* `Modified the Emmy+ reward function <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/134>`_
+* `Improve CONTRACT instruction <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/95>`_
+* `Improve BIG_MAP error message <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/121>`_
+* `Check validity of annotations <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/135>`_
+* `Move BIG_MAP initialisation <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/119>`_
 
 
 Detailed Changelog

@@ -23,6 +23,6 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-val group : Tezos_clic.Clic.group
+val group : mineplex_clic.Clic.group
 
-val commands : unit -> Tezos_client_base.Client_context.full Clic.command list
+val commands : unit -> mineplex_client_base.Client_context.full Clic.command list

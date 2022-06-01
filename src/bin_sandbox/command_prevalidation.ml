@@ -9,8 +9,8 @@ let run state node_exec client_exec () =
   | [] | [_] | _ :: _ :: _ :: _ ->
       assert false
   | [n1; n2] ->
-      let c1 = Tezos_client.of_node ~exec:client_exec n1 in
-      let c2 = Tezos_client.of_node ~exec:client_exec n2 in
+      let c1 = mineplex_client.of_node ~exec:client_exec n1 in
+      let c2 = mineplex_client.of_node ~exec:client_exec n2 in
       (* TODO: helpers for
          - injecting an op
          - displaying the mempool
@@ -41,7 +41,7 @@ let cmd () =
           state
           ~pp_error
           (run state bnod bcli))
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
     $ Test_command_line.cli_state ~name:"prevalidation" (),
     info ~doc:"Work-in-progress." "prevalidation" )

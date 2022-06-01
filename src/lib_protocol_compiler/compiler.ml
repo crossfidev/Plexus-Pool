@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -79,8 +79,8 @@ let load_embedded_cmis cmis = List.iter load_embedded_cmi cmis
 
 (** Compilation environment.
 
-    [tezos_protocol_env] defines the list of [cmi] available while compiling
-    the protocol version. The [cmi] are packed into the [tezos-node]
+    [mineplex_protocol_env] defines the list of [cmi] available while compiling
+    the protocol version. The [cmi] are packed into the [mineplex-node]
     binary by using [ocp-ocamlres], see the Makefile.
 
     [register_env] defines a complementary list of [cmi] available
@@ -90,17 +90,17 @@ let load_embedded_cmis cmis = List.iter load_embedded_cmi cmis
 
 *)
 
-let tezos_protocol_env =
+let mineplex_protocol_env =
   let open Embedded_cmis in
   [ ("CamlinternalFormatBasics", camlinternalFormatBasics_cmi);
-    ("Tezos_protocol_environment_sigs", tezos_protocol_environment_sigs_cmi);
-    ( "Tezos_protocol_environment_sigs__V0",
-      tezos_protocol_environment_sigs__V0_cmi ) ]
+    ("mineplex_protocol_environment_sigs", mineplex_protocol_environment_sigs_cmi);
+    ( "mineplex_protocol_environment_sigs__V0",
+      mineplex_protocol_environment_sigs__V0_cmi ) ]
 
 let register_env =
   let open Embedded_cmis in
-  [ ( "tezos_protocol_registerer__Registerer",
-      tezos_protocol_registerer__Registerer_cmi ) ]
+  [ ( "mineplex_protocol_registerer__Registerer",
+      mineplex_protocol_registerer__Registerer_cmi ) ]
 
 (** Helpers *)
 
@@ -130,7 +130,7 @@ let debug fmt =
 
 let mktemp_dir () =
   Filename.get_temp_dir_name ()
-  // Printf.sprintf "tezos-protocol-build-%06X" (Random.int 0xFFFFFF)
+  // Printf.sprintf "mineplex-protocol-build-%06X" (Random.int 0xFFFFFF)
 
 (** Main *)
 
@@ -157,7 +157,7 @@ let main {compile_ml; pack_objects; link_shared} =
         " Only display the hash of the protocol and don't compile" );
       ( "-no-hash-check",
         Arg.Clear check_protocol_hash,
-        " Don't check that TEZOS_PROTOCOL declares the expected protocol hash \
+        " Don't check that mineplex_PROTOCOL declares the expected protocol hash \
          (if existent)" );
       ("-static", Arg.Set static, " Only build the static library (no .cmxs)");
       ("-register", Arg.Set register, " Generate the `Registerer` module");
@@ -182,12 +182,12 @@ let main {compile_ml; pack_objects; link_shared} =
   in
   let (announced_hash, protocol) =
     match
-      Lwt_main.run (Tezos_base_unix.Protocol_files.read_dir source_dir)
+      Lwt_main.run (mineplex_base_unix.Protocol_files.read_dir source_dir)
     with
     | Ok (hash, proto) ->
         (hash, proto)
     | Error err ->
-        Format.eprintf "Failed to read TEZOS_PROTOCOL: %a" pp_print_error err ;
+        Format.eprintf "Failed to read mineplex_PROTOCOL: %a" pp_print_error err ;
         exit 2
   in
   let real_hash = Protocol.hash protocol in
@@ -201,7 +201,7 @@ let main {compile_ml; pack_objects; link_shared} =
     | Some hash
       when !check_protocol_hash && not (Protocol_hash.equal real_hash hash) ->
         Format.eprintf
-          "Inconsistent hash for protocol in TEZOS_PROTOCOL.@\n\
+          "Inconsistent hash for protocol in mineplex_PROTOCOL.@\n\
            Found: %a@\n\
            Expected: %a@."
           Protocol_hash.pp
@@ -258,7 +258,7 @@ let main {compile_ml; pack_objects; link_shared} =
   Clflags.include_dirs := [Filename.dirname functor_file] ;
   Warnings.parse_options false warnings ;
   Warnings.parse_options true warn_error ;
-  load_embedded_cmis tezos_protocol_env ;
+  load_embedded_cmis mineplex_protocol_env ;
   let packed_protocol_object = compile_ml ~for_pack functor_file in
   let register_objects =
     if not !register then []
@@ -271,7 +271,7 @@ let main {compile_ml; pack_objects; link_shared} =
         register_file
         (Printf.sprintf
            "module Name = struct let name = %S end\n\
-           \ let () = Tezos_protocol_registerer__Registerer.register \
+           \ let () = mineplex_protocol_registerer__Registerer.register \
             Name.name (%s (module %s.Make))"
            (Protocol_hash.to_b58check hash)
            (Protocol.module_name_of_env_version protocol.expected_env)

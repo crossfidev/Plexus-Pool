@@ -20,7 +20,7 @@ Developers are particularly encouraged to carefully read this page and
 to monitor it for updates.
 
 More documentation concerning Emmy+ and Michelson is available `here
-<https://tezos.gitlab.io/>`_.
+<https://mineplex.gitlab.io/>`_.
 
 .. contents:: Summary of changes
 
@@ -46,10 +46,10 @@ and
 
 Merge requests
 `(MR58)
-<https://gitlab.com/nomadic-labs/tezos/-/merge_requests/58>`_
+<https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/58>`_
 and
 `(MR72)
-<https://gitlab.com/nomadic-labs/tezos/-/merge_requests/72>`_
+<https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/72>`_
 
 
 Michelson
@@ -64,18 +64,18 @@ More details are provided later in the changelog and in the
 A summary of the main changes:
 
 - smart contracts now support entrypoints
-  `(MR59) <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/59>`_,
+  `(MR59) <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/59>`_,
 - contracts can now create, store and transmit as many big_maps as
   they want
-  `(MR76) <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/76>`_,
+  `(MR76) <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/76>`_,
 - comparable types are now closed under products (i.e. the pair
   constructor),
 - a new instruction, ``CHAIN_ID``, allows contracts to differentiate
   between the test chain and the main network
-  `(MR65) <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/65>`_,
+  `(MR65) <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/65>`_,
 - a gas cost overhaul has been integrated, and ``STEPS_TO_QUOTA`` has been
   disabled until a more robust semantics is found
-  `(MR73) <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/73>`_.
+  `(MR73) <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/73>`_.
 
 New instructions to facilitate compilation to Michelson
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,11 +85,11 @@ better compilation target for high level languages.
 
 The new instructions ``DIG n``, ``DUG n``, ``DIP n { code }``, ``DROP n``
 allow to simplify commonly used patterns `(MR81).
-<https://gitlab.com/nomadic-labs/tezos/-/merge_requests/81>`_
+<https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/81>`_
 
 The new instruction ``APPLY`` allows to perform the partial application of
 an argument to a lambda `(MR46).
-<https://gitlab.com/nomadic-labs/tezos/-/merge_requests/46>`_
+<https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/46>`_
 
 Changes for compatibility with the accounts rehaul
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,7 +117,7 @@ the protocol goes back to a proposal period.
 <https://medium.com/cryptium/meanwhile-at-cryptium-labs-1-part-v-3e0ddfd98177>`_
 
 `(MR71)
-<https://gitlab.com/nomadic-labs/tezos/-/merge_requests/71>`_
+<https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/71>`_
 
 
 Quorum caps
@@ -140,7 +140,7 @@ moving average of the participation.
 `Cryptium's blog post (quorum caps).
 <https://medium.com/cryptium/meanwhile-at-cryptium-labs-1-part-ii-607227fc6d65>`_
 
-`MR52. <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/52>`_
+`MR52. <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/52>`_
 
 
 Make implicit accounts delegatable
@@ -164,7 +164,7 @@ Cryptium's blog posts
 1. `<https://medium.com/cryptium/meanwhile-at-cryptium-labs-1-part-iii-1c824b760da3>`_
 2. `<https://medium.com/cryptium/meanwhile-at-cryptium-labs-1-part-vi-540170f46c51>`_
 
-Merge Request : `MR61. <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/61>`_
+Merge Request : `MR61. <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/61>`_
 
 
 Replace KT1 accounts with ``manager.tz`` script
@@ -194,8 +194,8 @@ and
 <https://gitlab.com/nomadic-labs/mi-cho-coq/blob/master/src/contracts_coq/manager.v>`_.
 
 Merge requests
-- `(MR66) <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/66>`_
-- `(MR74) <https://gitlab.com/nomadic-labs/tezos/-/merge_requests/74>`_
+- `(MR66) <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/66>`_
+- `(MR74) <https://gitlab.com/nomadic-labs/mineplex/-/merge_requests/74>`_
 
 Changes to RPCs
 ---------------
@@ -203,7 +203,7 @@ Changes to RPCs
 This section lists the changes in RPCs to put the spotlight on them.
 To stay readable, it cannot provide detailed recipes to adapt to every
 one of them. Affected users can get the new formats by using the
-command ``tezos-client rpc list <url>`` and ``tezos-client rpc format
+command ``mineplex-client rpc list <url>`` and ``mineplex-client rpc format
 <url>``.
 
 
@@ -318,7 +318,7 @@ Changes to the binary format of operations
 
 This section describes the changes in binary format for operations.
 It is possible for readers to compile this list by themselves by
-calling ``describe unsigned operation`` on the tezos client with both
+calling ``describe unsigned operation`` on the mineplex client with both
 protocols Athens and Babylon, and then use a diffing tool.
 
 The ``source`` field of manager operations is now a public key hash
@@ -401,15 +401,15 @@ This section explains how to interact with the manager.tz contract that all exis
 will have after the migration. Wallets can either urge their users to migrate to use implicit
 accounts or can support implicit accounts as well as scriptful KT1s.
 
-The ``tezos-client`` has been updated to be mostly backwards compatible, and the below explanations
-are mostly directed at RPC users and the invocation of the ``tezos-client`` are given as
+The ``mineplex-client`` has been updated to be mostly backwards compatible, and the below explanations
+are mostly directed at RPC users and the invocation of the ``mineplex-client`` are given as
 examples.
 
 To set delegate using the manager.tz script, one can use:
 
 .. code-block:: bash
 
-   tezos-client transfer 0 from <src> to <dst> \
+   mineplex-client transfer 0 from <src> to <dst> \
                --entrypoint 'do' \
                --arg '{ DROP ; NIL operation ; PUSH key_hash "<dlgt>" ; SOME ; SET_DELEGATE ; CONS }'
 
@@ -422,7 +422,7 @@ To remove delegate, use:
 
 .. code-block:: bash
 
-   tezos-client transfer 0 from <src> to <dst> \
+   mineplex-client transfer 0 from <src> to <dst> \
                --entrypoint 'do' \
                --arg '{ DROP ; NIL operation ; NONE key_hash ; SET_DELEGATE ; CONS }'
 
@@ -430,11 +430,11 @@ To remove delegate, use:
   i.e. its manager.
 - ``dst`` is the originated contract
 
-To transfer (spend) tezos from originated contract to an implicit account, use:
+To transfer (spend) mineplex from originated contract to an implicit account, use:
 
 .. code-block:: bash
 
-   tezos-client transfer 0 from <src> to <dst> \
+   mineplex-client transfer 0 from <src> to <dst> \
                --entrypoint 'do' \
                --arg '{ DROP ; NIL operation ; PUSH key_hash "<adr>" ; IMPLICIT_ACCOUNT ; PUSH mutez <val> ; UNIT ; TRANSFER_TOKENS ; CONS }'
 
@@ -444,11 +444,11 @@ To transfer (spend) tezos from originated contract to an implicit account, use:
 - ``adr``: key_hash of the implicit account receiving the tokens
 - ``val``: amount of mutez to transfer
 
-To transfer tezos from originated contract to another originated contract, use:
+To transfer mineplex from originated contract to another originated contract, use:
 
 .. code-block:: bash
 
-   tezos-client transfer 0 from <src> to <dst> \
+   mineplex-client transfer 0 from <src> to <dst> \
                --entrypoint 'do' \
                --arg '{ DROP ; NIL operation ; PUSH address <adr> ; CONTRACT %<ent> <par> ; ASSERT_SOME ; PUSH mutez <val> ; <ppar> ; TRANSFER_TOKENS ; CONS }'
 
@@ -476,7 +476,7 @@ false     false       none
 ========= =========== ================
 
 For a complete Michelson pseudo-code showing these transformations, together
-with examples of these transformations applied to the `id.tz script <https://gitlab.com/tezos/tezos/blob/794bc16664cbed4057ffbc51631151023af835c0/src/bin_client/test/contracts/attic/id.tz>`_,
+with examples of these transformations applied to the `id.tz script <https://gitlab.com/mineplex/mineplex/blob/794bc16664cbed4057ffbc51631151023af835c0/src/bin_client/test/contracts/attic/id.tz>`_,
 please refer to this `Mi-cho-coq merge request <https://gitlab.com/nomadic-labs/mi-cho-coq/-/merge_requests/29>`_.
 
 For both ``add_do`` and ``add_set_delegate`` templates, the original script's
@@ -521,7 +521,7 @@ To set delegate using the added entrypoint, one can use:
 
 .. code-block:: bash
 
-  tezos-client transfer 0 from <src> to <dst> \
+  mineplex-client transfer 0 from <src> to <dst> \
                --entrypoint 'set_delegate' \
                --arg '"<dlgt>"'
 
@@ -534,7 +534,7 @@ To remove delegate, use:
 
 .. code-block:: bash
 
-  tezos-client transfer 0 from <src> to <dst> \
+  mineplex-client transfer 0 from <src> to <dst> \
                --entrypoint 'remove_delegate' \
                --arg 'Unit' # arg is optional, it defaults to Unit when omitted
 
@@ -544,7 +544,7 @@ To remove delegate, use:
 
 Please note, that you are not allowed to transfer tokens on ``%do``,
 ``%set_delegate``, or ``%remove_delegate`` entrypoints calls. Invoke these
-entrypoints with ``tezos-client transfer 0``.
+entrypoints with ``mineplex-client transfer 0``.
 
 Gas cost changes
 ^^^^^^^^^^^^^^^^
@@ -594,7 +594,7 @@ Changelog
 ---------
 
 You can see the full git history on the branch `proto-005
-<https://gitlab.com/nomadic-labs/tezos/commits/proto-005>`_.
+<https://gitlab.com/nomadic-labs/mineplex/commits/proto-005>`_.
 In order to regenerate a protocol with the same hash as Babylon you
 can run from this branch::
 
@@ -1189,9 +1189,9 @@ Migration
     the newly introduced `CHAIN_ID` instruction in order to add extra
     replay protection between the main chain and the test chain.
 
-    Smart contract users that do not use the `tezos-client` but a custom
+    Smart contract users that do not use the `mineplex-client` but a custom
     tool to interact with multi-signature contracts deployed with the
-    `tezos-client` should also include the `CHAIN_ID` in the commands they
+    `mineplex-client` should also include the `CHAIN_ID` in the commands they
     sign.
 
 - Proto/Migration: migrate KT1s with and without script
@@ -1207,23 +1207,23 @@ Migration
     with `%set_delegate` and `%remove_delegate` entrypoints.
 
     Interacting with converted contracts must now be done via smart
-    contract calls. As an example, here is how `tezos-client` handles
+    contract calls. As an example, here is how `mineplex-client` handles
     retro-compatibility for the `transfer` and `set delegate` commands.
 
     When crafting a transaction, if the source is a KT1, if checks that
     its storage is either of type `key_hash` or `pair key_hash _`, and
     retrieve this `key_hash`. Let's name this `key_hash` <manager>.
 
-    To implement `tezos-client set delegate for <contract> to <delegate>`,
+    To implement `mineplex-client set delegate for <contract> to <delegate>`,
     it starts by looking for entrypoints.
 
     If `%set_delegate` is present, it does the equivalent of
-      'tezos-client transfer 0 from <manager> to <contract> \
+      'mineplex-client transfer 0 from <manager> to <contract> \
                       --entrypoint 'set_delegate' --arg '<delegate>'
     where <manager> is the key_hash found in the contract's storage
 
     If `%do` is present, it does the equivalent of
-       'tezos-client transfer 0 from <manager> to <contract> \
+       'mineplex-client transfer 0 from <manager> to <contract> \
                      --entrypoint 'do' \
                      --arg '{ NIL operation ; \
                               PUSH key_hash <delegate> ; \
@@ -1232,11 +1232,11 @@ Migration
                               CONS }'
        where <manager> is the key_hash found in the contract's storage
 
-    To implement `tezos-client transfer <amount> from <contract> to <destination>`,
+    To implement `mineplex-client transfer <amount> from <contract> to <destination>`,
     when the destination is a simple address or a contract of type `unit`,
     it does the equivalent of
     ```
-    tezos-client transfer 0 from <manager> to <contract> \
+    mineplex-client transfer 0 from <manager> to <contract> \
                  --entrypoint "do" \
                  --arg '{ NIL operation ; \
                           PUSH address <destination> ; \
@@ -1248,7 +1248,7 @@ Migration
                           PAIR }'
     ```
 
-    To implement `tezos-client transfer <amount> from <contract> to <destination> \
+    To implement `mineplex-client transfer <amount> from <contract> to <destination> \
                     [--arg <value>] [--entrypoint <entrypoint>]`,
     it starts by checking that the contract has a `%do` entrypoint.
 
@@ -1256,7 +1256,7 @@ Migration
 
     And it does the equivalent of
     ```
-    tezos-client transfer 0 from <manager> to <contract> \
+    mineplex-client transfer 0 from <manager> to <contract> \
                  --entrypoint "do" \
                  --arg '{ NIL operation ; \
                           PUSH address <destination> ; \

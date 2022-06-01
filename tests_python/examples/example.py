@@ -4,13 +4,13 @@ from launchers.sandbox import Sandbox
 
 
 def scenario():
-    """ a private tezos network, initialized with network parameters
+    """ a private mineplex network, initialized with network parameters
         and some accounts. """
-    with Sandbox(paths.TEZOS_HOME, constants.IDENTITIES) as sandbox:
+    with Sandbox(paths.mineplex_HOME, constants.IDENTITIES) as sandbox:
         # Launch node running protocol alpha
         sandbox.add_node(0, params=constants.NODE_PARAMS)
         utils.activate_alpha(sandbox.client(0))
-        # Launch a second node on the same private tezos network
+        # Launch a second node on the same private mineplex network
         sandbox.add_node(1, params=constants.NODE_PARAMS)
         # Launch a baker associated to node 0, baking on behalf of delegate
         # bootstrap5

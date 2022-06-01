@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019-2020 Nomadic Labs, <contact@nomadic-labs.com>          *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -67,7 +67,7 @@ let msg_config : message P2p_params.message_config =
             unwrap = (function Ping -> Some ());
             max_length = None;
           } ];
-    chain_name = Distributed_db_version.Name.of_string "SANDBOXED_TEZOS";
+    chain_name = Distributed_db_version.Name.of_string "SANDBOXED_mineplex";
     distributed_db_versions = [Distributed_db_version.zero];
   }
 
@@ -280,20 +280,20 @@ module Simple = struct
     >>= fun () ->
     P2p_connect_handler.connect connect_handler point ~timeout
     >>= function
-    | Error (Tezos_p2p_services.P2p_errors.Connected :: _) -> (
+    | Error (mineplex_p2p_services.P2p_errors.Connected :: _) -> (
       match P2p_pool.Connection.find_by_point pool point with
       | Some conn ->
           return conn
       | None ->
           failwith "Woops..." )
     | Error
-        (( ( Tezos_p2p_services.P2p_errors.Connection_refused
-           | Tezos_p2p_services.P2p_errors.Pending_connection
-           | Tezos_p2p_services.P2p_errors.Rejected_socket_connection
-           | Tezos_p2p_services.P2p_errors.Rejected_by_nack _
+        (( ( mineplex_p2p_services.P2p_errors.Connection_refused
+           | mineplex_p2p_services.P2p_errors.Pending_connection
+           | mineplex_p2p_services.P2p_errors.Rejected_socket_connection
+           | mineplex_p2p_services.P2p_errors.Rejected_by_nack _
            | Canceled
            | Timeout
-           | Tezos_p2p_services.P2p_errors.Rejected _ ) as head_err )
+           | mineplex_p2p_services.P2p_errors.Rejected _ ) as head_err )
         :: _) ->
         lwt_log_info
           "Connection to %a failed (%a)@."
@@ -301,27 +301,27 @@ module Simple = struct
           point
           (fun ppf err ->
             match err with
-            | Tezos_p2p_services.P2p_errors.Connection_refused ->
+            | mineplex_p2p_services.P2p_errors.Connection_refused ->
                 Format.fprintf ppf "connection refused"
-            | Tezos_p2p_services.P2p_errors.Pending_connection ->
+            | mineplex_p2p_services.P2p_errors.Pending_connection ->
                 Format.fprintf ppf "pending connection"
-            | Tezos_p2p_services.P2p_errors.Rejected_socket_connection ->
+            | mineplex_p2p_services.P2p_errors.Rejected_socket_connection ->
                 Format.fprintf ppf "rejected"
-            | Tezos_p2p_services.P2p_errors.Rejected_by_nack
+            | mineplex_p2p_services.P2p_errors.Rejected_by_nack
                 {alternative_points = Some alternative_points; _} ->
                 Format.fprintf
                   ppf
                   "rejected (nack_v1, peer list: @[<h>%a@])"
                   P2p_point.Id.pp_list
                   alternative_points
-            | Tezos_p2p_services.P2p_errors.Rejected_by_nack
+            | mineplex_p2p_services.P2p_errors.Rejected_by_nack
                 {alternative_points = None; _} ->
                 Format.fprintf ppf "rejected (nack_v0)"
             | Canceled ->
                 Format.fprintf ppf "canceled"
             | Timeout ->
                 Format.fprintf ppf "timeout"
-            | Tezos_p2p_services.P2p_errors.Rejected {peer; motive} ->
+            | mineplex_p2p_services.P2p_errors.Rejected {peer; motive} ->
                 Format.fprintf
                   ppf
                   "rejected (%a) motive:%a"
@@ -430,7 +430,7 @@ module Garbled = struct
   let is_connection_closed = function
     | Error
         ((Write | Read)
-        :: Tezos_p2p_services.P2p_errors.Connection_closed :: _) ->
+        :: mineplex_p2p_services.P2p_errors.Connection_closed :: _) ->
         true
     | Ok _ ->
         false
@@ -491,19 +491,19 @@ module Overcrowded = struct
     >>= fun () ->
     P2p_connect_handler.connect connect_handler point ~timeout
     >>= function
-    | Error [Tezos_p2p_services.P2p_errors.Connected] -> (
+    | Error [mineplex_p2p_services.P2p_errors.Connected] -> (
       match P2p_pool.Connection.find_by_point pool point with
       | Some conn ->
           return conn
       | None ->
           failwith "Woops..." )
     | Error
-        [ ( ( Tezos_p2p_services.P2p_errors.Connection_refused
-            | Tezos_p2p_services.P2p_errors.Pending_connection
-            | Tezos_p2p_services.P2p_errors.Rejected_socket_connection
+        [ ( ( mineplex_p2p_services.P2p_errors.Connection_refused
+            | mineplex_p2p_services.P2p_errors.Pending_connection
+            | mineplex_p2p_services.P2p_errors.Rejected_socket_connection
             | Canceled
             | Timeout
-            | Tezos_p2p_services.P2p_errors.Rejected _ ) as err ) ] ->
+            | mineplex_p2p_services.P2p_errors.Rejected _ ) as err ) ] ->
         lwt_log_info
           "Connection to%a %a failed (%a)@."
           (Option.pp ~default:"" (fun ppf ->
@@ -514,17 +514,17 @@ module Overcrowded = struct
           point
           (fun ppf err ->
             match err with
-            | Tezos_p2p_services.P2p_errors.Connection_refused ->
+            | mineplex_p2p_services.P2p_errors.Connection_refused ->
                 Format.fprintf ppf "connection refused"
-            | Tezos_p2p_services.P2p_errors.Pending_connection ->
+            | mineplex_p2p_services.P2p_errors.Pending_connection ->
                 Format.fprintf ppf "pending connection"
-            | Tezos_p2p_services.P2p_errors.Rejected_socket_connection ->
+            | mineplex_p2p_services.P2p_errors.Rejected_socket_connection ->
                 Format.fprintf ppf "rejected"
             | Canceled ->
                 Format.fprintf ppf "canceled"
             | Timeout ->
                 Format.fprintf ppf "timeout"
-            | Tezos_p2p_services.P2p_errors.Rejected {peer; motive} ->
+            | mineplex_p2p_services.P2p_errors.Rejected {peer; motive} ->
                 Format.fprintf
                   ppf
                   "rejected (%a) motive:%a"
@@ -572,7 +572,7 @@ module Overcrowded = struct
           (snd target)
         >>= fun () -> P2p_conn.disconnect conn >>= fun () -> return_unit
     | Error
-        [ Tezos_p2p_services.P2p_errors.Rejected_by_nack
+        [ mineplex_p2p_services.P2p_errors.Rejected_by_nack
             {alternative_points = None; _} ] as err ->
         if legacy then
           lwt_log_info
@@ -589,7 +589,7 @@ module Overcrowded = struct
             (snd target)
           >>= fun () -> Lwt.return err
     | Error
-        [ Tezos_p2p_services.P2p_errors.Rejected_by_nack
+        [ mineplex_p2p_services.P2p_errors.Rejected_by_nack
             {alternative_points = Some alternative_points; _} ] ->
         lwt_log_info
           "Good: client is rejected with point list (local: %d, remote: %d) \
@@ -774,19 +774,19 @@ module No_common_network = struct
     >>= fun () ->
     P2p_connect_handler.connect connect_handler point ~timeout
     >>= function
-    | Error [Tezos_p2p_services.P2p_errors.Connected] -> (
+    | Error [mineplex_p2p_services.P2p_errors.Connected] -> (
       match P2p_pool.Connection.find_by_point pool point with
       | Some conn ->
           return conn
       | None ->
           failwith "Woops..." )
     | Error
-        [ ( ( Tezos_p2p_services.P2p_errors.Connection_refused
-            | Tezos_p2p_services.P2p_errors.Pending_connection
-            | Tezos_p2p_services.P2p_errors.Rejected_socket_connection
+        [ ( ( mineplex_p2p_services.P2p_errors.Connection_refused
+            | mineplex_p2p_services.P2p_errors.Pending_connection
+            | mineplex_p2p_services.P2p_errors.Rejected_socket_connection
             | Canceled
             | Timeout
-            | Tezos_p2p_services.P2p_errors.Rejected _ ) as err ) ] ->
+            | mineplex_p2p_services.P2p_errors.Rejected _ ) as err ) ] ->
         lwt_log_info
           "Connection to%a %a failed (%a)@."
           (Option.pp ~default:"" (fun ppf ->
@@ -797,17 +797,17 @@ module No_common_network = struct
           point
           (fun ppf err ->
             match err with
-            | Tezos_p2p_services.P2p_errors.Connection_refused ->
+            | mineplex_p2p_services.P2p_errors.Connection_refused ->
                 Format.fprintf ppf "connection refused"
-            | Tezos_p2p_services.P2p_errors.Pending_connection ->
+            | mineplex_p2p_services.P2p_errors.Pending_connection ->
                 Format.fprintf ppf "pending connection"
-            | Tezos_p2p_services.P2p_errors.Rejected_socket_connection ->
+            | mineplex_p2p_services.P2p_errors.Rejected_socket_connection ->
                 Format.fprintf ppf "rejected"
             | Canceled ->
                 Format.fprintf ppf "canceled"
             | Timeout ->
                 Format.fprintf ppf "timeout"
-            | Tezos_p2p_services.P2p_errors.Rejected {peer; motive} ->
+            | mineplex_p2p_services.P2p_errors.Rejected {peer; motive} ->
                 Format.fprintf
                   ppf
                   "rejected (%a) motive:%a"
@@ -846,7 +846,7 @@ module No_common_network = struct
           "Not good: connection accepted while it should be rejected.@."
         >>= fun () -> P2p_conn.disconnect conn >>= fun () -> return_unit
     | Error
-        [Tezos_p2p_services.P2p_errors.Rejected_no_common_protocol {announced}]
+        [mineplex_p2p_services.P2p_errors.Rejected_no_common_protocol {announced}]
       ->
         lwt_log_info
           "Good: Connection cannot be established,no common network with \
@@ -988,7 +988,7 @@ let main () =
   let points = List.map (fun port -> (!addr, port)) ports in
   Alcotest.run
     ~argv:[|""|]
-    "tezos-p2p"
+    "mineplex-p2p"
     [ ( "p2p-connection-pool",
         [ wrap "simple" (fun _ -> Simple.run points);
           wrap "random" (fun _ ->

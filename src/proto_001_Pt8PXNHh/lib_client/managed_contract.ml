@@ -25,7 +25,7 @@
 open Protocol
 open Alpha_context
 open Protocol_client_context
-open Tezos_micheline
+open mineplex_micheline
 open Client_proto_context
 
 let get_contract_manager (cctxt : #full) contract =

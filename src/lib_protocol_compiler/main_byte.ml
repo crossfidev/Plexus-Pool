@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -25,8 +25,8 @@
 
 let () =
   try
-    Tezos_protocol_compiler.Compiler.main
-      Tezos_protocol_compiler_byte.Byte.driver ;
+    mineplex_protocol_compiler.Compiler.main
+      mineplex_protocol_compiler_byte.Byte.driver ;
     Stdlib.exit 0
   with exn ->
     Format.eprintf "%a\n%!" Errors.report_error exn ;

@@ -1,13 +1,13 @@
 (library
  (name lib)
- (public_name tezos-lwt-result-stdlib.lib)
- (flags (:standard -open Tezos_error_monad))
- (libraries tezos-error-monad
+ (public_name mineplex-lwt-result-stdlib.lib)
+ (flags (:standard -open mineplex_error_monad))
+ (libraries mineplex-error-monad
             lwt
-            tezos-lwt-result-stdlib.sigs
-            tezos-lwt-result-stdlib.functors))
+            mineplex-lwt-result-stdlib.sigs
+            mineplex-lwt-result-stdlib.functors))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

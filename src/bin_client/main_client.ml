@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -31,7 +31,7 @@ end)
 open Client_config
 
 let disable_disclaimer =
-  match Sys.getenv_opt "TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER" with
+  match Sys.getenv_opt "mineplex_CLIENT_UNSAFE_DISABLE_DISCLAIMER" with
   | Some ("yes" | "y" | "YES" | "Y") ->
       true
   | _ ->
@@ -42,10 +42,10 @@ let zeronet () =
     Format.eprintf
       "@[<v 2>@{<warning>@{<title>Warning@}@}@,\
        @,\
-      \               This is @{<warning>NOT@} the Tezos Mainnet.@,\
+      \               This is @{<warning>NOT@} the mineplex Mainnet.@,\
        @,\
       \    The node you are connecting to claims to be running on the@,\
-      \               @{<warning>Tezos Zeronet DEVELOPMENT NETWORK@}.@,\
+      \               @{<warning>mineplex Zeronet DEVELOPMENT NETWORK@}.@,\
       \         Do @{<warning>NOT@} use your fundraiser keys on this network.@,\
        Zeronet is a testing network, with free tokens and frequent resets.@]@\n\
        @."
@@ -55,10 +55,10 @@ let alphanet () =
     Format.eprintf
       "@[<v 2>@{<warning>@{<title>Warning@}@}@,\
        @,\
-      \               This is @{<warning>NOT@} the Tezos Mainnet.@,\
+      \               This is @{<warning>NOT@} the mineplex Mainnet.@,\
        @,\
       \   The node you are connecting to claims to be running on the@,\
-      \             @{<warning>Tezos Alphanet DEVELOPMENT NETWORK.@}@,\
+      \             @{<warning>mineplex Alphanet DEVELOPMENT NETWORK.@}@,\
       \        Do @{<warning>NOT@} use your fundraiser keys on this network.@,\
       \        Alphanet is a testing network, with free tokens.@]@\n\
        @."
@@ -67,10 +67,10 @@ let mainnet () =
   if not disable_disclaimer then
     Format.eprintf
       "@[<v 2>@{<warning>@{<title>Disclaimer@}@}@,\
-       The  Tezos  network  is  a  new  blockchain technology.@,\
+       The  mineplex  network  is  a  new  blockchain technology.@,\
        Users are  solely responsible  for any risks associated@,\
-       with usage of the Tezos network.  Users should do their@,\
-       own  research to determine  if Tezos is the appropriate@,\
+       with usage of the mineplex network.  Users should do their@,\
+       own  research to determine  if mineplex is the appropriate@,\
        platform for their needs and should apply judgement and@,\
        care in their network interactions.@]@\n\
        @."
@@ -81,7 +81,7 @@ let sandbox () =
       "@[<v 2>@{<warning>@{<title>Warning@}@}@,\
        @,\
       \ The node you are connecting to claims to be running in a@,\
-      \                  @{<warning>Tezos TEST SANDBOX@}.@,\
+      \                  @{<warning>mineplex TEST SANDBOX@}.@,\
       \    Do @{<warning>NOT@} use your fundraiser keys on this network.@,\
        You should not see this message if you are not a developer.@]@\n\
        @."
@@ -98,13 +98,13 @@ let check_network ctxt =
       if has_prefix "SANDBOXED" then (
         sandbox () ;
         Lwt.return_some `Sandbox )
-      else if has_prefix "TEZOS_ZERONET" then (
+      else if has_prefix "mineplex_ZERONET" then (
         zeronet () ;
         Lwt.return_some `Zeronet )
-      else if has_prefix "TEZOS_ALPHANET" then (
+      else if has_prefix "mineplex_ALPHANET" then (
         alphanet () ;
         Lwt.return_some `Alphanet )
-      else if has_prefix "TEZOS_BETANET" || has_prefix "TEZOS_MAINNET" then (
+      else if has_prefix "mineplex_BETANET" || has_prefix "mineplex_MAINNET" then (
         mainnet () ;
         Lwt.return_some `Mainnet )
       else Lwt.return_none
@@ -153,7 +153,7 @@ let select_commands ctxt {chain; block; protocol; _} =
   get_commands_for_version ctxt network chain block protocol
   >|=? fun (_, commands_for_version) ->
   Client_rpc_commands.commands
-  @ Tezos_signer_backends_unix.Ledger.commands ()
+  @ mineplex_signer_backends_unix.Ledger.commands ()
   @ Client_keys_commands.commands network
   @ Client_helpers_commands.commands ()
   @ Mockup_commands.commands ()

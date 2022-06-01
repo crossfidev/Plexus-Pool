@@ -1,15 +1,15 @@
 (** This module wraps the type ['kind t] around the notion of
-    tezos-executable: a path to a binary with tezos-specific properties. *)
+    mineplex-executable: a path to a binary with mineplex-specific properties. *)
 
 (** Helper functions to construct exec-style command lines for
-    ["tezos-*"] applications. *)
+    ["mineplex-*"] applications. *)
 module Make_cli : sig
   val flag : string -> string list
   val opt : string -> string -> string list
   val optf : string -> ('a, unit, string, string list) format4 -> 'a
 end
 
-(** Manipulate the ["TEZOS_EVENTS_CONFIG"] environment variable. *)
+(** Manipulate the ["mineplex_EVENTS_CONFIG"] environment variable. *)
 module Unix_files_sink : sig
   type t = private {matches: string list option; level_at_least: string}
 
@@ -25,7 +25,7 @@ type t = private
   ; binary: string option
   ; unix_files_sink: Unix_files_sink.t option
   ; environment: (string * string) list }
-(** The wrapper of the tezos-executable. *)
+(** The wrapper of the mineplex-executable. *)
 
 val make :
      ?binary:string
@@ -33,14 +33,14 @@ val make :
   -> ?environment:(string * string) list
   -> kind
   -> t
-(** Create a ["tezos-node"] executable. *)
+(** Create a ["mineplex-node"] executable. *)
 
 val kind_string : kind -> string
 (** Convert a [kind] to a [string]. *)
 
 val default_binary : t -> string
 (** Get the path/name of the default binary for a given kind, e.g.,
-    ["tezos-admin-client"]. *)
+    ["mineplex-admin-client"]. *)
 
 val get : t -> string
 (** The path to the executable. *)
@@ -51,7 +51,7 @@ val call :
   -> path:string
   -> string list
   -> unit Genspio.EDSL.t
-(** Build a [Genspio.EDSL.t] script to run a tezos command, the
+(** Build a [Genspio.EDSL.t] script to run a mineplex command, the
     [~path] argument is used as a toplevel path for the unix-files
     event-sink (event-logging-framework) and for other local logging
     files. *)
@@ -62,6 +62,6 @@ val cli_term :
   -> kind
   -> string
   -> t Cmdliner.Term.t
-(** Build a [Cmdliner] term which creates tezos-executables, the
-    second argument is a prefix of option names (e.g. ["tezos"] for the
-    option ["--tezos-accuser-alpha-binary"]). *)
+(** Build a [Cmdliner] term which creates mineplex-executables, the
+    second argument is a prefix of option names (e.g. ["mineplex"] for the
+    option ["--mineplex-accuser-alpha-binary"]). *)

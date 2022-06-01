@@ -13,12 +13,12 @@ Code organization
 
 It contains the following python packages.
 
-- ``daemons`` defines classes to run Tezos node and daemons,
+- ``daemons`` defines classes to run mineplex node and daemons,
 - ``client`` mainly defines the ``Client`` class, that provides a programmatic interface to a client,
-- ``codec`` defines a `Codec`` class, that provides a interface for `tezos-codec` binary,
+- ``codec`` defines a `Codec`` class, that provides a interface for `mineplex-codec` binary,
 - ``launcher`` defines classes used to launch a nodes and daemons with specific settings,
 - ``tools`` contains utility functions and constants shared by the tests,
-- ``examples`` contains example of tests and scripts that run scenarios of interactions between tezos nodes and clients,
+- ``examples`` contains example of tests and scripts that run scenarios of interactions between mineplex nodes and clients,
 - ``tests`` contains ``pytest`` tests,
 - ``scripts`` contains utility scripts.
 
@@ -33,9 +33,9 @@ Installation
 
 Prerequisites:
 
-- A working environment (see `documentation <http://tezos.gitlab.io/introduction/howtoget.html#environment>`_) with the binaries compiled,
+- A working environment (see `documentation <http://mineplex.gitlab.io/introduction/howtoget.html#environment>`_) with the binaries compiled,
 - ``python`` (version 3.7),
-- A local copy of the tezos `repository <https://gitlab.com/tezos/tezos>`_
+- A local copy of the mineplex `repository <https://gitlab.com/mineplex/mineplex>`_
 - the ``pip`` package manager.
 
 On some systems (e.g. Mac OS X), several versions of ``python`` coexist. You need to explicitly
@@ -45,7 +45,7 @@ Python packages can be installed with
 
 ::
 
-    cd PATH_TO_YOUR_TEZOS_DIR/tests_python
+    cd PATH_TO_YOUR_mineplex_DIR/tests_python
     pip3 install -r requirements.txt
 
 Examples of test executions:
@@ -78,15 +78,15 @@ a transfer operation.
 
 
     def scenario():
-        """ a private tezos network, initialized with network parameters
+        """ a private mineplex network, initialized with network parameters
             and some accounts. """
-        with Sandbox(paths.TEZOS_HOME,
+        with Sandbox(paths.mineplex_HOME,
                     constants.IDENTITIES,
                     constants.GENESIS_PK) as sandbox:
             # Launch node running protocol Alpha
             sandbox.add_node(0)
             utils.activate_alpha(sandbox.client(0))
-            # Launch a second node on the same private tezos network
+            # Launch a second node on the same private mineplex network
             sandbox.add_node(1)
             # Launch a baker associated to node 0, baking on behalf of delegate
             # bootstrap5
@@ -111,11 +111,11 @@ This can be run with ``python3 examples/example.py``. It should display all the
 clients commands and their results.
 
 The ``sandbox`` object allows users to add nodes, bakers or endorsers
-running in tezos sandboxed mode. Whenever a node has been added, one can
+running in mineplex sandboxed mode. Whenever a node has been added, one can
 access it using a client object.
 
-The client object is a wrapper on the ``tezos-client`` command. It runs
-``tezos-client`` with "administrative" parameters, plus the parameters determined
+The client object is a wrapper on the ``mineplex-client`` command. It runs
+``mineplex-client`` with "administrative" parameters, plus the parameters determined
 by the  method called by the user.
 
 For instance
@@ -128,10 +128,10 @@ will run something like
 
 ::
 
-    tezos-client -base-dir /tmp/tezos-client.be22ya16 -addr 127.0.0.1 -port 18730 transfer 500 from bootstrap1 to bootstrap3
+    mineplex-client -base-dir /tmp/mineplex-client.be22ya16 -addr 127.0.0.1 -port 18730 transfer 500 from bootstrap1 to bootstrap3
 
 ``receipt`` is an object of type ``client_output.TransferResult`` which gives
-access to some data of the ``tezos-client`` output.
+access to some data of the ``mineplex-client`` output.
 
 Alternatively, one can always construct the command manually:
 
@@ -161,7 +161,7 @@ Tests are located in the ``tests`` directory and rely on the ``pytest`` library.
 
 Tests are divided into modules, and are furthermore subdivided into classes.
 A class defines a full testing scenario. A typical scenario is a sequence of
-client commands and assertions, operating on a set of Tezos nodes running in
+client commands and assertions, operating on a set of mineplex nodes running in
 a private network (a.k.a *sandbox* mode).
 
 Running tests
@@ -251,7 +251,7 @@ The following ``test_example.py`` is the ``pytest`` counterpart of the first exa
     @pytest.fixture(scope="class")
     def sandbox():
         """Example of sandbox fixture."""
-        with Sandbox(paths.TEZOS_HOME,
+        with Sandbox(paths.mineplex_HOME,
                      constants.IDENTITIES,
                      constants.GENESIS_PK) as sandbox:
             sandbox.add_node(0, params=constants.NODE_PARAMS)
@@ -346,7 +346,7 @@ Adding a test
 - use the proper tags,
 - say briefly what the test is supposed to test in the class docstring,
 - *Run the linters* and typechecker `make lint_all`, and `make typecheck`
-  in `tests_python/`, or simple `make test-python-lint` from the Tezos home
+  in `tests_python/`, or simple `make test-python-lint` from the mineplex home
   directory. Note that linting and typechecking are enforced by the CI
   in the build stage.
 - If you modify the API (launchers or daemons), make sure you maintain the
@@ -358,15 +358,15 @@ Testing on a production branch (``zeronet``, ``mainnet``,...)
 
 On ``master``, protocol Alpha is named
 ``ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK``, and daemons binary
-name are suffixed with ``alpha`` (``tezos-baker-alpha``,
-``tezos-endorser-alpha``...). However, on *production* branches, an actual
+name are suffixed with ``alpha`` (``mineplex-baker-alpha``,
+``mineplex-endorser-alpha``...). However, on *production* branches, an actual
 hash of the protocol is used, and a shortened string is used to specify
 daemons.
 
 For instance, on revision ``816625bed0983f7201e4c369440a910f006beb1a`` of
 zeronet, protocol Alpha is named
 ``PsddFKi32cMJ2qPjf43Qv5GDWLDPZb3T3bF6fLKiF5HtvHNU7aP`` and daemons are
-suffixed by ``003-PsddFKi3`` (``tezos-baker-003-PsddFKi3``).
+suffixed by ``003-PsddFKi3`` (``mineplex-baker-003-PsddFKi3``).
 
 To reduce coupling between tests and the actual branch to be tested, tests
 refer to protocol Alpha using ``constants.ALPHA`` and
@@ -390,7 +390,7 @@ be selected according to the map.
 Tests using specific revisions are in ``tests/multibranch`` and aren't run by
 default. They are not regression tests and are usually launched separately
 from the rest of the tests. To run these tests, you need to set up the
-``TEZOS_BINARIES`` environment variable to a directory that contains the
+``mineplex_BINARIES`` environment variable to a directory that contains the
 binaries for all revisions needed by test (see below). The tests will be
 skipped if this variable isn't set, and fail if the binaries aren't
 available.
@@ -410,32 +410,32 @@ of zeronet:
     A = b8de4297db6a681eb13343d2773c6840969a5537
     B = 816625bed0983f7201e4c369440a910f006beb1a
 
-    TEZOS_HOME=~/tezos  # TEZOS repo, read-only access from the script
-    TEZOS_BINARIES=~/tezos-binaries  # where the binaries will be stored
-    TEZOS_BUILD=~/tmp/tezos_tmp  # where the binaries will be built
+    mineplex_HOME=~/mineplex  # mineplex repo, read-only access from the script
+    mineplex_BINARIES=~/mineplex-binaries  # where the binaries will be stored
+    mineplex_BUILD=~/tmp/mineplex_tmp  # where the binaries will be built
 
 The following command will generate binaries for each of the specified
-branches in ``TEZOS_BINARIES``.
+branches in ``mineplex_BINARIES``.
 
 ::
 
-    scripts/build_branches.py --clone $TEZOS_HOME --build-dir $TEZOS_BUILD \
-                            --bin-dir $TEZOS_BINARIES \
+    scripts/build_branches.py --clone $mineplex_HOME --build-dir $mineplex_BUILD \
+                            --bin-dir $mineplex_BINARIES \
                             b8de4297db6a681eb13343d2773c6840969a5537 \
                             816625bed0983f7201e4c369440a910f006beb1a
 
-    > ls $TEZOS_BINARIES *
+    > ls $mineplex_BINARIES *
     816625bed0983f7201e4c369440a910f006beb1a:
-    tezos-accuser-003-PsddFKi3  tezos-baker-004-Pt24m4xi    tezos-node
-    tezos-accuser-004-Pt24m4xi  tezos-client                tezos-protocol-compiler
-    tezos-admin-client          tezos-endorser-003-PsddFKi3 tezos-signer
-    tezos-baker-003-PsddFKi3    tezos-endorser-004-Pt24m4xi
+    mineplex-accuser-003-PsddFKi3  mineplex-baker-004-Pt24m4xi    mineplex-node
+    mineplex-accuser-004-Pt24m4xi  mineplex-client                mineplex-protocol-compiler
+    mineplex-admin-client          mineplex-endorser-003-PsddFKi3 mineplex-signer
+    mineplex-baker-003-PsddFKi3    mineplex-endorser-004-Pt24m4xi
 
     b8de4297db6a681eb13343d2773c6840969a5537:
-    tezos-accuser-003-PsddFKi3  tezos-baker-004-Pt24m4xi    tezos-node
-    tezos-accuser-004-Pt24m4xi  tezos-client                tezos-protocol-compiler
-    tezos-admin-client          tezos-endorser-003-PsddFKi3 tezos-signer
-    tezos-baker-003-PsddFKi3    tezos-endorser-004-Pt24m4xi
+    mineplex-accuser-003-PsddFKi3  mineplex-baker-004-Pt24m4xi    mineplex-node
+    mineplex-accuser-004-Pt24m4xi  mineplex-client                mineplex-protocol-compiler
+    mineplex-admin-client          mineplex-endorser-003-PsddFKi3 mineplex-signer
+    mineplex-baker-003-PsddFKi3    mineplex-endorser-004-Pt24m4xi
 
 
 Note: One can specify a branch instead of a revision but this is error-prone.
@@ -481,12 +481,12 @@ protocols implemented by this specific revision,
     ALPHA = 'PsddFKi32cMJ2qPjf43Qv5GDWLDPZb3T3bF6fLKiF5HtvHNU7aP'
     NEW_PROTO = 'Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd'
 
-as well the corresponding bakers ``tezos-baker-003-PsddFKi3`` ``tezos-baker-004-Pt24m4xi``.
+as well the corresponding bakers ``mineplex-baker-003-PsddFKi3`` ``mineplex-baker-004-Pt24m4xi``.
 
 ::
 
-    scripts/build_branches.py --clone $TEZOS_HOME --build-dir $TEZOS_BUILD \
-        --bin-dir $TEZOS_BINARIES \ b8de4297db6a681eb13343d2773c6840969a5537
+    scripts/build_branches.py --clone $mineplex_HOME --build-dir $mineplex_BUILD \
+        --bin-dir $mineplex_BINARIES \ b8de4297db6a681eb13343d2773c6840969a5537
 
 It can be run with
 
@@ -513,7 +513,7 @@ match. We apply regression testing using the `pytest-regtest
 
 To simplify the writing of regression tests, we provide a
 specialized version of the ``client`` fixture, ``client_regtest``. It
-registers all output of the ``tezos-client``.
+registers all output of the ``mineplex-client``.
 
 Output conversion
 ~~~~~~~~~~~~~~~~~
@@ -547,13 +547,13 @@ that they are as expected.
 Writing regression tests
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-To write regression tests targeting the ``tezos-client``, write a test
+To write regression tests targeting the ``mineplex-client``, write a test
 as usual, but request the ``client_regtest`` (or
 ``client_regtest_scrubbed`` to enable output conversion) fixture
 instead of the ``client`` fixture.
 
 In this example test, we test the output of the `hash data` command of
-`tezos-client`:
+`mineplex-client`:
 
 .. code-block:: python
 
@@ -587,7 +587,7 @@ We find the generated test log in ``tests_python/tests/_regtest_outputs/test_reg
     Gas remaining: 799862 units remaining
 
 This is exactly the output of the command that was executed by the
-test, namely ``tezos-client hash data '(Pair 1 "foo")' of type '(pair
+test, namely ``mineplex-client hash data '(Pair 1 "foo")' of type '(pair
 nat string)'``.
 
 As discussed below in the section :ref:`Pitfalls to regression testing

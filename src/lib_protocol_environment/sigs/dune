@@ -1,7 +1,7 @@
 (include v0.dune.inc)
 
 (library
- (name tezos_protocol_environment_sigs)
- (public_name tezos-protocol-environment-sigs)
+ (name mineplex_protocol_environment_sigs)
+ (public_name mineplex-protocol-environment-sigs)
  (flags (:standard -nopervasives ))
  (modules ("V0")))

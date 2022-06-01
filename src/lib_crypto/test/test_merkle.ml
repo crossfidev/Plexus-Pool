@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -91,4 +91,4 @@ let test_path _ = List.iter check_path (0 -- 128)
 
 let tests = [("compute", `Quick, test_compute); ("path", `Quick, test_path)]
 
-let () = Alcotest.run "tezos-crypto" [("merkle", tests)]
+let () = Alcotest.run "mineplex-crypto" [("merkle", tests)]

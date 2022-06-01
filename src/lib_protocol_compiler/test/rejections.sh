@@ -12,8 +12,8 @@ the protocol compiler.
 Example:
 
     bash src/lib_protocol_compiler/test/rejections.sh \\
-         ./tezos-protocol-compiler \\
-         src/proto_demo_noops/lib_protocol/TEZOS_PROTOCOL
+         ./mineplex-protocol-compiler \\
+         src/proto_demo_noops/lib_protocol/mineplex_PROTOCOL
 EOF
 }
 say () {
@@ -102,7 +102,7 @@ EOF
 cat > "$with_weird_ends/closing.ml" <<EOF
 let x = 42
 EOF
-sed 's/"Main"/"Main", "Weird", "Closing"/' "$base_protocol" > "$with_weird_ends/TEZOS_PROTOCOL"
+sed 's/"Main"/"Main", "Weird", "Closing"/' "$base_protocol" > "$with_weird_ends/mineplex_PROTOCOL"
 
 { try_compile "$with_weird_ends/" && should_fail "with-weird-ends" ; } \
     || say "With weird ends: 👍"

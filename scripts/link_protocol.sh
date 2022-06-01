@@ -17,7 +17,7 @@ fi
 
 new_version=$(basename $1 | awk -F'_' '{print $2}')
 new_hash=$(basename $1 | awk -F'_' '{print $3}')
-full_hash=$(jq .hash < $1/lib_protocol/TEZOS_PROTOCOL)
+full_hash=$(jq .hash < $1/lib_protocol/mineplex_PROTOCOL)
 replacement=${new_version}-${new_hash}
 if [[ -z "${new_version}" || -z "${new_hash}" || -z "${full_hash}" ]] ; then
     echo "$usage"

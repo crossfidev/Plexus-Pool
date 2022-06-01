@@ -1,2 +1,2 @@
 (lang dune 1.11)
-(name tezos-embedded-protocol-genesis-carthagenet)
+(name mineplex-embedded-protocol-genesis-carthagenet)

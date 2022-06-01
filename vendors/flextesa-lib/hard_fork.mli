@@ -15,9 +15,9 @@ type t = private
   { level: int
   ; protocol_hash: string
   ; name: string
-  ; baker: Tezos_executable.t
-  ; endorser: Tezos_executable.t
-  ; accuser: Tezos_executable.t }
+  ; baker: mineplex_executable.t
+  ; endorser: mineplex_executable.t
+  ; accuser: mineplex_executable.t }
 
 val cmdliner_term :
      < manpager: Manpage_builder.State.t ; .. >
@@ -29,7 +29,7 @@ val cmdliner_term :
     of ["--<prefix>*"] command-line options allowing to configure a
     user-activated-upgrade. *)
 
-val executables : t -> Tezos_executable.t list
+val executables : t -> mineplex_executable.t list
 (** Get all the protocol-specific executable definitions (the “daemons”) involved in
     this hard-fork. *)
 
@@ -39,8 +39,8 @@ val node_network_config : t -> string * [> Ezjsonm.t]
 
 val keyed_daemons :
      t
-  -> client:Tezos_client.t
+  -> client:mineplex_client.t
   -> key:string
-  -> node:Tezos_node.t
-  -> Tezos_daemon.t list
+  -> node:mineplex_node.t
+  -> mineplex_daemon.t list
 (** Prepare the baker and endorse daemons to secure the hard-fork. *)

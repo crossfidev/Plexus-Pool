@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Tezos documentation build configuration file, created by
+# mineplex documentation build configuration file, created by
 # sphinx-quickstart on Wed Jan 17 18:04:32 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -34,7 +34,7 @@ sys.path.insert(0, os.path.abspath('.') + '/_extensions')
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.extlinks', 'tezos_custom_roles', 'michelsonlexer']
+extensions = ['sphinx.ext.extlinks', 'mineplex_custom_roles', 'michelsonlexer']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Tezos'
+project = 'mineplex'
 copyright = '2018, Nomadic Labs <contact@nomadic-labs.com>'
 author = 'Nomadic Labs <contact@nomadic-labs.com>'
 
@@ -124,7 +124,7 @@ html_css_files = [
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Tezosdoc'
+htmlhelp_basename = 'mineplexdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -151,7 +151,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Tezos.tex', 'Tezos Documentation',
+    (master_doc, 'mineplex.tex', 'mineplex Documentation',
      'Nomadic Labs \\textless{}contact@nomadic-labs.com\\textgreater{}', 'manual'),
 ]
 
@@ -161,7 +161,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'tezos', 'Tezos Documentation',
+    (master_doc, 'mineplex', 'mineplex Documentation',
      [author], 1)
 ]
 
@@ -172,8 +172,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Tezos', 'Tezos Documentation',
-     author, 'Tezos', 'One line description of project.',
+    (master_doc, 'mineplex', 'mineplex Documentation',
+     author, 'mineplex', 'One line description of project.',
      'Miscellaneous'),
 ]
 

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -542,7 +542,7 @@ let may_patch_limits (type kind) (cctxt : #Protocol_client_context.full)
         let size =
           if first then
             Data_encoding.Binary.fixed_length_exn
-              Tezos_base.Operation.shell_header_encoding
+              mineplex_base.Operation.shell_header_encoding
             + Data_encoding.Binary.length
                 Operation.contents_encoding
                 (Contents op)
@@ -684,7 +684,7 @@ let may_patch_limits (type kind) (cctxt : #Protocol_client_context.full)
 let inject_operation (type kind) cctxt ~chain ~block ?confirmations
     ?(dry_run = false) ?branch ?src_sk ?verbose_signing ~fee_parameter
     ?compute_fee (contents : kind contents_list) =
-  Tezos_client_base.Client_confirmations.wait_for_bootstrapped cctxt
+  mineplex_client_base.Client_confirmations.wait_for_bootstrapped cctxt
   >>=? fun () ->
   may_patch_limits
     cctxt
@@ -744,7 +744,7 @@ let inject_operation (type kind) cctxt ~chain ~block ?confirmations
         cctxt#message
           "@[<v 0>NOT waiting for the operation to be included.@,\
            Use command@,\
-          \  tezos-client wait for %a to be included --confirmations 30 \
+          \  mineplex-client wait for %a to be included --confirmations 30 \
            --branch %a@,\
            and/or an external block explorer to make sure that it has been \
            included.@]"
@@ -806,7 +806,7 @@ let inject_operation (type kind) cctxt ~chain ~block ?confirmations
             "@[<v 0>The operation has only been included %d blocks ago.@,\
              We recommend to wait more.@,\
              Use command@,\
-            \  tezos-client wait for %a to be included --confirmations 30 \
+            \  mineplex-client wait for %a to be included --confirmations 30 \
              --branch %a@,\
              and/or an external block explorer.@]"
             number

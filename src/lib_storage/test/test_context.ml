@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -118,7 +118,7 @@ type t = {
 }
 
 let wrap_context_init f _ () =
-  Lwt_utils_unix.with_tempdir "tezos_test_" (fun base_dir ->
+  Lwt_utils_unix.with_tempdir "mineplex_test_" (fun base_dir ->
       let root = base_dir // "context" in
       Context.init ~mapsize:4_096_000L root
       >>= fun idx ->
@@ -280,10 +280,10 @@ let test_fold {idx; genesis; _} =
       Lwt.return_unit
 
 let test_dump {idx; block3b; _} =
-  Lwt_utils_unix.with_tempdir "tezos_test_" (fun base_dir2 ->
+  Lwt_utils_unix.with_tempdir "mineplex_test_" (fun base_dir2 ->
       let dumpfile = base_dir2 // "dump" in
       let ctxt_hash = block3b in
-      let history_mode = Tezos_shell_services.History_mode.Full in
+      let history_mode = mineplex_shell_services.History_mode.Full in
       let empty_block_header context =
         Block_header.
           {

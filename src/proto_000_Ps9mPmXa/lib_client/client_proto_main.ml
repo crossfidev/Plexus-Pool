@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -36,7 +36,7 @@ let bake cctxt ?timestamp block command sk =
     | Some t ->
         t
     | None ->
-        Time.System.(to_protocol (Tezos_stdlib_unix.Systime_os.now ()))
+        Time.System.(to_protocol (mineplex_stdlib_unix.Systime_os.now ()))
   in
   let protocol_data = {command; signature = Signature.zero} in
   Genesis_block_services.Helpers.Preapply.block
@@ -135,7 +135,7 @@ let commands () =
            param_json_file
            (cctxt : Client_context.full) ->
         let fitness = fitness_from_int64 fitness in
-        Tezos_stdlib_unix.Lwt_utils_unix.Json.read_file param_json_file
+        mineplex_stdlib_unix.Lwt_utils_unix.Json.read_file param_json_file
         >>=? fun json ->
         let protocol_parameters =
           Data_encoding.Binary.to_bytes_exn Data_encoding.json json

@@ -1,8 +1,8 @@
 (executables
  (names test_parser)
- (libraries tezos-micheline
+ (libraries mineplex-micheline
             alcotest-lwt)
- (flags (:standard -open Tezos_micheline)))
+ (flags (:standard -open mineplex_micheline)))
 
 (alias
   (name buildtest)
@@ -14,10 +14,10 @@
 
 (alias
   (name runtest)
-  (package tezos-micheline)
+  (package mineplex-micheline)
   (deps (alias runtest_micheline_parser)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

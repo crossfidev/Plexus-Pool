@@ -1,52 +1,52 @@
 (library
- (name tezos_client_alpha_commands)
- (public_name tezos-client-alpha-commands)
- (libraries tezos-base
-            tezos-stdlib-unix
-            tezos-protocol-alpha
-            tezos-protocol-environment
-            tezos-shell-services
-            tezos-mockup
-            tezos-mockup-registration
-            tezos-mockup-commands
-            tezos-client-alpha
-            tezos-client-commands
-            tezos-rpc)
+ (name mineplex_client_alpha_commands)
+ (public_name mineplex-client-alpha-commands)
+ (libraries mineplex-base
+            mineplex-stdlib-unix
+            mineplex-protocol-alpha
+            mineplex-protocol-environment
+            mineplex-shell-services
+            mineplex-mockup
+            mineplex-mockup-registration
+            mineplex-mockup-commands
+            mineplex-client-alpha
+            mineplex-client-commands
+            mineplex-rpc)
  (library_flags (:standard -linkall))
  (modules (:standard \ alpha_commands_registration))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_alpha
-                   -open Tezos_stdlib_unix
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_client_alpha
-                   -open Tezos_client_commands
-                   -open Tezos_rpc)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_alpha
+                   -open mineplex_stdlib_unix
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_client_alpha
+                   -open mineplex_client_commands
+                   -open mineplex_rpc)))
 
 (library
- (name tezos_client_alpha_commands_registration)
- (public_name tezos-client-alpha-commands.registration)
- (libraries tezos-base
-            tezos-protocol-alpha
-            tezos-protocol-environment
-            tezos-shell-services
-            tezos-client-base
-            tezos-client-alpha
-            tezos-client-commands
-            tezos-client-alpha-commands
-            tezos-rpc)
+ (name mineplex_client_alpha_commands_registration)
+ (public_name mineplex-client-alpha-commands.registration)
+ (libraries mineplex-base
+            mineplex-protocol-alpha
+            mineplex-protocol-environment
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-client-alpha
+            mineplex-client-commands
+            mineplex-client-alpha-commands
+            mineplex-rpc)
  (library_flags (:standard -linkall))
  (modules alpha_commands_registration)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_alpha
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_client_alpha
-                   -open Tezos_client_commands
-                   -open Tezos_client_alpha_commands
-                   -open Tezos_rpc)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_alpha
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_client_alpha
+                   -open mineplex_client_commands
+                   -open mineplex_client_alpha_commands
+                   -open mineplex_rpc)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

@@ -1,23 +1,23 @@
 (library
- (name tezos_client_alpha)
- (public_name tezos-client-alpha)
- (libraries tezos-base
-            tezos-protocol-alpha
-            tezos-shell-services
-            tezos-client-base
-            tezos-mockup-registration
-            tezos-rpc
-            tezos-signer-backends
-            tezos-protocol-alpha-parameters)
+ (name mineplex_client_alpha)
+ (public_name mineplex-client-alpha)
+ (libraries mineplex-base
+            mineplex-protocol-alpha
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-mockup-registration
+            mineplex-rpc
+            mineplex-signer-backends
+            mineplex-protocol-alpha-parameters)
  (library_flags (:standard -linkall))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_protocol_alpha
-                   -open Tezos_protocol_alpha_parameters
-                   -open Tezos_rpc)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_protocol_alpha
+                   -open mineplex_protocol_alpha_parameters
+                   -open mineplex_rpc)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

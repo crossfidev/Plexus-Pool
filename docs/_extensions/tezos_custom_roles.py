@@ -27,7 +27,7 @@ def package_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
       lib = text
     src = find_dot_opam(lib)
     branch = os.environ.get('CI_COMMIT_REF_NAME', 'master')
-    project_url = os.environ.get('CI_PROJECT_URL', 'https://gitlab.com/tezos/tezos')
+    project_url = os.environ.get('CI_PROJECT_URL', 'https://gitlab.com/mineplex/mineplex')
     src_url = project_url + "/tree/" + branch + "/" + src
     if os.path.isdir('_build/api/odoc/_html/'+lib):
       if os.path.isdir(os.path.join('_build','api','odoc','_html',lib,lib.replace('-','_').capitalize())):
@@ -71,7 +71,7 @@ def src_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
       src = text
       text = text
     branch = os.environ.get('CI_COMMIT_REF_NAME', 'master')
-    project_url = os.environ.get('CI_PROJECT_URL', 'https://gitlab.com/tezos/tezos')
+    project_url = os.environ.get('CI_PROJECT_URL', 'https://gitlab.com/mineplex/mineplex')
     url = project_url + "/tree/" + branch + "/" + src
     node = nodes.reference(rawtext, text, refuri=url, **options)
     return [node], []

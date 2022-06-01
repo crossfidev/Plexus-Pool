@@ -1,24 +1,24 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-protocol-environment"
-  "tezos-protocol-002-Pt4xzupC"
-  "tezos-shell-services"
-  "tezos-client-base"
-  "tezos-client-commands"
-  "tezos-client-002-Pt4xzupC"
-  "tezos-baking-002-Pt4xzupC"
+  "mineplex-base"
+  "mineplex-protocol-environment"
+  "mineplex-protocol-002-Pt4xzupC"
+  "mineplex-shell-services"
+  "mineplex-client-base"
+  "mineplex-client-commands"
+  "mineplex-client-002-Pt4xzupC"
+  "mineplex-baking-002-Pt4xzupC"
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos/Protocol: protocol-specific commands for `tezos-accuser`"
+synopsis: "mineplex/Protocol: protocol-specific commands for `mineplex-accuser`"

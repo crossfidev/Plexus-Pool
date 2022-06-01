@@ -22,7 +22,7 @@
 
 (** List helpers *)
 
-(* TEZOS CHANGES
+(* mineplex CHANGES
 
    * import version 2.4.5
    * Remove iter/iteri

@@ -23,20 +23,20 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Spawn Tezos nodes and control them. *)
+(** Spawn mineplex nodes and control them. *)
 
 (** Convention: in this module, some functions implement node commands;
     those functions are named after those commands.
-    For instance, [Node.config_init] corresponds to [tezos-node config init],
-    and [Node.run] corresponds to [tezos-node run].
+    For instance, [Node.config_init] corresponds to [mineplex-node config init],
+    and [Node.run] corresponds to [mineplex-node run].
 
     The arguments of those functions are also named after the actual arguments.
     For instance, [?network] is named after [--network], to make
     [Node.config_init ~network:"carthagenet"] look as close as possible
-    to [tezos-node config init --network carthagenet].
+    to [mineplex-node config init --network carthagenet].
 
     Most options have default values which are not necessarily the default values
-    of [tezos-node]. Indeed, the latter are tailored for Mainnet, but here we
+    of [mineplex-node]. Indeed, the latter are tailored for Mainnet, but here we
     use defaults which are tailored for the sandbox. In particular, the default
     value for [?network] is ["sandbox"].
     However, if you specify an option such as [~network] or [~history_mode],
@@ -44,7 +44,7 @@
 
     These conventions are also followed in the [Client] module. *)
 
-(** Tezos node states. *)
+(** mineplex node states. *)
 type t
 
 (** Create a node.
@@ -92,7 +92,7 @@ val terminate : t -> unit Lwt.t
 
 (** {2 Commands} *)
 
-(** Run [tezos-node identity generate]. *)
+(** Run [mineplex-node identity generate]. *)
 val identity_generate : ?expected_pow:int -> t -> unit Lwt.t
 
 (** Same as [identity_generate], but do not wait for the process to exit. *)
@@ -106,7 +106,7 @@ type history_mode = Archive | Full | Rolling
     The result is suitable to be passed to the node on the command-line. *)
 val show_history_mode : history_mode -> string
 
-(** Run [tezos-node config init].
+(** Run [mineplex-node config init].
 
     [net_port] and [rpc_port] can be used to override the port
     which was chosen by [create]. They will change
@@ -128,7 +128,7 @@ val spawn_config_init :
   t ->
   Process.t
 
-(** Spawn [tezos-node run]. *)
+(** Spawn [mineplex-node run]. *)
 val run :
   ?expected_pow:int ->
   ?single_process:bool ->

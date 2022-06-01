@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs <contact@nomadic-labs.com>                *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -26,7 +26,7 @@
 
 open Protocol
 open Alpha_context
-open Tezos_micheline
+open mineplex_micheline
 open Client_proto_context
 open Client_proto_contracts
 open Client_proto_programs
@@ -1160,7 +1160,7 @@ let commands version () =
                     protect (fun () ->
                         return
                           (Blinded_public_key_hash.activation_code_of_hex code))))
-               ~desc:"Activation code obtained from the Tezos foundation."
+               ~desc:"Activation code obtained from the mineplex foundation."
           @@ stop )
           (fun dry_run (name, _pkh) code cctxt ->
             activate_existing_account
@@ -1323,7 +1323,7 @@ let commands version () =
               (* for a proposal to be valid it must either a protocol that was already
            proposed by somebody else or a protocol known by the node, because
            the user is the first proposer and just injected it with
-           tezos-admin-client *)
+           mineplex-admin-client *)
               let check_proposals proposals : bool tzresult Lwt.t =
                 let n = List.length proposals in
                 let errors = ref [] in

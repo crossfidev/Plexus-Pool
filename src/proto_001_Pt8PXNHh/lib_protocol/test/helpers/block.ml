@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -33,7 +33,7 @@ type t = {
   hash : Block_hash.t;
   header : Block_header.t;
   operations : Operation.packed list;
-  context : Tezos_protocol_environment.Context.t;
+  context : mineplex_protocol_environment.Context.t;
 }
 
 type block = t
@@ -146,7 +146,7 @@ module Forge = struct
     Block_header.{priority; proof_of_work_nonce; seed_nonce_hash}
 
   let make_shell ~level ~predecessor ~timestamp ~fitness ~operations_hash =
-    Tezos_base.Block_header.
+    mineplex_base.Block_header.
       {
         level;
         predecessor;
@@ -246,7 +246,7 @@ let check_constants_consistency constants =
 
 let initial_context ?(with_commitments = false) constants header
     initial_accounts =
-  let open Tezos_protocol_001_Pt8PXNHh_parameters in
+  let open mineplex_protocol_001_Pt8PXNHh_parameters in
   let bootstrap_accounts =
     List.map
       (fun (Account.{pk; pkh; _}, amount) ->
@@ -263,7 +263,7 @@ let initial_context ?(with_commitments = false) constants header
   let proto_params =
     Data_encoding.Binary.to_bytes_exn Data_encoding.json json
   in
-  Tezos_protocol_environment.Context.(
+  mineplex_protocol_environment.Context.(
     let empty = Memory_context.empty in
     set empty ["version"] (Bytes.of_string "genesis")
     >>= fun ctxt -> set ctxt protocol_param_key proto_params)
@@ -285,12 +285,12 @@ let genesis_with_parameters parameters =
       ~operations_hash:Operation_list_list_hash.zero
   in
   let contents = Forge.make_contents ~priority:0 ~seed_nonce_hash:None () in
-  let open Tezos_protocol_001_Pt8PXNHh_parameters in
+  let open mineplex_protocol_001_Pt8PXNHh_parameters in
   let json = Default_parameters.json_of_parameters parameters in
   let proto_params =
     Data_encoding.Binary.to_bytes_exn Data_encoding.json json
   in
-  Tezos_protocol_environment.Context.(
+  mineplex_protocol_environment.Context.(
     let empty = Memory_context.empty in
     set empty ["version"] (Bytes.of_string "genesis")
     >>= fun ctxt -> set ctxt protocol_param_key proto_params)
@@ -313,7 +313,7 @@ let genesis ?with_commitments ?endorsers_per_block ?initial_endorsers
     ?min_proposal_quorum (initial_accounts : (Account.t * Tez_repr.t) list) =
   if initial_accounts = [] then
     Stdlib.failwith "Must have one account with a roll to bake" ;
-  let open Tezos_protocol_001_Pt8PXNHh_parameters in
+  let open mineplex_protocol_001_Pt8PXNHh_parameters in
   let constants = Default_parameters.constants_test in
   let endorsers_per_block =
     Option.value ~default:constants.endorsers_per_block endorsers_per_block

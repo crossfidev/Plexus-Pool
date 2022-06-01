@@ -67,10 +67,10 @@ If compiling from source, please pull the latest code from the mainnet
 branch. From a clone of the git repository, a minimal update command
 is ``git checkout mainnet && git pull && eval $(opam env) && make
 build-deps && make``.
-Tezos binaries (node, client, baker, endorser, etc) should not be
+mineplex binaries (node, client, baker, endorser, etc) should not be
 running while you re-compile.
 If using the script ``mainnet.sh`` based on docker provided at
-https://gitlab.com/tezos/tezos, simply do ``./mainnet.sh restart`` as
+https://gitlab.com/mineplex/mineplex, simply do ``./mainnet.sh restart`` as
 every call to mainnet.sh checks for updates and updates if necessary.
 
 The node will automatically switch over to the new protocol at block
@@ -173,7 +173,7 @@ Hence an operation without fee won't even propagate through
 the network. The constant can be changed with the following RPC
 call::
 
-   ./tezos-client rpc post /chains/main/mempool/filter with '{ "minimal_fees": "0", "minimal_nanotez_per_gas_unit": "0", "minimal_nanotez_per_byte": "0" }'
+   ./mineplex-client rpc post /chains/main/mempool/filter with '{ "minimal_fees": "0", "minimal_nanotez_per_gas_unit": "0", "minimal_nanotez_per_byte": "0" }'
 
 The constants used by the node and the baker do not need to be equal,
 but the node needs to be less restrictive than the baker, otherwise

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019-2020 Nomadic Labs, <contact@nomadic-labs.com>          *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -45,7 +45,7 @@ let id0 =
 let version =
   {
     Network_version.chain_name =
-      Distributed_db_version.Name.of_string "SANDBOXED_TEZOS";
+      Distributed_db_version.Name.of_string "SANDBOXED_mineplex";
     distributed_db_version = Distributed_db_version.zero;
     p2p_version = P2p_version.zero;
   }
@@ -175,7 +175,7 @@ let connect sched addr port id =
   >>=? fun () -> return auth_fd
 
 let is_connection_closed = function
-  | Error (Tezos_p2p_services.P2p_errors.Connection_closed :: _) ->
+  | Error (mineplex_p2p_services.P2p_errors.Connection_closed :: _) ->
       true
   | Ok _ ->
       false
@@ -184,7 +184,7 @@ let is_connection_closed = function
       false
 
 let is_decoding_error = function
-  | Error (Tezos_p2p_services.P2p_errors.Decoding_error _ :: _) ->
+  | Error (mineplex_p2p_services.P2p_errors.Decoding_error _ :: _) ->
       true
   | Ok _ ->
       false
@@ -218,7 +218,7 @@ module Crypto_test = struct
     let msg_length = Bytes.length msg in
     fail_unless
       (msg_length <= max_content_length)
-      Tezos_p2p_services.P2p_errors.Invalid_message_size
+      mineplex_p2p_services.P2p_errors.Invalid_message_size
     >>=? fun () ->
     let encrypted_length = tag_length + msg_length in
     let payload_length = header_length + encrypted_length in
@@ -265,7 +265,7 @@ module Crypto_test = struct
         msg
     with
     | false ->
-        fail Tezos_p2p_services.P2p_errors.Decipher_error
+        fail mineplex_p2p_services.P2p_errors.Decipher_error
     | true ->
         return msg
 
@@ -324,7 +324,7 @@ module Nack = struct
   let encoding = Data_encoding.bytes
 
   let is_rejected = function
-    | Error (Tezos_p2p_services.P2p_errors.Rejected_by_nack _ :: _) ->
+    | Error (mineplex_p2p_services.P2p_errors.Rejected_by_nack _ :: _) ->
         true
     | Ok _ ->
         false
@@ -623,7 +623,7 @@ let main () =
   Arg.parse spec anon_fun usage_msg ;
   Alcotest.run
     ~argv:[|""|]
-    "tezos-p2p"
+    "mineplex-p2p"
     [ ( "p2p-connection.",
         [ wrap "low-level" Low_level.run;
           wrap "nack" Nack.run;

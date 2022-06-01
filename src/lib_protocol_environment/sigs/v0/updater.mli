@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Tezos Protocol Environment - Protocol updater. *)
+(** mineplex Protocol Environment - Protocol updater. *)
 
 (** Validation result: the record returned by the protocol
     on the successful validation of a block. *)
@@ -61,7 +61,7 @@ type rpc_context = {
   context : Context.t;
 }
 
-(** This is the signature of a Tezos protocol implementation. It has
+(** This is the signature of a mineplex protocol implementation. It has
     access to the standard library and the Environment module. *)
 module type PROTOCOL = sig
   (** The maximum size of a block header in bytes. *)

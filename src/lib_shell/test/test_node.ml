@@ -98,7 +98,7 @@ let default_p2p = Some (default_p2p, default_p2p_limits)
 
 let wrap f _switch () =
   Shell_test_helpers.with_empty_mock_sink (fun _ ->
-      Lwt_utils_unix.with_tempdir "tezos_test_" (fun test_dir ->
+      Lwt_utils_unix.with_tempdir "mineplex_test_" (fun test_dir ->
           init_config f test_dir _switch ()))
 
 (** Start tests *)
@@ -143,17 +143,17 @@ let node_sandbox_initialization_events sandbox_parameters config _switch () =
     ~sandboxed:true
     ~sandbox_parameters
     ~singleprocess:true
-    (* Tezos_shell.Node.config *)
+    (* mineplex_shell.Node.config *)
     config
-    (* Tezos_shell.Node.peer_validator_limits *)
+    (* mineplex_shell.Node.peer_validator_limits *)
     Node.default_peer_validator_limits
-    (* Tezos_shell.Node.block_validator_limits *)
+    (* mineplex_shell.Node.block_validator_limits *)
     Node.default_block_validator_limits
-    (* Tezos_shell.Node.prevalidator_limits *)
+    (* mineplex_shell.Node.prevalidator_limits *)
     Node.default_prevalidator_limits
-    (* Tezos_shell.Node.chain_validator_limits *)
+    (* mineplex_shell.Node.chain_validator_limits *)
     Node.default_chain_validator_limits
-    (* Tezos_shell_services.History_mode.t option *)
+    (* mineplex_shell_services.History_mode.t option *)
     None
   >>=?? fun n ->
   (* Start tests *)
@@ -171,17 +171,17 @@ let node_initialization_events _sandbox_parameters config _switch () =
   Node.create
     ~sandboxed:false
     ~singleprocess:true
-    (* Tezos_shell.Node.config *)
+    (* mineplex_shell.Node.config *)
     {config with p2p = default_p2p}
-    (* Tezos_shell.Node.peer_validator_limits *)
+    (* mineplex_shell.Node.peer_validator_limits *)
     Node.default_peer_validator_limits
-    (* Tezos_shell.Node.block_validator_limits *)
+    (* mineplex_shell.Node.block_validator_limits *)
     Node.default_block_validator_limits
-    (* Tezos_shell.Node.prevalidator_limits *)
+    (* mineplex_shell.Node.prevalidator_limits *)
     Node.default_prevalidator_limits
-    (* Tezos_shell.Node.chain_validator_limits *)
+    (* mineplex_shell.Node.chain_validator_limits *)
     Node.default_chain_validator_limits
-    (* Tezos_shell_services.History_mode.t option *)
+    (* mineplex_shell_services.History_mode.t option *)
     None
   >>=?? fun n ->
   (* Start tests *)
@@ -203,17 +203,17 @@ let node_store_known_protocol_events _sandbox_parameters config _switch () =
   Node.create
     ~sandboxed:false
     ~singleprocess:true
-    (* Tezos_shell.Node.config *)
+    (* mineplex_shell.Node.config *)
     {config with p2p = default_p2p}
-    (* Tezos_shell.Node.peer_validator_limits *)
+    (* mineplex_shell.Node.peer_validator_limits *)
     Node.default_peer_validator_limits
-    (* Tezos_shell.Node.block_validator_limits *)
+    (* mineplex_shell.Node.block_validator_limits *)
     Node.default_block_validator_limits
-    (* Tezos_shell.Node.prevalidator_limits *)
+    (* mineplex_shell.Node.prevalidator_limits *)
     Node.default_prevalidator_limits
-    (* Tezos_shell.Node.chain_validator_limits *)
+    (* mineplex_shell.Node.chain_validator_limits *)
     Node.default_chain_validator_limits
-    (* Tezos_shell_services.History_mode.t option *)
+    (* mineplex_shell_services.History_mode.t option *)
     None
   >>=?? fun n ->
   (* Start tests *)

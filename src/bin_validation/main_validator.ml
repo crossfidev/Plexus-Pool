@@ -37,12 +37,12 @@ let () =
               else socket_dir := Some s),
           {|<dir>
       When provided, the validator will communicate through a socket located
-      at '<dir>/tezos-validation-socket-<pid>' where <pid> is the
-      tezos-validator's process identifier. By default, the validator will
+      at '<dir>/mineplex-validation-socket-<pid>' where <pid> is the
+      mineplex-validator's process identifier. By default, the validator will
       communicate through its standard input and output.|}
         ) ]
   in
-  let usage_msg = Format.sprintf "tezos-validator [--socket-dir <dir>]" in
+  let usage_msg = Format.sprintf "mineplex-validator [--socket-dir <dir>]" in
   Arg.parse
     args
     (fun s -> raise (Arg.Bad (Format.sprintf "Unexpected argument: %s" s)))

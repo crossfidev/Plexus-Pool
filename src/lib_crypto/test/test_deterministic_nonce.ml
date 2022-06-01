@@ -44,4 +44,4 @@ let tests =
     ("hash_matches_p256", `Quick, test_hash_matches p256);
     ("hash_matches_secp256k1", `Quick, test_hash_matches secp256k1) ]
 
-let () = Alcotest.run "tezos-crypto" [("deterministic_nonce", tests)]
+let () = Alcotest.run "mineplex-crypto" [("deterministic_nonce", tests)]

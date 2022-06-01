@@ -138,7 +138,7 @@ let send fd encoding message =
       fail_unless (last = len) Unexpected_size_of_encoded_value
       >>=? fun () ->
       (* we set the beginning of the buf with the length of what is next *)
-      Tezos_stdlib.TzEndian.set_int16 buf 0 encoded_message_len ;
+      mineplex_stdlib.TzEndian.set_int16 buf 0 encoded_message_len ;
       protect (fun () -> Lwt_utils_unix.write_bytes fd buf >|= ok)
 
 let recv ?timeout fd encoding =
@@ -147,7 +147,7 @@ let recv ?timeout fd encoding =
       Lwt_utils_unix.read_bytes ?timeout ~len:message_len_size fd header_buf
       >|= ok)
   >>=? fun () ->
-  let len = Tezos_stdlib.TzEndian.get_uint16 header_buf 0 in
+  let len = mineplex_stdlib.TzEndian.get_uint16 header_buf 0 in
   let buf = Bytes.create len in
   protect (fun () -> Lwt_utils_unix.read_bytes ?timeout ~len fd buf >|= ok)
   >>=? fun () ->

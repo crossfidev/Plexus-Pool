@@ -1,12 +1,12 @@
 (executables
  (names test_encrypted)
- (libraries tezos-signer-backends
+ (libraries mineplex-signer-backends
             alcotest-lwt)
- (flags (:standard -open Tezos_error_monad
-                   -open Tezos_stdlib
-                   -open Tezos_crypto
-                   -open Tezos_client_base
-                   -open Tezos_signer_backends)))
+ (flags (:standard -open mineplex_error_monad
+                   -open mineplex_stdlib
+                   -open mineplex_crypto
+                   -open mineplex_client_base
+                   -open mineplex_signer_backends)))
 
 (alias
  (name buildtest)
@@ -18,10 +18,10 @@
 
 (alias
  (name runtest)
- (package tezos-signer-backends)
+ (package mineplex-signer-backends)
  (deps (alias runtest_signer_encrypted)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

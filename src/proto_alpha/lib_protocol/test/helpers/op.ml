@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -66,10 +66,10 @@ let combine_operations ?public_key ?counter ~source ctxt
     (packed_operations : packed_operation list) =
   assert (List.length packed_operations > 0) ;
   (* Hypothesis : each operation must have the same branch (is this really true?) *)
-  let {Tezos_base.Operation.branch} = (List.hd packed_operations).shell in
+  let {mineplex_base.Operation.branch} = (List.hd packed_operations).shell in
   assert (
     List.for_all
-      (fun {shell = {Tezos_base.Operation.branch = b; _}; _} ->
+      (fun {shell = {mineplex_base.Operation.branch = b; _}; _} ->
         Block_hash.(branch = b))
       packed_operations ) ;
   (* TODO? : check signatures consistency *)

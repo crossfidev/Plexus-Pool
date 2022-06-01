@@ -1,21 +1,21 @@
 (library
- (name tezos_client_genesis_carthagenet)
- (public_name tezos-client-genesis-carthagenet)
- (libraries tezos-base
-            tezos-shell-services
-            tezos-client-base
-            tezos-client-commands
-            tezos-protocol-environment
-            tezos-protocol-genesis-carthagenet
-            tezos-stdlib-unix)
+ (name mineplex_client_genesis_carthagenet)
+ (public_name mineplex-client-genesis-carthagenet)
+ (libraries mineplex-base
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-client-commands
+            mineplex-protocol-environment
+            mineplex-protocol-genesis-carthagenet
+            mineplex-stdlib-unix)
  (library_flags (:standard -linkall))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_protocol_genesis_carthagenet
-                   -open Tezos_client_commands)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_protocol_genesis_carthagenet
+                   -open mineplex_client_commands)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{libexec:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{libexec:mineplex-tooling:lint.sh} %{deps})))

@@ -1,20 +1,20 @@
 (library
- (name tezos_micheline)
- (public_name tezos-micheline)
+ (name mineplex_micheline)
+ (public_name mineplex-micheline)
  (libraries
   ;; External
   uutf
   zarith
   ;; Internal
-  tezos-stdlib
-  tezos-error-monad
+  mineplex-stdlib
+  mineplex-error-monad
   data-encoding
   )
- (flags (:standard -open Tezos_stdlib
-                   -open Tezos_error_monad
+ (flags (:standard -open mineplex_stdlib
+                   -open mineplex_error_monad
                    -open Data_encoding)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

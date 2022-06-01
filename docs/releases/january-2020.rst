@@ -27,7 +27,7 @@ These instructions assume that you are running
 the :ref:`December 2019 release<mainnet-december-2019>`, i.e. that
 you are already using the new storage backend.
 
-If you are running Tezos using Docker, new Docker images are available.
+If you are running mineplex using Docker, new Docker images are available.
 
 To update from sources:
 

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018-2020 Nomadic Labs <contact@nomadic-labs.com>           *)
 (* Copyright (c) 2018-2020 Tarides <contact@tarides.com>                     *)
 (*                                                                           *)
@@ -25,7 +25,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Tezos - Versioned, block indexed (key x value) store *)
+(** mineplex - Versioned, block indexed (key x value) store *)
 
 (** A block-indexed (key x value) store directory.  *)
 type index

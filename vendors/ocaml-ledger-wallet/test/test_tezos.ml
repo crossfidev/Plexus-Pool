@@ -1,4 +1,4 @@
-open Ledgerwallet_tezos
+open Ledgerwallet_mineplex
 
 let vendor_id = 0x2C97
 let product_id = 0x0001
@@ -74,6 +74,6 @@ let basic = [
 ]
 
 let () =
-  Alcotest.run "ledgerwallet.tezos" [
+  Alcotest.run "ledgerwallet.mineplex" [
     "basic", basic ;
   ]

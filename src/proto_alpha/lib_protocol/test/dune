@@ -1,49 +1,49 @@
 (executable
  (name main)
- (libraries tezos-base
-            tezos-micheline
-            tezos-protocol-environment
+ (libraries mineplex-base
+            mineplex-micheline
+            mineplex-protocol-environment
             alcotest-lwt
-            tezos-alpha-test-helpers
-            tezos-stdlib-unix
-            tezos-client-base
-            tezos-protocol-alpha-parameters
-            tezos-test-services)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_micheline
-                   -open Tezos_client_alpha
-                   -open Tezos_protocol_alpha
-                   -open Tezos_protocol_environment_alpha
-                   -open Tezos_alpha_test_helpers
-                   -open Tezos_test_services)))
+            mineplex-alpha-test-helpers
+            mineplex-stdlib-unix
+            mineplex-client-base
+            mineplex-protocol-alpha-parameters
+            mineplex-test-services)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_micheline
+                   -open mineplex_client_alpha
+                   -open mineplex_protocol_alpha
+                   -open mineplex_protocol_environment_alpha
+                   -open mineplex_alpha_test_helpers
+                   -open mineplex_test_services)))
 
 (alias
  (name buildtest)
- (package tezos-protocol-alpha-tests)
+ (package mineplex-protocol-alpha-tests)
  (deps main.exe))
 
 (rule
- (copy %{lib:tezos-protocol-alpha-parameters:test-parameters.json}
+ (copy %{lib:mineplex-protocol-alpha-parameters:test-parameters.json}
        protocol_parameters.json))
 
 ; runs only the `Quick tests
 (alias
  (name runtest_proto_alpha)
- (package tezos-protocol-alpha-tests)
+ (package mineplex-protocol-alpha-tests)
  (action (run %{exe:main.exe} -v -q)))
 
 ; runs both `Quick and `Slow tests
 (alias
  (name runtest_slow)
- (package tezos-protocol-alpha-tests)
+ (package mineplex-protocol-alpha-tests)
  (action (run %{exe:main.exe} -v)))
 
 (alias
  (name runtest)
- (package tezos-protocol-alpha-tests)
+ (package mineplex-protocol-alpha-tests)
  (deps (alias runtest_proto_alpha)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

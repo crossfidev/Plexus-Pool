@@ -1,11 +1,11 @@
 Glossary
 ========
 
-This glossary is divided in two sections, the first one concerns Tezos, and
+This glossary is divided in two sections, the first one concerns mineplex, and
 the second one concerns the Alpha protocol, which is the current
 `economic protocol`_.
 
-Tezos
+mineplex
 -----
 
 _`Context`
@@ -31,7 +31,7 @@ _`Economic protocol`
     proper. It defines a Context_ (the state of the application), some
     Operations_ (how the state evolves).
 
-    In Tezos, the economic protocol can be upgraded without interruption or
+    In mineplex, the economic protocol can be upgraded without interruption or
     forking of the blockchain. The procedure for an upgrade is defined within
     the economic protocol itself so it can be upgraded as well.
 

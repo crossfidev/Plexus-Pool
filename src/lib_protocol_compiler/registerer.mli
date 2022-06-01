@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -24,7 +24,7 @@
 (*****************************************************************************)
 
 module type PROTOCOL_V0 = functor
-  (Env : Tezos_protocol_environment_sigs.V0.T)
+  (Env : mineplex_protocol_environment_sigs.V0.T)
   -> Env.Updater.PROTOCOL
 
 type proto_env = V0 of (module PROTOCOL_V0)

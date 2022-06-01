@@ -1,85 +1,85 @@
 (library
- (name tezos_baking_002_Pt4xzupC)
- (public_name tezos-baking-002-Pt4xzupC)
- (libraries tezos-base
-            tezos-version
-            tezos-protocol-002-Pt4xzupC
-            tezos-protocol-environment
-            tezos-shell-context
-            tezos-shell-services
-            tezos-client-base
-            tezos-client-002-Pt4xzupC
-            tezos-client-commands
-            tezos-stdlib-unix
-            tezos-storage
-            tezos-rpc-http
-            tezos-rpc
+ (name mineplex_baking_002_Pt4xzupC)
+ (public_name mineplex-baking-002-Pt4xzupC)
+ (libraries mineplex-base
+            mineplex-version
+            mineplex-protocol-002-Pt4xzupC
+            mineplex-protocol-environment
+            mineplex-shell-context
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-client-002-Pt4xzupC
+            mineplex-client-commands
+            mineplex-stdlib-unix
+            mineplex-storage
+            mineplex-rpc-http
+            mineplex-rpc
             lwt-canceler)
  (library_flags (:standard -linkall))
  (modules (:standard \
                      delegate_commands
                      delegate_commands_registration))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_002_Pt4xzupC
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_client_002_Pt4xzupC
-                   -open Tezos_client_commands
-                   -open Tezos_stdlib_unix
-                   -open Tezos_shell_context
-                   -open Tezos_storage
-                   -open Tezos_rpc
-                   -open Tezos_rpc_http)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_002_Pt4xzupC
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_client_002_Pt4xzupC
+                   -open mineplex_client_commands
+                   -open mineplex_stdlib_unix
+                   -open mineplex_shell_context
+                   -open mineplex_storage
+                   -open mineplex_rpc
+                   -open mineplex_rpc_http)))
 
 (library
- (name tezos_baking_002_Pt4xzupC_commands)
- (public_name tezos-baking-002-Pt4xzupC-commands)
- (libraries tezos-base
-            tezos-protocol-002-Pt4xzupC
-            tezos-protocol-environment
-            tezos-shell-services
-            tezos-client-base
-            tezos-client-002-Pt4xzupC
-            tezos-client-commands
-            tezos-baking-002-Pt4xzupC)
+ (name mineplex_baking_002_Pt4xzupC_commands)
+ (public_name mineplex-baking-002-Pt4xzupC-commands)
+ (libraries mineplex-base
+            mineplex-protocol-002-Pt4xzupC
+            mineplex-protocol-environment
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-client-002-Pt4xzupC
+            mineplex-client-commands
+            mineplex-baking-002-Pt4xzupC)
  (library_flags (:standard -linkall))
  (modules delegate_commands)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_002_Pt4xzupC
-                   -open Tezos_stdlib_unix
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_client_002_Pt4xzupC
-                   -open Tezos_client_commands
-                   -open Tezos_baking_002_Pt4xzupC
-                   -open Tezos_rpc)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_002_Pt4xzupC
+                   -open mineplex_stdlib_unix
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_client_002_Pt4xzupC
+                   -open mineplex_client_commands
+                   -open mineplex_baking_002_Pt4xzupC
+                   -open mineplex_rpc)))
 
 (library
- (name tezos_baking_002_Pt4xzupC_commands_registration)
- (public_name tezos-baking-002-Pt4xzupC-commands.registration)
- (libraries tezos-base
-            tezos-protocol-002-Pt4xzupC
-            tezos-protocol-environment
-            tezos-shell-services
-            tezos-client-base
-            tezos-client-002-Pt4xzupC
-            tezos-client-commands
-            tezos-baking-002-Pt4xzupC
-            tezos-baking-002-Pt4xzupC-commands
-            tezos-rpc)
+ (name mineplex_baking_002_Pt4xzupC_commands_registration)
+ (public_name mineplex-baking-002-Pt4xzupC-commands.registration)
+ (libraries mineplex-base
+            mineplex-protocol-002-Pt4xzupC
+            mineplex-protocol-environment
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-client-002-Pt4xzupC
+            mineplex-client-commands
+            mineplex-baking-002-Pt4xzupC
+            mineplex-baking-002-Pt4xzupC-commands
+            mineplex-rpc)
  (library_flags (:standard -linkall))
  (modules delegate_commands_registration)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_002_Pt4xzupC
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_client_002_Pt4xzupC
-                   -open Tezos_client_commands
-                   -open Tezos_baking_002_Pt4xzupC
-                   -open Tezos_baking_002_Pt4xzupC_commands
-                   -open Tezos_rpc)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_002_Pt4xzupC
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_client_002_Pt4xzupC
+                   -open mineplex_client_commands
+                   -open mineplex_baking_002_Pt4xzupC
+                   -open mineplex_baking_002_Pt4xzupC_commands
+                   -open mineplex_rpc)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

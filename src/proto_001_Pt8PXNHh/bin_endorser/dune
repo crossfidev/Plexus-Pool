@@ -1,18 +1,18 @@
 (executable
  (name main_endorser_001_Pt8PXNHh)
- (public_name tezos-endorser-001-Pt8PXNHh)
- (libraries tezos-client-base-unix
-            tezos-client-commands
-            tezos-baking-001-Pt8PXNHh-commands)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_001_Pt8PXNHh
-                   -open Tezos_client_001_Pt8PXNHh
-                   -open Tezos_client_commands
-                   -open Tezos_baking_001_Pt8PXNHh_commands
-                   -open Tezos_stdlib_unix
-                   -open Tezos_client_base_unix)))
+ (public_name mineplex-endorser-001-Pt8PXNHh)
+ (libraries mineplex-client-base-unix
+            mineplex-client-commands
+            mineplex-baking-001-Pt8PXNHh-commands)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_001_Pt8PXNHh
+                   -open mineplex_client_001_Pt8PXNHh
+                   -open mineplex_client_commands
+                   -open mineplex_baking_001_Pt8PXNHh_commands
+                   -open mineplex_stdlib_unix
+                   -open mineplex_client_base_unix)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

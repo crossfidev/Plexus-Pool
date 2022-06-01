@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -34,15 +34,15 @@ let () =
 let () =
   if Filename.basename Sys.argv.(0) = Updater.compiler_name then (
     try
-      Tezos_protocol_compiler.Compiler.main
-        Tezos_protocol_compiler_native.Native.driver ;
+      mineplex_protocol_compiler.Compiler.main
+        mineplex_protocol_compiler_native.Native.driver ;
       Stdlib.exit 0
     with exn ->
       Format.eprintf "%a\n%!" Opterrors.report_error exn ;
       Stdlib.exit 1 )
 
 let () =
-  if Filename.basename Sys.argv.(0) = "tezos-validator" then (
+  if Filename.basename Sys.argv.(0) = "mineplex-validator" then (
     try
       let is_valid_directory =
         Array.length Sys.argv = 3
@@ -53,7 +53,7 @@ let () =
       if not is_valid_directory then
         invalid_arg
           "Invalid arguments provided for the validator: expected \
-           'tezos-validator --socket-dir <dir>'." ;
+           'mineplex-validator --socket-dir <dir>'." ;
       Stdlib.exit
         ( Lwt_main.run @@ Lwt_exit.wrap_and_forward
         @@ Validator.main ~socket_dir:Sys.argv.(2) () )
@@ -67,7 +67,7 @@ let term =
 
 let description =
   [ `S "DESCRIPTION";
-    `P "Entry point for initializing, configuring and running a Tezos node.";
+    `P "Entry point for initializing, configuring and running a mineplex node.";
     `P Node_identity_command.Manpage.command_description;
     `P Node_run_command.Manpage.command_description;
     `P Node_config_command.Manpage.command_description;
@@ -79,11 +79,11 @@ let man = description @ Node_run_command.Manpage.examples
 
 let info =
   let version =
-    Tezos_version.Current_git_info.abbreviated_commit_hash ^ " ("
-    ^ Tezos_version.Current_git_info.committer_date ^ ") ("
-    ^ Tezos_version.Version.current_string ^ ")"
+    mineplex_version.Current_git_info.abbreviated_commit_hash ^ " ("
+    ^ mineplex_version.Current_git_info.committer_date ^ ") ("
+    ^ mineplex_version.Version.current_string ^ ")"
   in
-  Cmdliner.Term.info ~doc:"The Tezos node" ~man ~version "tezos-node"
+  Cmdliner.Term.info ~doc:"The mineplex node" ~man ~version "mineplex-node"
 
 let commands =
   [ Node_run_command.cmd;

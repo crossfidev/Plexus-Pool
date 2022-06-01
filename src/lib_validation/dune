@@ -1,20 +1,20 @@
 (library
- (name tezos_validation)
- (public_name tezos-validation)
- (libraries tezos-base
-            tezos-storage
-            tezos-shell-context
-            tezos-shell-services
-            tezos-protocol-updater
-	    tezos-stdlib-unix)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_storage
-                   -open Tezos_shell_context
-                   -open Tezos_shell_services
-                   -open Tezos_protocol_updater
-                   -open Tezos_stdlib_unix)))
+ (name mineplex_validation)
+ (public_name mineplex-validation)
+ (libraries mineplex-base
+            mineplex-storage
+            mineplex-shell-context
+            mineplex-shell-services
+            mineplex-protocol-updater
+	    mineplex-stdlib-unix)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_storage
+                   -open mineplex_shell_context
+                   -open mineplex_shell_services
+                   -open mineplex_protocol_updater
+                   -open mineplex_stdlib_unix)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

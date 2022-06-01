@@ -3,7 +3,7 @@
 Mockup mode
 --------------
 
-By default the ``tezos-client`` described in the
+By default the ``mineplex-client`` described in the
 :ref:`sandboxed node<sandboxed-mode>` needs a node running.
 This page describes the *mockup* mode, a mode that works without
 connecting to a node. For the moment, its features are more
@@ -24,7 +24,7 @@ In the current state the mockup mode can:
 * perform transactions, originations, contract calls in a purely local fashion;
   mimicking the sandboxed mode but without a node. These features
   require a persistent state.
-* Perform some RPCs locally via `tezos-client rpc {get,post}`.
+* Perform some RPCs locally via `mineplex-client rpc {get,post}`.
 
 We recommend that beginners *always* use the persistent state, for simplicity.
 
@@ -36,7 +36,7 @@ following command:
 
 ::
 
-    $ tezos-client list mockup protocols
+    $ mineplex-client list mockup protocols
 
 At the time of writing, two protocols are supported hence the output should
 be the following (ignore the Warning if there is any):
@@ -50,7 +50,7 @@ To create the mockup client state, issue the following command:
 
 ::
 
-    tezos-client --protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK \
+    mineplex-client --protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK \
       --base-dir /tmp/mockup create mockup
 
 Now that this command has been issued, the next calls below **all** use
@@ -60,7 +60,7 @@ do the following in the local shell running the session:
 
 ::
 
-    $ alias mockup-client='tezos-client --mode mockup --base-dir /tmp/mockup'
+    $ alias mockup-client='mineplex-client --mode mockup --base-dir /tmp/mockup'
 
 You can now use standard commands, such as:
 
@@ -83,7 +83,7 @@ You can now use standard commands, such as:
     Operation hash is 'ooMyN7FDmDGyNk8CLdSFwcdxcQea5KLXYqrgzu6CEYB7G2xYbth'
     NOT waiting for the operation to be included.
     Use command
-      tezos-client wait for ooMyN7FDmDGyNk8CLdSFwcdxcQea5KLXYqrgzu6CEYB7G2xYbth to be included --confirmations 30 --branch BLockGenesisGenesisGenesisGenesisGenesisCCCCCeZiLHU
+      mineplex-client wait for ooMyN7FDmDGyNk8CLdSFwcdxcQea5KLXYqrgzu6CEYB7G2xYbth to be included --confirmations 30 --branch BLockGenesisGenesisGenesisGenesisGenesisCCCCCeZiLHU
     and/or an external block explorer to make sure that it has been included.
     This sequence of operations was run:
       Manager signed operations:
@@ -138,14 +138,14 @@ Run a mockup client without persistent state
 Without persistent state, the mockup mode is still able to
 typecheck scripts:::
 
-    ./tezos-client --mode mockup typecheck script ./tests_python/contracts/mini_scenarios/hardlimit.tz
+    ./mineplex-client --mode mockup typecheck script ./tests_python/contracts/mini_scenarios/hardlimit.tz
 
 Tune mockup parameters
 ~~~~~~~~~~~~~~~~~~~~~~
 
 To keep it simple, the mockup mode - like the sandboxed mode - uses
 default values. Such values are visible as follows (we recall
-that ``mockup-client`` is an alias for ``tezos-client``, see previous
+that ``mockup-client`` is an alias for ``mineplex-client``, see previous
 section):
 
 ::
@@ -203,13 +203,13 @@ command:
 
 ::
 
-   $ tezos-client compute chain id from seed <string>
+   $ mineplex-client compute chain id from seed <string>
 
 For instance, the following command:
 
 ::
 
-   $ tezos-client compute chain id from seed strudel
+   $ mineplex-client compute chain id from seed strudel
 
 yields the chain id ``NetXwWbjfCqBTLV``.
 

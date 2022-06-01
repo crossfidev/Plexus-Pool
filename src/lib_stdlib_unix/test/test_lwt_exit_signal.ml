@@ -56,7 +56,7 @@ let child_main ?double_signal_safety ?max_clean_up_time () =
          ?max_clean_up_time
          ~double_signal_safety
          ~signal_setup
-         (Tezos_stdlib.Lwt_utils.never_ending ())
+         (mineplex_stdlib.Lwt_utils.never_ending ())
      >>= function
      | Ok () ->
          Lwt.return 3

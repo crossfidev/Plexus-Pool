@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -23,11 +23,11 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Tezos Protocol Implementation - Typed storage
+(** mineplex Protocol Implementation - Typed storage
 
     This module hides the hierarchical (key x value) database under
     pre-allocated typed accessors for all persistent entities of the
-    tezos context.
+    mineplex context.
 
     This interface enforces no invariant on the contents of the
     database. Its goal is to centralize all accessors in order to have

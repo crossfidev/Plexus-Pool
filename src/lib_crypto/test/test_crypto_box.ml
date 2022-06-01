@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -81,4 +81,4 @@ let tests =
       test_fast_box_noalloc (Bytes.of_string "test") );
     ("HACL* box", `Quick, test_fast_box (Bytes.of_string "test")) ]
 
-let () = Alcotest.run "tezos-crypto" [("crypto_box", tests)]
+let () = Alcotest.run "mineplex-crypto" [("crypto_box", tests)]

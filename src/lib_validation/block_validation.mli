@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs. <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -39,8 +39,8 @@ val may_patch_protocol :
   user_activated_upgrades:User_activated.upgrades ->
   user_activated_protocol_overrides:User_activated.protocol_overrides ->
   level:Int32.t ->
-  Tezos_protocol_environment.validation_result ->
-  Tezos_protocol_environment.validation_result Lwt.t
+  mineplex_protocol_environment.validation_result ->
+  mineplex_protocol_environment.validation_result Lwt.t
 
 val update_testchain_status :
   Context.t -> Block_header.t -> Time.Protocol.t -> Context.t tzresult Lwt.t

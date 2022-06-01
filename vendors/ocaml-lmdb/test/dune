@@ -1,8 +1,8 @@
 (executable
  (name test)
- (libraries cstruct rresult tezos-lmdb alcotest))
+ (libraries cstruct rresult mineplex-lmdb alcotest))
 
 (alias
  (name    runtest)
- (package tezos-lmdb)
+ (package mineplex-lmdb)
  (action  (run %{exe:test.exe})))

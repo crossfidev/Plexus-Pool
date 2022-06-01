@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -93,13 +93,13 @@ let include_ml oc file =
   Printf.fprintf oc "end\n%!"
 
 let opened_modules =
-  ["Tezos_protocol_environment"; "Pervasives"; "Error_monad"; "Logging"]
+  ["mineplex_protocol_environment"; "Pervasives"; "Error_monad"; "Logging"]
 
 let dump oc version hash files =
   Printf.fprintf
     oc
-    "module Make (Tezos_protocol_environment : \
-     Tezos_protocol_environment_sigs__%s.T) = struct\n"
+    "module Make (mineplex_protocol_environment : \
+     mineplex_protocol_environment_sigs__%s.T) = struct\n"
     version ;
   Printf.fprintf oc "[@@@ocaml.warning \"-33\"]\n" ;
   List.iter (Printf.fprintf oc "open %s\n") opened_modules ;

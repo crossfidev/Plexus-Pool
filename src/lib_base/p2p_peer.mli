@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplexlex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -29,7 +29,7 @@ module Set = Id.Set
 module Table = Id.Table
 
 module Error_table :
-  Tezos_lwt_result_stdlib.Lwtreslib.Hashtbl.S_LWT with type key = Table.key
+  mineplexlex_lwt_result_stdlib.Lwtreslib.Hashtbl.S_LWT with type key = Table.key
 
 module Filter : sig
   type t = Accepted | Running | Disconnected

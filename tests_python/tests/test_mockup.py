@@ -1,4 +1,4 @@
-""" This file tests the mockup mode (tezos-client --mode mockup).
+""" This file tests the mockup mode (mineplex-client --mode mockup).
     In this mode the client does not need a node running.
 
     Make sure to either use the fixture mockup_client or
@@ -27,7 +27,7 @@ _PC_FLAG = "protocol-constants"
 
 @pytest.mark.client
 def test_list_mockup_protocols(sandbox: Sandbox):
-    """ Executes `tezos-client list mockup protocols`
+    """ Executes `mineplex-client list mockup protocols`
         The call must succeed and return a non empty list.
     """
     try:
@@ -41,11 +41,11 @@ def test_list_mockup_protocols(sandbox: Sandbox):
 @pytest.mark.client
 @pytest.mark.parametrize('proto', MOCKUP_PROTOCOLS)
 def test_create_mockup_dir_exists_nonempty(sandbox: Sandbox, proto: str):
-    """ Executes `tezos-client --base-dir /tmp/mdir create mockup`
+    """ Executes `mineplex-client --base-dir /tmp/mdir create mockup`
         when /tmp/mdir is a non empty directory which is NOT a mockup
         directory. The call must fail.
     """
-    with tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir:
+    with tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir:
         # Make the directory not empty
         with open(os.path.join(base_dir, "whatever"), "w") as handle:
             handle.write("")
@@ -79,7 +79,7 @@ def _get_mockup_proto(mockup_client):
 
 @pytest.mark.client
 def test_create_mockup_already_initialized(mockup_client: Client):
-    """ Executes `tezos-client --base-dir /tmp/mdir create mockup`
+    """ Executes `mineplex-client --base-dir /tmp/mdir create mockup`
         when /tmp/mdir is not fresh.
         The call must fail.
     """
@@ -93,7 +93,7 @@ def test_create_mockup_already_initialized(mockup_client: Client):
 
 @pytest.mark.client
 def test_transfer(mockup_client: Client):
-    """ Executes `tezos-client --base-dir /tmp/mdir -M mockup
+    """ Executes `mineplex-client --base-dir /tmp/mdir -M mockup
                   transfer 1 from bootstrap1 to bootstrap2`
         in a valid mockup environment.
         The call must succeed and the balances must be updated correctly.
@@ -127,7 +127,7 @@ def test_create_mockup_custom_constants(sandbox: Sandbox,
                                         proto: str,
                                         chain_id: str,
                                         initial_timestamp: str):
-    """ Tests `tezos-client create mockup` --protocols-constants  argument
+    """ Tests `mineplex-client create mockup` --protocols-constants  argument
         The call must succeed.
 
         Args:
@@ -136,8 +136,8 @@ def test_create_mockup_custom_constants(sandbox: Sandbox,
             initial_timestamp(str): an ISO-8601 formatted date string
     """
     # Use another directory so that the constants change takes effect
-    with tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir,\
-            tempfile.NamedTemporaryFile(prefix='tezos-custom-constants',
+    with tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir,\
+            tempfile.NamedTemporaryFile(prefix='mineplex-custom-constants',
                                         mode='w+t') as json_file:
         json_data = {"hard_gas_limit_per_operation": "400000",
                      "chain_id": chain_id,
@@ -168,7 +168,7 @@ def _create_accounts_list():
         accounts_list.append(entry)
 
     # Took json structure from
-    # https://gitlab.com/tezos/tezos/-/merge_requests/1720
+    # https://gitlab.com/mineplex/mineplex/-/merge_requests/1720
     add_account("bootstrap0",
                 "edsk2uqQB9AY4FvioK2YMdfmyMrer5R8mGFyuaLLFfSRo8EoyNdht3",
                 "2000000000000")
@@ -182,14 +182,14 @@ def _create_accounts_list():
 @pytest.mark.client
 @pytest.mark.parametrize('proto', MOCKUP_PROTOCOLS)
 def test_create_mockup_custom_bootstrap_accounts(sandbox: Sandbox, proto: str):
-    """ Tests `tezos-client create mockup` --bootstrap-accounts argument
+    """ Tests `mineplex-client create mockup` --bootstrap-accounts argument
         The call must succeed.
     """
     accounts_list = _create_accounts_list()
 
     # Use another directory so that the constants change takes effect
-    with tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir,\
-        tempfile.NamedTemporaryFile(prefix='tezos-bootstrap-accounts',
+    with tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir,\
+        tempfile.NamedTemporaryFile(prefix='mineplex-bootstrap-accounts',
                                     mode='w+t') as json_file:
         json.dump(accounts_list, json_file)
         json_file.flush()
@@ -209,7 +209,7 @@ def test_create_mockup_custom_bootstrap_accounts(sandbox: Sandbox, proto: str):
 @pytest.mark.client
 @pytest.mark.parametrize('proto', MOCKUP_PROTOCOLS)
 def test_transfer_bad_base_dir(sandbox: Sandbox, proto: str):
-    """ Executes `tezos-client --base-dir /tmp/mdir create mockup`
+    """ Executes `mineplex-client --base-dir /tmp/mdir create mockup`
         when /tmp/mdir looks like a dubious base directory.
         Checks that a warning is printed.
     """
@@ -233,7 +233,7 @@ def test_transfer_bad_base_dir(sandbox: Sandbox, proto: str):
         cmd = ["transfer", "1", "from", "bootstrap1", "to", "bootstrap2"]
         (_, err_output, _) = mock_client.run_generic(cmd, check=False)
         # See
-        # https://gitlab.com/tezos/tezos/-/merge_requests/1760#note_329071488
+        # https://gitlab.com/mineplex/mineplex/-/merge_requests/1760#note_329071488
         # for the content being matched
         searched = "Some commands .* might not work correctly."
         # Witness that warning is printed:
@@ -245,7 +245,7 @@ def test_transfer_bad_base_dir(sandbox: Sandbox, proto: str):
 
 @pytest.mark.client
 def test_config_show_mockup(mockup_client: Client):
-    """ Executes `tezos-client config show mockup` in
+    """ Executes `mineplex-client config show mockup` in
         a state where it should succeed.
     """
     proto = _get_mockup_proto(mockup_client)
@@ -255,7 +255,7 @@ def test_config_show_mockup(mockup_client: Client):
 
 @pytest.mark.client
 def test_config_show_mockup_fail(mockup_client: Client):
-    """ Executes `tezos-client config show mockup` when
+    """ Executes `mineplex-client config show mockup` when
         base dir is NOT a mockup. It should fail as this is dangerous
         (the default base directory could contain sensitive data,
          such as private keys)
@@ -269,15 +269,15 @@ def test_config_show_mockup_fail(mockup_client: Client):
 
 @pytest.mark.client
 def test_config_init_mockup(mockup_client: Client):
-    """ Executes `tezos-client config init mockup` in
+    """ Executes `mineplex-client config init mockup` in
         a state where it should succeed.
     """
     proto = _get_mockup_proto(mockup_client)
     # We cannot use NamedTemporaryFile because `config init mockup`
     # does not overwrite files. Because NamedTemporaryFile creates the file
     # it would make the test fail.
-    ba_json_file = tempfile.mktemp(prefix='tezos-bootstrap-accounts')
-    pc_json_file = tempfile.mktemp(prefix='tezos-proto-consts')
+    ba_json_file = tempfile.mktemp(prefix='mineplex-bootstrap-accounts')
+    pc_json_file = tempfile.mktemp(prefix='mineplex-proto-consts')
     # 1/ call `config init mockup`
     mockup_client.run([
         "--protocol", proto,
@@ -298,14 +298,14 @@ def test_config_init_mockup(mockup_client: Client):
 
 @pytest.mark.client
 def test_config_init_mockup_fail(mockup_client: Client):
-    """ Executes `tezos-client config init mockup` when
+    """ Executes `mineplex-client config init mockup` when
         base dir is NOT a mockup. It should fail as this is dangerous
         (the default base directory could contain sensitive data,
          such as private keys)
     """
     proto = _get_mockup_proto(mockup_client)
-    ba_json_file = tempfile.mktemp(prefix='tezos-bootstrap-accounts')
-    pc_json_file = tempfile.mktemp(prefix='tezos-proto-consts')
+    ba_json_file = tempfile.mktemp(prefix='mineplex-bootstrap-accounts')
+    pc_json_file = tempfile.mktemp(prefix='mineplex-proto-consts')
     cmd = [
         "--protocol", proto,
         "config", "init", "mockup", f"--{_BA_FLAG}", ba_json_file,
@@ -349,8 +349,8 @@ def _get_state_using_config_init_mockup(mock_client: Client)\
     """
     proto = _get_mockup_proto(mock_client)
 
-    ba_json_file = tempfile.mktemp(prefix='tezos-bootstrap-accounts')
-    pc_json_file = tempfile.mktemp(prefix='tezos-proto-consts')
+    ba_json_file = tempfile.mktemp(prefix='mineplex-bootstrap-accounts')
+    pc_json_file = tempfile.mktemp(prefix='mineplex-proto-consts')
 
     mock_client.run([
         "--protocol", proto,
@@ -440,17 +440,17 @@ def _test_create_mockup_init_show_roundtrip(
     try:
         if protocol_constants_json is not None:
             pc_file = tempfile.mktemp(
-                prefix='tezos-proto-consts')
+                prefix='mineplex-proto-consts')
             with open(pc_file, 'w') as handle:
                 handle.write(protocol_constants_json)
 
         if bootstrap_json is not None:
             ba_file = tempfile.mktemp(
-                prefix='tezos-bootstrap-accounts')
+                prefix='mineplex-bootstrap-accounts')
             with open(ba_file, 'w') as handle:
                 handle.write(bootstrap_json)
 
-        with tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir:
+        with tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir:
             # Follow pattern of mockup_client fixture:
             unmanaged_client = sandbox.create_client(base_dir=base_dir)
             res = unmanaged_client.create_mockup(
@@ -476,18 +476,18 @@ def _test_create_mockup_init_show_roundtrip(
 
     # Use another directory so that the constants change takes effect
     with tempfile.TemporaryDirectory(
-            prefix='tezos-client.') as base_dir, tempfile.NamedTemporaryFile(
-                prefix='tezos-bootstrap-accounts',
+            prefix='mineplex-client.') as base_dir, tempfile.NamedTemporaryFile(
+                prefix='mineplex-bootstrap-accounts',
                 mode='w+t') as ba_json_file, tempfile.NamedTemporaryFile(
-                    prefix='tezos-proto-consts', mode='w+t') as pc_json_file,\
-            tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir:
+                    prefix='mineplex-proto-consts', mode='w+t') as pc_json_file,\
+            tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir:
 
         ba_json_file.write(ba_str)
         ba_json_file.flush()
         pc_json_file.write(pc_str)
         pc_json_file.flush()
 
-        with tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir:
+        with tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir:
             # Follow pattern of mockup_client fixture:
             unmanaged_client = sandbox.create_client(base_dir=base_dir)
             res = unmanaged_client.create_mockup(

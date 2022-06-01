@@ -47,9 +47,9 @@ let () =
         Lwt_io.lines_to_file "alphanet_version" (Lwt_stream.of_list [ contents ])
     | _ -> failwith "bad alphanet_version file"
 
-let chain_name_prefix = "TEZOS_ALPHANET_"
+let chain_name_prefix = "mineplex_ALPHANET_"
 let chain_name = chain_name_prefix ^ date
-let sandboxed_chain_name = "SANDBOXED_TEZOS"
+let sandboxed_chain_name = "SANDBOXED_mineplex"
 let genesis_protocol_hash_placeholder = "HASH OF GENESIS PROTOCOL TO USE"
 
 let () =

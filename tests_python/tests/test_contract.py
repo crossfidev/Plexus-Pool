@@ -848,7 +848,7 @@ class TestBadAnnotation:
         name = 'bad_annot.tz'
         contract = session[name]
 
-        # This was produced by running "tezos-client hash data '{ UNIT
+        # This was produced by running "mineplex-client hash data '{ UNIT
         # ; PAIR ; CAR %faa }' of type 'lambda unit unit'" and
         # replacing the two last bytes (that correspond to the two
         # 'a's at the end of the annotation) by the 0xff byte which is

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs. <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -114,7 +114,7 @@ let result_encoding =
        (req "forking_testchain" bool))
 
 let may_force_protocol_upgrade ~user_activated_upgrades ~level
-    (validation_result : Tezos_protocol_environment.validation_result) =
+    (validation_result : mineplex_protocol_environment.validation_result) =
   match
     Block_header.get_forced_protocol_upgrade ~user_activated_upgrades ~level
   with
@@ -133,7 +133,7 @@ let may_force_protocol_upgrade ~user_activated_upgrades ~level
     voted protocols *)
 let may_patch_protocol ~user_activated_upgrades
     ~user_activated_protocol_overrides ~level
-    (validation_result : Tezos_protocol_environment.validation_result) =
+    (validation_result : mineplex_protocol_environment.validation_result) =
   let context = Shell_context.unwrap_disk_context validation_result.context in
   Context.get_protocol context
   >>= fun protocol ->
@@ -205,7 +205,7 @@ module Make (Proto : Registered_protocol.T) = struct
           (Option.fold
              ~none:true
              ~some:(fun max -> List.length ops <= max)
-             quota.Tezos_protocol_environment.max_op)
+             quota.mineplex_protocol_environment.max_op)
           (let max = Option.value ~default:~-1 quota.max_op in
            invalid_block
              (Too_many_operations {pass = i + 1; found = List.length ops; max}))

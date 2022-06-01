@@ -1,2 +1,2 @@
 (lang dune 1.11)
-(name tezos-client-alpha-commands)
+(name mineplex-client-alpha-commands)

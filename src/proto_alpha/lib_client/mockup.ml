@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -160,7 +160,7 @@ let default_mockup_protocol_constants : protocol_constants_overrides =
     hard_storage_limit_per_operation =
       Some default.constants.hard_storage_limit_per_operation;
     cost_per_byte = Some default.constants.cost_per_byte;
-    chain_id = Some Tezos_mockup_registration.Mockup_args.Chain_id.dummy;
+    chain_id = Some mineplex_mockup_registration.Mockup_args.Chain_id.dummy;
     timestamp = Some default_mockup_parameters.initial_timestamp;
   }
 
@@ -184,7 +184,7 @@ let parsed_account_repr_encoding =
        (req "mine_amount" Protocol.Mine_repr.encoding))
 
 let mockup_default_bootstrap_accounts
-    (cctxt : Tezos_client_base.Client_context.full) : string tzresult Lwt.t =
+    (cctxt : mineplex_client_base.Client_context.full) : string tzresult Lwt.t =
   let rpc_context = new Protocol_client_context.wrap_full cctxt in
   let wallet = (cctxt :> Client_context.wallet) in
   let parsed_account_reprs = ref [] in
@@ -245,7 +245,7 @@ let protocol_constants_no_overrides =
     timestamp = None;
   }
 
-let apply_protocol_overrides (cctxt : Tezos_client_base.Client_context.full)
+let apply_protocol_overrides (cctxt : mineplex_client_base.Client_context.full)
     (o : protocol_constants_overrides) (c : Protocol.Constants_repr.parametric)
     =
   let has_custom =
@@ -293,9 +293,9 @@ let apply_protocol_overrides (cctxt : Tezos_client_base.Client_context.full)
     }
 
 let to_bootstrap_account repr =
-  Tezos_client_base.Client_keys.neuterize repr.sk_uri
+  mineplex_client_base.Client_keys.neuterize repr.sk_uri
   >>=? fun pk_uri ->
-  Tezos_client_base.Client_keys.public_key pk_uri
+  mineplex_client_base.Client_keys.public_key pk_uri
   >>=? fun public_key ->
   let public_key_hash = Signature.Public_key.hash public_key in
   return
@@ -332,7 +332,7 @@ module Forge = struct
     Bytes.create Protocol.Alpha_context.Constants.proof_of_work_nonce_size
 
   let make_shell ~level ~predecessor ~timestamp ~fitness ~operations_hash =
-    Tezos_base.Block_header.
+    mineplex_base.Block_header.
       {
         level;
         predecessor;
@@ -361,7 +361,7 @@ let initial_context (header : Block_header.shell_header)
   let proto_params =
     Data_encoding.Binary.to_bytes_exn Data_encoding.json json
   in
-  Tezos_protocol_environment.Context.(
+  mineplex_protocol_environment.Context.(
     let empty = Memory_context.empty in
     set empty ["version"] (Bytes.of_string "genesis")
     >>= fun ctxt -> set ctxt ["protocol_parameters"] proto_params)
@@ -371,11 +371,11 @@ let initial_context (header : Block_header.shell_header)
   >>=? fun {context; _} -> return context
 
 let mem_init :
-    cctxt:Tezos_client_base.Client_context.full ->
+    cctxt:mineplex_client_base.Client_context.full ->
     parameters:mockup_protocol_parameters ->
     constants_overrides_json:Data_encoding.json option ->
     bootstrap_accounts_json:Data_encoding.json option ->
-    (Chain_id.t * Tezos_protocol_environment.rpc_context) tzresult Lwt.t =
+    (Chain_id.t * mineplex_protocol_environment.rpc_context) tzresult Lwt.t =
  fun ~cctxt ~parameters ~constants_overrides_json ~bootstrap_accounts_json ->
   let hash =
     Block_hash.of_b58check_exn
@@ -434,7 +434,7 @@ let mem_init :
              parsed_account_repr_pp)
           accounts
         >>= fun () ->
-        Tezos_base.TzPervasives.map_s to_bootstrap_account accounts
+        mineplex_base.TzPervasives.map_s to_bootstrap_account accounts
         >>=? fun bootstrap_accounts -> return (Some bootstrap_accounts)
     | exception error ->
         failwith
@@ -454,13 +454,13 @@ let mem_init :
     }
   >>=? fun context ->
   let chain_id =
-    Tezos_mockup_registration.Mockup_args.Chain_id.choose
+    mineplex_mockup_registration.Mockup_args.Chain_id.choose
       ~from_config_file:protocol_overrides.chain_id
   in
   return
     ( chain_id,
       {
-        Tezos_protocol_environment.block_hash = hash;
+        mineplex_protocol_environment.block_hash = hash;
         block_header = shell;
         context;
       } )
@@ -469,7 +469,7 @@ let mem_init :
 (* Register mockup *)
 
 let () =
-  let open Tezos_mockup_registration.Registration in
+  let open mineplex_mockup_registration.Registration in
   let module M : Mockup_sig = struct
     type parameters = mockup_protocol_parameters
 

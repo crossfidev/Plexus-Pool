@@ -47,17 +47,17 @@ checkout the latest code and run unit tests::
 
 The sandbox script allows one to activate the Alpha protocol---located
 in the directory ``proto_alpha``---by using the command
-``tezos-activate-alpha``. We can use the usual commands to run a node,
+``mineplex-activate-alpha``. We can use the usual commands to run a node,
 client and daemons for further manual testing::
 
-  ./src/bin_node/tezos-sandboxed-node.sh 1 --connections 0 &
-  eval `./src/bin_client/tezos-init-sandboxed-client.sh 1`
-  tezos-activate-alpha
+  ./src/bin_node/mineplex-sandboxed-node.sh 1 --connections 0 &
+  eval `./src/bin_client/mineplex-init-sandboxed-client.sh 1`
+  mineplex-activate-alpha
 
 After activating the Alpha protocol we can use the usual RPCs to bake
 with the client and make the chain progress (see :ref:`sandboxed-mode`)::
 
-  tezos-client bake for bootstrap1
+  mineplex-client bake for bootstrap1
 
 In the following section we provide detailed indications on how to
 write migration code, and how to run and bench a migration on a real
@@ -86,7 +86,7 @@ the Alpha protocol`. This procedure consists mainly of three steps:
 
 - specify the version and name of the current protocol (in
   ``raw_context.ml``),
-- compute the protocol's hash (in ``TEZOS_PROTOCOL``), and
+- compute the protocol's hash (in ``mineplex_PROTOCOL``), and
 - rename a bunch of protocol tags (several places in the code base).
 
 These steps are performed by the script ``scripts/snapshot_alpha.sh``,
@@ -103,7 +103,7 @@ be ``d_007``. Invoking the script::
 
 snapshots the Alpha protocol and creates a new directory
 ``src/proto_007_<hash>`` where the ``<hash>`` computed by the script
-coincides with the one in the file ``TEZOS_PROTOCOL``. The new folder
+coincides with the one in the file ``mineplex_PROTOCOL``. The new folder
 contains the Alpha protocol in a format that can be linked in the node
 and client in the build system.
 
@@ -127,10 +127,10 @@ User-activated upgrade
 ----------------------
 
 The current Alpha protocol supports self-amending through the voting
-procedure of Tezos. However, such procedure can take up to three
+procedure of mineplex. However, such procedure can take up to three
 months, and we would rather test our migration without waiting such a
 long period of time. Besides the amendments driven by the protocol,
-Tezos also supports `user-activated` upgrades that are triggered by
+mineplex also supports `user-activated` upgrades that are triggered by
 the shell. These upgrades are useful in case of emergency bug fixes,
 and have been used to migrate from 001 to 002 and from 002 to 003.
 
@@ -169,15 +169,15 @@ instance, the following commands import a context from the snapshot
 ``~/488274.roll`` into the folder ``~/488274-node-orig``, and generate
 an identity in the same folder::
 
-  ./tezos-node snapshot import ~/488274.roll --data-dir ~/488274-node-orig
-  ./tezos-node identity generate --data-dir ~/488274-node-orig
+  ./mineplex-node snapshot import ~/488274.roll --data-dir ~/488274-node-orig
+  ./mineplex-node identity generate --data-dir ~/488274-node-orig
 
 Now, each time we want to test the migration, we copy the contents of
 ``-orig`` folder into a fresh folder where the migration will be
 performed. In our example, we do this with the fresh folder
-``~/tezos-node-test`` by invoking::
+``~/mineplex-node-test`` by invoking::
 
-  cp -r ~/488274-node-orig ~/tezos-node-test
+  cp -r ~/488274-node-orig ~/mineplex-node-test
 
 At this stage, it is important to note the level at which the snapshot
 was taken, in our example ``488274``.
@@ -207,9 +207,9 @@ can generate such a wallet with::
 
 Triggering the migration is then a matter of::
 
-  ./tezos-client -d yes-wallet bake for foundation1 --minimal-timestamp
+  ./mineplex-client -d yes-wallet bake for foundation1 --minimal-timestamp
   or
-  ./tezos-baker-007-* -d yes-wallet run with local node ~/488274-node foundation1
+  ./mineplex-baker-007-* -d yes-wallet run with local node ~/488274-node foundation1
 
 Since we set the user-activated upgrade at level three, we should see
 the change of protocol after baking three blocks.
@@ -245,14 +245,14 @@ Then::
   $ dune exec ./script/yes-wallet/yes_wallet.exe ~/yes-wallet
 
   # import Mainnet context and keep imported clean of modification
-  $ ./tezos-node snapshot import ~/488274.roll --data-dir ~/488274-node-orig
-  $ ./tezos-node identity generate --data-dir ~/488274-node-orig
-  $ cp -r ~/488274-node-orig ~/tezos-node-test
+  $ ./mineplex-node snapshot import ~/488274.roll --data-dir ~/488274-node-orig
+  $ ./mineplex-node identity generate --data-dir ~/488274-node-orig
+  $ cp -r ~/488274-node-orig ~/mineplex-node-test
 
   $ make
 
   # Run the node
-  $ ./tezos-node run --connections 0 --data-dir ~/tezos-node-test --rpc-addr localhost &
+  $ ./mineplex-node run --connections 0 --data-dir ~/mineplex-node-test --rpc-addr localhost &
 
   $ curl -s localhost:8732/chains/main/blocks/head/metadata | jq '.level.level, .protocol, .next_protocol'
   488274
@@ -260,11 +260,11 @@ Then::
   "Pt24m4xiPbLDhVgVfABUjirbmda3yohdN82Sp9FeuAXJ4eV9otd"
 
   # baking a regular 006 block should be quick
-  $ time ./tezos-client -d yes-wallet bake for foundation1 --minimal-timestamp
+  $ time ./mineplex-client -d yes-wallet bake for foundation1 --minimal-timestamp
 
   # baking the migration block to 007 takes longer and you should see the
   # STITCHING! message in the logs
-  $ time ./tezos-client -d yes-wallet bake for foundation1 --minimal-timestamp
+  $ time ./mineplex-client -d yes-wallet bake for foundation1 --minimal-timestamp
 
   # the context resulted from the application of
   # block 488276 is understood by 007
@@ -275,9 +275,9 @@ Then::
 
   # kill the node, a little cleanup and we are ready for another test
   $ fg
-  ./tezos-node run --connections 0 --data-dir ~/check/tezos-heavy/488274-node --rpc-addr localhost
+  ./mineplex-node run --connections 0 --data-dir ~/check/mineplex-heavy/488274-node --rpc-addr localhost
   ^C
-  $ rm -rf ~/tezos-node-test && cp -r ~/488274-node-orig ~/tezos-node-test && rm -f yes-wallet/{wallet_lock,blocks}
+  $ rm -rf ~/mineplex-node-test && cp -r ~/488274-node-orig ~/mineplex-node-test && rm -f yes-wallet/{wallet_lock,blocks}
 
 
 Tips and tricks
@@ -288,7 +288,7 @@ For this reason it is important to inspect the resulting context with
 the RPCs ``context/raw/json`` and ``context/raw/bytes``. The former
 RPC displays the json value relative to a key of the context, using
 its json format. This is possible thanks to the storage functors of
-Tezos, which are used to register every piece of storage in a node and
+mineplex, which are used to register every piece of storage in a node and
 are aware of the json structure of the data. The latter RPC is more
 low level and simply returns the bytes corresponding to a key. Both
 RPCs support the option `depth` to control how much of the subtree of
@@ -346,7 +346,7 @@ public keys using ``utop`` and the functions ``of_b58check`` and
   # let's borrow some code from the protocol tests
   $ dune utop src/proto_007_*/lib_protocol/test/
 
-  # open Tezos_protocol_alpha.Protocol ;;
+  # open mineplex_protocol_alpha.Protocol ;;
 
   # let b58check_to_path c =
   Contract_repr.of_b58check c |> fun (Ok c) ->

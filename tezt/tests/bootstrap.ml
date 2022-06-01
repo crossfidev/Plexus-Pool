@@ -76,10 +76,10 @@ let wait_for_unknown_ancestor node =
    b) Otherwise, we check that both nodes synchronize. In full mode, we also check
    that the save_point is higher than when Node 2 was killed. *)
 let check_bootstrap_with_history_modes hmode1 hmode2 =
-  (* Number of calls to [tezos-client bake for] once the protocol is activated,
+  (* Number of calls to [mineplex-client bake for] once the protocol is activated,
      before we kill [node_2]. *)
   let bakes_before_kill = 9 in
-  (* Number of calls to [tezos-client bake for] while [node_2] is not
+  (* Number of calls to [mineplex-client bake for] while [node_2] is not
      running. This number is high enough so that it is bigger than the
      Last-Allowed-Fork-Level *)
   let bakes_during_kill = 100 in

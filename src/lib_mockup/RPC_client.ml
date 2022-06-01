@@ -95,7 +95,7 @@ let rpc_error_encoding =
 
 class local_ctxt (base_dir : string) (mem_only : bool)
   (mockup_env : Registration.mockup_environment) (chain_id : Chain_id.t)
-  (rpc_context : Tezos_protocol_environment.rpc_context) : RPC_context.json =
+  (rpc_context : mineplex_protocol_environment.rpc_context) : RPC_context.json =
   let write_context rpc_context =
     let (module Mockup_environment) = mockup_env in
     Persistence.overwrite_mockup
@@ -109,9 +109,9 @@ class local_ctxt (base_dir : string) (mem_only : bool)
     let proto_directory =
       (* register protocol-specific RPCs *)
       Directory.prefix
-        Tezos_shell_services.Chain_services.path
+        mineplex_shell_services.Chain_services.path
         (Directory.prefix
-           Tezos_shell_services.Block_services.path
+           mineplex_shell_services.Block_services.path
            (Directory.map
               (fun (_chain, _block) -> Lwt.return rpc_context)
               Mockup_environment.directory))
@@ -215,7 +215,7 @@ class local_ctxt (base_dir : string) (mem_only : bool)
             let body = Option.value ~default:Cohttp_lwt.Body.empty body in
             Cohttp_lwt.Body.to_string body
             >>= fun body ->
-            match Tezos_rpc_http.Media_type.json.destruct input body with
+            match mineplex_rpc_http.Media_type.json.destruct input body with
             | Error _s ->
                 Error_monad.fail (Local_RPC_error Rpc_cannot_parse_body)
             | Ok body ->

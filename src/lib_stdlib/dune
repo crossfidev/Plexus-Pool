@@ -1,6 +1,6 @@
 (library
- (name tezos_stdlib)
- (public_name tezos-stdlib)
+ (name mineplex_stdlib)
+ (public_name mineplex-stdlib)
  (libraries hex
             zarith
             lwt)
@@ -9,4 +9,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

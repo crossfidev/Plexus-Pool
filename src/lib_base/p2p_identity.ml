@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplexlex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -46,7 +46,7 @@ let encoding =
            | Some peer_id ->
                peer_id
            | None ->
-               Tezos_crypto.Crypto_box.hash public_key
+               mineplexlex_crypto.Crypto_box.hash public_key
          in
          {peer_id; public_key; secret_key; proof_of_work_stamp})
        (obj4

@@ -1,23 +1,23 @@
 (library
- (name tezos_base)
- (public_name tezos-base)
- (flags (:standard -open Tezos_stdlib
-                   -open Tezos_crypto
+ (name mineplex_base)
+ (public_name mineplex-base)
+ (flags (:standard -open mineplex_stdlib
+                   -open mineplex_crypto
                    -open Data_encoding
-                   -open Tezos_error_monad
-                   -open Tezos_rpc
-                   -open Tezos_clic
-                   -open Tezos_micheline
-                   -open Tezos_event_logging
+                   -open mineplex_error_monad
+                   -open mineplex_rpc
+                   -open mineplex_clic
+                   -open mineplex_micheline
+                   -open mineplex_event_logging
                    ))
- (libraries tezos-stdlib
-            tezos-crypto
+ (libraries mineplex-stdlib
+            mineplex-crypto
             data-encoding
-            tezos-error-monad
-            tezos-event-logging
-            tezos-rpc
-            tezos-clic
-            tezos-micheline
+            mineplex-error-monad
+            mineplex-event-logging
+            mineplex-rpc
+            mineplex-clic
+            mineplex-micheline
             ptime
             ezjsonm
             lwt
@@ -26,4 +26,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

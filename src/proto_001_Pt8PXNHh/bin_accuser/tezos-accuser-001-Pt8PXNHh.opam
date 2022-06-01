@@ -1,21 +1,21 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-client-001-Pt8PXNHh"
-  "tezos-client-commands"
-  "tezos-baking-001-Pt8PXNHh-commands"
-  "tezos-client-base-unix"
+  "mineplex-base"
+  "mineplex-client-001-Pt8PXNHh"
+  "mineplex-client-commands"
+  "mineplex-baking-001-Pt8PXNHh-commands"
+  "mineplex-client-base-unix"
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos/Protocol: accuser binary"
+synopsis: "mineplex/Protocol: accuser binary"

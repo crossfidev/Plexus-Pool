@@ -3,7 +3,7 @@
 Multinetwork Node
 =================
 
-Tezos is run on several networks, such as Mainnet (the main network)
+mineplex is run on several networks, such as Mainnet (the main network)
 and various :ref:`Test Networks<test-networks>`. Some users may also want to run
 their own networks for various reasons. Networks differ in various ways:
 
@@ -32,9 +32,9 @@ Built-In Networks
 The simplest way to select the network to connect to is to use the ``--network``
 option when you initialize your node configuration. For instance, to run on Carthagenet::
 
-  tezos-node config init --data-dir ~/tezos-carthagenet --network carthagenet
-  tezos-node identity generate --data-dir ~/tezos-carthagenet
-  tezos-node run --data-dir ~/tezos-carthagenet
+  mineplex-node config init --data-dir ~/mineplex-carthagenet --network carthagenet
+  mineplex-node identity generate --data-dir ~/mineplex-carthagenet
+  mineplex-node run --data-dir ~/mineplex-carthagenet
 
 The ``--network`` option is non case-sensitive and can be used with
 the following built-in networks:
@@ -47,14 +47,14 @@ the following built-in networks:
 
 If you did not initialize your node configuration, or if your configuration
 file contains no ``network`` field, the node assumes you want to run Mainnet.
-You can use the ``--network`` option with ``tezos-node run`` to make sure
+You can use the ``--network`` option with ``mineplex-node run`` to make sure
 your node runs on the expected network. For instance, to make sure that
 it runs on Carthagenet::
 
-  tezos-node run --data-dir ~/tezos-carthagenet --network carthagenet
+  mineplex-node run --data-dir ~/mineplex-carthagenet --network carthagenet
 
 This command will fail with an error if the configured network is not Carthagenet.
-The node also displays the chain name (such as ``TEZOS_MAINNET``) when it starts.
+The node also displays the chain name (such as ``mineplex_MAINNET``) when it starts.
 
 Custom Networks
 ---------------
@@ -71,10 +71,10 @@ Here is an example configuration file for Mainnet::
         "block": "BLockGenesisGenesisGenesisGenesisGenesisf79b5d1CoW2",
         "protocol": "Ps9mPmXaRzmzk35gbAYNCAw6UXdE2qoABTHbN2oEEc1qM7CwT9P"
       },
-      "chain_name": "TEZOS_MAINNET",
-      "old_chain_name": "TEZOS_BETANET_2018-06-30T16:07:32Z",
+      "chain_name": "mineplex_MAINNET",
+      "old_chain_name": "mineplex_BETANET_2018-06-30T16:07:32Z",
       "incompatible_chain_name": "INCOMPATIBLE",
-      "sandboxed_chain_name": "SANDBOXED_TEZOS_MAINNET",
+      "sandboxed_chain_name": "SANDBOXED_mineplex_MAINNET",
       "user_activated_upgrades": [
         {
           "level": 28082,
@@ -101,7 +101,7 @@ that you will not automatically get updates to the list of bootstrap peers and
 user-activated upgrades (see `Alias Versus Explicit Configuration`_).
 
 - ``genesis`` is the description of the genesis block, i.e. the first block of the chain.
-  Inspect the genesis block using ``tezos-client rpc get /chains/main/blocks/0``
+  Inspect the genesis block using ``mineplex-client rpc get /chains/main/blocks/0``
   to find these values.
 
 - ``chain_name`` is the name of the network (nodes only talk to other nodes which use

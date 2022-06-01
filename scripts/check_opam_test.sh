@@ -19,7 +19,7 @@ for opam in $opams; do
     fi
 done
 
-tested=$(grep -e '^opam:tezos-.*:$' "$yml" | cut -d: -f3)
+tested=$(grep -e '^opam:mineplex-.*:$' "$yml" | cut -d: -f3)
 for package in $tested; do
     found=$(find "$src_dir/src" "$src_dir/vendors" -name $package.opam | wc -l 2>&1)
     if [ $found != 1 ] ; then

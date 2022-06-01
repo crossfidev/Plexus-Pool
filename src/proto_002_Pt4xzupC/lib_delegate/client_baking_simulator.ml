@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -55,10 +55,10 @@ let () =
 
 type incremental = {
   predecessor : Client_baking_blocks.block_info;
-  context : Tezos_protocol_environment.Context.t;
+  context : mineplex_protocol_environment.Context.t;
   state : Protocol.validation_state;
   rev_operations : Operation.packed list;
-  header : Tezos_base.Block_header.shell_header;
+  header : mineplex_base.Block_header.shell_header;
 }
 
 let load_context ~context_path = Context.init ~readonly:true context_path
@@ -81,8 +81,8 @@ let begin_construction ~timestamp ?protocol_data index predecessor =
   | None ->
       fail Failed_to_checkout_context
   | Some context ->
-      let header : Tezos_base.Block_header.shell_header =
-        Tezos_base.Block_header.
+      let header : mineplex_base.Block_header.shell_header =
+        mineplex_base.Block_header.
           {
             predecessor = predecessor.hash;
             proto_level = predecessor.proto_level;

@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-open Tezos_clic
+open mineplex_clic
 
 let protocol_constants_arg =
   Clic.arg
@@ -56,18 +56,18 @@ let create_mockup_command_handler
   >>=? fun constants_overrides_json ->
   load_json_file cctxt bootstrap_accounts_file
   >>=? fun bootstrap_accounts_json ->
-  Tezos_mockup.Persistence.create_mockup
-    ~cctxt:(cctxt :> Tezos_client_base.Client_context.full)
+  mineplex_mockup.Persistence.create_mockup
+    ~cctxt:(cctxt :> mineplex_client_base.Client_context.full)
     ~protocol_hash:Protocol.hash
     ~constants_overrides_json
     ~bootstrap_accounts_json
   >>=? fun () ->
-  Tezos_mockup_commands.Mockup_wallet.populate cctxt bootstrap_accounts_file
+  mineplex_mockup_commands.Mockup_wallet.populate cctxt bootstrap_accounts_file
 
 let create_mockup_command : Protocol_client_context.full Clic.command =
   let open Clic in
   command
-    ~group:Tezos_mockup_commands.Mockup_commands.group
+    ~group:mineplex_mockup_commands.Mockup_commands.group
     ~desc:"Create a mockup environment."
     (args2 protocol_constants_arg bootstrap_accounts_arg)
     (prefixes ["create"; "mockup"] @@ stop)

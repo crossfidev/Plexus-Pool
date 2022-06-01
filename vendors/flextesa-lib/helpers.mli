@@ -4,10 +4,10 @@ open Internal_pervasives
 
 val dump_connections :
      < application_name: string ; console: Console.t ; .. >
-  -> Tezos_node.t list
+  -> mineplex_node.t list
   -> (unit, [> System_error.t]) Asynchronous_result.t
 (** Display all the P2P connections of a set of nodes, see
-    {!Tezos_node.connections}. *)
+    {!mineplex_node.connections}. *)
 
 val clear_root :
   < paths: Paths.t ; .. > -> (unit, [> System_error.t]) Asynchronous_result.t
@@ -31,19 +31,19 @@ val wait_for :
 
 val kill_node :
      < runner: Running_processes.State.t ; .. >
-  -> Tezos_node.t
+  -> mineplex_node.t
   -> (unit, [> System_error.t]) Asynchronous_result.t
 (** Kill a node's process. *)
 
 val restart_node :
-     client_exec:Tezos_executable.t
+     client_exec:mineplex_executable.t
   -> < application_name: string
      ; console: Console.t
      ; env_config: Environment_configuration.t
      ; paths: Paths.t
      ; runner: Running_processes.State.t
      ; .. >
-  -> Tezos_node.t
+  -> mineplex_node.t
   -> (unit, [> System_error.t | Process_result.Error.t]) Asynchronous_result.t
 (** Restart a killed node. *)
 
@@ -83,7 +83,7 @@ module System_dependencies : sig
   val precheck :
        ?using_docker:bool
     -> ?protocol_paths:string list
-    -> ?executables:Tezos_executable.t list
+    -> ?executables:mineplex_executable.t list
     -> < application_name: string
        ; console: Console.t
        ; paths: Paths.t
@@ -99,7 +99,7 @@ module Shell_environment : sig
   val make : aliases:(string * string * string) list -> t
   (** Aliases are [(name, command, doc)] tuples. *)
 
-  val build : < paths: Paths.t ; .. > -> clients:Tezos_client.t list -> t
+  val build : < paths: Paths.t ; .. > -> clients:mineplex_client.t list -> t
 
   val write :
        < application_name: string ; .. >

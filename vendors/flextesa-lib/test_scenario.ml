@@ -3,8 +3,8 @@ open Internal_pervasives
 module Inconsistency_error = struct
   type t =
     [ `Empty_protocol_list
-    | `Too_many_protocols of Tezos_protocol.t list
-    | `Too_many_timestamp_delays of Tezos_protocol.t list ]
+    | `Too_many_protocols of mineplex_protocol.t list
+    | `Too_many_timestamp_delays of mineplex_protocol.t list ]
 
   let should_be_one_protocol = function
     | [one] -> return one
@@ -30,7 +30,7 @@ module Inconsistency_error = struct
 end
 
 module Topology = struct
-  type node = Tezos_node.t
+  type node = mineplex_node.t
 
   type _ t =
     | Mesh : {size: int} -> node list t
@@ -62,9 +62,9 @@ module Topology = struct
   let rec node_ids : type a. a t -> a -> string list =
    fun topo res ->
     match (topo, res) with
-    | Mesh _, l -> List.map l ~f:(fun nod -> nod.Tezos_node.id)
+    | Mesh _, l -> List.map l ~f:(fun nod -> nod.mineplex_node.id)
     | Bottleneck {left; right; _}, (l, i, r) ->
-        (i.Tezos_node.id :: node_ids left.topology l)
+        (i.mineplex_node.id :: node_ids left.topology l)
         @ node_ids right.topology r
     | Net_in_the_middle {left; right; middle}, (l, i, r) ->
         node_ids middle.topology i @ node_ids left.topology l
@@ -154,7 +154,7 @@ end
 module Queries = struct
   let all_levels ?(chain = "main") state ~nodes =
     List.fold nodes ~init:(return [])
-      ~f:(fun prevm {Tezos_node.id; rpc_port; _} ->
+      ~f:(fun prevm {mineplex_node.id; rpc_port; _} ->
         prevm
         >>= fun prev ->
         Running_processes.run_cmdf state
@@ -204,7 +204,7 @@ module Queries = struct
       EF.(
         wf "Checking for all levels to be %s (nodes: %s%s)" level_string
           (String.concat ~sep:", "
-             (List.map nodes ~f:(fun n -> n.Tezos_node.id)))
+             (List.map nodes ~f:(fun n -> n.mineplex_node.id)))
           (Option.value_map chain ~default:"" ~f:(sprintf ", chain: %s")))
     >>= fun () ->
     Helpers.wait_for state ?attempts_factor ~attempts ~seconds (fun _nth ->
@@ -220,7 +220,7 @@ module Queries = struct
 end
 
 module Network = struct
-  type t = {nodes: Tezos_node.t list}
+  type t = {nodes: mineplex_node.t list}
 
   let make nodes = {nodes}
 
@@ -231,7 +231,7 @@ module Network = struct
       >>= fun all_used ->
       let taken port = List.find all_used ~f:(fun (p, _) -> Int.equal p port) in
       List_sequential.iter nodes
-        ~f:(fun {Tezos_node.id; rpc_port; p2p_port; _} ->
+        ~f:(fun {mineplex_node.id; rpc_port; p2p_port; _} ->
           let fail s (p, `Tcp (_, row)) =
             System_error.fail_fatalf
               "Node: %S's %s port %d already in use {%s}" id s p
@@ -245,26 +245,26 @@ module Network = struct
     else return () )
     >>= fun () ->
     let protocols =
-      List.map ~f:Tezos_node.protocol nodes
-      |> List.dedup_and_sort ~compare:Tezos_protocol.compare in
+      List.map ~f:mineplex_node.protocol nodes
+      |> List.dedup_and_sort ~compare:mineplex_protocol.compare in
     Inconsistency_error.should_be_one_protocol protocols
     >>= fun protocol ->
     Inconsistency_error.should_be_one_timestamp_delay protocols
     >>= fun () ->
-    Tezos_protocol.ensure state protocol
+    mineplex_protocol.ensure state protocol
     >>= fun () ->
     List.fold nodes ~init:(return ()) ~f:(fun prev_m node ->
         prev_m
         >>= fun () ->
-        Running_processes.start state (Tezos_node.process state node)
+        Running_processes.start state (mineplex_node.process state node)
         >>= fun _ -> return ())
     >>= fun () ->
     let node_0 = List.hd_exn nodes in
-    let client = Tezos_client.of_node node_0 ~exec:client_exec in
+    let client = mineplex_client.of_node node_0 ~exec:client_exec in
     Dbg.e EF.(af "Trying to bootstrap client") ;
-    Tezos_client.wait_for_node_bootstrap state client
+    mineplex_client.wait_for_node_bootstrap state client
     >>= fun () ->
-    Tezos_client.rpc state ~client `Get ~path:"/chains/main/blocks/head/header"
+    mineplex_client.rpc state ~client `Get ~path:"/chains/main/blocks/head/header"
     >>= fun json ->
     let do_activation =
       (* If the level is 0 we still do the activation. *)
@@ -272,13 +272,13 @@ module Network = struct
       ||
       try Int.equal Jqo.(field ~k:"level" json |> get_int) 0 with _ -> false
     in
-    ( if do_activation then Tezos_client.activate_protocol state client protocol
+    ( if do_activation then mineplex_client.activate_protocol state client protocol
     else return () )
     >>= fun () ->
     Dbg.e EF.(af "Waiting for all nodes to be bootstrapped") ;
     List_sequential.iter nodes ~f:(fun node ->
-        let client = Tezos_client.of_node node ~exec:client_exec in
-        Tezos_client.wait_for_node_bootstrap state client)
+        let client = mineplex_client.of_node node ~exec:client_exec in
+        mineplex_client.wait_for_node_bootstrap state client)
     >>= fun () ->
     (* We make sure all nodes got activation before trying to continue: *)
     Queries.wait_for_all_levels_to_be state ~attempts:20 ~seconds:0.5
@@ -291,14 +291,14 @@ let network_with_protocol ?do_activation ?node_custom_network
   let pre_edit_nodes =
     Topology.build ?base_port ?external_peer_ports
       ~make_node:(fun id ~expected_connections ~rpc_port ~p2p_port peers ->
-        Tezos_node.make ?protocol ~exec:node_exec id ~expected_connections
+        mineplex_node.make ?protocol ~exec:node_exec id ~expected_connections
           ?custom_network:node_custom_network ~rpc_port ~p2p_port peers)
       (Topology.mesh "N" size) in
   nodes_history_mode_edits pre_edit_nodes
   >>= fun nodes ->
   let protocols =
-    List.map ~f:Tezos_node.protocol nodes
-    |> List.dedup_and_sort ~compare:Tezos_protocol.compare in
+    List.map ~f:mineplex_node.protocol nodes
+    |> List.dedup_and_sort ~compare:mineplex_protocol.compare in
   Inconsistency_error.should_be_one_protocol protocols
   >>= fun protocol ->
   Inconsistency_error.should_be_one_timestamp_delay protocols

@@ -1,6 +1,6 @@
 open Error_monad
 
-let name = "TEZOS_PROTOCOL"
+let name = "mineplex_PROTOCOL"
 
 open Protocol
 

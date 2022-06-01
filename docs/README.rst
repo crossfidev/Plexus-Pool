@@ -2,8 +2,8 @@
 Building documentation locally
 ******************************
 
-The documentation is available online at `tezos.gitlab.io <http://tezos.gitlab.io/>`_,
-always up to date with master on `GitLab <https://gitlab.com/tezos/tezos>`_.
+The documentation is available online at `mineplex.gitlab.io <http://mineplex.gitlab.io/>`_,
+always up to date with master on `GitLab <https://gitlab.com/mineplex/mineplex>`_.
 
 Building instructions
 ---------------------
@@ -65,10 +65,10 @@ Odoc is used for OCaml API generation, that you can install with:
 
     opam install odoc
 
-Tezos generates the API documentation for all libraries in HTML format.  The
+mineplex generates the API documentation for all libraries in HTML format.  The
 generated HTML pages in ``_build/<context>/_doc``. It creates one sub-directory
 per public library and generates an ``index.html`` file in each sub-directory.
 
-The documentation is not installed on the system by Tezos. It is meant to be
+The documentation is not installed on the system by mineplex. It is meant to be
 read locally while developing and then published on the www when releasing
 packages.

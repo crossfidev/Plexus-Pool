@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -45,7 +45,7 @@ let raw_info cctxt ?(chain = `Main) hash shell_header =
   >>=? fun chain_id ->
   Shell_services.Blocks.protocols cctxt ~chain ~block ()
   >>=? fun {current_protocol = protocol; next_protocol} ->
-  let { Tezos_base.Block_header.predecessor;
+  let { mineplex_base.Block_header.predecessor;
         fitness;
         timestamp;
         level;
@@ -81,7 +81,7 @@ let info cctxt ?(chain = `Main) block =
 module Block_seen_event = struct
   type t = {
     hash : Block_hash.t;
-    header : Tezos_base.Block_header.t;
+    header : mineplex_base.Block_header.t;
     occurrence : [`Valid_blocks of Chain_id.t | `Heads];
   }
 
@@ -124,7 +124,7 @@ module Block_seen_event = struct
                        (function
                          | `Valid_blocks ch -> Some ((), ch) | _ -> None)
                        (fun ((), ch) -> `Valid_blocks ch) ]))
-             (req "header" Tezos_base.Block_header.encoding))
+             (req "header" mineplex_base.Block_header.encoding))
       in
       With_version.(encoding ~name (first_version v0_encoding))
 
@@ -152,7 +152,7 @@ let monitor_valid_blocks cctxt ?chains ?protocols ~next_protocols () =
            cctxt
            ~chain:(`Hash chain)
            block
-           header.Tezos_base.Block_header.shell)
+           header.mineplex_base.Block_header.shell)
        block_stream)
 
 let monitor_heads cctxt ~next_protocols chain =
@@ -160,7 +160,7 @@ let monitor_heads cctxt ~next_protocols chain =
   >>=? fun (block_stream, _stop) ->
   return
     (Lwt_stream.map_s
-       (fun (block, ({Tezos_base.Block_header.shell; _} as header)) ->
+       (fun (block, ({mineplex_base.Block_header.shell; _} as header)) ->
          Block_seen_event.(Event.emit (make block header `Heads))
          >>=? fun () -> raw_info cctxt ~chain block shell)
        block_stream)

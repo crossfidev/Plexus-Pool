@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -28,10 +28,10 @@ open Alpha_context
 
 type incremental = {
   predecessor : Client_baking_blocks.block_info;
-  context : Tezos_protocol_environment.Context.t;
+  context : mineplex_protocol_environment.Context.t;
   state : validation_state;
   rev_operations : Operation.packed list;
-  header : Tezos_base.Block_header.shell_header;
+  header : mineplex_base.Block_header.shell_header;
 }
 
 val load_context : context_path:string -> Context.index Lwt.t
@@ -54,6 +54,6 @@ val add_operation :
 
 val finalize_construction :
   incremental ->
-  (Tezos_protocol_environment.validation_result * block_header_metadata)
+  (mineplex_protocol_environment.validation_result * block_header_metadata)
   tzresult
   Lwt.t

@@ -1,33 +1,33 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-protocol-compiler"
+  "mineplex-base"
+  "mineplex-protocol-compiler"
   "alcotest-lwt" { with-test & >= "1.1.0" }
-  "tezos-002-Pt4xzupC-test-helpers" { with-test }
-  "tezos-stdlib-unix" { with-test }
-  "tezos-protocol-environment" { with-test }
-  "tezos-test-services" { with-test }
-  "tezos-client-base" { with-test }
-  "tezos-protocol-002-Pt4xzupC-parameters" { with-test }
-  "tezos-shell-services" { with-test }
+  "mineplex-002-Pt4xzupC-test-helpers" { with-test }
+  "mineplex-stdlib-unix" { with-test }
+  "mineplex-protocol-environment" { with-test }
+  "mineplex-test-services" { with-test }
+  "mineplex-client-base" { with-test }
+  "mineplex-protocol-002-Pt4xzupC-parameters" { with-test }
+  "mineplex-shell-services" { with-test }
 ]
 build: [
   [
-    "%{tezos-protocol-compiler:lib}%/replace"
-    "%{tezos-protocol-compiler:lib}%/dune_protocol.template"
+    "%{mineplex-protocol-compiler:lib}%/replace"
+    "%{mineplex-protocol-compiler:lib}%/dune_protocol.template"
     "dune"
-    "%{tezos-protocol-compiler:lib}%/final_protocol_versions"
+    "%{mineplex-protocol-compiler:lib}%/final_protocol_versions"
     "002_Pt4xzupC"
   ]
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos/Protocol: tests for economic-protocol definition"
+synopsis: "mineplex/Protocol: tests for economic-protocol definition"

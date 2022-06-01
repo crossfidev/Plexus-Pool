@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -734,7 +734,7 @@ let tests : (string * (state -> unit tzresult Lwt.t)) list =
 
 let wrap (n, f) =
   Alcotest_lwt.test_case n `Quick (fun _ () ->
-      Lwt_utils_unix.with_tempdir "tezos_test_" (fun dir ->
+      Lwt_utils_unix.with_tempdir "mineplex_test_" (fun dir ->
           wrap_state_init f dir
           >>= function
           | Ok () ->

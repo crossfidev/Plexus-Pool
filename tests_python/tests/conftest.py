@@ -85,7 +85,7 @@ def sandbox(log_dir: Optional[str], singleprocess: bool) -> Iterator[Sandbox]:
     Nodes, bakers and endorsers are added/removed dynamically."""
     # log_dir is None if not provided on command-line
     # singleprocess is false if not provided on command-line
-    with Sandbox(paths.TEZOS_HOME,
+    with Sandbox(paths.mineplex_HOME,
                  constants.IDENTITIES,
                  log_dir=log_dir,
                  singleprocess=singleprocess) as sandbox:
@@ -187,20 +187,20 @@ def sandbox_multibranch(log_dir, request) -> Iterator[SandboxMultiBranch]:
     @pytest.mark.parametrize('sandbox_multibranch', [MAP], indirect=True)
 
     The executables (node, baker, endorser)
-    - for node_id 0 will be looked up in `TEZOS_BINARY/zeronet`,
-    - for node_id 1 will be looked up in `TEZOS_BINARY/mainnet` and so on...
+    - for node_id 0 will be looked up in `mineplex_BINARY/zeronet`,
+    - for node_id 1 will be looked up in `mineplex_BINARY/mainnet` and so on...
 
     baker and endorser will use the specified protocol version, according
-    to the tezos executables naming conventions.
+    to the mineplex executables naming conventions.
     """
-    if paths.TEZOS_BINARIES is None:
+    if paths.mineplex_BINARIES is None:
         pytest.skip()
     branch_map = request.param
     assert branch_map is not None
     num_peers = max(branch_map) + 1
 
-    assert paths.TEZOS_BINARIES is not None  # helps `mypy`
-    with SandboxMultiBranch(paths.TEZOS_BINARIES,
+    assert paths.mineplex_BINARIES is not None  # helps `mypy`
+    with SandboxMultiBranch(paths.mineplex_BINARIES,
                             constants.IDENTITIES,
                             num_peers=num_peers,
                             log_dir=log_dir,
@@ -223,13 +223,13 @@ def pytest_collection_modifyitems(config, items):
 
 
 def _wrap_path(binary: str) -> str:
-    res = os.path.join(paths.TEZOS_HOME, binary)
+    res = os.path.join(paths.mineplex_HOME, binary)
     assert os.path.isfile(res), f'{res} is not a file'
     return res
 
 
-CLIENT = 'tezos-client'
-CLIENT_ADMIN = 'tezos-admin-client'
+CLIENT = 'mineplex-client'
+CLIENT_ADMIN = 'mineplex-admin-client'
 
 
 @pytest.fixture(scope="class")
@@ -256,7 +256,7 @@ def mockup_client(request, sandbox: Sandbox) -> Iterator[Client]:
         a mockup using custom arguments; you MUST do the same
         as this method.
     """
-    with tempfile.TemporaryDirectory(prefix='tezos-client.') as base_dir:
+    with tempfile.TemporaryDirectory(prefix='mineplex-client.') as base_dir:
         unmanaged_client = sandbox.create_client(base_dir=base_dir)
         res = unmanaged_client.create_mockup(
             protocol=request.param).create_mockup_result

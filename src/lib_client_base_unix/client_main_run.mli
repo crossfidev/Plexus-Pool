@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -39,7 +39,7 @@ sig
 
   val parse_config_args :
     (* How to parse CLI arguments *)
-    #Tezos_client_base.Client_context.full ->
+    #mineplex_client_base.Client_context.full ->
     string list ->
     (Client_config.parsed_config_args * string list) tzresult Lwt.t
 
@@ -64,11 +64,11 @@ sig
        together. Arguments [base_dir] and [require_auth] are to be used
        if you need them, default (in [Client_config]) is to ignore them. *)
              string ->
-    config_commands:Tezos_client_base.Client_context.full Clic.command list ->
-    builtin_commands:Tezos_client_base.Client_context.full Clic.command list ->
-    other_commands:Tezos_client_base.Client_context.full Clic.command list ->
+    config_commands:mineplex_client_base.Client_context.full Clic.command list ->
+    builtin_commands:mineplex_client_base.Client_context.full Clic.command list ->
+    other_commands:mineplex_client_base.Client_context.full Clic.command list ->
     require_auth:bool ->
-    Tezos_client_base.Client_context.full Clic.command list
+    mineplex_client_base.Client_context.full Clic.command list
 
   val logger :
     (* Provide your own [logger] here if you need to override the

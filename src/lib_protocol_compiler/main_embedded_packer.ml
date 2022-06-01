@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -28,11 +28,11 @@ let srcdir = Sys.argv.(1)
 let version = Sys.argv.(2)
 
 let srcdir =
-  if Filename.basename srcdir = "TEZOS_PROTOCOL" then Filename.dirname srcdir
+  if Filename.basename srcdir = "mineplex_PROTOCOL" then Filename.dirname srcdir
   else srcdir
 
 let (hash, sources) =
-  match Lwt_main.run (Tezos_base_unix.Protocol_files.read_dir srcdir) with
+  match Lwt_main.run (mineplex_base_unix.Protocol_files.read_dir srcdir) with
   | Ok (None, proto) ->
       (Protocol.hash proto, proto)
   | Ok (Some hash, proto) ->
@@ -40,7 +40,7 @@ let (hash, sources) =
   | Error err ->
       Format.kasprintf
         Stdlib.failwith
-        "Failed to read TEZOS_PROTOCOL: %a"
+        "Failed to read mineplex_PROTOCOL: %a"
         pp_print_error
         err
 
@@ -49,8 +49,8 @@ let () =
     {|
 module Source = struct
   let hash =
-    Some (Tezos_crypto.Protocol_hash.of_b58check_exn %S)
-  let sources = Tezos_base.Protocol.%a
+    Some (mineplex_crypto.Protocol_hash.of_b58check_exn %S)
+  let sources = mineplex_base.Protocol.%a
 end
 @.|}
     (Protocol_hash.to_b58check hash)
@@ -61,9 +61,9 @@ let () =
   Format.printf
     {|
 module Registered =
-  Tezos_protocol_updater.Registered_protocol.Register_embedded_%s
-    (Tezos_protocol_environment_%s.Environment)
-    (Tezos_raw_protocol_%s.Main)
+  mineplex_protocol_updater.Registered_protocol.Register_embedded_%s
+    (mineplex_protocol_environment_%s.Environment)
+    (mineplex_raw_protocol_%s.Main)
     (Source)
 @.|}
     (Protocol.module_name_of_env_version sources.expected_env)

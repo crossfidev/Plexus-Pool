@@ -21,10 +21,10 @@ def format_command(cmd: List[str]) -> str:
 
 
 class Client:
-    """Client to a Tezos node.
+    """Client to a mineplex node.
 
     Manage the persistent client state and provides methods to call
-    tezos-client/tezos-admin-client commands, and return structured
+    mineplex-client/mineplex-admin-client commands, and return structured
     representation of the client output.
 
     The most generic method to call the client is `run`. It calls the client
@@ -78,7 +78,7 @@ class Client:
         self._is_tmp_dir = base_dir is None
 
         if base_dir is None:
-            base_dir = tempfile.mkdtemp(prefix='tezos-client.')
+            base_dir = tempfile.mkdtemp(prefix='mineplex-client.')
             assert base_dir
         self.base_dir = base_dir
 
@@ -117,9 +117,9 @@ class Client:
         """Run an arbitrary command
 
         Args:
-            params (list): list of parameters given to the tezos-client,
-            admin (bool): False to call tezos-client, True to call
-                          tezos-admin-client
+            params (list): list of parameters given to the mineplex-client,
+            admin (bool): False to call mineplex-client, True to call
+                          mineplex-admin-client
             check (bool): raises an exception if client call fails
             trace (bool): use '-l' option to trace RPCs
         Returns:
@@ -137,7 +137,7 @@ class Client:
 
         new_env = os.environ.copy()
         if self._disable_disclaimer:
-            new_env["TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER"] = "Y"
+            new_env["mineplex_CLIENT_UNSAFE_DISABLE_DISCLAIMER"] = "Y"
         completed_process = subprocess.run(cmd,
                                            capture_output=True,
                                            text=True,

@@ -1,12 +1,12 @@
 (executables
  (names test)
- (libraries tezos-base
-            tezos-storage
-            tezos-stdlib-unix
+ (libraries mineplex-base
+            mineplex-storage
+            mineplex-stdlib-unix
             alcotest-lwt)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_storage
-                   -open Tezos_stdlib_unix)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_storage
+                   -open mineplex_stdlib_unix)))
 
 (alias
  (name buildtest)
@@ -14,10 +14,10 @@
 
 (alias
  (name runtest)
- (package tezos-storage)
+ (package mineplex-storage)
  (action (chdir %{workspace_root} (run %{exe:test.exe}))))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

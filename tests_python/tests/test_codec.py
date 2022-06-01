@@ -3,7 +3,7 @@ import pytest
 from codec.codec import Codec
 from tools import paths
 
-CODEC_BIN = paths.TEZOS_HOME + "tezos-codec"
+CODEC_BIN = paths.mineplex_HOME + "mineplex-codec"
 
 ENCODINGS = [("network_version", {"p2p_version": 0,
                                   "distributed_db_version": 1,

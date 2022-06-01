@@ -7,7 +7,7 @@ from launchers.sandbox import Sandbox
 @pytest.fixture(scope="class")
 def sandbox() -> Iterator[Sandbox]:
     """Example of sandbox fixture."""
-    with Sandbox(paths.TEZOS_HOME, constants.IDENTITIES) as sandbox:
+    with Sandbox(paths.mineplex_HOME, constants.IDENTITIES) as sandbox:
         sandbox.add_node(0, params=constants.NODE_PARAMS)
         utils.activate_alpha(sandbox.client(0))
         sandbox.add_node(1, params=constants.NODE_PARAMS)
@@ -44,7 +44,7 @@ class TestExample:
 
     # TODO The next test fails due to a bug. It runs
     #
-    # tezos-client wait for ooA4Gaa1xnT7DT6C42acy4b6NsvjJfzVYyX5CaD6vft9Y4p9ktu
+    # mineplex-client wait for ooA4Gaa1xnT7DT6C42acy4b6NsvjJfzVYyX5CaD6vft9Y4p9ktu
     # to be included --check-previous 2
     #
     # Which calls the RPC

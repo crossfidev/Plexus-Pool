@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -30,7 +30,7 @@ let ( // ) = Filename.concat
 
 let home = try Sys.getenv "HOME" with Not_found -> "/root"
 
-let default_data_dir = home // ".tezos-node"
+let default_data_dir = home // ".mineplex-node"
 
 let default_rpc_port = 8732
 
@@ -111,8 +111,8 @@ let blockchain_network_carthagenet =
         Protocol_hash.of_b58check_exn
           "PtYuensgYBb3G3x1hLLbCmcav8ue8Kyd2khADcL5LsT5R1hcXex";
     }
-    ~chain_name:"TEZOS_ALPHANET_CARTHAGE_2019-11-28T13:02:13Z"
-    ~sandboxed_chain_name:"SANDBOXED_TEZOS"
+    ~chain_name:"mineplex_ALPHANET_CARTHAGE_2019-11-28T13:02:13Z"
+    ~sandboxed_chain_name:"SANDBOXED_mineplex"
     ~default_bootstrap_peers:
       [ "tezaria.com";
         "34.76.169.218";
@@ -143,8 +143,8 @@ let blockchain_network_sandbox =
                 `String
                   "edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2" ) ];
       }
-    ~chain_name:"TEZOS"
-    ~sandboxed_chain_name:"SANDBOXED_TEZOS"
+    ~chain_name:"mineplex"
+    ~sandboxed_chain_name:"SANDBOXED_mineplex"
 
 let blockchain_network_encoding : blockchain_network Data_encoding.t =
   let open Data_encoding in
@@ -591,7 +591,7 @@ let p2p =
        (opt
           "bootstrap-peers"
           ~description:
-            "List of hosts. Tezos can connect to both IPv6 and IPv4 hosts. If \
+            "List of hosts. mineplex can connect to both IPv6 and IPv4 hosts. If \
              the port is not specified, default port 9732 will be assumed."
           (list string))
        (opt

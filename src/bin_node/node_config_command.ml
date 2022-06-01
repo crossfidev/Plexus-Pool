@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -24,7 +24,7 @@
 (*****************************************************************************)
 
 let () =
-  Prevalidator_filters.register (module Tezos_mempool_001_Pt8PXNHh.Filter)
+  Prevalidator_filters.register (module mineplex_mempool_001_Pt8PXNHh.Filter)
 
 (** Commands *)
 
@@ -152,16 +152,16 @@ end
 module Manpage = struct
   let command_description =
     "The $(b,config) command is meant to inspect and amend the configuration \
-     of the Tezos node. This command is complementary to manually editing the \
-     tezos node configuration file. Its arguments are a subset of the \
+     of the mineplex node. This command is complementary to manually editing the \
+     mineplex node configuration file. Its arguments are a subset of the \
      $(i,run) command ones."
 
   let description =
     [ `S "DESCRIPTION";
       `P (command_description ^ " Several operations are possible: ");
       `P
-        "$(b,show) reads, parses and displays Tezos current config file. Use \
-         this command to see exactly what config file will be used by Tezos. \
+        "$(b,show) reads, parses and displays mineplex current config file. Use \
+         this command to see exactly what config file will be used by mineplex. \
          If additional command-line arguments are provided, the displayed \
          configuration will be amended accordingly. This is the default \
          operation.";
@@ -175,8 +175,8 @@ module Manpage = struct
          present and will abort otherwise.";
       `P
         "$(b,update) is the main option to edit the configuration file of \
-         Tezos. It will parse command line arguments and add or replace \
-         corresponding entries in the Tezos configuration file." ]
+         mineplex. It will parse command line arguments and add or replace \
+         corresponding entries in the mineplex configuration file." ]
 
   let options =
     let schema = Data_encoding.Json.schema Node_config_file.encoding in

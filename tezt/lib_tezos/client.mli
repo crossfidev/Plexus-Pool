@@ -23,9 +23,9 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Run Tezos client commands. *)
+(** Run mineplex client commands. *)
 
-(** Tezos client states. *)
+(** mineplex client states. *)
 type t
 
 (** Create a client.
@@ -69,7 +69,7 @@ type meth = GET | PUT | POST
 
 (** Use the client to call an RPC.
 
-    Run [tezos-client rpc meth path?query_string with data].
+    Run [mineplex-client rpc meth path?query_string with data].
     Fail the test if the RPC call failed. *)
 val rpc :
   ?node:Node.t ->
@@ -83,7 +83,7 @@ val rpc :
 (** {2 Admin Client Commands} *)
 
 module Admin : sig
-  (** Run tezos-admin-client commands. *)
+  (** Run mineplex-admin-client commands. *)
 
   (** Connect a node to another peer. *)
   val connect_address : ?node:Node.t -> peer:Node.t -> t -> unit Lwt.t
@@ -103,13 +103,13 @@ end
 
 (** {2 Regular Client Commands} *)
 
-(** Run [tezos-client import secret key]. *)
+(** Run [mineplex-client import secret key]. *)
 val import_secret_key : ?node:Node.t -> t -> Constant.key -> unit Lwt.t
 
 (** Same as [import_secret_key], but do not wait for the process to exit. *)
 val spawn_import_secret_key : ?node:Node.t -> t -> Constant.key -> Process.t
 
-(** Run [tezos-client activate protocol].
+(** Run [mineplex-client activate protocol].
 
     If [timestamp] is not specified explicitely, it is set to [now -. timestamp_delay].
     Default value for [timestamp_delay] is 365 days, which allows to bake plenty of blocks
@@ -136,7 +136,7 @@ val spawn_activate_protocol :
   t ->
   Process.t
 
-(** Run [tezos-client bake for].
+(** Run [mineplex-client bake for].
 
     Default [key] is {!Constant.bootstrap1.alias}. *)
 val bake_for :

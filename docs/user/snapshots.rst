@@ -18,14 +18,14 @@ do is check the point in history from when you start.
 
 The snapshot format does not (and cannot) provide any evidence that
 the imported block is actually a part of the current main chain of the
-Tezos network. To avoid to be fooled by a fake chain, it is
+mineplex network. To avoid to be fooled by a fake chain, it is
 **necessary** to carefully check that the block hash of the imported
 block is included in the main chain. This can be done by comparing the hash
 to one provided by another node under the user’s control, or by
 relying on social cues to obtain a hash from a large number of trusted
 parties which are unlikely to be colluding.
 
-As the Tezos position paper states:
+As the mineplex position paper states:
 
     *“Occasional checkpoints can be an effective way to prevent very long blockchain reorganizations[…]. Forming a consensus over a single hash value over a period of months is something that human institutions are perfectly capable of safely accomplishing. This hash can be published in major newspapers around the world, carved on the tables of freshmen students, spray painted under bridges, included in songs, impressed on fresh concrete, tattooed on pet ferrets… there are countless ways to record occasional checkpoints in a way that makes forgery impossible.”*
 
@@ -44,13 +44,13 @@ and predecessor, as well as the resulting chain state. The import
 process does the same checks, recomputing and checking all the hashes
 it encounters in the snapshot.
 
-To bootstrap a Tezos node from a file ``FILE.full`` to an empty Tezos
+To bootstrap a mineplex node from a file ``FILE.full`` to an empty mineplex
 node directory (running this command from an already synchronised node
 will not work), run:
 
 .. code-block:: console
 
-   tezos-node snapshot import FILE.full --block <BLOCK_HASH>
+   mineplex-node snapshot import FILE.full --block <BLOCK_HASH>
 
 The ``--block <BLOCK_HASH>`` option argument aims to verify that the
 block contained in the snapshot is the one that you are expecting to
@@ -83,7 +83,7 @@ an ``archive`` node.
 
 .. code-block:: console
 
-   tezos-node snapshot export --block <BLOCK_HASH> FILE.full
+   mineplex-node snapshot export --block <BLOCK_HASH> FILE.full
 
 If no ``--block <BLOCK_HASH>`` option is given, the last checkpoint
 will be chosen as the default block to export.
@@ -97,7 +97,7 @@ history.
 
 .. code-block:: console
 
-   tezos-node snapshot export --block <BLOCK_HASH> FILE.rolling --rolling
+   mineplex-node snapshot export --block <BLOCK_HASH> FILE.rolling --rolling
 
 
 The following table recapitulate the different kind of snapshot that

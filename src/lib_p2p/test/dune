@@ -6,15 +6,15 @@
         test_p2p_ipv6set
         test_p2p_banned_peers
         )
- (libraries tezos-base
-            tezos-stdlib-unix
-            tezos-p2p
+ (libraries mineplex-base
+            mineplex-stdlib-unix
+            mineplex-p2p
             alcotest-lwt)
  (flags (:standard -linkall
-                   -open Tezos_base__TzPervasives
-                   -open Tezos_stdlib_unix
-                   -open Tezos_stdlib
-                   -open Tezos_p2p)))
+                   -open mineplex_base__TzPervasives
+                   -open mineplex_stdlib_unix
+                   -open mineplex_stdlib
+                   -open mineplex_p2p)))
 
 (alias
  (name buildtest)
@@ -75,7 +75,7 @@
 
 (alias
  (name runtest)
- (package tezos-p2p)
+ (package mineplex-p2p)
  (deps (alias runtest_p2p_socket_ipv4)
        (alias runtest_p2p_pool_ipv4)
        (alias runtest_p2p_io_scheduler_ipv4)
@@ -87,4 +87,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

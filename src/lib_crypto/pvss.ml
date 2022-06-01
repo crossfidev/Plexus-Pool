@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -132,7 +132,7 @@ module MakeDleq (G : CYCLIC_GROUP) :
   let fiat_shamir ?(exponents = []) elements =
     String.concat
       "||"
-      ( ("tezosftw" :: List.map G.to_bits elements)
+      ( ("mineplexftw" :: List.map G.to_bits elements)
       @ List.map G.Z_m.to_bits exponents )
     |> (fun x -> H.hash_string [x])
     |> H.to_string |> G.Z_m.of_bits_exn

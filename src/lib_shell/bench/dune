@@ -1,13 +1,13 @@
 (executables
  (names bench_simple bench_tool)
- (libraries tezos-base
-            tezos-shell
-            tezos-alpha-test-helpers)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_shell
-                   -open Tezos_protocol_alpha
-                   -open Tezos_protocol_alpha_parameters
-                   -open Tezos_alpha_test_helpers)))
+ (libraries mineplex-base
+            mineplex-shell
+            mineplex-alpha-test-helpers)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_shell
+                   -open mineplex_protocol_alpha
+                   -open mineplex_protocol_alpha_parameters
+                   -open mineplex_alpha_test_helpers)))
 
 (alias
  (name buildtest)
@@ -26,4 +26,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

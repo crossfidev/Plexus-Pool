@@ -1,45 +1,45 @@
 (library
- (name tezos_rpc_http)
- (public_name tezos-rpc-http)
+ (name mineplex_rpc_http)
+ (public_name mineplex-rpc-http)
  (modules RPC_client_errors media_type)
- (libraries tezos-base
+ (libraries mineplex-base
             resto-cohttp)
- (flags (:standard -open Tezos_base__TzPervasives)))
+ (flags (:standard -open mineplex_base__TzPervasives)))
 
 (library
- (name tezos_rpc_http_client)
- (public_name tezos-rpc-http-client)
+ (name mineplex_rpc_http_client)
+ (public_name mineplex-rpc-http-client)
  (modules RPC_client)
- (libraries tezos-base
+ (libraries mineplex-base
             resto-cohttp-client
-            tezos-rpc-http)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_rpc_http)))
+            mineplex-rpc-http)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_rpc_http)))
 
 (library
- (name tezos_rpc_http_client_unix)
- (public_name tezos-rpc-http-client-unix)
+ (name mineplex_rpc_http_client_unix)
+ (public_name mineplex-rpc-http-client-unix)
  (modules RPC_client_unix)
- (libraries tezos-stdlib-unix
-            tezos-base
+ (libraries mineplex-stdlib-unix
+            mineplex-base
             cohttp-lwt-unix
             resto-cohttp-client
-            tezos-rpc-http-client)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_rpc_http_client)))
+            mineplex-rpc-http-client)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_rpc_http_client)))
 
 (library
- (name tezos_rpc_http_server)
- (public_name tezos-rpc-http-server)
- (libraries tezos-base
+ (name mineplex_rpc_http_server)
+ (public_name mineplex-rpc-http-server)
+ (libraries mineplex-base
             resto-cohttp-server
-            tezos-rpc-http)
+            mineplex-rpc-http)
  (modules RPC_server)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_rpc
-                   -open Tezos_rpc_http)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_rpc
+                   -open mineplex_rpc_http)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

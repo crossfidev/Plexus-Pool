@@ -73,7 +73,7 @@ module Configuration_directory = struct
       ~content:
         Ezjsonm.(
           let absolutize exec =
-            let path = Tezos_executable.get exec in
+            let path = mineplex_executable.get exec in
             absolutize path in
           dict
             [ ("node-path", string (absolutize node_exec))

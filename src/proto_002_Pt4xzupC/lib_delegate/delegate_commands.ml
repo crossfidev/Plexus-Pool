@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -205,7 +205,7 @@ let delegate_commands () =
               let orphan_nonces_file = orphan_nonces_file ^ "s" in
               cctxt#message
                 "Successfully filtered %d orphan nonces and moved them to \
-                 '$TEZOS_CLIENT/%s'."
+                 '$mineplex_CLIENT/%s'."
                 (Block_hash.Map.cardinal orphans)
                 orphan_nonces_file
               >>= fun () ->
@@ -257,7 +257,7 @@ let baker_commands () =
       ( prefixes ["run"; "with"; "local"; "node"]
       @@ param
            ~name:"context_path"
-           ~desc:"Path to the node data directory (e.g. $HOME/.tezos-node)"
+           ~desc:"Path to the node data directory (e.g. $HOME/.mineplex-node)"
            directory_parameter
       @@ seq_of_param Client_keys.Public_key_hash.alias_param )
       (fun ( pidfile,
@@ -271,7 +271,7 @@ let baker_commands () =
            cctxt ->
         may_lock_pidfile pidfile
         >>=? fun () ->
-        Tezos_signer_backends.Encrypted.decrypt_list
+        mineplex_signer_backends.Encrypted.decrypt_list
           cctxt
           (List.map fst delegates)
         >>=? fun () ->
@@ -302,7 +302,7 @@ let endorser_commands () =
       (fun (pidfile, endorsement_delay, keep_alive) delegates cctxt ->
         may_lock_pidfile pidfile
         >>=? fun () ->
-        Tezos_signer_backends.Encrypted.decrypt_list
+        mineplex_signer_backends.Encrypted.decrypt_list
           cctxt
           (List.map fst delegates)
         >>=? fun () ->

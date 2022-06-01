@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -85,7 +85,7 @@ let wait_for_operation_inclusion (ctxt : #Client_context.full) ~chain
      assumes that the block predecessor has been processed already. *)
   let process hash header =
     let block = `Hash (hash, 0) in
-    let predecessor = header.Tezos_base.Block_header.predecessor in
+    let predecessor = header.mineplex_base.Block_header.predecessor in
     match Block_hash.Table.find blocks predecessor with
     | Some (block_with_op, n) ->
         ctxt#answer

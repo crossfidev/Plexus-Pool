@@ -1,14 +1,14 @@
 (library
- (name tezos_mempool_001_Pt8PXNHh)
- (public_name tezos-mempool-001-Pt8PXNHh)
- (libraries tezos-base
-            tezos-embedded-protocol-001-Pt8PXNHh
-            tezos-protocol-001-Pt8PXNHh)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_embedded_protocol_001_Pt8PXNHh
-                   -open Tezos_protocol_001_Pt8PXNHh)))
+ (name mineplex_mempool_001_Pt8PXNHh)
+ (public_name mineplex-mempool-001-Pt8PXNHh)
+ (libraries mineplex-base
+            mineplex-embedded-protocol-001-Pt8PXNHh
+            mineplex-protocol-001-Pt8PXNHh)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_embedded_protocol_001_Pt8PXNHh
+                   -open mineplex_protocol_001_Pt8PXNHh)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

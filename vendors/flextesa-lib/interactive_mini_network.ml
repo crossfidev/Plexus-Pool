@@ -8,7 +8,7 @@ module Genesis_block_hash = struct
   let to_json _state genesis =
     Ezjsonm.dict [("genesis-block-hash", `String genesis)]
 
-  (** See implementation of {!Tezos_node}, this corresponds to the Chain-id
+  (** See implementation of {!mineplex_node}, this corresponds to the Chain-id
       ["NetXKMbjQL2SBox"] *)
   let default = "BLdZYwNF8Rn6zrTWkuRRNyrj6bQWPkfBog2YKhWhn5z3ApmpzBf"
 
@@ -57,7 +57,7 @@ module Genesis_block_hash = struct
   end
 
   let chain_id_of_hash hash =
-    let open Tezos_crypto in
+    let open mineplex_crypto in
     Option.map (Block_hash.of_b58check_opt hash) ~f:(fun bh ->
         bh |> Chain_id.of_block_hash |> Chain_id.to_b58check)
 
@@ -99,7 +99,7 @@ module Genesis_block_hash = struct
               let seed =
                 Fmt.str "%d:%f" (Random.int 1_000_000) (Unix.gettimeofday ())
               in
-              let open Tezos_crypto in
+              let open mineplex_crypto in
               let block_hash = Block_hash.hash_string [seed] in
               Block_hash.to_b58check block_hash in
         Console.sayf state
@@ -139,7 +139,7 @@ let run state ~protocol ~size ~base_port ~clear_root ~no_daemons_for ?hard_fork
   >>= fun () ->
   let node_custom_network =
     let base =
-      Tezos_node.Config_file.network ~genesis_hash:genesis_block_hash () in
+      mineplex_node.Config_file.network ~genesis_hash:genesis_block_hash () in
     `Json
       (Ezjsonm.dict
          ( base
@@ -151,41 +151,41 @@ let run state ~protocol ~size ~base_port ~clear_root ~no_daemons_for ?hard_fork
   >>= fun (nodes, protocol) ->
   Console.say state EF.(wf "Network started, preparing scenario.")
   >>= fun () ->
-  Tezos_client.rpc state
-    ~client:(Tezos_client.of_node (List.hd_exn nodes) ~exec:client_exec)
+  mineplex_client.rpc state
+    ~client:(mineplex_client.of_node (List.hd_exn nodes) ~exec:client_exec)
     `Get ~path:"/chains/main/chain_id"
   >>= fun chain_id_json ->
   let network_id =
     match chain_id_json with `String s -> s | _ -> assert false in
   Asynchronous_result.map_option generate_kiln_config ~f:(fun kiln_config ->
       Kiln.Configuration_directory.generate state kiln_config
-        ~peers:(List.map nodes ~f:(fun {Tezos_node.p2p_port; _} -> p2p_port))
-        ~sandbox_json:(Tezos_protocol.sandbox_path state protocol)
+        ~peers:(List.map nodes ~f:(fun {mineplex_node.p2p_port; _} -> p2p_port))
+        ~sandbox_json:(mineplex_protocol.sandbox_path state protocol)
         ~nodes:
-          (List.map nodes ~f:(fun {Tezos_node.rpc_port; _} ->
+          (List.map nodes ~f:(fun {mineplex_node.rpc_port; _} ->
                sprintf "http://localhost:%d" rpc_port))
         ~bakers:
-          (List.map protocol.Tezos_protocol.bootstrap_accounts
+          (List.map protocol.mineplex_protocol.bootstrap_accounts
              ~f:(fun (account, _) ->
-               Tezos_protocol.Account.(name account, pubkey_hash account)))
+               mineplex_protocol.Account.(name account, pubkey_hash account)))
         ~network_string:network_id ~node_exec ~client_exec
         ~protocol_execs:
-          [(protocol.Tezos_protocol.hash, baker_exec, endorser_exec)])
+          [(protocol.mineplex_protocol.hash, baker_exec, endorser_exec)])
   >>= fun (_ : unit option) ->
   let to_keyed acc client =
-    let key, priv = Tezos_protocol.Account.(name acc, private_key acc) in
+    let key, priv = mineplex_protocol.Account.(name acc, private_key acc) in
     let keyed_client =
-      Tezos_client.Keyed.make client ~key_name:key ~secret_key:priv in
+      mineplex_client.Keyed.make client ~key_name:key ~secret_key:priv in
     keyed_client in
   let keys_and_daemons =
     let pick_a_node_and_client idx =
       match List.nth nodes (Int.rem (1 + idx) (List.length nodes)) with
-      | Some node -> (node, Tezos_client.of_node node ~exec:client_exec)
+      | Some node -> (node, mineplex_client.of_node node ~exec:client_exec)
       | None -> assert false in
-    Tezos_protocol.bootstrap_accounts protocol
+    mineplex_protocol.bootstrap_accounts protocol
     |> List.filter_mapi ~f:(fun idx acc ->
            let node, client = pick_a_node_and_client idx in
-           let key = Tezos_protocol.Account.name acc in
+           let key = mineplex_protocol.Account.name acc in
            if List.mem ~equal:String.equal no_daemons_for key then None
            else
              Some
@@ -194,12 +194,12 @@ let run state ~protocol ~size ~base_port ~clear_root ~no_daemons_for ?hard_fork
                , to_keyed acc client
                , Option.value_map hard_fork ~default:[]
                    ~f:(Hard_fork.keyed_daemons ~client ~node ~key)
-                 @ [ Tezos_daemon.baker_of_node ~exec:baker_exec ~client node
+                 @ [ mineplex_daemon.baker_of_node ~exec:baker_exec ~client node
                        ~key
-                   ; Tezos_daemon.endorser_of_node ~exec:endorser_exec ~client
+                   ; mineplex_daemon.endorser_of_node ~exec:endorser_exec ~client
                        node ~key ] )) in
   List_sequential.iter keys_and_daemons ~f:(fun (_, _, kc, _) ->
-      Tezos_client.Keyed.initialize state kc >>= fun _ -> return ())
+      mineplex_client.Keyed.initialize state kc >>= fun _ -> return ())
   >>= fun () ->
   Interactive_test.Pauser.add_commands state
     Interactive_test.Commands.
@@ -208,41 +208,41 @@ let run state ~protocol ~size ~base_port ~clear_root ~no_daemons_for ?hard_fork
   ( if with_baking then
     let accusers =
       List.map nodes ~f:(fun node ->
-          let client = Tezos_client.of_node node ~exec:client_exec in
-          Tezos_daemon.accuser_of_node ~exec:accuser_exec ~client node) in
+          let client = mineplex_client.of_node node ~exec:client_exec in
+          mineplex_daemon.accuser_of_node ~exec:accuser_exec ~client node) in
     List_sequential.iter accusers ~f:(fun acc ->
-        Running_processes.start state (Tezos_daemon.process state acc)
+        Running_processes.start state (mineplex_daemon.process state acc)
         >>= fun {process= _; lwt= _} -> return ())
     >>= fun () ->
     List_sequential.iter keys_and_daemons
       ~f:(fun (_acc, client, kc, daemons) ->
-        Tezos_client.wait_for_node_bootstrap state client
+        mineplex_client.wait_for_node_bootstrap state client
         >>= fun () ->
-        let key_name = kc.Tezos_client.Keyed.key_name in
+        let key_name = kc.mineplex_client.Keyed.key_name in
         say state
           EF.(
             desc_list
               (haf "Registration-as-delegate:")
-              [ desc (af "Client:") (af "%S" client.Tezos_client.id)
+              [ desc (af "Client:") (af "%S" client.mineplex_client.id)
               ; desc (af "Key:") (af "%S" key_name) ])
         >>= fun () ->
-        Tezos_client.register_as_delegate state client ~key_name
+        mineplex_client.register_as_delegate state client ~key_name
         >>= fun () ->
         say state
           EF.(
             desc_list (haf "Starting daemons:")
-              [ desc (af "Client:") (af "%S" client.Tezos_client.id)
+              [ desc (af "Client:") (af "%S" client.mineplex_client.id)
               ; desc (af "Key:") (af "%S" key_name) ])
         >>= fun () ->
         List_sequential.iter daemons ~f:(fun daemon ->
-            Running_processes.start state (Tezos_daemon.process state daemon)
+            Running_processes.start state (mineplex_daemon.process state daemon)
             >>= fun {process= _; lwt= _} -> return ()))
   else
     List.fold ~init:(return []) keys_and_daemons
       ~f:(fun prev_m (_acc, client, keyed, _) ->
         prev_m
         >>= fun prev ->
-        Tezos_client.wait_for_node_bootstrap state client
+        mineplex_client.wait_for_node_bootstrap state client
         >>= fun () -> return (keyed :: prev))
     >>= fun clients ->
     Interactive_test.Pauser.add_commands state
@@ -272,7 +272,7 @@ let run state ~protocol ~size ~base_port ~clear_root ~no_daemons_for ?hard_fork
   | `Wait_level (`At_least lvl as opt) ->
       let seconds =
         let tbb =
-          protocol.Tezos_protocol.time_between_blocks |> List.hd
+          protocol.mineplex_protocol.time_between_blocks |> List.hd
           |> Option.value ~default:10 in
         Float.of_int tbb *. 3. in
       let attempts = lvl in
@@ -376,16 +376,16 @@ let cmd () =
                   ~doc:
                     "Completely disable baking/endorsing/accusing (you need \
                      to bake manually to make the chain advance).")))
-    $ Tezos_protocol.cli_term base_state
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
-    $ Tezos_executable.cli_term base_state `Baker "tezos"
-    $ Tezos_executable.cli_term base_state `Endorser "tezos"
-    $ Tezos_executable.cli_term base_state `Accuser "tezos"
+    $ mineplex_protocol.cli_term base_state
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
+    $ mineplex_executable.cli_term base_state `Baker "mineplex"
+    $ mineplex_executable.cli_term base_state `Endorser "mineplex"
+    $ mineplex_executable.cli_term base_state `Accuser "mineplex"
     $ Hard_fork.cmdliner_term ~docs base_state ()
     $ Genesis_block_hash.Choice.cmdliner_term ()
     $ Kiln.Configuration_directory.cli_term base_state
-    $ Tezos_node.History_modes.cmdliner_term base_state
+    $ mineplex_node.History_modes.cmdliner_term base_state
     $ Test_command_line.Full_default_state.cmdliner_term base_state () in
   let info =
     let doc = "Small network sandbox with bakers, endorsers, and accusers." in

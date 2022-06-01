@@ -7,7 +7,7 @@ active_protocol_directories := $(shell tr -- - _ < active_protocol_versions)
 current_opam_version := $(shell opam --version)
 include scripts/version.sh
 
-DOCKER_IMAGE_NAME := tezos
+DOCKER_IMAGE_NAME := mineplex
 DOCKER_IMAGE_VERSION := latest
 DOCKER_BUILD_IMAGE_NAME := $(DOCKER_IMAGE_NAME)_build
 DOCKER_BUILD_IMAGE_VERSION := latest
@@ -15,7 +15,7 @@ DOCKER_BARE_IMAGE_NAME := $(DOCKER_IMAGE_NAME)-bare
 DOCKER_BARE_IMAGE_VERSION := latest
 DOCKER_DEBUG_IMAGE_NAME := $(DOCKER_IMAGE_NAME)-debug
 DOCKER_DEBUG_IMAGE_VERSION := latest
-DOCKER_DEPS_IMAGE_NAME := registry.gitlab.com/tezos/opam-repository
+DOCKER_DEPS_IMAGE_NAME := registry.gitlab.com/mineplex/opam-repository
 DOCKER_DEPS_IMAGE_VERSION := ${opam_repository_tag}
 DOCKER_DEPS_MINIMAL_IMAGE_VERSION := minimal--${opam_repository_tag}
 COVERAGE_REPORT := _coverage_report
@@ -65,9 +65,9 @@ ifeq ($(MERLIN_INSTALLED),0) # only build tooling support if merlin is installed
 	@dune build @check
 endif
 
-# List protocols, i.e. directories proto_* in src with a TEZOS_PROTOCOL file.
-TEZOS_PROTOCOL_FILES=$(wildcard src/proto_*/lib_protocol/TEZOS_PROTOCOL)
-PROTOCOLS=$(patsubst %/lib_protocol/TEZOS_PROTOCOL,%,${TEZOS_PROTOCOL_FILES})
+# List protocols, i.e. directories proto_* in src with a mineplex_PROTOCOL file.
+mineplex_PROTOCOL_FILES=$(wildcard src/proto_*/lib_protocol/mineplex_PROTOCOL)
+PROTOCOLS=$(patsubst %/lib_protocol/mineplex_PROTOCOL,%,${mineplex_PROTOCOL_FILES})
 
 DUNE_INCS=$(patsubst %,%/lib_protocol/dune.inc, ${PROTOCOLS})
 
@@ -75,7 +75,7 @@ DUNE_INCS=$(patsubst %,%/lib_protocol/dune.inc, ${PROTOCOLS})
 generate_dune: ${DUNE_INCS}
 
 ${DUNE_INCS}:: src/proto_%/lib_protocol/dune.inc: \
-  src/proto_%/lib_protocol/TEZOS_PROTOCOL
+  src/proto_%/lib_protocol/mineplex_PROTOCOL
 	dune build @$(dir $@)/runtest_dune_template --auto-promote
 	touch $@
 

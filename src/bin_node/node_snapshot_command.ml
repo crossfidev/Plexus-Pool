@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs. <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -192,7 +192,7 @@ module Term = struct
       "Run the snapshot import in sandbox mode. P2P to non-localhost \
        addresses are disabled, and constants of the economic protocol can be \
        altered with an optional JSON file. $(b,IMPORTANT): Using sandbox mode \
-       affects the node state and subsequent runs of Tezos node must also use \
+       affects the node state and subsequent runs of mineplex node must also use \
        sandbox mode. In order to run the node in normal mode afterwards, a \
        full reset must be performed (by removing the node's data directory)."
     in

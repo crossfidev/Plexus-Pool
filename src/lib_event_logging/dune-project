@@ -1,2 +1,2 @@
 (lang dune 1.11)
-(name tezos-event-logging)
+(name mineplex-event-logging)

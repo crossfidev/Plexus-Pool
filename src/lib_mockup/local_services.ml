@@ -25,7 +25,7 @@
 
 module Directory = Resto_directory.Make (RPC_encoding)
 module Service = Resto.MakeService (RPC_encoding)
-open Tezos_shell_services
+open mineplex_shell_services
 
 type error += Injection_not_possible
 
@@ -79,18 +79,18 @@ let print_service : type p q i o. (_, _, p, q, i, o, _) Service.t -> string =
 (* We need to construct a dummy p2p to build the associated
    rpc directory. *)
 let init_fake_p2p =
-  let open Tezos_p2p in
+  let open mineplex_p2p in
   let peer_meta_config =
     {
-      P2p_params.peer_meta_encoding = Tezos_p2p_services.Peer_metadata.encoding;
-      peer_meta_initial = Tezos_p2p_services.Peer_metadata.empty;
+      P2p_params.peer_meta_encoding = mineplex_p2p_services.Peer_metadata.encoding;
+      peer_meta_initial = mineplex_p2p_services.Peer_metadata.empty;
       score = (fun _ -> 0.0);
     }
   in
   let message_config : unit P2p_params.message_config =
     {
       encoding = [];
-      chain_name = Distributed_db_version.Name.of_string "TEZOS_CLIENT_MOCKUP";
+      chain_name = Distributed_db_version.Name.of_string "mineplex_CLIENT_MOCKUP";
       (* The following cannot be empty. *)
       distributed_db_versions = [Distributed_db_version.zero];
     }
@@ -99,29 +99,29 @@ let init_fake_p2p =
     P2p.faked_network
       message_config
       peer_meta_config
-      Tezos_p2p_services.Connection_metadata.
+      mineplex_p2p_services.Connection_metadata.
         {disable_mempool = true; private_node = true}
 
 (* Create dummy RPC directory for the p2p *)
 let p2p () =
   let fake_p2p = init_fake_p2p () in
-  Tezos_p2p.P2p_directory.build_rpc_directory fake_p2p
+  mineplex_p2p.P2p_directory.build_rpc_directory fake_p2p
 
 let chain chain_id =
   Directory.prefix
-    Tezos_shell_services.Chain_services.path
+    mineplex_shell_services.Chain_services.path
     (Directory.register
        Directory.empty
-       Tezos_shell_services.Chain_services.S.chain_id
+       mineplex_shell_services.Chain_services.S.chain_id
        (fun _ () () -> RPC_answer.return chain_id))
 
 let protocols protocol_hash =
   let path =
-    let open Tezos_rpc.RPC_path in
+    let open mineplex_rpc.RPC_path in
     prefix Block_services.chain_path Block_services.path
   in
   let service =
-    Tezos_rpc.RPC_service.prefix path Block_services.Empty.S.protocols
+    mineplex_rpc.RPC_service.prefix path Block_services.Empty.S.protocols
   in
   Directory.register Directory.empty service (fun _prefix () () ->
       Lwt.return
@@ -131,21 +131,21 @@ let protocols protocol_hash =
             next_protocol = protocol_hash;
           }))
 
-let monitor (rpc_context : Tezos_protocol_environment.rpc_context) =
-  let open Tezos_protocol_environment in
+let monitor (rpc_context : mineplex_protocol_environment.rpc_context) =
+  let open mineplex_protocol_environment in
   let {block_hash; block_header; _} = rpc_context in
-  Tezos_rpc.RPC_directory.gen_register
+  mineplex_rpc.RPC_directory.gen_register
     Directory.empty
     Monitor_services.S.bootstrapped
     (fun () () () -> RPC_answer.return (block_hash, block_header.timestamp))
 
-let block_hash (rpc_context : Tezos_protocol_environment.rpc_context) =
+let block_hash (rpc_context : mineplex_protocol_environment.rpc_context) =
   let path =
-    let open Tezos_rpc.RPC_path in
+    let open mineplex_rpc.RPC_path in
     prefix Block_services.chain_path Block_services.path
   in
   let service =
-    Tezos_rpc.RPC_service.prefix path Block_services.Empty.S.hash
+    mineplex_rpc.RPC_service.prefix path Block_services.Empty.S.hash
   in
   (* Always return the head. *)
   Directory.register Directory.empty service (fun _prefix () () ->
@@ -153,11 +153,11 @@ let block_hash (rpc_context : Tezos_protocol_environment.rpc_context) =
 
 let preapply (mockup_env : Registration.mockup_environment)
     (chain_id : Chain_id.t)
-    (rpc_context : Tezos_protocol_environment.rpc_context) =
+    (rpc_context : mineplex_protocol_environment.rpc_context) =
   let (module Mockup_environment) = mockup_env in
   Directory.prefix
-    (Tezos_rpc.RPC_path.prefix
-       Tezos_shell_services.Chain_services.path
+    (mineplex_rpc.RPC_path.prefix
+       mineplex_shell_services.Chain_services.path
        Block_services.path)
     (Directory.register
        Directory.empty
@@ -174,7 +174,7 @@ let preapply (mockup_env : Registration.mockup_environment)
             ~predecessor_fitness:header.fitness
             ~predecessor
             ~timestamp:
-              (Time.System.to_protocol (Tezos_stdlib_unix.Systime_os.now ()))
+              (Time.System.to_protocol (mineplex_stdlib_unix.Systime_os.now ()))
             ()
           >>=? fun state ->
           fold_left_s
@@ -196,13 +196,13 @@ let preapply (mockup_env : Registration.mockup_environment)
 
 let inject_operation (mockup_env : Registration.mockup_environment)
     (chain_id : Chain_id.t)
-    (rpc_context : Tezos_protocol_environment.rpc_context) (mem_only : bool)
+    (rpc_context : mineplex_protocol_environment.rpc_context) (mem_only : bool)
     (write_context_callback :
-      Tezos_protocol_environment.rpc_context -> unit tzresult Lwt.t) =
+      mineplex_protocol_environment.rpc_context -> unit tzresult Lwt.t) =
   let (module Mockup_environment) = mockup_env in
   Directory.register
     Directory.empty
-    Tezos_shell_services.Injection_services.S.operation
+    mineplex_shell_services.Injection_services.S.operation
     (fun _q _contents operation_bytes ->
       if mem_only then RPC_answer.fail [Injection_not_possible]
       else
@@ -240,7 +240,7 @@ let inject_operation (mockup_env : Registration.mockup_environment)
                   ~predecessor
                   ~timestamp:
                     (Time.System.to_protocol
-                       (Tezos_stdlib_unix.Systime_os.now ()))
+                       (mineplex_stdlib_unix.Systime_os.now ()))
                   ()
                 >>=? (fun state ->
                        Mockup_environment.Protocol.apply_operation state op
@@ -264,10 +264,10 @@ let inject_operation (mockup_env : Registration.mockup_environment)
                     RPC_answer.fail errs ) ))
 
 let build_shell_directory (mockup_env : Registration.mockup_environment)
-    chain_id (rpc_context : Tezos_protocol_environment.rpc_context)
+    chain_id (rpc_context : mineplex_protocol_environment.rpc_context)
     (mem_only : bool)
     (write_context_callback :
-      Tezos_protocol_environment.rpc_context -> unit tzresult Lwt.t) =
+      mineplex_protocol_environment.rpc_context -> unit tzresult Lwt.t) =
   let (module Mockup_environment) = mockup_env in
   let directory = ref Directory.empty in
   let merge dir = directory := Directory.merge dir !directory in

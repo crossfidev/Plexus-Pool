@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs. <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -110,7 +110,7 @@ module Manpage = struct
     [ `S "EXAMPLES";
       `I
         ( "$(b,Reconstruct the storage of a full mode node )",
-          "./tezos-node reconstruct" ) ]
+          "./mineplex-node reconstruct" ) ]
 
   let man = description @ options @ examples @ Node_shared_arg.Manpage.bugs
 

@@ -7,11 +7,11 @@ from daemons.baker import Baker
 from daemons.endorser import Endorser
 from daemons.node import Node
 
-NODE = 'tezos-node'
-CLIENT = 'tezos-client'
-CLIENT_ADMIN = 'tezos-admin-client'
-BAKER = 'tezos-baker'
-ENDORSER = 'tezos-endorser'
+NODE = 'mineplex-node'
+CLIENT = 'mineplex-client'
+CLIENT_ADMIN = 'mineplex-admin-client'
+BAKER = 'mineplex-baker'
+ENDORSER = 'mineplex-endorser'
 
 
 class Sandbox:
@@ -32,14 +32,14 @@ class Sandbox:
 
     Sandbox is a python context manager. In particular, the allocated resources
     are cleaned when `__exit__()` is called. It cleans all temporary
-    directories, allocated for the sandbox, or the Tezos binaries. And
+    directories, allocated for the sandbox, or the mineplex binaries. And
     it terminates all running processes managed by this sandbox.
     """
 
     def _wrap_path(self, binary: str, branch: str, proto="") -> str:
         """ construct binary name from branch and proto
 
-        - follows tezos naming convention for binaries based on protocol
+        - follows mineplex naming convention for binaries based on protocol
         - use branch as a prefix dir.
         """
         if proto:
@@ -59,7 +59,7 @@ class Sandbox:
         """
         Args:
             binaries_path (str): path to the binaries (client, node, baker,
-                endorser). Typically, this parameter is TEZOS_HOME.
+                endorser). Typically, this parameter is mineplex_HOME.
             identities (dict): identities known to all clients.
             rpc (int): base RPC port
             p2p (int): base P2P port
@@ -67,8 +67,8 @@ class Sandbox:
             log_dir (str): optional log directory for node/daemons logs
 
         Binaries contained in `binaries_path` are supposed to follow the
-        naming conventions used in the Tezos codebase. For instance,
-        `tezos-endorser-002-PsYLVpVv` is the endorser for protocol
+        naming conventions used in the mineplex codebase. For instance,
+        `mineplex-endorser-002-PsYLVpVv` is the endorser for protocol
         `-002-PsYLVpVv`.
 
         `identities` map aliases to dict of the form
@@ -111,7 +111,7 @@ class Sandbox:
         This node isn't run yet, but is "prepared" with the following
         parameters.
 
-        tezos-node run
+        mineplex-node run
            --data-dir TMP_DIR
            --no-bootstrap-peers
            --peer TRUSTED_PEER_1 ... --peer TRUSTED_PEER_n #
@@ -280,7 +280,7 @@ class Sandbox:
             config_client (bool): initialize client with sandbox identities,
                                   default=True
             use_tls (Tuple[str, str]): couple of filenames containing
-                           (tezos.crt, tezos.k), default=None
+                           (mineplex.crt, mineplex.k), default=None
             snapshot (str): import snapshot  before initializing node
             branch (str): sub-dir where to lookup the node and client
                           binary, default = "". Allows execution of different
@@ -291,7 +291,7 @@ class Sandbox:
         This registers a node and a client for the given id. It initializes
         both the client and the node, and run the node.
 
-        tezos-node run
+        mineplex-node run
            --data-dir TMP_DIR
            --no-bootstrap-peers
            --peer TRUSTED_PEER_1 ... --peer TRUSTED_PEER_n #
@@ -328,7 +328,7 @@ class Sandbox:
             node_id (int): id of corresponding node
             account (str): account to bake for
             proto (str): name of protocol, used to determine the binary to
-                         use. E.g. 'alpha` for `tezos-baker-alpha`.
+                         use. E.g. 'alpha` for `mineplex-baker-alpha`.
             params (list): additional parameters
             branch (str): see branch parameter for `add_node()`
         """
@@ -368,7 +368,7 @@ class Sandbox:
             node_id (int): id of corresponding node
             account (str): account to endorse for
             proto (str): name of protocol, used to determine the binary to
-                         use. E.g. 'alpha` for `tezos-endorser-alpha`.
+                         use. E.g. 'alpha` for `mineplex-endorser-alpha`.
             params (list): additional parameters
             branch (str): see branch parameter for `add_node()`
         """

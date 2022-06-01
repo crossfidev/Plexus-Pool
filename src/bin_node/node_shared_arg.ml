@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -147,7 +147,7 @@ module Manpage = struct
 
   let bugs =
     [ `S "BUGS";
-      `P "Check bug reports at https://gitlab.com/tezos/tezos/issues." ]
+      `P "Check bug reports at https://gitlab.com/mineplex/mineplex/issues." ]
 end
 
 module Term = struct
@@ -232,7 +232,7 @@ module Term = struct
 
   let data_dir =
     let doc =
-      "The directory where the Tezos node will store all its data. Parent \
+      "The directory where the mineplex node will store all its data. Parent \
        directories are created if necessary."
     in
     Arg.(
@@ -487,7 +487,7 @@ let () =
       Format.fprintf
         ppf
         "@[Specified@ --network@ has@ chain@ name@ %s,@ but@ current@ \
-         configuration@ implies@ expected@ chain@ name@ %s.@ Use:@ tezos-node \
+         configuration@ implies@ expected@ chain@ name@ %s.@ Use:@ mineplex-node \
          config init --network <NETWORK>@ to@ configure@ your@ node.@]"
         command_line_chain_name
         configuration_file_chain_name)

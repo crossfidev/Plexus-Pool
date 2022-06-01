@@ -1,14 +1,14 @@
 (library
- (name tezos_protocol_environment)
- (public_name tezos-protocol-environment)
- (libraries tezos-base
-            tezos-protocol-environment-sigs
-            tezos-protocol-environment-structs
-            tezos-micheline)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_micheline))
+ (name mineplex_protocol_environment)
+ (public_name mineplex-protocol-environment)
+ (libraries mineplex-base
+            mineplex-protocol-environment-sigs
+            mineplex-protocol-environment-structs
+            mineplex-micheline)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_micheline))
  (wrapped false)
- (modules Tezos_protocol_environment
+ (modules mineplex_protocol_environment
           Environment_V0
           Environment_context
           Environment_protocol_T
@@ -17,14 +17,14 @@
           Memory_context))
 
 (library
- (name tezos_shell_context)
- (public_name tezos-shell-context)
- (libraries tezos-base
-            tezos-protocol-environment
-            tezos-storage)
+ (name mineplex_shell_context)
+ (public_name mineplex-shell-context)
+ (libraries mineplex-base
+            mineplex-protocol-environment
+            mineplex-storage)
  (modules Shell_context))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

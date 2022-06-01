@@ -32,7 +32,7 @@ Here is a quick description of each file in this environment:
    functions, functions that are known sources of bugs, and anything
    deprecated.
 -  As we removed polymorphic comparison operators, ``compare.mli``
-   implements monomorphic operators for standard OCaml and Tezos types.
+   implements monomorphic operators for standard OCaml and mineplex types.
    An example use is ``Compare.Int.(3 = 4)`` instead of plain OCaml
    ``(3 = 4)``.
 -  Files ``lwt*`` is the stripped down interface to Lwt, of which we
@@ -42,7 +42,7 @@ Here is a quick description of each file in this environment:
    ``hash.mli``, ``base58.mli``, ``blake2B.mli``, ``ed25519.mli``,
    ``hex_encode.mli``, ``json.mli``, ``time.mli``, ``z.mli``,
    ``micheline.mli`` and files ``RPC_*`` are stripped down versions of
-   the Tezos standard library.
--  Files ``tezos_data.mli``, ``context.mli``, ``fitness.mli`` and
+   the mineplex standard library.
+-  Files ``mineplex_data.mli``, ``context.mli``, ``fitness.mli`` and
    ``updater.mli`` are interfaces to the shell’s data definitions and
    storage accessors that are accessible to the protocol.

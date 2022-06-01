@@ -227,7 +227,7 @@ class TestContractOnchainOpcodes:
     @pytest.mark.parametrize('contract_arg',
                              [line.rstrip('\n')
                               for line
-                              in open(f'{paths.TEZOS_HOME}/tests_python/tests/'
+                              in open(f'{paths.mineplex_HOME}/tests_python/tests/'
                                       + 'test_slice_fails_params.txt')])
     def test_slice_fails(self, client_regtest_scrubbed: ClientRegression,
                          contract_arg: str):
@@ -242,7 +242,7 @@ class TestContractOnchainOpcodes:
     @pytest.mark.parametrize('contract_arg',
                              [line.rstrip('\n')
                               for line
-                              in open(f'{paths.TEZOS_HOME}/tests_python/tests/'
+                              in open(f'{paths.mineplex_HOME}/tests_python/tests/'
                                       + 'test_slice_success_params.txt')])
     def test_slice_success(self, client_regtest_scrubbed: ClientRegression,
                            contract_arg: str):

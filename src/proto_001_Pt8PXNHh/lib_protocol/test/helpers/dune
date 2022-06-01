@@ -1,23 +1,23 @@
 (library
- (name tezos_001_Pt8PXNHh_test_helpers)
- (public_name tezos-001-Pt8PXNHh-test-helpers)
+ (name mineplex_001_Pt8PXNHh_test_helpers)
+ (public_name mineplex-001-Pt8PXNHh-test-helpers)
  (libraries alcotest-lwt
-            tezos-base
-            tezos-stdlib-unix
-            tezos-shell-services
-            tezos-protocol-environment
-            tezos-protocol-001-Pt8PXNHh
-            tezos-protocol-001-Pt8PXNHh-parameters
-            tezos-client-001-Pt8PXNHh)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_micheline
-                   -open Tezos_stdlib_unix
-                   -open Tezos_protocol_001_Pt8PXNHh
-                   -open Tezos_client_001_Pt8PXNHh
-                   -open Tezos_protocol_environment_001_Pt8PXNHh
-                   -open Tezos_shell_services)))
+            mineplex-base
+            mineplex-stdlib-unix
+            mineplex-shell-services
+            mineplex-protocol-environment
+            mineplex-protocol-001-Pt8PXNHh
+            mineplex-protocol-001-Pt8PXNHh-parameters
+            mineplex-client-001-Pt8PXNHh)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_micheline
+                   -open mineplex_stdlib_unix
+                   -open mineplex_protocol_001_Pt8PXNHh
+                   -open mineplex_client_001_Pt8PXNHh
+                   -open mineplex_protocol_environment_001_Pt8PXNHh
+                   -open mineplex_shell_services)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

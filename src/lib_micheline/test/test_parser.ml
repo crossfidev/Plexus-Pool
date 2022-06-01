@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -689,6 +689,6 @@ let wrap (n, f) =
 let () =
   Alcotest_lwt.run
     ~argv:[|""|]
-    "tezos-lib-micheline"
+    "mineplex-lib-micheline"
     [("micheline", List.map wrap tests)]
   |> Lwt_main.run

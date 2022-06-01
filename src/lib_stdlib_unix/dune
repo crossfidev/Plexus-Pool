@@ -1,14 +1,14 @@
 (library
- (name tezos_stdlib_unix)
- (public_name tezos-stdlib-unix)
- (flags (:standard -open Tezos_error_monad
-                   -open Tezos_event_logging
-                   -open Tezos_stdlib
+ (name mineplex_stdlib_unix)
+ (public_name mineplex-stdlib-unix)
+ (flags (:standard -open mineplex_error_monad
+                   -open mineplex_event_logging
+                   -open mineplex_stdlib
                    -open Data_encoding))
  (libraries data-encoding
-            tezos-error-monad
-            tezos-event-logging
-            tezos-stdlib
+            mineplex-error-monad
+            mineplex-event-logging
+            mineplex-stdlib
             lwt.unix
             ipaddr.unix
             ptime
@@ -20,4 +20,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

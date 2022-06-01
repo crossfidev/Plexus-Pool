@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplexlex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -33,7 +33,7 @@ let () =
   Arg.parse args_spec (fun s -> anonymous := s :: !anonymous) usage_msg ;
   let source_dir =
     match List.rev !anonymous with
-    | [source_dir] when Filename.basename source_dir = "TEZOS_PROTOCOL" ->
+    | [source_dir] when Filename.basename source_dir = "mineplexlex_PROTOCOL" ->
         Filename.dirname source_dir
     | [source_dir] ->
         source_dir
@@ -43,7 +43,7 @@ let () =
   in
   let (hash, protocol) =
     match
-      Lwt_main.run (Tezos_base_unix.Protocol_files.read_dir source_dir)
+      Lwt_main.run (mineplexlex_base_unix.Protocol_files.read_dir source_dir)
     with
     | Ok (None, proto) ->
         (Protocol.hash proto, proto)
@@ -52,7 +52,7 @@ let () =
     | Error err ->
         Format.kasprintf
           Stdlib.failwith
-          "Failed to read TEZOS_PROTOCOL: %a"
+          "Failed to read mineplexlex_PROTOCOL: %a"
           pp_print_error
           err
   in

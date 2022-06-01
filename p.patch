@@ -4,13 +4,13 @@ Date: Mon, 3 Aug 2020 17:39:03 +0700
 Subject: [PATCH] Change
 
 ---
- src/bin_client/tezos-init-sandboxed-client-d007.sh | 12 ++++++------
+ src/bin_client/mineplex-init-sandboxed-client-d007.sh | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/src/bin_client/tezos-init-sandboxed-client-d007.sh b/src/bin_client/tezos-init-sandboxed-client-d007.sh
+diff --git a/src/bin_client/mineplex-init-sandboxed-client-d007.sh b/src/bin_client/mineplex-init-sandboxed-client-d007.sh
 index 68b58bb0a..dd55cf761 100755
---- a/src/bin_client/tezos-init-sandboxed-client-d007.sh
-+++ b/src/bin_client/tezos-init-sandboxed-client-d007.sh
+--- a/src/bin_client/mineplex-init-sandboxed-client-d007.sh
++++ b/src/bin_client/mineplex-init-sandboxed-client-d007.sh
 @@ -101,11 +101,11 @@ add_sandboxed_bootstrap_identities() {
      ${client} import secret key activator ${ACTIVATOR_SECRET}
  }
@@ -33,24 +33,24 @@ index 68b58bb0a..dd55cf761 100755
 +        parameters_file="$bin_dir/../proto_007_PteATRfU/parameters/sandbox-parameters.json"
  
      else
-         # we assume a clean install with tezos-(admin-)client in the path
+         # we assume a clean install with mineplex-(admin-)client in the path
 @@ -193,8 +193,8 @@ main () {
      cat <<EOF
- if type tezos-client-reset >/dev/null 2>&1 ; then tezos-client-reset; fi ;
+ if type mineplex-client-reset >/dev/null 2>&1 ; then mineplex-client-reset; fi ;
  PATH="$client_dir/bin:\$PATH" ; export PATH ;
--alias tezos-activate-007-PsEp9hue="$client  -block genesis activate protocol PsEp9hue9hEMGD8kMdrzFw8suHv9cqTTFoRETH2byFJV1f4jR55 with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
--alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-007-PsEp9hue tezos-client-reset" ;
-+alias tezos-activate-007-PteATRfU="$client  -block genesis activate protocol PteATRfUpgjnRePkaAXmURfZSRau74HUQ5Txk21BJHMXbj2R244 with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
-+alias tezos-client-reset="rm -rf \"$client_dir\"; unalias tezos-activate-007-PteATRfU tezos-client-reset" ;
- alias tezos-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
- trap tezos-client-reset EXIT ;
+-alias mineplex-activate-007-PsEp9hue="$client  -block genesis activate protocol PsEp9hue9hEMGD8kMdrzFw8suHv9cqTTFoRETH2byFJV1f4jR55 with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
+-alias mineplex-client-reset="rm -rf \"$client_dir\"; unalias mineplex-activate-007-PsEp9hue mineplex-client-reset" ;
++alias mineplex-activate-007-PteATRfU="$client  -block genesis activate protocol PteATRfUpgjnRePkaAXmURfZSRau74HUQ5Txk21BJHMXbj2R244 with fitness 1 and key activator and parameters $parameters_file --timestamp $(TZ='AAA+1' date +%FT%TZ)" ;
++alias mineplex-client-reset="rm -rf \"$client_dir\"; unalias mineplex-activate-007-PteATRfU mineplex-client-reset" ;
+ alias mineplex-autocomplete="if [ \$ZSH_NAME ] ; then autoload bashcompinit ; bashcompinit ; fi ; source \"$bin_dir/bash-completion.sh\"" ;
+ trap mineplex-client-reset EXIT ;
  
 @@ -213,7 +213,7 @@ command, is "ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im", you
  may have to activate in your "sandboxed network" the same economic
  protocol as used by the alphanet by running:
  
--  tezos-activate-007-PsEp9hue
-+  tezos-activate-007-PteATRfU
+-  mineplex-activate-007-PsEp9hue
++  mineplex-activate-007-PteATRfU
  
  Warning: all the client data will be removed when you close this shell
  or if you run this command a second time.

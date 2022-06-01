@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -57,9 +57,9 @@ struct
           {Deterministic_nonce_hash.Request.pkh; data; signature}
 
   let maybe_authenticate pkh msg conn =
-    Tezos_base_unix.Socket.send conn Request.encoding Request.Authorized_keys
+    mineplex_base_unix.Socket.send conn Request.encoding Request.Authorized_keys
     >>=? fun () ->
-    Tezos_base_unix.Socket.recv
+    mineplex_base_unix.Socket.recv
       conn
       (result_encoding Authorized_keys.Response.encoding)
     >>=? fun authorized_keys ->
@@ -73,12 +73,12 @@ struct
 
   let with_signer_operation path pkh msg request_type enc =
     let f () =
-      Tezos_base_unix.Socket.with_connection path (fun conn ->
+      mineplex_base_unix.Socket.with_connection path (fun conn ->
           maybe_authenticate pkh msg conn
           >>=? fun signature ->
           let req = build_request pkh msg signature request_type in
-          Tezos_base_unix.Socket.send conn Request.encoding req
-          >>=? fun () -> Tezos_base_unix.Socket.recv conn (result_encoding enc))
+          mineplex_base_unix.Socket.send conn Request.encoding req
+          >>=? fun () -> mineplex_base_unix.Socket.recv conn (result_encoding enc))
     in
     let rec loop n =
       protect (fun () -> f ())
@@ -124,32 +124,32 @@ struct
       Deterministic_nonce_hash.Response.encoding
 
   let supports_deterministic_nonces path pkh =
-    Tezos_base_unix.Socket.with_connection path (fun conn ->
-        Tezos_base_unix.Socket.send
+    mineplex_base_unix.Socket.with_connection path (fun conn ->
+        mineplex_base_unix.Socket.send
           conn
           Request.encoding
           (Request.Supports_deterministic_nonces pkh)
         >>=? fun () ->
-        Tezos_base_unix.Socket.recv
+        mineplex_base_unix.Socket.recv
           conn
           (result_encoding Supports_deterministic_nonces.Response.encoding)
         >>=? fun supported -> Lwt.return supported)
 
   let public_key path pkh =
-    Tezos_base_unix.Socket.with_connection path (fun conn ->
-        Tezos_base_unix.Socket.send
+    mineplex_base_unix.Socket.with_connection path (fun conn ->
+        mineplex_base_unix.Socket.send
           conn
           Request.encoding
           (Request.Public_key pkh)
         >>=? fun () ->
         let encoding = result_encoding Public_key.Response.encoding in
-        Tezos_base_unix.Socket.recv conn encoding >>=? fun pk -> Lwt.return pk)
+        mineplex_base_unix.Socket.recv conn encoding >>=? fun pk -> Lwt.return pk)
 
   module Unix = struct
     let scheme = unix_scheme
 
     let title =
-      "Built-in tezos-signer using remote signer through hardcoded unix socket."
+      "Built-in mineplex-signer using remote signer through hardcoded unix socket."
 
     let description =
       "Valid locators are of the form\n - unix:/path/to/socket?pkh=mp1..."
@@ -164,7 +164,7 @@ struct
       | Some key ->
           Lwt.return (Signature.Public_key_hash.of_b58check key)
           >>=? fun key ->
-          return (Tezos_base_unix.Socket.Unix (Uri.path uri), key)
+          return (mineplex_base_unix.Socket.Unix (Uri.path uri), key)
 
     let public_key uri =
       parse (uri : pk_uri :> Uri.t) >>=? fun (path, pkh) -> public_key path pkh
@@ -198,7 +198,7 @@ struct
     let scheme = tcp_scheme
 
     let title =
-      "Built-in tezos-signer using remote signer through hardcoded tcp socket."
+      "Built-in mineplex-signer using remote signer through hardcoded tcp socket."
 
     let description =
       "Valid locators are of the form\n - tcp://host:port/mp1..."
@@ -218,7 +218,7 @@ struct
           Lwt.return (Signature.Public_key_hash.of_b58check pkh)
           >>=? fun pkh ->
           return
-            ( Tezos_base_unix.Socket.Tcp
+            ( mineplex_base_unix.Socket.Tcp
                 (path, string_of_int port, [Lwt_unix.AI_SOCKTYPE SOCK_STREAM]),
               pkh )
 

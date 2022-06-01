@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -48,7 +48,7 @@ let genesis_time = Time.Protocol.of_seconds 0L
 let mapsize = 4_096_000_000L (* ~4 GiB *)
 
 let wrap_store_init f _ () =
-  Lwt_utils_unix.with_tempdir "tezos_test_" (fun base_dir ->
+  Lwt_utils_unix.with_tempdir "mineplex_test_" (fun base_dir ->
       let root = base_dir // "store" in
       Store.init ~mapsize root
       >>= function
@@ -64,7 +64,7 @@ let wrap_store_init f _ () =
             err)
 
 let wrap_raw_store_init f _ () =
-  Lwt_utils_unix.with_tempdir "tezos_test_" (fun base_dir ->
+  Lwt_utils_unix.with_tempdir "mineplex_test_" (fun base_dir ->
       let root = base_dir // "store" in
       Raw_store.init ~mapsize root
       >>= function

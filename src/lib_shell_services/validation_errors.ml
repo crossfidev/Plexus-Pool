@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -142,7 +142,7 @@ let () =
     ~title:"Bad data directory"
     ~description:
       "The data directory could not be read. This could be because it was \
-       generated with an old version of the tezos-node program. Deleting and \
+       generated with an old version of the mineplex-node program. Deleting and \
        regenerating this directory may fix the problem."
     ~pp:(fun ppf () -> Format.fprintf ppf "Bad data directory.")
     Data_encoding.empty

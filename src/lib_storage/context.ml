@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018-2020 Nomadic Labs <contact@nomadic-labs.com>           *)
 (* Copyright (c) 2018-2020 Tarides <contact@tarides.com>                     *)
 (*                                                                           *)
@@ -25,7 +25,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Tezos - Versioned (key x value) store (over Irmin) *)
+(** mineplex - Versioned (key x value) store (over Irmin) *)
 
 module Path = Irmin.Path.String_list
 module Metadata = Irmin.Metadata.None
@@ -57,7 +57,7 @@ let () =
     Logs.set_reporter (reporter ())
   in
   let index_log_size n = index_log_size := Some (int_of_string n) in
-  match Unix.getenv "TEZOS_STORAGE" with
+  match Unix.getenv "mineplex_STORAGE" with
   | exception Not_found ->
       ()
   | v ->
@@ -294,7 +294,7 @@ let unshallow context =
 
 let raw_commit ~time ?(message = "") context =
   let info =
-    Irmin.Info.v ~date:(Time.Protocol.to_seconds time) ~author:"Tezos" message
+    Irmin.Info.v ~date:(Time.Protocol.to_seconds time) ~author:"mineplex" message
   in
   let parents = List.map Store.Commit.hash context.parents in
   unshallow context
@@ -306,7 +306,7 @@ let raw_commit ~time ?(message = "") context =
 
 let hash ~time ?(message = "") context =
   let info =
-    Irmin.Info.v ~date:(Time.Protocol.to_seconds time) ~author:"Tezos" message
+    Irmin.Info.v ~date:(Time.Protocol.to_seconds time) ~author:"mineplex" message
   in
   let parents = List.map (fun c -> Store.Commit.hash c) context.parents in
   let node = Store.Tree.hash context.tree in
@@ -945,7 +945,7 @@ let upgrade_0_0_3 ~context_dir =
         "Your directory contains the lmdb database which cannot be handled \
          with this version of the node. Please upgrade to the new irmin \
          storage.@.A guide to upgrade toward the new storage can be found \
-         here: http://tezos.gitlab.io/releases/october-2019.html"
+         here: http://mineplex.gitlab.io/releases/october-2019.html"
   | (false, true) ->
       return_unit
   | (false, false) ->

@@ -3,7 +3,7 @@
 ;
 ;        /!\ /!\ Do not modify this file /!\ /!\
 ;
-; but the original template in `tezos-protocol-compiler`
+; but the original template in `mineplex-protocol-compiler`
 ;
 
 
@@ -12,7 +12,7 @@
  (action
   (write-file %{targets}
               "module Name = struct let name = \"genesis\" end
-include Tezos_protocol_environment.MakeV0(Name)()
+include mineplex_protocol_environment.MakeV0(Name)()
 module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
 ")))
 
@@ -22,10 +22,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    data.ml
    services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action
   (with-stdout-to %{targets}
-                  (chdir %{workspace_root} (run %{bin:tezos-embedded-protocol-packer} "%{src_dir}" "genesis")))))
+                  (chdir %{workspace_root} (run %{bin:mineplex-embedded-protocol-packer} "%{src_dir}" "genesis")))))
 
 (rule
  (targets functor.ml)
@@ -33,10 +33,10 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    data.ml
    services.ml
    main.mli main.ml
-   (:src_dir TEZOS_PROTOCOL))
+   (:src_dir mineplex_PROTOCOL))
  (action (with-stdout-to %{targets}
                          (chdir %{workspace_root}
-                                (run %{bin:tezos-protocol-compiler.tezos-protocol-packer} %{src_dir})))))
+                                (run %{bin:mineplex-protocol-compiler.mineplex-protocol-packer} %{src_dir})))))
 
 (rule
  (targets protocol.ml)
@@ -46,29 +46,29 @@ module CamlinternalFormatBasics = struct include CamlinternalFormatBasics end
    main.mli main.ml)
  (action
   (write-file %{targets}
-    "module Environment = Tezos_protocol_environment_genesis.Environment
-let hash = Tezos_crypto.Protocol_hash.of_b58check_exn \"ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im\"
+    "module Environment = mineplex_protocol_environment_genesis.Environment
+let hash = mineplex_crypto.Protocol_hash.of_b58check_exn \"ProtoGenesisGenesisGenesisGenesisGenesisGenesk612im\"
 let name = Environment.Name.name
-include Tezos_raw_protocol_genesis
-include Tezos_raw_protocol_genesis.Main
+include mineplex_raw_protocol_genesis
+include mineplex_raw_protocol_genesis.Main
 ")))
 
 (library
- (name tezos_protocol_environment_genesis)
- (public_name tezos-protocol-genesis.environment)
+ (name mineplex_protocol_environment_genesis)
+ (public_name mineplex-protocol-genesis.environment)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-environment)
+ (libraries mineplex-protocol-environment)
  (modules Environment))
 
 (library
- (name tezos_raw_protocol_genesis)
- (public_name tezos-protocol-genesis.raw)
- (libraries tezos_protocol_environment_genesis)
+ (name mineplex_raw_protocol_genesis)
+ (public_name mineplex-protocol-genesis.raw)
+ (libraries mineplex_protocol_environment_genesis)
  (library_flags (:standard -linkall))
  (flags (:standard -nopervasives -nostdlib
                    -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a
-                   -open Tezos_protocol_environment_genesis__Environment
+                   -open mineplex_protocol_environment_genesis__Environment
                    -open Pervasives
                    -open Error_monad))
  (modules
@@ -78,53 +78,53 @@ include Tezos_raw_protocol_genesis.Main
 
 (install
  (section lib)
- (package tezos-protocol-genesis)
- (files (TEZOS_PROTOCOL as raw/TEZOS_PROTOCOL)))
+ (package mineplex-protocol-genesis)
+ (files (mineplex_PROTOCOL as raw/mineplex_PROTOCOL)))
 
 (library
- (name tezos_protocol_genesis)
- (public_name tezos-protocol-genesis)
+ (name mineplex_protocol_genesis)
+ (public_name mineplex-protocol-genesis)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_genesis)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_genesis)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Protocol))
 
 (library
- (name tezos_protocol_genesis_functor)
- (public_name tezos-protocol-genesis.functor)
+ (name mineplex_protocol_genesis_functor)
+ (public_name mineplex-protocol-genesis.functor)
  (libraries
-      tezos-protocol-environment
-      tezos-protocol-environment-sigs
-      tezos_raw_protocol_genesis)
+      mineplex-protocol-environment
+      mineplex-protocol-environment-sigs
+      mineplex_raw_protocol_genesis)
  (flags -w "+a-4-6-7-9-29-40..42-44-45-48"
         -warn-error "+a"
         -nopervasives)
  (modules Functor))
 
 (library
- (name tezos_embedded_protocol_genesis)
- (public_name tezos-embedded-protocol-genesis)
+ (name mineplex_embedded_protocol_genesis)
+ (public_name mineplex-embedded-protocol-genesis)
  (library_flags (:standard -linkall))
- (libraries tezos-protocol-genesis
-            tezos-protocol-updater
-            tezos-protocol-environment)
+ (libraries mineplex-protocol-genesis
+            mineplex-protocol-updater
+            mineplex-protocol-environment)
  (flags (:standard -w +a-4-6-7-9-29-32-40..42-44-45-48
                    -warn-error +a))
  (modules Registerer))
 
 (alias
  (name runtest_compile_protocol)
- (action (run %{bin:tezos-protocol-compiler} -no-hash-check .)))
+ (action (run %{bin:mineplex-protocol-compiler} -no-hash-check .)))
 
 (alias
  (name runtest_sandbox)
- (deps .tezos_protocol_genesis.objs/native/tezos_protocol_genesis.cmx))
+ (deps .mineplex_protocol_genesis.objs/native/mineplex_protocol_genesis.cmx))
 
 (alias
  (name runtest)
- (package tezos-protocol-genesis)
+ (package mineplex-protocol-genesis)
  (deps (alias runtest_sandbox)))

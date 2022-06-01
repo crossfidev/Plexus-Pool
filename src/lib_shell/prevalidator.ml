@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -850,7 +850,7 @@ module Make (Filter : Prevalidator_filters.FILTER) (Arg : ARG) : T = struct
         ~live_blocks:new_live_blocks
         (Preapply_result.operations (validation_result pv))
       >>= fun pending ->
-      let timestamp_system = Tezos_stdlib_unix.Systime_os.now () in
+      let timestamp_system = mineplex_stdlib_unix.Systime_os.now () in
       let timestamp = Time.System.to_protocol timestamp_system in
       Prevalidation.create ~predecessor ~timestamp ()
       >>= fun validation_state ->
@@ -925,7 +925,7 @@ module Make (Filter : Prevalidator_filters.FILTER) (Arg : ARG) : T = struct
                 live_blocks;
                 live_operations;
                 _ } ->
-      let timestamp_system = Tezos_stdlib_unix.Systime_os.now () in
+      let timestamp_system = mineplex_stdlib_unix.Systime_os.now () in
       let timestamp = Time.System.to_protocol timestamp_system in
       Prevalidation.create ~predecessor ~timestamp ()
       >>= fun validation_state ->

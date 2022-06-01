@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -29,5 +29,5 @@ val run :
   check_high_watermark:bool ->
   require_auth:bool ->
   #Client_context.io_wallet ->
-  Tezos_base_unix.Socket.addr ->
+  mineplex_base_unix.Socket.addr ->
   'a list tzresult Lwt.t

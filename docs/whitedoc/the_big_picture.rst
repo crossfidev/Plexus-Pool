@@ -1,10 +1,10 @@
 .. _software_architecture:
 
-Tezos Software Architecture
+mineplex Software Architecture
 ===========================
 
 This document contains two section. The first section, which should be
-readable by anyone, describes the main elements of Tezos from a
+readable by anyone, describes the main elements of mineplex from a
 distance. It abstracts from all plumbing and both internal and system
 dependencies to give a simple view of the main components, their
 responsibilities and interactions. The second part is written for
@@ -14,14 +14,14 @@ The Big Picture
 ---------------
 .. _the_big_picture:
 
-The diagram below shows a very coarse grained architecture of Tezos.
+The diagram below shows a very coarse grained architecture of mineplex.
 
-|Tezos architecture diagram|
+|mineplex architecture diagram|
 
-The characteristic that makes Tezos unique is its self-amending
+The characteristic that makes mineplex unique is its self-amending
 property. The part that amends itself is called the *economic protocol*
 (the green eye of the octopus), sometimes abbreviated by protocol or
-even proto in the source code. The rest of a Tezos node is what we call
+even proto in the source code. The rest of a mineplex node is what we call
 the *shell* (the blue octopus).
 
 The protocol is responsible for interpreting the transactions and other
@@ -66,7 +66,7 @@ state. This component uses the mainstream JSON format and HTTP protocol.
 It uses in-house libraries ``resto``. It
 is fully inter-operable, and auto descriptive, using JSON schema.
 
-.. |Tezos architecture diagram| image:: octopus.svg
+.. |mineplex architecture diagram| image:: octopus.svg
 
 
 Software Architecture and Packages Relationship
@@ -74,10 +74,10 @@ Software Architecture and Packages Relationship
 .. _packages:
 
 The diagram below shows the main OPAM packages present in the source
-code of Tezos, and their dependencies. The ``tezos-`` prefix has been
+code of mineplex, and their dependencies. The ``mineplex-`` prefix has been
 dropped for clarity.
 
-|Tezos source packages diagram|
+|mineplex source packages diagram|
 
 In green at the bottom are binaries. Highlighted in yellow are the OPAM
 packages (sometimes with shortened names). Black arrows show direct
@@ -90,40 +90,40 @@ illustration.
 Base and below
 ~~~~~~~~~~~~~~
 
-At the center, the :package:`tezos-base` package is where
+At the center, the :package:`mineplex-base` package is where
 the blockchain specific code starts. Before it are the set of libraries
 that are used everywhere for basic operations.
 
- - :package:`tezos-stdlib` contains a few extensions over the
+ - :package:`mineplex-stdlib` contains a few extensions over the
    OCaml standard library (a few string primitives, an ``Option``
    module, etc.), a few ``Lwt`` utilities, and a ``Compare`` module
    that implements monomorphic comparison operators.
- - :package:`tezos-error-monad` is an in-house monadic
+ - :package:`mineplex-error-monad` is an in-house monadic
    interface to the OCaml ``('a, 'b) result`` type, that fixes the
    ``'b`` to an extensible type ``error`` (actually a list, to hold an
    error trace). When extending the type, programmers must also call
    the ``register_error`` function that registers a pretty printer and
    an encoding for serialization.
    A :ref:`tutorial<error_monad>` is available for this library.
- - :package:`tezos-rpc` provides the basics of Tezos' RPC service
+ - :package:`mineplex-rpc` provides the basics of mineplex' RPC service
    mechanism. It provides combinators for building service hierarchies
    à la Ocsigen/Eliom, registering and calling services. This module
    is based on :opam:`resto`, that allows for automatic
    generation of a machine and human-readable of the hierarchy of
    services: the structure of URLs and the expected formats for input
    and output bodies, via the use of ``data_encoding``.
- - :package:`tezos-crypto` wraps the external cryptography
+ - :package:`mineplex-crypto` wraps the external cryptography
    libraries that we use. We try to use minimal reference
    implementations, with as thin as possible bindings, and
    rely on libraries from the
    `HACL* project <https://github.com/project-everest/hacl-star>`_,
    written and verified in the F* programming language, and extracted
    to C.
- - :package:`tezos-micheline` is the concrete syntax used by
+ - :package:`mineplex-micheline` is the concrete syntax used by
    Michelson, the language of smart contracts. It mostly contains the
    generic, untyped AST, a printer and a parser.
- - :package:`tezos-base` wraps all these module in a common foundation
-   for all the other components of Tezos, and introduces the data
+ - :package:`mineplex-base` wraps all these module in a common foundation
+   for all the other components of mineplex, and introduces the data
    structures of the blockchain (e.g. ``Block_hash``,
    ``Block_header``, ``Block_locator``, ``Fitness``, ``P2p_identity``)
    that are shared between the shell, economic protocol, client,
@@ -142,25 +142,25 @@ The shell is the part of the node responsible for all communications,
 peer-to-peer and RPC, acting as a cocoon around the economic
 protocols.
 
-  - :package:`tezos-shell-services` contains the definition of the
+  - :package:`mineplex-shell-services` contains the definition of the
     node's service hierarchy, and calling functions to use in the
     client (or any third party software). As this library is linked
     into the client to call the services in a type-safe way, only the
     description of services is done here. The registration of handlers
     is done in the rest of the node's implementation.
-  - :package:`tezos-rpc-http-client` and :package:`tezos-rpc-http-server`
+  - :package:`mineplex-rpc-http-client` and :package:`mineplex-rpc-http-server`
     use :opam:`cohttp` to implement the RPC
     over HTTP server and client, allowing to make actual use of
-    services declared using :package:`tezos-rpc`.
-  - :package:`tezos-p2p` is the in-house peer-to-peer layer.
-  - :package:`tezos-storage` contains the raw simple key-value store
+    services declared using :package:`mineplex-rpc`.
+  - :package:`mineplex-p2p` is the in-house peer-to-peer layer.
+  - :package:`mineplex-storage` contains the raw simple key-value store
     used for the chain data, and the raw versioned key-value store
     used for storing the ledger's context (one version per
     block). This is implemented using :opam:`irmin` and currently
-    :package:`tezos-lmdb`.
-  - :package:`tezos-protocol-updater` maintains the table of available
+    :package:`mineplex-lmdb`.
+  - :package:`mineplex-protocol-updater` maintains the table of available
     protocol versions, embedded or dynamically linked.
-  - :package:`tezos-shell` implements the scheduling of block
+  - :package:`mineplex-shell` implements the scheduling of block
     validations, the mempool management, and the distributed database.
     A description is available in :ref:`this document<validation>`.
 
@@ -173,34 +173,34 @@ economic protocol, as a form of static sandboxing. It also generates a
 functorized version of the protocol, to make the execution of the
 protocol in alternative environment possible.
 
-  - :package:`tezos-protocol-environment-sigs` contains the modules
+  - :package:`mineplex-protocol-environment-sigs` contains the modules
     that are available to the economic protocol. A review of this
     sandbox is available :ref:`here<protocol_environment>`. This
     modules include a stripped down standard library, and interfaces
     to the crypto APIs, RPC definitions, and key-value store.
 
-  - :package:`tezos-protocol-compiler` is the compiler for economic
+  - :package:`mineplex-protocol-compiler` is the compiler for economic
     protocols: an alternative driver to the OCaml
     :opam:`ocaml-compiler-libs` that typechecks within the protocol
     environment, and performs some more checks on the protocol code.
 
-  - ``tezos-protocol-xxx`` is produced by the protocol compiler
+  - ``mineplex-protocol-xxx`` is produced by the protocol compiler
     and contains a functorized version of protocol ``xxx`` that takes its
     standard library as parameter. This parameter can be filled with
     any of the implementations described in the two points below.
 
-  - :package:`tezos-shell-context` implements a context representation
+  - :package:`mineplex-shell-context` implements a context representation
     that is accepted by the protocol environment. The node uses this
     instance to read and write data on disk.
 
-  - :package:`tezos-protocol-environment` contains the protocol
+  - :package:`mineplex-protocol-environment` contains the protocol
     generic environment. It also defines two different context
     instances: one that simulates the key-value store in memory for
     testing, and one whose context function are dummy ones which can
     be used when only the types and non contextual functions of the
     protocol are needed.
 
-  - ``tezos-embedded-protocol-xxx`` contains a version of protocol
+  - ``mineplex-embedded-protocol-xxx`` contains a version of protocol
     ``xxx`` whose standard library is pre-instantiated to the shell's
     implementation, these are the ones that are linked into the
     node. It also contains a module that registers the protocol in the
@@ -209,32 +209,32 @@ protocol in alternative environment possible.
 The Embedded Economic Protocols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Three kinds of economic protocols are included in the main Tezos repository.
+Three kinds of economic protocols are included in the main mineplex repository.
 
-  - The genesis protocol. :package:`tezos-protocol-genesis`
-    (:package:`tezos-embedded-protocol-genesis`) is the protocol of
+  - The genesis protocol. :package:`mineplex-protocol-genesis`
+    (:package:`mineplex-embedded-protocol-genesis`) is the protocol of
     the genesis block. It accepts a single block, signed by an
     activator whose public key is hardcoded, and whose single action is to
     switch to a new protocol chosen by the activator.
     The `master` branch contains additional variants of the genesis
     protocol, one for each of the existing :ref:`test
     networks<test-networks>`.
-  - The active protocols. ``tezos-protocol-nnn-hhhhhhhh``
-    (``tezos-embedded-protocol-nnn-hhhhhhhh``) is either the current
+  - The active protocols. ``mineplex-protocol-nnn-hhhhhhhh``
+    (``mineplex-embedded-protocol-nnn-hhhhhhhh``) is either the current
     protocol on Mainnet or a protocol that has been active on Mainnet
     at some point, where ``nnn`` is a counter starting at 0 and
     ``hhhhhhhh`` is a prefix of the hash of the protocol code.
-    Also, :package:`tezos-protocol-alpha`
-    (:package:`tezos-embedded-protocol-alpha`) on the ``master``
-    branch is basically a copy of the current protocol of Tezos
+    Also, :package:`mineplex-protocol-alpha`
+    (:package:`mineplex-embedded-protocol-alpha`) on the ``master``
+    branch is basically a copy of the current protocol of mineplex
     (see :ref:`here<node-protocol>` for more details).
     A :ref:`tutorial<entering_alpha>` is available to start reading
     the protocol's code.
-  - Demo protocols. :package:`tezos-protocol-demo-noops`
-    (:package:`tezos-embedded-protocol-demo-noops`) is just a demo
+  - Demo protocols. :package:`mineplex-protocol-demo-noops`
+    (:package:`mineplex-embedded-protocol-demo-noops`) is just a demo
     protocol that does nothing interesting but has the right
-    shape. :package:`tezos-protocol-demo-counter`
-    (:package:`tezos-embedded-protocol-demo-counter`) is another demo
+    shape. :package:`mineplex-protocol-demo-counter`
+    (:package:`mineplex-embedded-protocol-demo-counter`) is another demo
     protocol in which blocks can contain simple operations.
 
 
@@ -245,26 +245,26 @@ The client is split into many packages, to enforce three separation
 lines: shell vs economic protocol, Unix dependent vs JavaScript
 compatible, and library vs command line interface.
 
-  - :package:`tezos-client-base` defines the client context, which is
+  - :package:`mineplex-client-base` defines the client context, which is
     an object whose methods allow for: accessing a wallet of keys,
     interacting via the user, making RPC calls, and signing data using
     signer plug-ins. Most of them, including RPC calling functions from
-    :package:`tezos-shell-services` and
-    :package:`tezos-protocol-alpha`, are abstracted over this object
+    :package:`mineplex-shell-services` and
+    :package:`mineplex-protocol-alpha`, are abstracted over this object
     type. That way, it is possible to use the same code for different
     platforms or toolkits.
-  - :package:`tezos-client-alpha` provides some functions to perform
+  - :package:`mineplex-client-alpha` provides some functions to perform
     the operations of protocol Alpha using the wallet and signers from
     the client context.
-  - :package:`tezos-client-commands` plugs the basic context access
-    functions from :package:`tezos-client-base` as handlers for the
-    commands of the ``tezos-client`` command line wallet.
-  - :package:`tezos-client-alpha-commands` plugs the functions from
-    :package:`tezos-client-alpha` as handlers for the Alpha specific
-    commands of the ``tezos-client`` command line wallet.
-  - :package:`tezos-client-genesis` contains the basic activator
+  - :package:`mineplex-client-commands` plugs the basic context access
+    functions from :package:`mineplex-client-base` as handlers for the
+    commands of the ``mineplex-client`` command line wallet.
+  - :package:`mineplex-client-alpha-commands` plugs the functions from
+    :package:`mineplex-client-alpha` as handlers for the Alpha specific
+    commands of the ``mineplex-client`` command line wallet.
+  - :package:`mineplex-client-genesis` contains the basic activator
     commands available on the genesis protocol.
-  - :package:`tezos-client-base-unix` implements configuration file
+  - :package:`mineplex-client-base-unix` implements configuration file
     and wallet storage in Unix files, user interaction via the Unix
     console, and terminal based signer plug-ins.
 
@@ -278,51 +278,51 @@ run them.
  - :src:`tests_python/tests`:
    end-to-end tests as python scripts that launch a local sandboxed node
    and performs various tasks using the client
- - :package-name:`tezos-p2p`
+ - :package-name:`mineplex-p2p`
    (in directory :src:`src/lib_p2p/test/`):
-   tests of the peer-to-peer layer, independently of the Tezos gossip
+   tests of the peer-to-peer layer, independently of the mineplex gossip
    protocol (establishing connections, propagating peers, etc.)
- - :package-name:`tezos-protocol-environment`
+ - :package-name:`mineplex-protocol-environment`
    (in directory :src:`src/lib_protocol_environment/test/`):
    tests for the in-memory context implementation.
- - :package-name:`tezos-shell`
+ - :package-name:`mineplex-shell`
    (in directory :src:`src/lib_shell/test/`):
    tests for the chain data storage.
- - :package-name:`tezos-stdlib`
+ - :package-name:`mineplex-stdlib`
    (in directory :src:`src/lib_stdlib/test/`):
    tests for the basic data structures.
- - :package-name:`tezos-storage`
+ - :package-name:`mineplex-storage`
    (in directory :src:`src/lib_storage/test/`):
    tests for the versioned key-value context.
- - :package-name:`tezos-protocol-alpha`
+ - :package-name:`mineplex-protocol-alpha`
    (in directory :src:`src/proto_alpha/lib_protocol/test/`):
    tests of the Alpha protocol (without launching a node).
- - :package-name:`tezos-crypto`
+ - :package-name:`mineplex-crypto`
    (in directory :src:`src/lib_crypto/test/`):
    tests for the in-house merkle trees.
 
 The Final Executables
 ~~~~~~~~~~~~~~~~~~~~~
 
-  - :package:`tezos-node` provides the node launcher binary
-    ``tezos-node``. All the algorithmic being implemented in the
+  - :package:`mineplex-node` provides the node launcher binary
+    ``mineplex-node``. All the algorithmic being implemented in the
     shell, this package only implements the node's CLI. It also
     provides the sandboxed node shell script launcher (see the main
     readme).
-  - :package:`tezos-client` provides the ``tezos-client`` and
-    ``tezos-admin-client`` binaries. The former contains a small
+  - :package:`mineplex-client` provides the ``mineplex-client`` and
+    ``mineplex-admin-client`` binaries. The former contains a small
     command line wallet, the latter an administration tool for the
     node. It also provides a shell script that configures a shell
     environment to interact with a sandboxed node.
-  - :package:`tezos-baker-alpha` provides the ``tezos-baker-alpha``
+  - :package:`mineplex-baker-alpha` provides the ``mineplex-baker-alpha``
     binary.
-  - :package:`tezos-endorser-alpha` provides the ``tezos-endorser-alpha``
+  - :package:`mineplex-endorser-alpha` provides the ``mineplex-endorser-alpha``
     binary.
-  - :package:`tezos-accuser-alpha` provides the ``tezos-accuser-alpha``
+  - :package:`mineplex-accuser-alpha` provides the ``mineplex-accuser-alpha``
     binary.
-  - :package:`tezos-protocol-compiler` provides the
-    ``tezos-protocol-compiler`` binary that is used by the node to
+  - :package:`mineplex-protocol-compiler` provides the
+    ``mineplex-protocol-compiler`` binary that is used by the node to
     compile new protocols on the fly, and that can be used for
     developing new protocols.
 
-.. |Tezos source packages diagram| image:: packages.svg
+.. |mineplex source packages diagram| image:: packages.svg

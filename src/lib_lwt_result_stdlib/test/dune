@@ -1,10 +1,10 @@
 (executables
  (names test_hashtbl)
- (libraries tezos-lwt-result-stdlib
-            tezos-error-monad
+ (libraries mineplex-lwt-result-stdlib
+            mineplex-error-monad
             lwt.unix
             alcotest-lwt)
- (flags (:standard -open Tezos_lwt_result_stdlib)))
+ (flags (:standard -open mineplex_lwt_result_stdlib)))
 
 (alias
  (name buildtest)
@@ -16,5 +16,5 @@
 
 (alias
  (name runtest)
- (package tezos-lwt-result-stdlib)
+ (package mineplex-lwt-result-stdlib)
  (deps (alias runtest_hashtbl)))

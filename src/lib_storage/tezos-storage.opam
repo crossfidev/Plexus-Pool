@@ -1,24 +1,24 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   "dune" { >= "1.11" }
-  "tezos-base"
-  "tezos-lmdb"
+  "mineplex-base"
+  "mineplex-lmdb"
   "irmin" { >= "2.2.0" }
   "irmin-pack"
   "digestif" {>= "0.7.3"}
-  "tezos-shell-services"
-  "tezos-stdlib-unix"
+  "mineplex-shell-services"
+  "mineplex-stdlib-unix"
   "alcotest-lwt" { with-test & >= "1.1.0" }
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos: low-level key-value store for `tezos-node`"
+synopsis: "mineplex: low-level key-value store for `mineplex-node`"

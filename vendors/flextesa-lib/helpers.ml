@@ -3,7 +3,7 @@ open Console
 
 let dump_connection =
   let open EF in
-  let open Tezos_node in
+  let open mineplex_node in
   function
   | `Duplex (na, nb) ->
       af "%s:%d <-> %s:%d" na.id na.p2p_port nb.id nb.p2p_port
@@ -13,7 +13,7 @@ let dump_connection =
       ksprintf shout "%s:%d --> ???:%d" na.id na.p2p_port int
 
 let dump_connections state nodes =
-  let conns = Tezos_node.connections nodes in
+  let conns = mineplex_node.connections nodes in
   say state
     (let open EF in
     desc_list (haf "Connections:") (List.map conns ~f:dump_connection))
@@ -45,22 +45,22 @@ let wait_for ?(attempts_factor = 0.) state ~attempts ~seconds f =
 
 let kill_node state nod =
   Running_processes.find_process_by_id ~only_running:true state
-    ~f:(String.( = ) nod.Tezos_node.id)
+    ~f:(String.( = ) nod.mineplex_node.id)
   >>= fun states ->
   ( match states with
   | [one] -> return one
   | _ ->
       System_error.fail_fatalf "Expecting one state for node %s"
-        nod.Tezos_node.id )
+        nod.mineplex_node.id )
   >>= fun node_state_0 -> Running_processes.kill state node_state_0
 
 let restart_node ~client_exec state nod =
-  Running_processes.start state (Tezos_node.process state nod)
+  Running_processes.start state (mineplex_node.process state nod)
   >>= fun _ ->
-  let client = Tezos_client.of_node nod ~exec:client_exec in
+  let client = mineplex_client.of_node nod ~exec:client_exec in
   say state
-    EF.(wf "Started node %s, waiting for bootstrap …" nod.Tezos_node.id)
-  >>= fun () -> Tezos_client.wait_for_node_bootstrap state client
+    EF.(wf "Started node %s, waiting for bootstrap …" nod.mineplex_node.id)
+  >>= fun () -> mineplex_client.wait_for_node_bootstrap state client
 
 module Counter_log = struct
   type t = (string * int) list ref
@@ -150,11 +150,11 @@ module System_dependencies = struct
   open Error
 
   let precheck ?(using_docker = false) ?(protocol_paths = [])
-      ?(executables : Tezos_executable.t list = []) state how_to_react =
+      ?(executables : mineplex_executable.t list = []) state how_to_react =
     let commands_to_check =
       (if using_docker then ["docker"] else [])
       @ ["setsid"; "curl"; "netstat"]
-      @ List.map executables ~f:Tezos_executable.get in
+      @ List.map executables ~f:mineplex_executable.get in
     List.fold ~init:(return []) commands_to_check ~f:(fun prev_m cmd ->
         prev_m
         >>= fun prev ->
@@ -173,7 +173,7 @@ module System_dependencies = struct
       ~f:(fun prev_m path ->
         prev_m
         >>= fun prev ->
-        System_error.catch Lwt_unix.file_exists (path // "TEZOS_PROTOCOL")
+        System_error.catch Lwt_unix.file_exists (path // "mineplex_PROTOCOL")
         >>= function
         | true -> return prev
         | false -> return (`Not_a_protocol_path path :: prev))
@@ -218,13 +218,13 @@ module System_dependencies = struct
                 (wf
                    "This does not look like a standard Linux-ish environment. \
                     If you are on MacOSX, see \
-                    https://gitlab.com/tezos/flextesa/blob/master/README.md#macosx-users "))
+                    https://gitlab.com/mineplex/flextesa/blob/master/README.md#macosx-users "))
         else return () )
         >>= fun () ->
         ( if
           List.exists more ~f:(function
-            | `Missing_exec ("tezos-node", _)
-              when Caml.Sys.file_exists ("." // "tezos-node") ->
+            | `Missing_exec ("mineplex-node", _)
+              when Caml.Sys.file_exists ("." // "mineplex-node") ->
                 true
             | _ -> false)
         then
@@ -232,9 +232,9 @@ module System_dependencies = struct
             EF.(
               desc (prompt "Tip:")
                 (wf
-                   "The `tezos-node` executable is missing but there seems to \
+                   "The `mineplex-node` executable is missing but there seems to \
                     be one in the current directory, maybe you can pass \
-                    `./tezos-node` with the right option (see `--help`) or \
+                    `./mineplex-node` with the right option (see `--help`) or \
                     simply add `export PATH=.:$PATH` to allow unix tools to \
                     find it."))
         else return () )
@@ -261,19 +261,19 @@ module Shell_environment = struct
       List.concat_mapi clients ~f:(fun i c ->
           let call =
             List.map ~f:Caml.Filename.quote
-              (Tezos_client.client_call state c []) in
+              (mineplex_client.client_call state c []) in
           let cmd exec = String.concat ~sep:" " (exec :: call) in
           let extra =
-            let help = "Call the tezos-client used by the sandbox." in
-            match Tezos_executable.get c.Tezos_client.exec with
-            | "tezos-client" -> []
+            let help = "Call the mineplex-client used by the sandbox." in
+            match mineplex_executable.get c.mineplex_client.exec with
+            | "mineplex-client" -> []
             | f when Caml.Filename.is_relative f ->
                 [(sprintf "c%d" i, cmd (Caml.Sys.getcwd () // f), help)]
             | f -> [(sprintf "c%d" i, cmd (Caml.Sys.getcwd () // f), help)]
           in
           [ ( sprintf "tc%d" i
-            , cmd "tezos-client"
-            , "Call the `tezos-client` from the path." ) ]
+            , cmd "mineplex-client"
+            , "Call the `mineplex-client` from the path." ) ]
           @ extra) in
     make ~aliases
 

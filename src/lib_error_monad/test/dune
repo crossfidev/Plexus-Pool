@@ -1,10 +1,10 @@
 (executables
  (names test_recursive_registration)
- (libraries tezos-error-monad
+ (libraries mineplex-error-monad
             data-encoding
             lwt.unix
             alcotest-lwt)
- (flags (:standard -open Tezos_error_monad)))
+ (flags (:standard -open mineplex_error_monad)))
 
 (alias
  (name buildtest)
@@ -16,5 +16,5 @@
 
 (alias
  (name runtest)
- (package tezos-error-monad)
+ (package mineplex-error-monad)
  (deps (alias runtest_recursive_registration)))

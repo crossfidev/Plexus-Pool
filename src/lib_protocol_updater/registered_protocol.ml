@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -27,7 +27,7 @@ module type T = sig
   module P : sig
     val hash : Protocol_hash.t
 
-    include Tezos_protocol_environment.PROTOCOL
+    include mineplex_protocol_environment.PROTOCOL
   end
 
   include module type of struct
@@ -39,13 +39,13 @@ module type T = sig
   end
 
   val complete_b58prefix :
-    Tezos_protocol_environment.Context.t -> string -> string list Lwt.t
+    mineplex_protocol_environment.Context.t -> string -> string list Lwt.t
 end
 
 type t = (module T)
 
 let build hash =
-  match Tezos_protocol_registerer.Registerer.get hash with
+  match mineplex_protocol_registerer.Registerer.get hash with
   | None ->
       None
   | Some (V0 protocol) ->
@@ -53,7 +53,7 @@ let build hash =
       let module Name = struct
         let name = Protocol_hash.to_b58check hash
       end in
-      let module Env = Tezos_protocol_environment.MakeV0 (Name) () in
+      let module Env = mineplex_protocol_environment.MakeV0 (Name) () in
       Some
         ( module struct
           module Raw = F (Env)
@@ -78,7 +78,7 @@ let sources : Protocol.t VersionTable.t = VersionTable.create 20
 
 let mem hash =
   VersionTable.mem versions hash
-  || Tezos_protocol_registerer.Registerer.mem hash
+  || mineplex_protocol_registerer.Registerer.mem hash
 
 let get hash =
   try Some (VersionTable.find versions hash)
@@ -131,7 +131,7 @@ module type Source_sig = sig
 end
 
 module Register_embedded_V0
-    (Env : Tezos_protocol_environment.V0)
+    (Env : mineplex_protocol_environment.V0)
     (Proto : Env.Updater.PROTOCOL)
     (Source : Source_sig) =
 struct

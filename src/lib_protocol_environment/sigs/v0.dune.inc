@@ -17,7 +17,7 @@
    v0/lwt_list.mli
    v0/raw_hashes.mli
 
-   ;; Tezos extended stdlib
+   ;; mineplex extended stdlib
    v0/compare.mli
    v0/data_encoding.mli
    v0/error_monad.mli
@@ -49,7 +49,7 @@
    v0/protocol_hash.mli
    v0/context_hash.mli
 
-   ;; Tezos specifics
+   ;; mineplex specifics
    v0/micheline.mli
    v0/block_header.mli
    v0/fitness.mli
@@ -61,4 +61,4 @@
 
  )
  (action (with-stdout-to %{targets} (chdir %{workspace_root}}
-          (run %{libexec:tezos-protocol-environment-packer:s_packer} "sigs" %{deps})))))
+          (run %{libexec:mineplex-protocol-environment-packer:s_packer} "sigs" %{deps})))))

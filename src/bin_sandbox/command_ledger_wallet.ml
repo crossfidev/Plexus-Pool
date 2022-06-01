@@ -9,7 +9,7 @@ let client_async_cmd state ~client args ~f =
     state
     ~f
     "sh -c %s"
-    ( Tezos_client.client_command state client args
+    ( mineplex_client.client_command state client args
     |> Genspio.Compile.to_one_liner |> Caml.Filename.quote )
   >>= fun (status, res) ->
   return
@@ -32,7 +32,7 @@ let ledger_hash_re =
              group (rep1 alnum);
              rep1 (alt [space; eol]) ]))
 
-(* Searches a stream for an expected ledger hash from `tezos-client --verbose-signing`*)
+(* Searches a stream for an expected ledger hash from `mineplex-client --verbose-signing`*)
 let find_and_print_signature_hash ?(display_expectation = true) state process =
   let re = Lazy.force ledger_hash_re in
   let check lines =
@@ -116,17 +116,17 @@ let with_ledger_test_reject_and_accept ?(only_success = false) state ~messages
   >>= fun () -> with_ledger_prompt state ~messages ~user_answer:`Accept ~f
 
 let get_chain_id state ~client =
-  Tezos_client.rpc state ~client `Get ~path:"/chains/main/chain_id"
+  mineplex_client.rpc state ~client `Get ~path:"/chains/main/chain_id"
   >>= (function
         | `String x ->
             return x
         | _ ->
             failf "Failed to parse chain_id JSON from node")
   >>= fun chain_id_string ->
-  return (Tezos_crypto.Chain_id.of_b58check_exn chain_id_string)
+  return (mineplex_crypto.Chain_id.of_b58check_exn chain_id_string)
 
 let get_head_block_hash state ~client () =
-  Tezos_client.rpc state ~client `Get ~path:"/chains/main/blocks/head/hash"
+  mineplex_client.rpc state ~client `Get ~path:"/chains/main/blocks/head/hash"
   >>= function
   | `String x ->
       return x
@@ -205,7 +205,7 @@ let voting_tests state ~client ~src ~with_rejections ~protocol_kind
     ledger_prompt_notice_expectation state ~messages ~user_answer:`Accept
     >>= fun () -> action () >>= fun res -> expect_failure name res
   in
-  let source_display = Tezos_protocol.Account.pubkey_hash ledger_account in
+  let source_display = mineplex_protocol.Account.pubkey_hash ledger_account in
   let submit_proposals ~display_expectation proposals () =
     client_async_cmd
       state
@@ -240,7 +240,7 @@ let voting_tests state ~client ~src ~with_rejections ~protocol_kind
                   ppf
                   "Protocol is %a, the ledger should be able to display \
                    voting parameters:"
-                  Tezos_protocol.Protocol_kind.pp
+                  mineplex_protocol.Protocol_kind.pp
                   protocol_kind ;
                 cut ppf () ;
                 wf ppf "* Confirm Proposal" ;
@@ -289,7 +289,7 @@ let voting_tests state ~client ~src ~with_rejections ~protocol_kind
               (fun ppf () -> wf ppf "Protocol: `%s`" tested_proposal);
               (fun ppf () -> wf ppf "Period: `%i`" 1) ]
         (fun () ->
-          Tezos_client.client_cmd
+          mineplex_client.client_cmd
             state
             ~client:(client 0)
             ["submit"; "ballot"; "for"; src; tested_proposal; vote]
@@ -311,7 +311,7 @@ let show_command_message command =
           sp ppf () ;
           const
             (list ~sep:sp string)
-            ("<tezos-client>" :: command |> List.map ~f:Caml.Filename.quote)
+            ("<mineplex-client>" :: command |> List.map ~f:Caml.Filename.quote)
             ppf
             ()))
 
@@ -320,7 +320,7 @@ let originate_manager_tz_script state ~client ~name ~from ~bake ~protocol_kind
   let prepare_origination_of_manager_tz_script ?(spendable = false)
       ?(delegatable = false) ?delegate state ~name ~from ~protocol_kind
       ~ledger_account =
-    let ledger_pkh = Tezos_protocol.Account.pubkey_hash ledger_account in
+    let ledger_pkh = mineplex_protocol.Account.pubkey_hash ledger_account in
     let manager_tz_script =
       "\n\
       \      parameter\n\
@@ -396,7 +396,7 @@ let originate_manager_tz_script state ~client ~name ~from ~bake ~protocol_kind
     ~protocol_kind
     ~ledger_account
   >>= fun origination ->
-  Tezos_client.successful_client_cmd state ~client origination
+  mineplex_client.successful_client_cmd state ~client origination
   >>= fun _ -> Fmt.kstrf bake "baking `%s` in" name
 
 let manager_tz_delegation_tests state ~client ~ledger_key ~ledger_account
@@ -428,18 +428,18 @@ let manager_tz_delegation_tests state ~client ~ledger_key ~ledger_account
         ~protocol_kind
         ~ledger_account)
   >>= fun () ->
-  Tezos_client.client_cmd
+  mineplex_client.client_cmd
     state
     ~client
     ["show"; "known"; "contract"; manager_tz_kt1_account]
   >>= fun (_, proc_result) ->
   let contract_address = proc_result#out |> String.concat ~sep:"" in
-  let ledger_pkh = Tezos_protocol.Account.pubkey_hash ledger_account in
+  let ledger_pkh = mineplex_protocol.Account.pubkey_hash ledger_account in
   let random_implicit_account =
-    Tezos_protocol.Account.of_name "random-account-for-manager-test"
+    mineplex_protocol.Account.of_name "random-account-for-manager-test"
   in
   let random_acc_pkh =
-    Tezos_protocol.Account.pubkey_hash random_implicit_account
+    mineplex_protocol.Account.pubkey_hash random_implicit_account
   in
   let only_success = not with_rejections in
   let manager_tz_test ~contract_arg ~expected ~output_msg =
@@ -616,7 +616,7 @@ let manager_tz_delegation_tests state ~client ~ledger_key ~ledger_account
 
 let delegation_tests state ~client ~src ~with_rejections ~protocol_kind
     ~ledger_account ~delegate ~delegate_pkh ~bake () =
-  let ledger_pkh = Tezos_protocol.Account.pubkey_hash ledger_account in
+  let ledger_pkh = mineplex_protocol.Account.pubkey_hash ledger_account in
   let only_success = not with_rejections in
   let self_delegation () =
     (* Which is equivalent to registration as delegate. *)
@@ -742,7 +742,7 @@ let delegation_tests state ~client ~src ~with_rejections ~protocol_kind
 
 let transaction_tests state ~client ~src ~with_rejections ~protocol_kind
     ~pair_string_nat_kt1_account ~ledger_account ~unit_kt1_account ~bake () =
-  let ledger_pkh = Tezos_protocol.Account.pubkey_hash ledger_account in
+  let ledger_pkh = mineplex_protocol.Account.pubkey_hash ledger_account in
   let only_success = not with_rejections in
   let test_transaction ?storage_limit ?arguments ~name ~dst_name ~dst_pkh
       ?entrypoint ?(amount = 15) ?fee () =
@@ -831,7 +831,7 @@ let transaction_tests state ~client ~src ~with_rejections ~protocol_kind
     ~dst_name:src
     ()
   >>= fun () ->
-  let module Acc = Tezos_protocol.Account in
+  let module Acc = mineplex_protocol.Account in
   let random_account = Acc.of_name "random-account-for-transaction-test" in
   test_transaction
     ~name:"transaction-to-random-mp1"
@@ -952,7 +952,7 @@ let originate_id_script ?push_drops state ~client ~name ~from ~bake
     ~parameter
     ~init_storage
   >>= fun origination ->
-  Tezos_client.successful_client_cmd state ~client origination
+  mineplex_client.successful_client_cmd state ~client origination
   >>= fun _ -> Fmt.kstrf bake "baking `%s` in" name
 
 let pp_warning_ledger_takes_a_while ~adjective =
@@ -979,7 +979,7 @@ let pp_warning_ledger_takes_a_while ~adjective =
 
 let basic_contract_operations_tests state ~client ~src ~with_rejections
     ~protocol_kind ~ledger_account ~bake ~delegate () =
-  let ledger_pkh = Tezos_protocol.Account.pubkey_hash ledger_account in
+  let ledger_pkh = mineplex_protocol.Account.pubkey_hash ledger_account in
   let only_success = not with_rejections in
   let test_origination ?delegate ?delegatable ?spendable ?push_drops ~name
       ~amount ~parameter ~init_storage () =
@@ -1179,11 +1179,11 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
     state
     EF.[af "Ready to start"; af "Root path deleted."]
   >>= fun () ->
-  let ledger_client = Tezos_client.no_node_client ~exec:client_exec in
-  Tezos_client.Ledger.show_ledger state ~client:ledger_client ~uri
+  let ledger_client = mineplex_client.no_node_client ~exec:client_exec in
+  mineplex_client.Ledger.show_ledger state ~client:ledger_client ~uri
   >>= fun _ledger_account ->
   let (protocol, baker_0_account, _baker_0_balance) =
-    let open Tezos_protocol in
+    let open mineplex_protocol in
     let d = protocol in
     let baker = List.nth_exn d.bootstrap_accounts 0 in
     ( {
@@ -1206,18 +1206,18 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
     ~client_exec
   >>= fun (nodes, protocol) ->
   let client n =
-    Tezos_client.of_node ~exec:client_exec (List.nth_exn nodes n)
+    mineplex_client.of_node ~exec:client_exec (List.nth_exn nodes n)
   in
   let client_0 = client 0 in
   let baker_0 =
-    Tezos_client.Keyed.make
+    mineplex_client.Keyed.make
       client_0
       ~key_name:"baker-0"
-      ~secret_key:(Tezos_protocol.Account.private_key baker_0_account)
+      ~secret_key:(mineplex_protocol.Account.private_key baker_0_account)
   in
-  Tezos_client.Keyed.initialize state baker_0
+  mineplex_client.Keyed.initialize state baker_0
   >>= fun _ ->
-  let make_admin = Tezos_admin_client.of_client ~exec:admin_exec in
+  let make_admin = mineplex_admin_client.of_client ~exec:admin_exec in
   Interactive_test.Pauser.add_commands
     state
     Interactive_test.Commands.(
@@ -1226,19 +1226,19 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       @ arbitrary_commands_for_each_and_all_clients
           state
           ~make_admin
-          ~clients:(List.map nodes ~f:(Tezos_client.of_node ~exec:client_exec))) ;
+          ~clients:(List.map nodes ~f:(mineplex_client.of_node ~exec:client_exec))) ;
   let first_bakes = 3 in
   Loop.n_times first_bakes (fun nth ->
-      ksprintf (Tezos_client.Keyed.bake state baker_0) "initial-bake %d" nth)
+      ksprintf (mineplex_client.Keyed.bake state baker_0) "initial-bake %d" nth)
   >>= fun () ->
   Interactive_test.Pauser.generic state EF.[af "About to really start playing"]
   >>= fun () ->
   let signer =
-    Tezos_client.Keyed.make (client 0) ~key_name:"ledgered" ~secret_key:uri
+    mineplex_client.Keyed.make (client 0) ~key_name:"ledgered" ~secret_key:uri
   in
-  Tezos_client.Ledger.show_ledger state ~client:client_0 ~uri
+  mineplex_client.Ledger.show_ledger state ~client:client_0 ~uri
   >>= fun ledger_account ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:client_0
     [ "--wait";
@@ -1246,13 +1246,13 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       "transfer";
       "20000";
       "from";
-      baker_0.Tezos_client.Keyed.key_name;
+      baker_0.mineplex_client.Keyed.key_name;
       "to" (*  *);
-      Tezos_protocol.Account.pubkey_hash ledger_account;
+      mineplex_protocol.Account.pubkey_hash ledger_account;
       "--burn-cap";
       "100" ]
   >>= fun _ ->
-  let bake msg = Tezos_client.Keyed.bake state baker_0 msg in
+  let bake msg = mineplex_client.Keyed.bake state baker_0 msg in
   bake "After transferring tez to the ledger account"
   >>= fun () ->
   with_ledger_test_reject_and_accept
@@ -1261,15 +1261,15 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
     ~messages:
       MFmt.
         [ (fun ppf () ->
-            wf ppf "Importing %S in client `%s`." uri client_0.Tezos_client.id);
+            wf ppf "Importing %S in client `%s`." uri client_0.mineplex_client.id);
           (fun ppf () ->
             wf
               ppf
               "The ledger should be prompting for acknowledgment to provide \
                the public key of `%s`."
-              (Tezos_protocol.Account.pubkey_hash ledger_account)) ]
+              (mineplex_protocol.Account.pubkey_hash ledger_account)) ]
     (fun ~user_answer ->
-      Tezos_client.client_cmd
+      mineplex_client.client_cmd
         state
         ~client:client_0
         [ "import";
@@ -1304,7 +1304,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       ~protocol_kind
       ~tested_proposal
       ~go_to_next_period:(fun () ->
-        Tezos_client.successful_client_cmd
+        mineplex_client.successful_client_cmd
           state
           ~client:client_0
           [ "--wait";
@@ -1312,14 +1312,14 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
             "submit";
             "proposals";
             "for";
-            baker_0.Tezos_client.Keyed.key_name;
+            baker_0.mineplex_client.Keyed.key_name;
             tested_proposal;
             "--force" ]
         >>= fun _ ->
-        let blocks = protocol.Tezos_protocol.blocks_per_voting_period in
+        let blocks = protocol.mineplex_protocol.blocks_per_voting_period in
         Loop.n_times blocks (fun nth ->
             ksprintf
-              (Tezos_client.Keyed.bake state baker_0)
+              (mineplex_client.Keyed.bake state baker_0)
               "going to testing-vote period %d/%d"
               (nth + 1)
               blocks)
@@ -1352,7 +1352,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
                          ("storage_limit", `String (Int.to_string 277)) ])) )
           ]
       in
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client
         ~path:"/chains/main/blocks/head/helpers/forge/operations"
@@ -1367,26 +1367,26 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
     forge_batch_transactions
       state
       ~client:(client 0)
-      ~src:(Tezos_protocol.Account.pubkey_hash ledger_account)
+      ~src:(mineplex_protocol.Account.pubkey_hash ledger_account)
       ~dest:"mp2KZPgf2rshxNUBXFcTaCemik1LH1v9qz3F"
       ~n
       ()
     >>= fun batch_transaction_bytes ->
     let bytes_hash =
-      Tezos_crypto.(
+      mineplex_crypto.(
         `Hex batch_transaction_bytes |> Hex.to_bytes
         |> (fun x -> [x])
         |> Blake2B.hash_bytes |> Blake2B.to_string |> Base58.raw_encode)
     in
     let sign state ~client ~bytes =
-      Tezos_client.client_cmd
+      mineplex_client.client_cmd
         state
-        ~client:client.Tezos_client.Keyed.client
+        ~client:client.mineplex_client.Keyed.client
         [ "sign";
           "bytes";
           "0x" ^ bytes;
           "for";
-          client.Tezos_client.Keyed.key_name ]
+          client.mineplex_client.Keyed.key_name ]
     in
     with_ledger_test_reject_and_accept
       state
@@ -1418,8 +1418,8 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       state
       ~client:client_0
       ~ledger_account
-      ~delegate:baker_0.Tezos_client.Keyed.key_name
-      ~delegate_pkh:(Tezos_protocol.Account.pubkey_hash baker_0_account)
+      ~delegate:baker_0.mineplex_client.Keyed.key_name
+      ~delegate_pkh:(mineplex_protocol.Account.pubkey_hash baker_0_account)
       ~src:signer.key_name
       ()
       ~bake
@@ -1431,13 +1431,13 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
     state
     ~client:client_0
     ~name:unit_kt1_account
-    ~from:baker_0.Tezos_client.Keyed.key_name
+    ~from:baker_0.mineplex_client.Keyed.key_name
     ~bake
     ~protocol_kind
     ~parameter:"unit"
     ~init_storage:"Unit"
   >>= fun () ->
-  Tezos_client.client_cmd
+  mineplex_client.client_cmd
     state
     ~client:client_0
     ["show"; "known"; "contract"; unit_kt1_account]
@@ -1449,7 +1449,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
     ~client:client_0
     ~name:pair_string_nat_kt1_account
     ~push_drops:10
-    ~from:baker_0.Tezos_client.Keyed.key_name
+    ~from:baker_0.mineplex_client.Keyed.key_name
     ~bake
     ~protocol_kind
     ~parameter:"(pair string nat)"
@@ -1474,7 +1474,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       ~client:client_0
       ~ledger_key:signer.key_name
       ~ledger_account
-      ~delegate_pkh:(Tezos_protocol.Account.pubkey_hash baker_0_account)
+      ~delegate_pkh:(mineplex_protocol.Account.pubkey_hash baker_0_account)
       ()
       ~bake
       ~random_contract_pkh:unit_kt1_contract_address
@@ -1486,7 +1486,7 @@ let run state ~pp_error ~protocol ~protocol_kind ~node_exec ~client_exec
       state
       ~client:client_0
       ~ledger_account
-      ~delegate:baker_0.Tezos_client.Keyed.key_name
+      ~delegate:baker_0.mineplex_client.Keyed.key_name
       ~src:signer.key_name
       ()
       ~bake
@@ -1628,9 +1628,9 @@ let cmd () =
              (some string)
              None
              (info [] ~docv:"LEDGER-URI" ~docs ~doc:"ledger:// URI")))
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
-    $ Tezos_executable.cli_term base_state `Admin "tezos"
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
+    $ mineplex_executable.cli_term base_state `Admin "mineplex"
     $ Arg.(value (opt int 2 (info ["size"; "S"] ~doc:"Size of the Network")))
     $ Arg.(
         const (fun p -> `Base_port p)
@@ -1639,7 +1639,7 @@ let cmd () =
                int
                32_000
                (info ["base-port"; "P"] ~doc:"Base port number to build upon")))
-    $ Tezos_protocol.cli_term base_state
+    $ mineplex_protocol.cli_term base_state
     $ Wallet_scenario.cli_term ()
     $ Test_command_line.cli_state ~name:"ledger-wallet" ()
   in

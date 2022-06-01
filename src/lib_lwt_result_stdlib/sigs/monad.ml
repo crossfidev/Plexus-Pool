@@ -45,7 +45,7 @@ module type S = sig
         [out_error].
       - [out_error] is a collection of [in_error] and additional functions (not
         required by this library) allow additional manipulation. E.g., in the
-        case of Tezos: errors are built into traces that can be grown.
+        case of mineplex: errors are built into traces that can be grown.
   *)
   type out_error
 

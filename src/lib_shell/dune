@@ -1,35 +1,35 @@
 (library
- (name tezos_shell)
- (public_name tezos-shell)
+ (name mineplex_shell)
+ (public_name mineplex-shell)
  (libraries lwt-watcher
             lwt-canceler
-            tezos-base
-            tezos-version
-            tezos-storage
-            tezos-shell-context
-            tezos-p2p
-            tezos-stdlib-unix
-            tezos-shell-services
-            tezos-p2p-services
-            tezos-protocol-updater
-            tezos-requester
-            tezos-workers
-            tezos-validation)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_base
-                   -open Tezos_storage
-                   -open Tezos_shell_context
-                   -open Tezos_p2p
-                   -open Tezos_stdlib_unix
-                   -open Tezos_shell_services
-                   -open Tezos_p2p_services
-                   -open Tezos_protocol_updater
-                   -open Tezos_requester
-                   -open Tezos_workers
-                   -open Tezos_validation
-		   -open Tezos_version)))
+            mineplex-base
+            mineplex-version
+            mineplex-storage
+            mineplex-shell-context
+            mineplex-p2p
+            mineplex-stdlib-unix
+            mineplex-shell-services
+            mineplex-p2p-services
+            mineplex-protocol-updater
+            mineplex-requester
+            mineplex-workers
+            mineplex-validation)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_base
+                   -open mineplex_storage
+                   -open mineplex_shell_context
+                   -open mineplex_p2p
+                   -open mineplex_stdlib_unix
+                   -open mineplex_shell_services
+                   -open mineplex_p2p_services
+                   -open mineplex_protocol_updater
+                   -open mineplex_requester
+                   -open mineplex_workers
+                   -open mineplex_validation
+		   -open mineplex_version)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

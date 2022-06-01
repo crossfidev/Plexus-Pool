@@ -11,15 +11,15 @@ module Configuration_directory : sig
        ; paths: Paths.t
        ; runner: Running_processes.State.t
        ; .. >
-    -> ?protocol_execs:(string * Tezos_executable.t * Tezos_executable.t) list
+    -> ?protocol_execs:(string * mineplex_executable.t * mineplex_executable.t) list
     -> t
     -> peers:int list
     -> sandbox_json:string
     -> nodes:string list
     -> bakers:(string * string) list
     -> network_string:string
-    -> node_exec:Tezos_executable.t
-    -> client_exec:Tezos_executable.t
+    -> node_exec:mineplex_executable.t
+    -> client_exec:mineplex_executable.t
     -> (unit, [> System_error.t]) Asynchronous_result.t
 
   val cli_term :

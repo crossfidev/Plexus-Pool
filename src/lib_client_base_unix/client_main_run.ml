@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -24,7 +24,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(* Tezos Command line interface - Main Program *)
+(* mineplex Command line interface - Main Program *)
 
 open Client_context_unix
 
@@ -46,7 +46,7 @@ module type M = sig
   val global_options : unit -> (t, Client_context_unix.unix_full) Clic.options
 
   val parse_config_args :
-    #Tezos_client_base.Client_context.full ->
+    #mineplex_client_base.Client_context.full ->
     string list ->
     (Client_config.parsed_config_args * string list) tzresult Lwt.t
 
@@ -62,11 +62,11 @@ module type M = sig
 
   val clic_commands :
     base_dir:string ->
-    config_commands:Tezos_client_base.Client_context.full Clic.command list ->
-    builtin_commands:Tezos_client_base.Client_context.full Clic.command list ->
-    other_commands:Tezos_client_base.Client_context.full Clic.command list ->
+    config_commands:mineplex_client_base.Client_context.full Clic.command list ->
+    builtin_commands:mineplex_client_base.Client_context.full Clic.command list ->
+    other_commands:mineplex_client_base.Client_context.full Clic.command list ->
     require_auth:bool ->
-    Tezos_client_base.Client_context.full Clic.command list
+    mineplex_client_base.Client_context.full Clic.command list
 
   val logger : RPC_client_unix.logger option
 end
@@ -102,19 +102,19 @@ let setup_remote_signer (module C : M) client_config
       match C.logger with Some logger -> logger | None -> rpc_config.logger
   end in
   let module Http =
-    Tezos_signer_backends.Http.Make (RPC_client_unix) (Remote_params)
+    mineplex_signer_backends.Http.Make (RPC_client_unix) (Remote_params)
   in
   let module Https =
-    Tezos_signer_backends.Https.Make (RPC_client_unix) (Remote_params)
+    mineplex_signer_backends.Https.Make (RPC_client_unix) (Remote_params)
   in
-  let module Socket = Tezos_signer_backends_unix.Socket.Make (Remote_params) in
+  let module Socket = mineplex_signer_backends_unix.Socket.Make (Remote_params) in
   Client_keys.register_signer
-    ( module Tezos_signer_backends.Encrypted.Make (struct
+    ( module mineplex_signer_backends.Encrypted.Make (struct
       let cctxt = (client_config :> Client_context.prompter)
     end) ) ;
-  Client_keys.register_signer (module Tezos_signer_backends.Unencrypted) ;
+  Client_keys.register_signer (module mineplex_signer_backends.Unencrypted) ;
   Client_keys.register_signer
-    (module Tezos_signer_backends_unix.Ledger.Signer_implementation) ;
+    (module mineplex_signer_backends_unix.Ledger.Signer_implementation) ;
   Client_keys.register_signer (module Socket.Unix) ;
   Client_keys.register_signer (module Socket.Tcp) ;
   Client_keys.register_signer (module Http) ;
@@ -131,7 +131,7 @@ let setup_remote_signer (module C : M) client_config
 
 let setup_http_rpc_client_config parsed_args base_dir rpc_config =
   (* Make sure that base_dir is not a mockup. *)
-  ( match Tezos_mockup.Persistence.classify_base_dir base_dir with
+  ( match mineplex_mockup.Persistence.classify_base_dir base_dir with
   | Base_dir_is_mockup ->
       failwith
         "%s is setup as a mockup, yet mockup mode is not active"
@@ -169,30 +169,30 @@ let setup_http_rpc_client_config parsed_args base_dir rpc_config =
        ~rpc_config
 
 let setup_mockup_rpc_client_config
-    (cctxt : Tezos_client_base.Client_context.full)
+    (cctxt : mineplex_client_base.Client_context.full)
     (args : Client_config.cli_args) base_dir =
   let in_memory_mockup (args : Client_config.cli_args) =
     match args.protocol with
     | None ->
-        Tezos_mockup.Persistence.default_mockup_context cctxt
+        mineplex_mockup.Persistence.default_mockup_context cctxt
     | Some protocol_hash ->
-        Tezos_mockup.Persistence.init_mockup_context_by_protocol_hash
+        mineplex_mockup.Persistence.init_mockup_context_by_protocol_hash
           ~cctxt
           ~protocol_hash
           ~constants_overrides_json:None
           ~bootstrap_accounts_json:None
   in
-  let base_dir_class = Tezos_mockup.Persistence.classify_base_dir base_dir in
+  let base_dir_class = mineplex_mockup.Persistence.classify_base_dir base_dir in
   ( match base_dir_class with
-  | Tezos_mockup.Persistence.Base_dir_is_empty
-  | Tezos_mockup.Persistence.Base_dir_is_file
-  | Tezos_mockup.Persistence.Base_dir_is_nonempty
-  | Tezos_mockup.Persistence.Base_dir_does_not_exist ->
+  | mineplex_mockup.Persistence.Base_dir_is_empty
+  | mineplex_mockup.Persistence.Base_dir_is_file
+  | mineplex_mockup.Persistence.Base_dir_is_nonempty
+  | mineplex_mockup.Persistence.Base_dir_does_not_exist ->
       let mem_only = true in
       in_memory_mockup args >>=? fun res -> return (res, mem_only)
-  | Tezos_mockup.Persistence.Base_dir_is_mockup ->
+  | mineplex_mockup.Persistence.Base_dir_is_mockup ->
       let mem_only = false in
-      Tezos_mockup.Persistence.get_mockup_context_from_disk ~base_dir
+      mineplex_mockup.Persistence.get_mockup_context_from_disk ~base_dir
       >>=? fun (((module Mockup_environment), _) as res) ->
       ( match args.protocol with
       | None ->
@@ -217,7 +217,7 @@ let setup_mockup_rpc_client_config
   return
     (new unix_mockup ~base_dir ~mem_only ~mockup_env ~chain_id ~rpc_context)
 
-let setup_client_config (cctxt : Tezos_client_base.Client_context.full)
+let setup_client_config (cctxt : mineplex_client_base.Client_context.full)
     (parsed_args : Client_config.cli_args option) base_dir rpc_config =
   match parsed_args with
   | None ->

@@ -1,11 +1,11 @@
-_tezos-client_complete()
+_mineplex-client_complete()
 {
     local cur_word prev_word type_list
 
     cur_word="${COMP_WORDS[COMP_CWORD]}"
     prev_word="${COMP_WORDS[COMP_CWORD-1]}"
 
-    # Tezos script
+    # mineplex script
     script=${COMP_WORDS[0]}
 
     reply=$($script bash_autocomplete "$prev_word" "$cur_word" ${COMP_WORDS[@]} 2>/dev/null)
@@ -15,7 +15,7 @@ _tezos-client_complete()
     return 0
 }
 
-_tezos-alphanet_complete()
+_mineplex-alphanet_complete()
 {
     script="${COMP_WORDS[0]}"
     second="${COMP_WORDS[1]}"
@@ -46,11 +46,11 @@ _tezos-alphanet_complete()
 }
 
 # Register _pss_complete to provide completion for the following commands
-complete -F _tezos-client_complete tezos-client
-complete -F _tezos-client_complete tezos-admin-client
-complete -F _tezos-client_complete tezos-baker-alpha
-complete -F _tezos-client_complete tezos-endorser-alpha
-complete -F _tezos-client_complete tezos-accuser-alpha
-complete -F _tezos-alphanet_complete mainnet.sh
-complete -F _tezos-alphanet_complete carthagenet.sh
-complete -F _tezos-alphanet_complete tezos-docker-manager.sh
+complete -F _mineplex-client_complete mineplex-client
+complete -F _mineplex-client_complete mineplex-admin-client
+complete -F _mineplex-client_complete mineplex-baker-alpha
+complete -F _mineplex-client_complete mineplex-endorser-alpha
+complete -F _mineplex-client_complete mineplex-accuser-alpha
+complete -F _mineplex-alphanet_complete mainnet.sh
+complete -F _mineplex-alphanet_complete carthagenet.sh
+complete -F _mineplex-alphanet_complete mineplex-docker-manager.sh

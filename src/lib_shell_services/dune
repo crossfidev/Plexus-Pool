@@ -1,16 +1,16 @@
 (library
- (name tezos_shell_services)
- (public_name tezos-shell-services)
- (libraries tezos-base
-	    tezos-p2p-services
-	    tezos-version)
+ (name mineplex_shell_services)
+ (public_name mineplex-shell-services)
+ (libraries mineplex-base
+	    mineplex-p2p-services
+	    mineplex-version)
  (flags (:standard -linkall
-       -open Tezos_base__TzPervasives
-       -open Tezos_base
-		   -open Tezos_p2p_services
-		   -open Tezos_version)))
+       -open mineplex_base__TzPervasives
+       -open mineplex_base
+		   -open mineplex_p2p_services
+		   -open mineplex_version)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

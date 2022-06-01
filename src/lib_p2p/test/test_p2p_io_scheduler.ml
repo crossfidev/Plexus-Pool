@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2020 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -87,7 +87,7 @@ let receive conn =
     >>= function
     | Ok _ ->
         loop ()
-    | Error (Tezos_p2p_services.P2p_errors.Connection_closed :: _) ->
+    | Error (mineplex_p2p_services.P2p_errors.Connection_closed :: _) ->
         Lwt.return_unit
     | Error err ->
         Lwt.fail (Error err)
@@ -267,7 +267,7 @@ let wrap n f =
 let () =
   Alcotest.run
     ~argv:[|""|]
-    "tezos-p2p"
+    "mineplex-p2p"
     [ ( "p2p.io-scheduler",
         [ wrap "trivial-quota" (fun () ->
               run

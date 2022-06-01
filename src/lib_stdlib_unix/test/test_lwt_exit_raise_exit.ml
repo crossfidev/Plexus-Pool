@@ -31,7 +31,7 @@ let () =
     @@ Lwt_exit.wrap_and_error
          ( Lwt.pause ()
          >>= fun () ->
-         raise Exit >>= fun () -> Tezos_stdlib.Lwt_utils.never_ending () )
+         raise Exit >>= fun () -> mineplex_stdlib.Lwt_utils.never_ending () )
   with
   | Error 2 ->
       ()

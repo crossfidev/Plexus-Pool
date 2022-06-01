@@ -58,12 +58,12 @@ def _find_python_data(tests_python_path: str)\
         -> Optional[Tuple[List[str], List[str]]]:
     """
     Args:
-        tests_python_path: the path of the directory `tezos/tests_python`
+        tests_python_path: the path of the directory `mineplex/tests_python`
     Returns:
         A pair of:
 
         1/ The executables to call on python files
-        2/ The directories to consider in `tezos/tests_python`
+        2/ The directories to consider in `mineplex/tests_python`
            (relative to tests_python/)
 
         or None if an error occured
@@ -158,7 +158,7 @@ def _get_py_files(tests_python_path: str, staged_or_modified: bool,
                   pytest: bool) -> List[str]:
     """
     Args:
-        tests_python_path: the path of the directory `tezos/tests_python`
+        tests_python_path: the path of the directory `mineplex/tests_python`
         staged_or_modified (bool) Whether to consider staged files (True)
                                   or modified ones (False)
         pytest(bool): Whether the files are to be sent to pytest (True)
@@ -254,7 +254,7 @@ def _call_pytest(files: List[str]) -> int:
 def _call_py_linters(tests_python_path: str, files) -> int:
     """
     Args:
-        tests_python_path: the path of the directory `tezos/tests_python`
+        tests_python_path: the path of the directory `mineplex/tests_python`
         files (list(str)): The files to lint
     Returns:
         The maximum of return codes of calls to linters

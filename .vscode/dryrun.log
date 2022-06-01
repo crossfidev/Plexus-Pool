@@ -1,0 +1,57 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/m.rysnik/Chain/mineplex.blockchain'
+dune build @src/proto_000_Ps9mPmXa/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_000_Ps9mPmXa/lib_protocol/dune.inc
+ 
+dune build @src/proto_001_Pt8PXNHh/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_001_Pt8PXNHh/lib_protocol/dune.inc
+ 
+dune build @src/proto_002_Pt4xzupC/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_002_Pt4xzupC/lib_protocol/dune.inc
+ 
+dune build @src/proto_alpha/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_alpha/lib_protocol/dune.inc
+ 
+dune build @src/proto_demo_counter/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_demo_counter/lib_protocol/dune.inc
+ 
+dune build @src/proto_demo_noops/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_demo_noops/lib_protocol/dune.inc
+ 
+dune build @src/proto_genesis/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_genesis/lib_protocol/dune.inc
+ 
+dune build @src/proto_genesis_carthagenet/lib_protocol//runtest_dune_template --auto-promote
+touch src/proto_genesis_carthagenet/lib_protocol/dune.inc
+dune build \
+		src/bin_node/main.exe \
+		src/bin_validation/main_validator.exe \
+		src/bin_client/main_client.exe \
+		src/bin_client/main_admin.exe \
+		src/bin_signer/main_signer.exe \
+		src/bin_codec/codec.exe \
+		src/lib_protocol_compiler/main_native.exe \
+		 src/proto_001_Pt8PXNHh/bin_baker/main_baker_001_Pt8PXNHh.exe  src/proto_002_Pt4xzupC/bin_baker/main_baker_002_Pt4xzupC.exe  src/proto_alpha/bin_baker/main_baker_alpha.exe \
+		 src/proto_001_Pt8PXNHh/bin_endorser/main_endorser_001_Pt8PXNHh.exe  src/proto_002_Pt4xzupC/bin_endorser/main_endorser_002_Pt4xzupC.exe  src/proto_alpha/bin_endorser/main_endorser_alpha.exe \
+ 
+		 src/proto_001_Pt8PXNHh/bin_accuser/main_accuser_001_Pt8PXNHh.exe  src/proto_002_Pt4xzupC/bin_accuser/main_accuser_002_Pt4xzupC.exe  src/proto_alpha/bin_accuser/main_accuser_alpha.exe \
+		 src/proto_001_Pt8PXNHh/lib_parameters/mainnet-parameters.json  src/proto_002_Pt4xzupC/lib_parameters/mainnet-parameters.json  src/proto_alpha/lib_parameters/mainnet-parameters.json \
+		 src/proto_001_Pt8PXNHh/lib_parameters/sandbox-parameters.json  src/proto_002_Pt4xzupC/lib_parameters/sandbox-parameters.json  src/proto_alpha/lib_parameters/sandbox-parameters.json \
+		 src/proto_001_Pt8PXNHh/lib_parameters/test-parameters.json  src/proto_002_Pt4xzupC/lib_parameters/test-parameters.json  src/proto_alpha/lib_parameters/test-parameters.json
+cp _build/default/src/bin_node/main.exe mineplex-node
+cp _build/default/src/bin_validation/main_validator.exe mineplex-validator
+cp _build/default/src/bin_client/main_client.exe mineplex-client
+cp _build/default/src/bin_client/main_admin.exe mineplex-admin-client
+cp _build/default/src/bin_signer/main_signer.exe mineplex-signer
+cp _build/default/src/bin_codec/codec.exe mineplex-codec
+cp _build/default/src/lib_protocol_compiler/main_native.exe mineplex-protocol-compiler
+for p in 001_Pt8PXNHh 002_Pt4xzupC alpha ; do \
+	   cp _build/default/src/proto_$p/bin_baker/main_baker_$p.exe mineplex-baker-`echo $p | tr -- _ -` ; \
+	   cp _build/default/src/proto_$p/bin_endorser/main_endorser_$p.exe mineplex-endorser-`echo $p | tr -- _ -` ; \
+	   cp _build/default/src/proto_$p/bin_accuser/main_accuser_$p.exe mineplex-accuser-`echo $p | tr -- _ -` ; \
+	   cp _build/default/src/proto_$p/lib_parameters/mainnet-parameters.json src/proto_$p/parameters/mainnet-parameters.json ; \
+	   cp _build/default/src/proto_$p/lib_parameters/sandbox-parameters.json src/proto_$p/parameters/sandbox-parameters.json ; \
+	   cp _build/default/src/proto_$p/lib_parameters/test-parameters.json src/proto_$p/parameters/test-parameters.json ; \
+	 done
+make: Leaving directory `/Users/m.rysnik/Chain/mineplex.blockchain'
+ 

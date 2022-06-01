@@ -2,12 +2,12 @@
  (names test_tzList
         test_tzString
         test_lwt_pipe)
- (libraries tezos-stdlib
+ (libraries mineplex-stdlib
             alcotest
             lwt_log
             bigstring
             lwt.unix)
- (flags (:standard -open Tezos_stdlib)))
+ (flags (:standard -open mineplex_stdlib)))
 
 (alias
  (name buildtest)
@@ -29,7 +29,7 @@
 
 (alias
  (name runtest)
- (package tezos-stdlib)
+ (package mineplex-stdlib)
  (deps (alias runtest_tzList)
        (alias runtest_tzString)
        (alias runtest_lwt_pipe)))
@@ -44,4 +44,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

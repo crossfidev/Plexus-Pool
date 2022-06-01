@@ -44,7 +44,7 @@ class TestManualBaking:
         assert client.get_listings() != []
 
     def test_inject_proto1(self, client: Client, tmpdir):
-        proto_fp = (f'{paths.TEZOS_HOME}/src/'
+        proto_fp = (f'{paths.mineplex_HOME}/src/'
                     f'bin_client/test/proto_test_injection')
         for i in range(1, 4):
             proto = f'{tmpdir}/proto{i}'

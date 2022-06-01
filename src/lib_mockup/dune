@@ -1,48 +1,48 @@
 (library
- (name tezos_mockup_registration)
- (public_name tezos-mockup-registration)
+ (name mineplex_mockup_registration)
+ (public_name mineplex-mockup-registration)
  (modules registration mockup_args)
  (libraries
-   tezos-base
-   tezos-client-base
-   tezos-shell-services
-   tezos-protocol-environment)
- (flags (:standard -open Tezos_base__TzPervasives)))
+   mineplex-base
+   mineplex-client-base
+   mineplex-shell-services
+   mineplex-protocol-environment)
+ (flags (:standard -open mineplex_base__TzPervasives)))
 
 (library
- (name tezos_mockup)
- (public_name tezos-mockup)
+ (name mineplex_mockup)
+ (public_name mineplex-mockup)
  (modules local_services RPC_client persistence)
  (libraries
-   tezos-base
-   tezos-client-base
-   tezos-rpc
-   tezos-p2p-services
-   tezos-p2p ; for registering the relevant RPCs
-   tezos-protocol-environment
-   tezos-stdlib-unix
-   tezos-rpc-http
-   tezos-mockup-registration)
+   mineplex-base
+   mineplex-client-base
+   mineplex-rpc
+   mineplex-p2p-services
+   mineplex-p2p ; for registering the relevant RPCs
+   mineplex-protocol-environment
+   mineplex-stdlib-unix
+   mineplex-rpc-http
+   mineplex-mockup-registration)
  (flags (:standard
-  -open Tezos_base__TzPervasives
-  -open Tezos_mockup_registration)))
+  -open mineplex_base__TzPervasives
+  -open mineplex_mockup_registration)))
 
 (library
- (name tezos_mockup_commands)
- (public_name tezos-mockup-commands)
+ (name mineplex_mockup_commands)
+ (public_name mineplex-mockup-commands)
  (modules mockup_wallet mockup_commands)
  (libraries
-   tezos-base
-   tezos-client-commands
-   tezos-client-base
-   tezos-mockup
-   tezos-mockup-registration)
+   mineplex-base
+   mineplex-client-commands
+   mineplex-client-base
+   mineplex-mockup
+   mineplex-mockup-registration)
  (flags (:standard
-  -open Tezos_base__TzPervasives
-  -open Tezos_mockup
-  -open Tezos_mockup_registration)))
+  -open mineplex_base__TzPervasives
+  -open mineplex_mockup
+  -open mineplex_mockup_registration)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

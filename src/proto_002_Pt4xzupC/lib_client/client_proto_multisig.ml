@@ -343,7 +343,7 @@ let multisig_script_string =
 (* Client_proto_context.originate expects the contract script as a Script.expr *)
 let multisig_script : Script.expr =
   Michelson_v1_parser.parse_toplevel ?check:(Some true) multisig_script_string
-  |> Tezos_micheline.Micheline_parser.no_parsing_error
+  |> mineplex_micheline.Micheline_parser.no_parsing_error
   |> function
   | Error _ ->
       assert false
@@ -433,22 +433,22 @@ let check_multisig_contract (cctxt : #Protocol_client_context.full) ~chain
       fail (Contract_has_no_script contract) )
   >>=? check_multisig_script
 
-let seq ~loc l = Tezos_micheline.Micheline.Seq (loc, l)
+let seq ~loc l = mineplex_micheline.Micheline.Seq (loc, l)
 
 let pair ~loc a b =
-  Tezos_micheline.Micheline.Prim (loc, Script.D_Pair, [a; b], [])
+  mineplex_micheline.Micheline.Prim (loc, Script.D_Pair, [a; b], [])
 
-let none ~loc () = Tezos_micheline.Micheline.Prim (loc, Script.D_None, [], [])
+let none ~loc () = mineplex_micheline.Micheline.Prim (loc, Script.D_None, [], [])
 
-let some ~loc a = Tezos_micheline.Micheline.Prim (loc, Script.D_Some, [a], [])
+let some ~loc a = mineplex_micheline.Micheline.Prim (loc, Script.D_Some, [a], [])
 
-let left ~loc a = Tezos_micheline.Micheline.Prim (loc, Script.D_Left, [a], [])
+let left ~loc a = mineplex_micheline.Micheline.Prim (loc, Script.D_Left, [a], [])
 
-let right ~loc b = Tezos_micheline.Micheline.Prim (loc, Script.D_Right, [b], [])
+let right ~loc b = mineplex_micheline.Micheline.Prim (loc, Script.D_Right, [b], [])
 
-let int ~loc i = Tezos_micheline.Micheline.Int (loc, i)
+let int ~loc i = mineplex_micheline.Micheline.Int (loc, i)
 
-let bytes ~loc s = Tezos_micheline.Micheline.Bytes (loc, s)
+let bytes ~loc s = mineplex_micheline.Micheline.Bytes (loc, s)
 
 (** * Actions *)
 
@@ -506,17 +506,17 @@ let action_of_expr e =
   let fail () =
     Error_monad.fail
       (Action_deserialisation_error
-         (Tezos_micheline.Micheline.strip_locations e))
+         (mineplex_micheline.Micheline.strip_locations e))
   in
   match e with
-  | Tezos_micheline.Micheline.Prim
+  | mineplex_micheline.Micheline.Prim
       ( _,
         Script.D_Left,
-        [ Tezos_micheline.Micheline.Prim
+        [ mineplex_micheline.Micheline.Prim
             ( _,
               Script.D_Pair,
-              [ Tezos_micheline.Micheline.Int (_, i);
-                Tezos_micheline.Micheline.Bytes (_, s) ],
+              [ mineplex_micheline.Micheline.Int (_, i);
+                mineplex_micheline.Micheline.Bytes (_, s) ],
               [] ) ],
         [] ) -> (
     match Tez.of_mutez (Z.to_int64 i) with
@@ -526,26 +526,26 @@ let action_of_expr e =
         return
         @@ Transfer
              (amount, Data_encoding.Binary.of_bytes_exn Contract.encoding s) )
-  | Tezos_micheline.Micheline.Prim
+  | mineplex_micheline.Micheline.Prim
       ( _,
         Script.D_Right,
-        [ Tezos_micheline.Micheline.Prim
+        [ mineplex_micheline.Micheline.Prim
             ( _,
               Script.D_Left,
-              [Tezos_micheline.Micheline.Prim (_, Script.D_None, [], [])],
+              [mineplex_micheline.Micheline.Prim (_, Script.D_None, [], [])],
               [] ) ],
         [] ) ->
       return @@ Change_delegate None
-  | Tezos_micheline.Micheline.Prim
+  | mineplex_micheline.Micheline.Prim
       ( _,
         Script.D_Right,
-        [ Tezos_micheline.Micheline.Prim
+        [ mineplex_micheline.Micheline.Prim
             ( _,
               Script.D_Left,
-              [ Tezos_micheline.Micheline.Prim
+              [ mineplex_micheline.Micheline.Prim
                   ( _,
                     Script.D_Some,
-                    [Tezos_micheline.Micheline.Bytes (_, s)],
+                    [mineplex_micheline.Micheline.Bytes (_, s)],
                     [] ) ],
               [] ) ],
         [] ) ->
@@ -555,23 +555,23 @@ let action_of_expr e =
               (Data_encoding.Binary.of_bytes_exn
                  Signature.Public_key_hash.encoding
                  s))
-  | Tezos_micheline.Micheline.Prim
+  | mineplex_micheline.Micheline.Prim
       ( _,
         Script.D_Right,
-        [ Tezos_micheline.Micheline.Prim
+        [ mineplex_micheline.Micheline.Prim
             ( _,
               Script.D_Right,
-              [ Tezos_micheline.Micheline.Prim
+              [ mineplex_micheline.Micheline.Prim
                   ( _,
                     Script.D_Pair,
-                    [ Tezos_micheline.Micheline.Int (_, threshold);
-                      Tezos_micheline.Micheline.Seq (_, key_bytes) ],
+                    [ mineplex_micheline.Micheline.Int (_, threshold);
+                      mineplex_micheline.Micheline.Seq (_, key_bytes) ],
                     [] ) ],
               [] ) ],
         [] ) ->
       map_s
         (function
-          | Tezos_micheline.Micheline.Bytes (_, s) ->
+          | mineplex_micheline.Micheline.Bytes (_, s) ->
               return
               @@ Data_encoding.Binary.of_bytes_exn
                    Signature.Public_key.encoding
@@ -595,7 +595,7 @@ type multisig_contract_information = {
 let multisig_get_information (cctxt : #Protocol_client_context.full) ~chain
     ~block contract =
   let open Client_proto_context in
-  let open Tezos_micheline.Micheline in
+  let open mineplex_micheline.Micheline in
   get_storage cctxt ~chain ~block contract
   >>=? fun storage_opt ->
   match storage_opt with
@@ -622,8 +622,8 @@ let multisig_get_information (cctxt : #Protocol_client_context.full) ~chain
 
 let multisig_create_storage ~counter ~threshold ~keys () :
     Script.expr tzresult Lwt.t =
-  let loc = Tezos_micheline.Micheline_parser.location_zero in
-  let open Tezos_micheline.Micheline in
+  let loc = mineplex_micheline.Micheline_parser.location_zero in
+  let open mineplex_micheline.Micheline in
   map_s
     (fun key ->
       let key_str = Signature.Public_key.to_b58check key in
@@ -641,8 +641,8 @@ let multisig_storage_string ~counter ~threshold ~keys () =
 
 let multisig_create_param ~counter ~action ~optional_signatures () :
     Script.expr tzresult Lwt.t =
-  let loc = Tezos_micheline.Micheline_parser.location_zero in
-  let open Tezos_micheline.Micheline in
+  let loc = mineplex_micheline.Micheline_parser.location_zero in
+  let open mineplex_micheline.Micheline in
   map_s
     (fun sig_opt ->
       match sig_opt with
@@ -675,7 +675,7 @@ let get_contract_address_maybe_chain_id ~descr ~loc ~chain_id contract =
   else address
 
 let multisig_bytes ~counter ~action ~contract ~chain_id ~descr () =
-  let loc = Tezos_micheline.Micheline_parser.location_zero in
+  let loc = mineplex_micheline.Micheline_parser.location_zero in
   let triple =
     pair
       ~loc
@@ -684,7 +684,7 @@ let multisig_bytes ~counter ~action ~contract ~chain_id ~descr () =
   in
   let bytes =
     Data_encoding.Binary.to_bytes_exn Script.expr_encoding
-    @@ Tezos_micheline.Micheline.strip_locations @@ triple
+    @@ mineplex_micheline.Micheline.strip_locations @@ triple
   in
   return @@ Bytes.concat (Bytes.of_string "") [Bytes.of_string "\005"; bytes]
 
@@ -829,15 +829,15 @@ let action_of_bytes ~multisig_contract ~stored_counter ~descr ~chain_id bytes =
     | None ->
         fail (Bytes_deserialisation_error bytes)
     | Some e -> (
-      match Tezos_micheline.Micheline.root e with
-      | Tezos_micheline.Micheline.Prim
+      match mineplex_micheline.Micheline.root e with
+      | mineplex_micheline.Micheline.Prim
           ( _,
             Script.D_Pair,
-            [ Tezos_micheline.Micheline.Bytes (_, contract_bytes);
-              Tezos_micheline.Micheline.Prim
+            [ mineplex_micheline.Micheline.Bytes (_, contract_bytes);
+              mineplex_micheline.Micheline.Prim
                 ( _,
                   Script.D_Pair,
-                  [Tezos_micheline.Micheline.Int (_, counter); e],
+                  [mineplex_micheline.Micheline.Int (_, counter); e],
                   [] ) ],
             [] )
         when not descr.requires_chain_id ->
@@ -848,19 +848,19 @@ let action_of_bytes ~multisig_contract ~stored_counter ~descr ~chain_id bytes =
             if multisig_contract = contract then action_of_expr e
             else fail (Bad_deserialized_contract (contract, multisig_contract))
           else fail (Bad_deserialized_counter (counter, stored_counter))
-      | Tezos_micheline.Micheline.Prim
+      | mineplex_micheline.Micheline.Prim
           ( _,
             Script.D_Pair,
-            [ Tezos_micheline.Micheline.Prim
+            [ mineplex_micheline.Micheline.Prim
                 ( _,
                   Script.D_Pair,
-                  [ Tezos_micheline.Micheline.Bytes (_, chain_id_bytes);
-                    Tezos_micheline.Micheline.Bytes (_, contract_bytes) ],
+                  [ mineplex_micheline.Micheline.Bytes (_, chain_id_bytes);
+                    mineplex_micheline.Micheline.Bytes (_, contract_bytes) ],
                   [] );
-              Tezos_micheline.Micheline.Prim
+              mineplex_micheline.Micheline.Prim
                 ( _,
                   Script.D_Pair,
-                  [Tezos_micheline.Micheline.Int (_, counter); e],
+                  [mineplex_micheline.Micheline.Int (_, counter); e],
                   [] ) ],
             [] )
         when descr.requires_chain_id ->

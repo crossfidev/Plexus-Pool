@@ -4,61 +4,61 @@
 
 (executables
  (names main_client main_admin)
- (public_names tezos-client tezos-admin-client)
- (package tezos-client)
- (libraries tezos-base
-            tezos-base.unix
-            tezos-rpc-http-client
-            tezos-shell-services
-            tezos-client-base
-            tezos-client-commands
-            tezos-mockup-commands
+ (public_names mineplex-client mineplex-admin-client)
+ (package mineplex-client)
+ (libraries mineplex-base
+            mineplex-base.unix
+            mineplex-rpc-http-client
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-client-commands
+            mineplex-mockup-commands
 
             (select void_for_linking-genesis from
-              (tezos-client-genesis -> void_for_linking)
+              (mineplex-client-genesis -> void_for_linking)
               (-> void_for_linking))
             (select void_for_linking-genesis-carthagenet from
-              (tezos-client-genesis-carthagenet -> void_for_linking)
+              (mineplex-client-genesis-carthagenet -> void_for_linking)
               (-> void_for_linking))
 
             (select void_for_linking-000-Ps9mPmXa from
-              (tezos-client-000-Ps9mPmXa -> void_for_linking)
+              (mineplex-client-000-Ps9mPmXa -> void_for_linking)
               (-> void_for_linking))
             (select void_for_linking-001-Pt8PXNHh from
-              (tezos-client-001-Pt8PXNHh-commands.registration -> void_for_linking)
+              (mineplex-client-001-Pt8PXNHh-commands.registration -> void_for_linking)
               (-> void_for_linking))
             (select void_for_linking-002-Pt4xzupC from
-              (tezos-client-002-Pt4xzupC-commands.registration -> void_for_linking)
+              (mineplex-client-002-Pt4xzupC-commands.registration -> void_for_linking)
               (-> void_for_linking))
 
             (select void_for_linking-alpha from
-              (tezos-client-alpha-commands.registration -> void_for_linking)
+              (mineplex-client-alpha-commands.registration -> void_for_linking)
               (-> void_for_linking))
             (select void_for_linking-demo-counter from
-              (tezos-client-demo-counter -> void_for_linking)
+              (mineplex-client-demo-counter -> void_for_linking)
               (-> void_for_linking))
 
             (select void_for_linking-baking-alpha from
-              (tezos-baking-alpha-commands.registration -> void_for_linking)
+              (mineplex-baking-alpha-commands.registration -> void_for_linking)
               (-> void_for_linking))
             (select void_for_linking-baking-001-Pt8PXNHh from
-              (tezos-baking-001-Pt8PXNHh-commands.registration -> void_for_linking)
+              (mineplex-baking-001-Pt8PXNHh-commands.registration -> void_for_linking)
               (-> void_for_linking))
             (select void_for_linking-baking-002-Pt4xzupC from
-              (tezos-baking-002-Pt4xzupC-commands.registration -> void_for_linking)
+              (mineplex-baking-002-Pt4xzupC-commands.registration -> void_for_linking)
               (-> void_for_linking))
 
-            tezos-stdlib-unix
-            tezos-client-base-unix
-            tezos-signer-backends.unix)
-  (flags (:standard -open Tezos_base__TzPervasives
-                    -open Tezos_rpc_http_client
-                    -open Tezos_stdlib_unix
-                    -open Tezos_shell_services
-                    -open Tezos_client_base
-                    -open Tezos_client_commands
-                    -open Tezos_mockup_commands
-                    -open Tezos_client_base_unix
+            mineplex-stdlib-unix
+            mineplex-client-base-unix
+            mineplex-signer-backends.unix)
+  (flags (:standard -open mineplex_base__TzPervasives
+                    -open mineplex_rpc_http_client
+                    -open mineplex_stdlib_unix
+                    -open mineplex_shell_services
+                    -open mineplex_client_base
+                    -open mineplex_client_commands
+                    -open mineplex_mockup_commands
+                    -open mineplex_client_base_unix
                     -linkall)))
 
 (rule
@@ -66,11 +66,11 @@
   (action (write-file ${target} "")))
 
 (install
- (package tezos-client)
+ (package mineplex-client)
  (section bin)
- (files (tezos-init-sandboxed-client.sh as tezos-init-sandboxed-client.sh)))
+ (files (mineplex-init-sandboxed-client.sh as mineplex-init-sandboxed-client.sh)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

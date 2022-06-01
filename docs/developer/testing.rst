@@ -1,20 +1,20 @@
 .. _testing:
 
-Overview of Testing in Tezos
+Overview of Testing in mineplex
 ============================
 
-Testing is important to ensure the quality of the Tezos codebase by
-detecting bugs and ensuring the absence of regressions. Tezos and its
+Testing is important to ensure the quality of the mineplex codebase by
+detecting bugs and ensuring the absence of regressions. mineplex and its
 components use a variety of tools and framework for testing. The goal
 of this document is to give an overview on how testing is done in
-Tezos, and to help Tezos contributors use the test suite and
+mineplex, and to help mineplex contributors use the test suite and
 write tests by pointing them towards the most
 appropriate testing framework for their use case. Finally, this guide
-explains how tests can be :ref:`run automatically in the Tezos CI
+explains how tests can be :ref:`run automatically in the mineplex CI
 <gitlab_test_ci>` and how to :ref:`measure test coverage
 <measuring-test-coverage>`.
 
-The frameworks used in Tezos can be categorized along two axes: the
+The frameworks used in mineplex can be categorized along two axes: the
 type of component they test, and the type of test they perform. We
 distinguish the following components:
 
@@ -46,7 +46,7 @@ Regression testing
    In general, regression testing aims to detect the re-introduction
    of previously identified bugs. It can also refer to a
    coarse-grained type of testing where the output of a test execution
-   is compared to a pre-recorded log of expected output. Tezos uses
+   is compared to a pre-recorded log of expected output. mineplex uses
    tests that bugs are not re-introduced, but in this document we use
    regression testing to refer to the second meaning.
 Property testing / Fuzzing
@@ -63,7 +63,7 @@ Acceptance testing
    Testing of the software in real conditions. It is usually slower,
    more costly and less amenable to automation than integration or
    system testing. It is often the final step in the testing process
-   and is performed before a release. In Tezos, acceptance testing is
+   and is performed before a release. In mineplex, acceptance testing is
    done by running a test net.
 
 ..
@@ -83,7 +83,7 @@ in more detail, with pointers to more details.
                        MT: :ref:`Michelson unit tests <michelson_unit_tests>`.
 
 
-.. csv-table:: Testing frameworks and their applications in Tezos. PT:
+.. csv-table:: Testing frameworks and their applications in mineplex. PT:
                :ref:`Python testing and execution framework <pytest_section>`, AT: :ref:`alcotest_section`, CB: :ref:`crowbar_test`, FT: :ref:`flextesa`,
    :header: "Component","Unit","Property","Integration","System","Regression"
 
@@ -106,7 +106,7 @@ Alcotest
 
 `Alcotest <https://github.com/mirage/alcotest>`_ is a library for unit
 and integration testing in OCaml. Alcotest is the primary tool in
-Tezos for unit and integration for testing OCaml code.
+mineplex for unit and integration for testing OCaml code.
 
 Typical use cases:
  - Verifying simple input-output specifications for functions with a
@@ -116,13 +116,13 @@ Typical use cases:
 Example tests:
  - Unit tests for :src:`src/lib_requester`, in :src:`src/lib_requester/test/test_requester.ml`. To
    execute them locally, run ``dune build @src/lib_requester/runtest`` in
-   the Tezos root. To execute them on :ref:`your own machine
+   the mineplex root. To execute them on :ref:`your own machine
    <executing_gitlab_ci_locally>` using the GitLab CI system, run
    ``gitlab-runner exec docker unit:requester``.
  - Integration tests for P2P in the shell.  For instance
    :src:`src/lib_p2p/test/test_p2p_pool.ml`. This test forks a set of
    processes that exercise large parts of the P2P layer.  To execute
-   it locally, run ``dune build @runtest_p2p_pool`` in the Tezos
+   it locally, run ``dune build @runtest_p2p_pool`` in the mineplex
    root. To execute all P2P tests on :ref:`your own machine
    <executing_gitlab_ci_locally>` using the GitLab CI system, run
    ``gitlab-runner exec docker unit:p2p``.
@@ -144,7 +144,7 @@ Typical use cases:
    randomized inputs.
 
 Example test:
- - Crowbar is used in :opam:`data-encoding`, a Tezos component that
+ - Crowbar is used in :opam:`data-encoding`, a mineplex component that
    has been spun off into its own opam package. For instance, :opam:`data-encoding` uses
    Crowbar to `verify that serializing and
    deserializing a value
@@ -161,9 +161,9 @@ References:
 Python testing and execution framework
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Tezos project uses `pytest <http://pytest.org/>`_, a Python testing
-framework, combined with :ref:`tezos-launchers <python_testing_framework>`, a Python wrapper
-``tezos-node`` and ``tezos-client``, to perform integration testing
+The mineplex project uses `pytest <http://pytest.org/>`_, a Python testing
+framework, combined with :ref:`mineplex-launchers <python_testing_framework>`, a Python wrapper
+``mineplex-node`` and ``mineplex-client``, to perform integration testing
 of the node, the client, networks of nodes and daemons such as the baker
 and endorser.
 
@@ -174,7 +174,7 @@ enables regression testing.
 
 
 Typical use cases:
- - Testing the commands of ``tezos-client``. This allows to test the
+ - Testing the commands of ``mineplex-client``. This allows to test the
    full chain: from client, to node RPC to the implementation of the
    economic protocol.
  - Test networks of nodes, with daemons.
@@ -182,22 +182,22 @@ Typical use cases:
    ``pytest-regtest``.
 
 Example tests:
- - Testing the node's script interpreter through ``tezos-client run script`` (in :src:`pytest tests_python/tests/test_contract_opcodes.py`).
+ - Testing the node's script interpreter through ``mineplex-client run script`` (in :src:`pytest tests_python/tests/test_contract_opcodes.py`).
    To execute it locally, run ``pytest tests_python/tests/test_contract_opcodes.py`` in
-   the Tezos root. To execute them on :ref:`your own machine
+   the mineplex root. To execute them on :ref:`your own machine
    <executing_gitlab_ci_locally>` using the GitLab CI system, run
    ``gitlab-runner exec docker integration:contract_opcodes``.
  - Setting up networks of nodes and ensuring their connection
    (in :src:`tests_python/tests/test_p2p.py`).
    To execute it locally, run ``pytest tests_python/tests/test_p2p.py`` in
-   the Tezos root. To execute them on :ref:`your own machine
+   the mineplex root. To execute them on :ref:`your own machine
    <executing_gitlab_ci_locally>` using the GitLab CI system, run
    ``gitlab-runner exec docker integration:p2p``.
  - Detecting unintended changes in the behavior of the Michelson
    interpreter (in
    :src:`tests_python/tests/test_contract_opcodes.py`).  To execute it
    locally, run ``pytest tests_python/tests/test_contract_opcodes.py``
-   in the Tezos root. To execute them on :ref:`your own machine
+   in the mineplex root. To execute them on :ref:`your own machine
    <executing_gitlab_ci_locally>` using the GitLab CI system, run
    ``gitlab-runner exec docker integration:contract_opcodes``.
 
@@ -206,7 +206,7 @@ References:
  - :ref:`python_testing_framework`
  - `pytest-regtest README <https://gitlab.com/uweschmitt/pytest-regtest>`_
  - `pytest-regtest pip package <https://pypi.org/project/pytest-regtest/>`_
- - `Section in Tezos documentation on pytest-regtest <pytest_regression_testing>`_
+ - `Section in mineplex documentation on pytest-regtest <pytest_regression_testing>`_
 
 .. _flextesa:
 
@@ -228,12 +228,12 @@ Example test:
    :src:`bin_flextesa/command_accusations.ml`)
 
 References:
- - :ref:`Section in Tezos Developer Documentation <flexible_network_sandboxes>`
+ - :ref:`Section in mineplex Developer Documentation <flexible_network_sandboxes>`
  - `Blog post introducing Flextesa
-   <https://medium.com/@obsidian.systems/introducing-flextesa-robust-testing-tools-for-tezos-and-its-applications-edc1e336a209>`_
- - `GitLab repository <https://gitlab.com/tezos/flextesa>`_
- - `An example setting up a Babylon docker sandbox <https://assets.tqtezos.com/docs/setup/2-sandbox/>`_
- - `API documentation <https://tezos.gitlab.io/flextesa/lib-index.html>`_
+   <https://medium.com/@obsidian.systems/introducing-flextesa-robust-testing-tools-for-mineplex-and-its-applications-edc1e336a209>`_
+ - `GitLab repository <https://gitlab.com/mineplex/flextesa>`_
+ - `An example setting up a Babylon docker sandbox <https://assets.tqmineplex.com/docs/setup/2-sandbox/>`_
+ - `API documentation <https://mineplex.gitlab.io/flextesa/lib-index.html>`_
 
 ..
    .. _michelson_unit_tests:
@@ -242,9 +242,9 @@ References:
    --------------------
 
    The `Michelson unit test proposal
-   <https://gitlab.com/tezos/tezos/-/merge_requests/1487>`__ defines a
+   <https://gitlab.com/mineplex/mineplex/-/merge_requests/1487>`__ defines a
    format for unit tests for Michelson snippets. If the proposal is eventually accepted, then these
-   tests will be executable through ``tezos-client``.
+   tests will be executable through ``mineplex-client``.
 
    Example use cases:
     - Verifying the functional (input--output) behavior of snippets of
@@ -252,7 +252,7 @@ References:
     - Conformance testing for Michelson interpreters.
 
    References:
-    - `Merge request defining the Michelson unit test format <https://gitlab.com/tezos/tezos/-/merge_requests/1487>`_
+    - `Merge request defining the Michelson unit test format <https://gitlab.com/mineplex/mineplex/-/merge_requests/1487>`_
     - `A conformance test suite for Michelson interpreter using the Michelson unit test format <https://github.com/runtimeverification/michelson-semantics/tree/master/tests/unit>`_
 
 
@@ -300,7 +300,7 @@ or ``executable`` stanza.
 
 ::
 
-    (preprocess (pps bisect_ppx -- --bisect-file /path/to/tezos.git/_coverage_output))))
+    (preprocess (pps bisect_ppx -- --bisect-file /path/to/mineplex.git/_coverage_output))))
 
 At the same time, it tells ``bisect_ppx`` to generate coverage data in the
 ``_coverage_output`` directory.
@@ -371,7 +371,7 @@ Executing tests through the GitLab CI
 All tests are executed on all branches for each commit.  For
 instances, to see the latest runs of the CI on the master branch,
 visit `this page
-<https://gitlab.com/tezos/tezos/-/commits/master>`_. Each commit is
+<https://gitlab.com/mineplex/mineplex/-/commits/master>`_. Each commit is
 annotated with a green checkmark icon if the CI passed, and a red
 cross icon if not. You can click the icon for more details.
 
@@ -386,11 +386,11 @@ properly specified in the :src:`.gitlab-ci.yml` file. The procedure
 for doing this depends on the type of test you've added:
 
 Python integration and regression tests
-  Run ``./scripts/update_integration_test.sh`` in Tezos home. This
+  Run ``./scripts/update_integration_test.sh`` in mineplex home. This
   will include your new test in :src:`.gitlab-ci.yml`.
 
 Tests executed through Dune (Alcotest, Flextesa)
-  Run ``./scripts/update_unit_test.sh`` in Tezos home. This will
+  Run ``./scripts/update_unit_test.sh`` in mineplex home. This will
   include your new test in :src:`.gitlab-ci.yml`.
 
 Other
@@ -421,8 +421,8 @@ Up to a few minutes after the ``pages`` job is completed, the report is
 published at the URL indicated in the log of the ``pages`` job. The actual URL
 depends on the names of the GitLab account and project which triggered
 the pipeline, as well as on the pipeline number. Examples:
-``https://nomadic-labs.gitlab.io/tezos/105822404/``,
-``https://tezos.gitlab.io/tezos/1234822404/``.
+``https://nomadic-labs.gitlab.io/mineplex/105822404/``,
+``https://mineplex.gitlab.io/mineplex/1234822404/``.
 
 .. _executing_gitlab_ci_locally:
 
@@ -447,7 +447,7 @@ For example, if you want to run the job ``check_python_linting`` which checks th
 
 Note that the first time you execute a job, it may take a long time because it
 requires downloading the docker image, and ``gitlab-runner`` is not verbose on this
-subject. It may be the case if the opam repository Tezos uses has been changed, requiring
+subject. It may be the case if the opam repository mineplex uses has been changed, requiring
 the refresh of the locally cached docker image.
 
 Local changes must be committed (but not necessarily pushed remotely)

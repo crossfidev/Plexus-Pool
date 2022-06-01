@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -143,7 +143,7 @@ let () =
         ppf
         "The data directory version is too old.@,\
          Found '%s', expected '%s'.@,\
-         It needs to be upgraded with `tezos-node upgrade storage`."
+         It needs to be upgraded with `mineplex-node upgrade storage`."
         got
         exp)
     Data_encoding.(

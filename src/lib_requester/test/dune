@@ -1,14 +1,14 @@
 (executables
  (names test_requester)
- (libraries tezos-base
-            tezos-stdlib-unix
-            tezos-requester
-            tezos-test-services
+ (libraries mineplex-base
+            mineplex-stdlib-unix
+            mineplex-requester
+            mineplex-test-services
             alcotest-lwt)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_stdlib
-                   -open Tezos_requester
-                   -open Tezos_test_services)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_stdlib
+                   -open mineplex_requester
+                   -open mineplex_test_services)))
 
 
 (alias
@@ -17,5 +17,5 @@
 
 (alias
  (name runtest)
- (package tezos-requester)
+ (package mineplex-requester)
  (deps (alias runtest_requester)))

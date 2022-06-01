@@ -1,7 +1,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    = -aE -n
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = Tezos
+SPHINXPROJ    = mineplex
 SOURCEDIR     = .
 BUILDDIR      = _build
 

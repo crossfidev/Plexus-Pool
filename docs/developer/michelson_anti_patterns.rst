@@ -5,7 +5,7 @@ Even though Michelson is designed to make it easy to write secure
 contracts and difficult to write vulnerable ones, it is still possible
 to write buggy contracts that leak data and funds. This is a list of
 mistakes that you can make when writing or interacting with contracts on
-the Tezos blockchain and alternative ways to write code that avoid these
+the mineplex blockchain and alternative ways to write code that avoid these
 problems.
 
 Note: We are currently reworking the concurrency model of Michelson (how

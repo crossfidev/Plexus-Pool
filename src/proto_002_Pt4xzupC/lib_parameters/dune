@@ -1,22 +1,22 @@
 (library
- (name tezos_protocol_002_Pt4xzupC_parameters)
- (public_name tezos-protocol-002-Pt4xzupC-parameters)
+ (name mineplex_protocol_002_Pt4xzupC_parameters)
+ (public_name mineplex-protocol-002-Pt4xzupC-parameters)
  (modules :standard \ gen)
- (libraries tezos-base
-            tezos-protocol-environment
-            tezos-protocol-002-Pt4xzupC)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_002_Pt4xzupC
+ (libraries mineplex-base
+            mineplex-protocol-environment
+            mineplex-protocol-002-Pt4xzupC)
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_002_Pt4xzupC
                    -linkall))
 )
 
 (executable
  (name gen)
- (libraries tezos-base
-            tezos-protocol-002-Pt4xzupC-parameters)
+ (libraries mineplex-base
+            mineplex-protocol-002-Pt4xzupC-parameters)
  (modules gen)
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_protocol_002_Pt4xzupC_parameters
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_protocol_002_Pt4xzupC_parameters
                    -linkall)))
 
 (rule
@@ -41,4 +41,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

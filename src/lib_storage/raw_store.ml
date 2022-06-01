@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -65,7 +65,7 @@ let ( >>=? ) v f = match v with Error err -> lwt_fail_error err | Ok v -> f v
 let init ?(readonly = false) ?mapsize path =
   if not (Sys.file_exists path) then Unix.mkdir path 0o755 ;
   let sync_flag =
-    match Sys.getenv_opt "TEZOS_STORE_SYNC" with
+    match Sys.getenv_opt "mineplex_STORE_SYNC" with
     | None ->
         []
     | Some s -> (
@@ -76,7 +76,7 @@ let init ?(readonly = false) ?mapsize path =
           [Lmdb.NoMetaSync]
       | _ ->
           Printf.eprintf
-            "Unrecognized TEZOS_STORE_SYNC option : %s\n\
+            "Unrecognized mineplex_STORE_SYNC option : %s\n\
              allowed: nosync nometasync"
             s ;
           [] )

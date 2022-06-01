@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -24,37 +24,37 @@
 (*****************************************************************************)
 
 include module type of struct
-  include Tezos_stdlib
+  include mineplex_stdlib
 end
 
 module Error_monad : module type of struct
-  include Tezos_error_monad.Error_monad
+  include mineplex_error_monad.Error_monad
 end
 
-include module type of Tezos_rpc
+include module type of mineplex_rpc
 
-include module type of Tezos_clic
+include module type of mineplex_clic
 
-include module type of Tezos_crypto
+include module type of mineplex_crypto
 
 module Data_encoding = Data_encoding
 
 module Option : sig
   include module type of Option
 
-  include module type of Tezos_stdlib.TzOption
+  include module type of mineplex_stdlib.TzOption
 end
 
 module List : sig
   include module type of List
 
-  include module type of Tezos_stdlib.TzList
+  include module type of mineplex_stdlib.TzList
 end
 
 module String : sig
   include module type of String
 
-  include module type of Tezos_stdlib.TzString
+  include module type of mineplex_stdlib.TzString
 end
 
 module Time = Time
@@ -81,6 +81,6 @@ module Network_version = Network_version
 
 include module type of Utils.Infix
 
-include module type of Tezos_error_monad.Error_monad
+include module type of mineplex_error_monad.Error_monad
 
 module Internal_event = Internal_event

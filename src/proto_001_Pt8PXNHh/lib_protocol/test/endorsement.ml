@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -23,7 +23,7 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-(** Endorsing a block adds an extra layer of confidence to the Tezos's
+(** Endorsing a block adds an extra layer of confidence to the mineplex's
     PoS algorithm. The block endorsing operation must be included in
     the following block. Each endorser possess a number of slots
     corresponding to their priority. After [preserved_cycles], a reward

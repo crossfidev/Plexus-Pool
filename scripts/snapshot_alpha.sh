@@ -30,10 +30,10 @@ fi
 # this is equivalent to `cp src/proto_alpha/ src/proto_${version}` but only for versioned files
 
 cp -R src/proto_alpha/ src/proto_${version}
-# mkdir /tmp/tezos_proto_snapshot
-# git archive HEAD src/proto_alpha/ | tar -x -C /tmp/tezos_proto_snapshot
-# mv /tmp/tezos_proto_snapshot/src/proto_alpha src/proto_${version}
-# rm -rf /tmp/tezos_proto_snapshot
+# mkdir /tmp/mineplex_proto_snapshot
+# git archive HEAD src/proto_alpha/ | tar -x -C /tmp/mineplex_proto_snapshot
+# mv /tmp/mineplex_proto_snapshot/src/proto_alpha src/proto_${version}
+# rm -rf /tmp/mineplex_proto_snapshot
 
 # set current version
 sed -i.old.old -e 's/let version_value = "alpha_current"/let version_value = "'${current}'"/' \
@@ -83,7 +83,7 @@ cd lib_protocol
 
 # replace fake hash with real hash, this file doesn't influence the hash
 sed -i.old -e 's/"hash": "[^"]*",/"hash": "'$long_hash'",/' \
-    TEZOS_PROTOCOL
+    mineplex_PROTOCOL
 
 sed -i.old -e s/protocol_alpha/protocol_${version}_${short_hash}/ \
            -e s/protocol-alpha/protocol-${version}-${short_hash}/ \

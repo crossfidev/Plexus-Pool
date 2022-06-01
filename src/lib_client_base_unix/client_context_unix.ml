@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2018 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -160,7 +160,7 @@ class unix_ui : Client_context.ui =
 
     method exit : 'a. int -> 'a = fun i -> Lwt_exit.exit_and_raise i
 
-    method now = Tezos_stdlib_unix.Systime_os.now
+    method now = mineplex_stdlib_unix.Systime_os.now
   end
 
 class unix_full ~base_dir ~chain ~block ~confirmations ~password_filename
@@ -173,7 +173,7 @@ class unix_full ~base_dir ~chain ~block ~confirmations ~password_filename
     inherit unix_wallet ~base_dir ~password_filename
 
     inherit
-      Tezos_rpc_http_client_unix.RPC_client_unix.http_ctxt
+      mineplex_rpc_http_client_unix.RPC_client_unix.http_ctxt
         rpc_config Media_type.all_media_types
 
     inherit unix_ui
@@ -195,7 +195,7 @@ class unix_mockup ~base_dir ~mem_only ~mockup_env ~chain_id ~rpc_context :
     inherit unix_wallet ~base_dir ~password_filename:None
 
     inherit
-      Tezos_mockup.RPC_client.local_ctxt
+      mineplex_mockup.RPC_client.local_ctxt
         base_dir mem_only mockup_env chain_id rpc_context
 
     inherit unix_ui

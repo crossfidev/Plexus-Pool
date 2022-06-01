@@ -1,8 +1,8 @@
 (include v0.dune.inc)
 
 (library
- (name tezos_protocol_environment_structs)
- (public_name tezos-protocol-environment-structs)
+ (name mineplex_protocol_environment_structs)
+ (public_name mineplex-protocol-environment-structs)
  (flags :standard)
- (libraries tezos-stdlib)
+ (libraries mineplex-stdlib)
  (modules ("V0")))

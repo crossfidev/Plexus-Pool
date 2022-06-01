@@ -6,7 +6,7 @@ let failf fmt = ksprintf (fun s -> fail (`Scenario_error s)) fmt
 
 let wait_for_voting_period ?level_within_period state ~client ~attempts period
     =
-  let period_name = Tezos_protocol.Voting_period.to_string period in
+  let period_name = mineplex_protocol.Voting_period.to_string period in
   let message =
     sprintf
       "Waiting for voting period: `%s`%s"
@@ -20,7 +20,7 @@ let wait_for_voting_period ?level_within_period state ~client ~attempts period
   >>= fun () ->
   Helpers.wait_for state ~attempts ~seconds:10. (fun nth ->
       Asynchronous_result.map_option level_within_period ~f:(fun lvl ->
-          Tezos_client.rpc
+          mineplex_client.rpc
             state
             ~client
             `Get
@@ -38,7 +38,7 @@ let wait_for_voting_period ?level_within_period state ~client ~attempts period
               "Cannot get level.voting_period_position: %s"
               (Exn.to_string e))
       >>= fun lvl_ok ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client
         `Get
@@ -49,7 +49,7 @@ let wait_for_voting_period ?level_within_period state ~client ~attempts period
              && Poly.(lvl_ok = None || lvl_ok = Some true) ->
           return (`Done (nth - 1))
       | _ ->
-          Tezos_client.successful_client_cmd
+          mineplex_client.successful_client_cmd
             state
             ~client
             ["show"; "voting"; "period"]
@@ -93,9 +93,9 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
     ~node_exec
     ~client_exec
   >>= fun (nodes, protocol) ->
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
-    ~client:(Tezos_client.of_node (List.hd_exn nodes) ~exec:client_exec)
+    ~client:(mineplex_client.of_node (List.hd_exn nodes) ~exec:client_exec)
     `Get
     ~path:"/chains/main/chain_id"
   >>= fun chain_id_json ->
@@ -104,58 +104,58 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
   in
   let accusers =
     List.concat_map nodes ~f:(fun node ->
-        let client = Tezos_client.of_node node ~exec:client_exec in
-        [ Tezos_daemon.accuser_of_node
+        let client = mineplex_client.of_node node ~exec:client_exec in
+        [ mineplex_daemon.accuser_of_node
             ~exec:first_accuser_exec
             ~client
             node
             ~name_tag:"first";
-          Tezos_daemon.accuser_of_node
+          mineplex_daemon.accuser_of_node
             ~exec:second_accuser_exec
             ~client
             node
             ~name_tag:"second" ])
   in
   List_sequential.iter accusers ~f:(fun acc ->
-      Running_processes.start state (Tezos_daemon.process state acc)
+      Running_processes.start state (mineplex_daemon.process state acc)
       >>= fun _ -> return ())
   >>= fun () ->
   let keys_and_daemons =
     let pick_a_node_and_client idx =
       match List.nth nodes ((1 + idx) % List.length nodes) with
       | Some node ->
-          (node, Tezos_client.of_node node ~exec:client_exec)
+          (node, mineplex_client.of_node node ~exec:client_exec)
       | None ->
           assert false
     in
-    Tezos_protocol.bootstrap_accounts protocol
+    mineplex_protocol.bootstrap_accounts protocol
     |> List.filter_mapi ~f:(fun idx acc ->
            let (node, client) = pick_a_node_and_client idx in
-           let key = Tezos_protocol.Account.name acc in
+           let key = mineplex_protocol.Account.name acc in
            if List.mem ~equal:String.equal no_daemons_for key then None
            else
              Some
                ( acc,
                  client,
-                 [ Tezos_daemon.baker_of_node
+                 [ mineplex_daemon.baker_of_node
                      ~exec:first_baker_exec
                      ~client
                      node
                      ~key
                      ~name_tag:"first";
-                   Tezos_daemon.baker_of_node
+                   mineplex_daemon.baker_of_node
                      ~exec:second_baker_exec
                      ~client
                      ~name_tag:"second"
                      node
                      ~key;
-                   Tezos_daemon.endorser_of_node
+                   mineplex_daemon.endorser_of_node
                      ~exec:first_endorser_exec
                      ~name_tag:"first"
                      ~client
                      node
                      ~key;
-                   Tezos_daemon.endorser_of_node
+                   mineplex_daemon.endorser_of_node
                      ~exec:second_endorser_exec
                      ~name_tag:"second"
                      ~client
@@ -163,37 +163,37 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
                      ~key ] ))
   in
   List_sequential.iter keys_and_daemons ~f:(fun (acc, client, daemons) ->
-      Tezos_client.wait_for_node_bootstrap state client
+      mineplex_client.wait_for_node_bootstrap state client
       >>= fun () ->
-      let (key, priv) = Tezos_protocol.Account.(name acc, private_key acc) in
-      Tezos_client.import_secret_key state client ~name:key ~key:priv
+      let (key, priv) = mineplex_protocol.Account.(name acc, private_key acc) in
+      mineplex_client.import_secret_key state client ~name:key ~key:priv
       >>= fun () ->
       say
         state
         EF.(
           desc_list
             (haf "Registration-as-delegate:")
-            [ desc (af "Client:") (af "%S" client.Tezos_client.id);
+            [ desc (af "Client:") (af "%S" client.mineplex_client.id);
               desc (af "Key:") (af "%S" key) ])
       >>= fun () ->
-      Tezos_client.register_as_delegate state client ~key_name:key
+      mineplex_client.register_as_delegate state client ~key_name:key
       >>= fun () ->
       say
         state
         EF.(
           desc_list
             (haf "Starting daemons:")
-            [ desc (af "Client:") (af "%S" client.Tezos_client.id);
+            [ desc (af "Client:") (af "%S" client.mineplex_client.id);
               desc (af "Key:") (af "%S" key) ])
       >>= fun () ->
       List_sequential.iter daemons ~f:(fun daemon ->
-          Running_processes.start state (Tezos_daemon.process state daemon)
+          Running_processes.start state (mineplex_daemon.process state daemon)
           >>= fun _ -> return ()))
   >>= fun () ->
   let client_0 =
-    Tezos_client.of_node (List.nth_exn nodes 0) ~exec:client_exec
+    mineplex_client.of_node (List.nth_exn nodes 0) ~exec:client_exec
   in
-  let make_admin = Tezos_admin_client.of_client ~exec:admin_exec in
+  let make_admin = mineplex_admin_client.of_client ~exec:admin_exec in
   Interactive_test.Pauser.add_commands
     state
     Interactive_test.Commands.(
@@ -202,7 +202,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
       @ arbitrary_commands_for_each_and_all_clients
           state
           ~make_admin
-          ~clients:(List.map nodes ~f:(Tezos_client.of_node ~exec:client_exec))) ;
+          ~clients:(List.map nodes ~f:(mineplex_client.of_node ~exec:client_exec))) ;
   (*
      For each node we try to see if the node knows about the protocol,
      if it does we're good, if not we inject it.
@@ -211,17 +211,17 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
   List.fold ~init:(return None) nodes ~f:(fun prevm nod ->
       prevm
       >>= fun _ ->
-      System.read_file state (new_protocol_path // "TEZOS_PROTOCOL")
+      System.read_file state (new_protocol_path // "mineplex_PROTOCOL")
       >>= fun protocol ->
       ( try return Jqo.(of_string protocol |> field ~k:"hash" |> get_string)
         with e ->
           failf
-            "Cannot parse %s/TEZOS_PROTOCOL: %s"
+            "Cannot parse %s/mineplex_PROTOCOL: %s"
             new_protocol_path
             (Exn.to_string e) )
       >>= fun hash ->
-      let client = Tezos_client.of_node ~exec:client_exec nod in
-      Tezos_client.rpc state ~client `Get ~path:"/protocols"
+      let client = mineplex_client.of_node ~exec:client_exec nod in
+      mineplex_client.rpc state ~client `Get ~path:"/protocols"
       >>= fun protocols ->
       match protocols with
       | `A l
@@ -235,12 +235,12 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
             EF.(
               wf
                 "Node `%s` already knows protocol `%s`."
-                nod.Tezos_node.id
+                nod.mineplex_node.id
                 hash)
           >>= fun () -> return (Some hash)
       | _ ->
           let admin = make_admin client in
-          Tezos_admin_client.inject_protocol
+          mineplex_admin_client.inject_protocol
             admin
             state
             ~path:new_protocol_path
@@ -252,7 +252,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
                 wf
                   "Injected protocol `%s` in `%s`"
                   new_protocol_hash
-                  nod.Tezos_node.id)
+                  nod.mineplex_node.id)
           else
             failf
               "Injecting protocol %s failed (≠ %s)"
@@ -270,21 +270,21 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
       Kiln.Configuration_directory.generate
         state
         kiln_config
-        ~peers:(List.map nodes ~f:(fun {Tezos_node.p2p_port; _} -> p2p_port))
-        ~sandbox_json:(Tezos_protocol.sandbox_path state protocol)
+        ~peers:(List.map nodes ~f:(fun {mineplex_node.p2p_port; _} -> p2p_port))
+        ~sandbox_json:(mineplex_protocol.sandbox_path state protocol)
         ~nodes:
-          (List.map nodes ~f:(fun {Tezos_node.rpc_port; _} ->
+          (List.map nodes ~f:(fun {mineplex_node.rpc_port; _} ->
                sprintf "http://localhost:%d" rpc_port))
         ~bakers:
           (List.map
-             protocol.Tezos_protocol.bootstrap_accounts
+             protocol.mineplex_protocol.bootstrap_accounts
              ~f:(fun (account, _) ->
-               Tezos_protocol.Account.(name account, pubkey_hash account)))
+               mineplex_protocol.Account.(name account, pubkey_hash account)))
         ~network_string:network_id
         ~node_exec
         ~client_exec
         ~protocol_execs:
-          [ ( protocol.Tezos_protocol.hash,
+          [ ( protocol.mineplex_protocol.hash,
               first_baker_exec,
               first_endorser_exec );
             (new_protocol_hash, second_baker_exec, second_endorser_exec) ]
@@ -304,7 +304,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
     nodes
     (* TODO: wait for /chains/main/blocks/head/votes/listings to be
        non-empty instead of counting blocks *)
-    (`At_least protocol.Tezos_protocol.blocks_per_voting_period)
+    (`At_least protocol.mineplex_protocol.blocks_per_voting_period)
   >>= fun () ->
   Interactive_test.Pauser.generic
     state
@@ -321,13 +321,13 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
     ~level_within_period:3
   >>= fun _ ->
   let submit_prop acc client hash =
-    Tezos_client.successful_client_cmd
+    mineplex_client.successful_client_cmd
       state
       ~client
       [ "submit";
         "proposals";
         "for";
-        Tezos_protocol.Account.name acc;
+        mineplex_protocol.Account.name acc;
         hash;
         "--force" ]
     >>= fun _ ->
@@ -335,7 +335,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
       state
       Fmt.(
         fun ppf () ->
-          pf ppf "%s voted for %s" (Tezos_protocol.Account.name acc) hash)
+          pf ppf "%s voted for %s" (mineplex_protocol.Account.name acc) hash)
   in
   List_sequential.iter keys_and_daemons ~f:(fun (acc, client, _) ->
       submit_prop acc client new_protocol_hash)
@@ -345,7 +345,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
       (List.init extra_dummy_proposals_batch_size ~f:(fun s ->
            sprintf "proto-%s-%d" tag s))
       ~f:(fun s ->
-        (t, Tezos_crypto.Protocol_hash.(hash_string [s] |> to_b58check)))
+        (t, mineplex_crypto.Protocol_hash.(hash_string [s] |> to_b58check)))
   in
   let extra_dummy_protocols =
     List.bind extra_dummy_proposals_batch_levels ~f:(fun l ->
@@ -380,13 +380,13 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
     `Testing_vote
   >>= fun _ ->
   List_sequential.iter keys_and_daemons ~f:(fun (acc, client, _) ->
-      Tezos_client.successful_client_cmd
+      mineplex_client.successful_client_cmd
         state
         ~client
         [ "submit";
           "ballot";
           "for";
-          Tezos_protocol.Account.name acc;
+          mineplex_protocol.Account.name acc;
           new_protocol_hash;
           "yea" ]
       >>= fun _ ->
@@ -397,7 +397,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
             pf
               ppf
               "%s voted Yea to test %s"
-              (Tezos_protocol.Account.name acc)
+              (mineplex_protocol.Account.name acc)
               new_protocol_hash))
   >>= fun () ->
   wait_for_voting_period
@@ -414,13 +414,13 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
         false
   in
   List_sequential.iter keys_and_daemons ~f:(fun (acc, client, _) ->
-      Tezos_client.successful_client_cmd
+      mineplex_client.successful_client_cmd
         state
         ~client
         [ "submit";
           "ballot";
           "for";
-          Tezos_protocol.Account.name acc;
+          mineplex_protocol.Account.name acc;
           new_protocol_hash;
           (if protocol_switch_will_happen then "yea" else "nay") ]
       >>= fun _ ->
@@ -431,7 +431,7 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
             pf
               ppf
               "%s voted Yea to promote %s"
-              (Tezos_protocol.Account.name acc)
+              (mineplex_protocol.Account.name acc)
               new_protocol_hash))
   >>= fun () ->
   wait_for_voting_period
@@ -440,19 +440,19 @@ let run state ~protocol ~size ~base_port ~no_daemons_for ?external_peer_ports
     ~attempts:waiting_attempts
     `Proposal
   >>= fun _ ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:client_0
     ["show"; "voting"; "period"]
   >>= fun res ->
   let protocol_to_wait_for =
     if protocol_switch_will_happen then new_protocol_hash
-    else protocol.Tezos_protocol.hash
+    else protocol.mineplex_protocol.hash
   in
   Helpers.wait_for state ~attempts:waiting_attempts ~seconds:4. (fun _ ->
       Console.say state EF.(wf "Checking actual protocol transition")
       >>= fun () ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client:client_0
         `Get
@@ -590,16 +590,16 @@ let cmd () =
                   ~docv:"ACCOUNT-NAME"
                   ~docs
                   ~doc:"Do not start daemons for $(docv).")))
-    $ Tezos_protocol.cli_term base_state
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
-    $ Tezos_executable.cli_term base_state `Admin "tezos"
-    $ Tezos_executable.cli_term base_state `Baker "first"
-    $ Tezos_executable.cli_term base_state `Endorser "first"
-    $ Tezos_executable.cli_term base_state `Accuser "first"
-    $ Tezos_executable.cli_term base_state `Baker "second"
-    $ Tezos_executable.cli_term base_state `Endorser "second"
-    $ Tezos_executable.cli_term base_state `Accuser "second"
+    $ mineplex_protocol.cli_term base_state
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
+    $ mineplex_executable.cli_term base_state `Admin "mineplex"
+    $ mineplex_executable.cli_term base_state `Baker "first"
+    $ mineplex_executable.cli_term base_state `Endorser "first"
+    $ mineplex_executable.cli_term base_state `Accuser "first"
+    $ mineplex_executable.cli_term base_state `Baker "second"
+    $ mineplex_executable.cli_term base_state `Endorser "second"
+    $ mineplex_executable.cli_term base_state `Accuser "second"
     $ Arg.(
         const (fun p -> `Protocol_path (Caml.Filename.dirname p))
         $ required

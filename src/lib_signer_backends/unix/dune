@@ -1,28 +1,28 @@
 (library
- (name tezos_signer_backends_unix)
- (public_name tezos-signer-backends.unix)
+ (name mineplex_signer_backends_unix)
+ (public_name mineplex-signer-backends.unix)
  (modules (:standard \ no_ledger with_ledger))
  (libraries ocplib-endian.bigstring
-            tezos-signer-backends
-            tezos-base
-            tezos-base.unix
-            tezos-stdlib-unix
-            tezos-rpc-http-client-unix
+            mineplex-signer-backends
+            mineplex-base
+            mineplex-base.unix
+            mineplex-stdlib-unix
+            mineplex-rpc-http-client-unix
             (select ledger.ml from
-              (ledgerwallet-tezos -> with_ledger.ml)
+              (ledgerwallet-mineplex -> with_ledger.ml)
               (-> no_ledger.ml)))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_stdlib_unix
-                   -open Tezos_stdlib
-                   -open Tezos_client_base
-                   -open Tezos_rpc_http
-                   -open Tezos_rpc_http_client
-                   -open Tezos_rpc_http_client_unix
-                   -open Tezos_signer_services
-                   -open Tezos_signer_backends
-                   -open Tezos_shell_services)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_stdlib_unix
+                   -open mineplex_stdlib
+                   -open mineplex_client_base
+                   -open mineplex_rpc_http
+                   -open mineplex_rpc_http_client
+                   -open mineplex_rpc_http_client_unix
+                   -open mineplex_signer_services
+                   -open mineplex_signer_backends
+                   -open mineplex_shell_services)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps} --ignore ledger.ml)))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps} --ignore ledger.ml)))

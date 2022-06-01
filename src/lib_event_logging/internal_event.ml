@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -27,12 +27,12 @@ open Error_monad
 
 module List = struct
   include List
-  include Tezos_stdlib.TzList
+  include mineplex_stdlib.TzList
 end
 
 module String = struct
   include String
-  include Tezos_stdlib.TzString
+  include mineplex_stdlib.TzString
 end
 
 let valid_char c =
@@ -1080,7 +1080,7 @@ module Legacy_logging = struct
       ('a, Format.formatter, unit, unit Lwt.t) format4 -> 'a
   end
 
-  open Tezos_stdlib
+  open mineplex_stdlib
 
   type ('a, 'b) msgf =
     (('a, Format.formatter, unit, 'b) format4 -> ?tags:Tag.set -> 'a) ->

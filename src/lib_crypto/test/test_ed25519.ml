@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -70,4 +70,4 @@ let tests =
   [ ("b58check.roundtrip", `Quick, test_b58check_roundtrips);
     ("b58check.invalid", `Slow, test_b58check_invalids) ]
 
-let () = Alcotest.run "tezos-crypto" [("ed25519", tests)]
+let () = Alcotest.run "mineplex-crypto" [("ed25519", tests)]

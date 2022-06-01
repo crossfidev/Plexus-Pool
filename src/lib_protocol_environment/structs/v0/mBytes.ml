@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -50,7 +50,7 @@ let get_char = Bytes.get
 
 let set_char = Bytes.set
 
-include Tezos_stdlib.TzEndian
+include mineplex_stdlib.TzEndian
 
 module LE = struct
   let get_uint16 = Bytes.get_uint16_le

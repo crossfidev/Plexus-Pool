@@ -24,7 +24,7 @@
 (*****************************************************************************)
 
 (** [test_services] collects Alcotest testable definitions for base OCaml types
-   and Tezos specific types. *)
+   and mineplex specific types. *)
 
 include Alcotest
 include Test_services_base

@@ -2,8 +2,8 @@ Merge Team
 ==========
 
 The merge team is a group of developers from different teams of the
-Tezos ecosystem that controls what is merged into the
-https://gitlab.com/tezos/tezos/ repository.
+mineplex ecosystem that controls what is merged into the
+https://gitlab.com/mineplex/mineplex/ repository.
 They are automatically selected as approvers when you create a merge
 request.
 
@@ -121,7 +121,7 @@ Dos and Don'ts
   ``src/proto_alpha/lib_protocol``, those are for ``proto-proposal``
   (see later).
 
-- Tezos uses a `git rebase workflow
+- mineplex uses a `git rebase workflow
   <https://www.atlassian.com/git/articles/git-team-workflows-merge-or-rebase>`_.
   Make sure that your source branch is cleanly rebased on top of your
   target branch.

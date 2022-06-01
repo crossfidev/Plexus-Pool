@@ -22,7 +22,7 @@ let setup_baking_ledger state uri ~client =
     ~force:true
   >>= fun () ->
   let key_name = "ledgered" in
-  let baker = Tezos_client.Keyed.make client ~key_name ~secret_key:uri in
+  let baker = mineplex_client.Keyed.make client ~key_name ~secret_key:uri in
   ledger_prompt_notice
     state
     EF.(
@@ -30,9 +30,9 @@ let setup_baking_ledger state uri ~client =
         "Importing %S in client `%s`. The ledger should be prompting for \
          acknowledgment to provide the public key."
         uri
-        client.Tezos_client.id)
+        client.mineplex_client.id)
   >>= fun () ->
-  Tezos_client.Keyed.initialize state baker
+  mineplex_client.Keyed.initialize state baker
   >>= fun _ ->
   ledger_prompt_notice
     state
@@ -42,7 +42,7 @@ let setup_baking_ledger state uri ~client =
          parameters (Address, Main chain, HWMs)."
         uri)
   >>= fun () ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client
     [ "setup";
@@ -60,7 +60,7 @@ let setup_baking_ledger state uri ~client =
 let failf fmt = ksprintf (fun s -> fail (`Scenario_error s)) fmt
 
 let transfer state ~client ~src ~dst ~amount =
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client
     [ "--wait";
@@ -77,7 +77,7 @@ let transfer state ~client ~src ~dst ~amount =
       "0.3" ]
 
 let register state ~client ~dst =
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client
     [ "--wait";
@@ -92,10 +92,10 @@ let register state ~client ~dst =
 
 let bake_until_voting_period ?keep_alive_delegate state ~baker ~attempts period
     =
-  let client = baker.Tezos_client.Keyed.client in
-  let period_name = Tezos_protocol.Voting_period.to_string period in
+  let client = baker.mineplex_client.Keyed.client in
+  let period_name = mineplex_protocol.Voting_period.to_string period in
   Helpers.wait_for state ~attempts ~seconds:0.5 (fun nth ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client
         `Get
@@ -108,7 +108,7 @@ let bake_until_voting_period ?keep_alive_delegate state ~baker ~attempts period
               register state ~client ~dst)
           >>= fun _ ->
           ksprintf
-            (Tezos_client.Keyed.bake state baker)
+            (mineplex_client.Keyed.bake state baker)
             "Baker %s bakes %d/%d waiting for %S voting period"
             client.id
             nth
@@ -120,7 +120,7 @@ let bake_until_voting_period ?keep_alive_delegate state ~baker ~attempts period
 let check_understood_protocols state ~chain ~client ~protocol_hash
     ~expect_clueless_client =
   Asynchronous_result.bind_on_result
-    (Tezos_client.successful_client_cmd
+    (mineplex_client.successful_client_cmd
        state
        ~client
        ["--chain"; chain; "list"; "understood"; "protocols"])
@@ -158,7 +158,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
     EF.[af "Ready to start"; af "Root path deleted."]
   >>= fun () ->
   let (protocol, baker_0_account, baker_0_balance) =
-    let open Tezos_protocol in
+    let open mineplex_protocol in
     let baker = List.nth_exn protocol.bootstrap_accounts 0 in
     ( {
         protocol with
@@ -178,7 +178,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
     ~node_exec
     ~client_exec
   >>= fun (nodes, protocol) ->
-  let make_admin = Tezos_admin_client.of_client ~exec:admin_exec in
+  let make_admin = mineplex_admin_client.of_client ~exec:admin_exec in
   Interactive_test.Pauser.add_commands
     state
     Interactive_test.Commands.(
@@ -187,24 +187,24 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
       @ arbitrary_commands_for_each_and_all_clients
           state
           ~make_admin
-          ~clients:(List.map nodes ~f:(Tezos_client.of_node ~exec:client_exec))) ;
+          ~clients:(List.map nodes ~f:(mineplex_client.of_node ~exec:client_exec))) ;
   Interactive_test.Pauser.generic state EF.[af "About to really start playing"]
   >>= fun () ->
   let client n =
-    Tezos_client.of_node ~exec:client_exec (List.nth_exn nodes n)
+    mineplex_client.of_node ~exec:client_exec (List.nth_exn nodes n)
   in
   let baker_0 =
-    Tezos_client.Keyed.make
+    mineplex_client.Keyed.make
       (client 0)
       ~key_name:"baker-0"
-      ~secret_key:(Tezos_protocol.Account.private_key baker_0_account)
+      ~secret_key:(mineplex_protocol.Account.private_key baker_0_account)
   in
-  Tezos_client.Keyed.initialize state baker_0
+  mineplex_client.Keyed.initialize state baker_0
   >>= fun _ ->
   let level_counter = Counter_log.create () in
   let first_bakes = 5 in
   Loop.n_times first_bakes (fun nth ->
-      ksprintf (Tezos_client.Keyed.bake state baker_0) "initial-bake %d" nth)
+      ksprintf (mineplex_client.Keyed.bake state baker_0) "initial-bake %d" nth)
   >>= fun () ->
   let initial_level = first_bakes + 1 in
   Counter_log.add level_counter "initial_level" initial_level ;
@@ -212,24 +212,24 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
   | None ->
       Console.say state EF.(wf "No ledger.")
       >>= fun () ->
-      let account = Tezos_protocol.Account.of_name "special-baker" in
+      let account = mineplex_protocol.Account.of_name "special-baker" in
       let baker =
-        Tezos_client.Keyed.make
+        mineplex_client.Keyed.make
           (client 0)
-          ~key_name:(Tezos_protocol.Account.name account)
-          ~secret_key:(Tezos_protocol.Account.private_key account)
+          ~key_name:(mineplex_protocol.Account.name account)
+          ~secret_key:(mineplex_protocol.Account.private_key account)
       in
-      Tezos_client.Keyed.initialize state baker >>= fun _ -> return baker
+      mineplex_client.Keyed.initialize state baker >>= fun _ -> return baker
   | Some uri ->
       setup_baking_ledger state ~client:(client 0) uri )
   >>= fun special_baker ->
   let winner_client = {baker_0.client with exec = winner_client_exec} in
   let winner_baker_0 =
-    let open Tezos_client.Keyed in
+    let open mineplex_client.Keyed in
     {baker_0 with client = winner_client}
   in
   let winner_special_baker =
-    let open Tezos_client.Keyed in
+    let open mineplex_client.Keyed in
     {special_baker with client = winner_client}
   in
   Interactive_test.Pauser.add_commands
@@ -251,13 +251,13 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
           state
           ~command_names:["baker"]
           ~make_admin
-          ~clients:[special_baker.Tezos_client.Keyed.client] ] ;
+          ~clients:[special_baker.mineplex_client.Keyed.client] ] ;
   transfer
-    state (* Tezos_client.successful_client_cmd state *)
+    state (* mineplex_client.successful_client_cmd state *)
     ~client:(client 0)
     ~amount:(Int64.( / ) baker_0_balance 2_000_000L)
     ~src:"baker-0"
-    ~dst:special_baker.Tezos_client.Keyed.key_name
+    ~dst:special_baker.mineplex_client.Keyed.key_name
   >>= fun res ->
   Console.say
     state
@@ -269,7 +269,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
   let after_transfer_bakes = 2 in
   Loop.n_times after_transfer_bakes (fun nth ->
       ksprintf
-        (Tezos_client.Keyed.bake state baker_0)
+        (mineplex_client.Keyed.bake state baker_0)
         "after-transfer-bake %d"
         nth)
   >>= fun () ->
@@ -284,31 +284,31 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
   Asynchronous_result.map_option with_ledger ~f:(fun _ ->
       ledger_prompt_notice state EF.(wf "Registering as delegate."))
   >>= fun (_ : unit option) ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:(client 0)
     [ "--wait";
       "none";
       "register";
       "key";
-      special_baker.Tezos_client.Keyed.key_name;
+      special_baker.mineplex_client.Keyed.key_name;
       "as";
       "delegate";
       "--fee";
       "0.5" ]
   >>= fun _ ->
   let activation_bakes =
-    let open Tezos_protocol in
+    let open mineplex_protocol in
     protocol.blocks_per_cycle * (protocol.preserved_cycles + 2)
   in
   Loop.n_times activation_bakes (fun nth ->
       ksprintf
-        (Tezos_client.Keyed.bake state baker_0)
+        (mineplex_client.Keyed.bake state baker_0)
         "Baking after new delegate registered: %d/%d"
         nth
         activation_bakes
       >>= fun () ->
-      Tezos_client.successful_client_cmd
+      mineplex_client.successful_client_cmd
         state
         ~client:(client 0)
         ["rpc"; "get"; "/chains/main/blocks/head/helpers/baking_rights"]
@@ -321,11 +321,11 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
             (markdown_verbatim (String.concat ~sep:"\n" res#out))))
   >>= fun () ->
   Counter_log.add level_counter "activation-bakes" activation_bakes ;
-  Tezos_client.Keyed.bake state special_baker "Baked by Special Baker™"
+  mineplex_client.Keyed.bake state special_baker "Baked by Special Baker™"
   >>= fun () ->
   Counter_log.incr level_counter "special-baker-first-bake" ;
   let attempts =
-    Tezos_protocol.(
+    mineplex_protocol.(
       (* If we are right after the proposal period, we need to get to
          the next one *)
       3 * protocol.blocks_per_voting_period)
@@ -348,8 +348,8 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
     nodes
     (`At_least (Counter_log.sum level_counter))
   >>= fun () ->
-  let admin_0 = Tezos_admin_client.of_client ~exec:admin_exec (client 0) in
-  Tezos_admin_client.successful_command admin_0 state ["list"; "protocols"]
+  let admin_0 = mineplex_admin_client.of_client ~exec:admin_exec (client 0) in
+  mineplex_admin_client.successful_command admin_0 state ["list"; "protocols"]
   >>= fun res ->
   let default_protocols = res#out in
   let make_and_inject_protocol ?(make_different = false) name path =
@@ -371,7 +371,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
       >>= fun _ -> return ()
     else return () )
     >>= fun () ->
-    Tezos_admin_client.inject_protocol admin_0 state ~path:tmpdir
+    mineplex_admin_client.inject_protocol admin_0 state ~path:tmpdir
     >>= fun (res, hash) ->
     Interactive_test.Pauser.generic
       state
@@ -387,7 +387,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
     "demo"
     demo_path
   >>= fun demo_hash ->
-  Tezos_admin_client.successful_command admin_0 state ["list"; "protocols"]
+  mineplex_admin_client.successful_command admin_0 state ["list"; "protocols"]
   >>= fun res ->
   let after_injections_protocols = res#out in
   Interactive_test.Pauser.generic
@@ -430,9 +430,9 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
               (if List.length props = 1 then "" else "s")
               (String.concat ~sep:", " props)))
     >>= fun _ ->
-    Tezos_client.successful_client_cmd
+    mineplex_client.successful_client_cmd
       state
-      ~client:baker.Tezos_client.Keyed.client
+      ~client:baker.mineplex_client.Keyed.client
       (["submit"; "proposals"; "for"; baker.key_name] @ props)
     >>= fun _ -> return ()
   in
@@ -444,7 +444,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
       List_sequential.iter to_submit_first ~f:(fun one ->
           submit_proposals special_baker [one]) )
   >>= fun () ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:baker_0.client
     ["submit"; "proposals"; "for"; baker_0.key_name; winner_hash]
@@ -468,7 +468,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
     (`At_least (Counter_log.sum level_counter))
   >>= fun () ->
   Helpers.wait_for state ~attempts:default_attempts ~seconds:2. (fun _ ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client:(client 1)
         `Get
@@ -483,7 +483,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
                Ezjsonm.(to_string (wrap current_proposal_json))))
       else return (`Done ()))
   >>= fun () ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:baker_0.client
     ["submit"; "ballot"; "for"; baker_0.key_name; winner_hash; "yay"]
@@ -493,7 +493,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
         state
         EF.(wf "Submitting “Yes” ballot for %S" winner_hash))
   >>= fun (_ : unit option) ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:special_baker.client
     ["submit"; "ballot"; "for"; special_baker.key_name; winner_hash; "yay"]
@@ -544,7 +544,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
                 let baker =
                   if ith % 2 = 0 then winner_baker_0 else winner_special_baker
                 in
-                Tezos_client.Keyed.bake
+                mineplex_client.Keyed.bake
                   ~chain
                   state
                   baker
@@ -573,7 +573,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
             failf "Winner-Client cannot bake on test chain!")
   >>= fun () ->
   Helpers.wait_for state ~attempts:default_attempts ~seconds:0.3 (fun _ ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client:(client 1)
         `Get
@@ -618,7 +618,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
   >>= fun () ->
   Interactive_test.Pauser.generic state EF.[haf "Before ballots"]
   >>= fun () ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:baker_0.client
     ["submit"; "ballot"; "for"; baker_0.key_name; winner_hash; "yay"]
@@ -637,7 +637,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
         state
         EF.(wf "Submitting “Yes” ballot for %S" winner_hash))
   >>= fun (_ : unit option) ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:special_baker.client
     ["submit"; "ballot"; "for"; special_baker.key_name; winner_hash; "yay"]
@@ -648,10 +648,10 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
   >>= fun () ->
   let ballot_bakes = 1 in
   Loop.n_times ballot_bakes (fun _ ->
-      Tezos_client.Keyed.bake state baker_0 "Baking the promotion vote ballots")
+      mineplex_client.Keyed.bake state baker_0 "Baking the promotion vote ballots")
   >>= fun () ->
   Counter_log.add level_counter "bake-the-ballots" ballot_bakes ;
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:(client 0)
     ["list"; "understood"; "protocols"]
@@ -662,7 +662,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
       [ af "Final ballot(s) are baked in.";
         af
           "The client `%s` understands the following protocols: %s"
-          Tezos_executable.(
+          mineplex_executable.(
             Option.value
               ~default:(default_binary client_exec)
               client_exec.binary)
@@ -689,11 +689,11 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
             state
             ~client
             ~amount:1L
-            ~src:baker_0.Tezos_client.Keyed.key_name
-            ~dst:special_baker.Tezos_client.Keyed.key_name
+            ~src:baker_0.mineplex_client.Keyed.key_name
+            ~dst:special_baker.mineplex_client.Keyed.key_name
           >>= fun _ ->
           ksprintf
-            (Tezos_client.Keyed.bake state baker_0)
+            (mineplex_client.Keyed.bake state baker_0)
             "Baker %s bakes %d/%d waiting for next protocol: %S"
             client.id
             nth
@@ -730,7 +730,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
             >>= fun () ->
             (* This actually depends on the protocol upgrade. *)
             Asynchronous_result.bind_on_result
-              (Tezos_client.successful_client_cmd
+              (mineplex_client.successful_client_cmd
                  state
                  ~client:winner_client
                  ["upgrade"; "baking"; "state"])
@@ -761,13 +761,13 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
                 (* USB thing is often slower than humans hitting `q` *)
                 >>= fun () -> System.sleep 4.)
             >>= fun (_ : unit option) ->
-            Tezos_client.Keyed.bake
+            mineplex_client.Keyed.bake
               state
               winner_baker_0
               "First bake on new protocol !!"
             >>= fun () ->
             Counter_log.incr level_counter "baker-0-bakes-on-new-protocol" ;
-            Tezos_client.Keyed.bake
+            mineplex_client.Keyed.bake
               state
               winner_special_baker
               "Second bake on new protocol !!"
@@ -775,7 +775,7 @@ let run state ~winner_path ~demo_path ~protocol ~node_exec ~client_exec
             Counter_log.incr
               level_counter
               "special-baker-bakes-on-new-protocol" ;
-            Tezos_client.rpc
+            mineplex_client.rpc
               state
               ~client:winner_client
               `Get
@@ -859,7 +859,7 @@ let cmd () =
                   ~docv:"WINNER-PROTOCOL-PATH"
                   ~doc:
                     "The protocol to inject and make win the election, e.g. \
-                     `src/proto_004_Pt24m4xi/lib_protocol/src/TEZOS_PROTOCOL`.")))
+                     `src/proto_004_Pt24m4xi/lib_protocol/src/mineplex_PROTOCOL`.")))
     $ Arg.(
         const Caml.Filename.dirname
         $ required
@@ -873,13 +873,13 @@ let cmd () =
                   ~docv:"LOSER-PROTOCOL-PATH"
                   ~doc:
                     "The protocol to inject and down-vote, e.g. \
-                     `./src/bin_client/test/proto_test_injection/TEZOS_PROTOCOL` \
+                     `./src/bin_client/test/proto_test_injection/mineplex_PROTOCOL` \
                      (if same as `WINNER-PROTOCOL-PATH` the scenario will \
                      make them automatically & artificially different).")))
-    $ Tezos_executable.cli_term base_state `Node "current"
-    $ Tezos_executable.cli_term base_state `Client "current"
-    $ Tezos_executable.cli_term base_state `Admin "current"
-    $ Tezos_executable.cli_term base_state `Client "winner"
+    $ mineplex_executable.cli_term base_state `Node "current"
+    $ mineplex_executable.cli_term base_state `Client "current"
+    $ mineplex_executable.cli_term base_state `Admin "current"
+    $ mineplex_executable.cli_term base_state `Client "winner"
     $ Arg.(value (opt int 5 (info ["size"; "S"] ~doc:"Size of the Network.")))
     $ Arg.(
         const (fun b -> `Clueless_winner b)
@@ -932,7 +932,7 @@ $ Arg.(
                   ~doc:
                     "Run the proposals one-by-one instead of all together \
                      (preferred by the Ledger).")))
-    $ Tezos_protocol.cli_term base_state
+    $ mineplex_protocol.cli_term base_state
     $ Test_command_line.cli_state ~name:"voting" ()
   in
   let info =
@@ -947,14 +947,14 @@ $ Arg.(
         `P "There are two main test behaviors:";
         `P
           "* $(b,SIMPLE:) The simple one does as much as possible with any \
-           dummy protocol candidates and a Tezos code-base which doesn't \
+           dummy protocol candidates and a mineplex code-base which doesn't \
            handle them: it tests all the voting periods until baking the last \
            block of the currently understood protocol.";
         `Noblank;
         `P
           "To allow the test to succeed in this case, the option \
            `--winning-client-is-clueless` is required; it is meant to signal \
-           that the “winner” `tezos-client` executable (from the \
+           that the “winner” `mineplex-client` executable (from the \
            `--winner-client-binary` option) is expected to not understand the \
            winning protocol.";
         `Noblank;

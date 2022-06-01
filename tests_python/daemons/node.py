@@ -26,16 +26,16 @@ def _run_and_print(cmd):
 
 
 class Node:
-    """Wrapper for the tezos-node command.
+    """Wrapper for the mineplex-node command.
 
-    This class manages the persistent state of a tezos-node
+    This class manages the persistent state of a mineplex-node
     (the node directory) and provides an API which wraps the node commands.
 
     Most commands are intended to be used synchronously, for instance:
-    - tezos-node identity generate
-    - tezos-node upgrade storage
+    - mineplex-node identity generate
+    - mineplex-node upgrade storage
 
-    tezos-node run is intended to be used asynchronously and forks a
+    mineplex-node run is intended to be used asynchronously and forks a
     subprocess.
 
     Typical use.
@@ -51,7 +51,7 @@ class Node:
     node.snapshot_import(snapshot) # optional, use a snapshot
     node.init_id() # generate node id
     node.init_config() # generate config file based on parameters
-    node.run() # run tezos-node process
+    node.run() # run mineplex-node process
     node.terminate() # terminate process
     node.run() # re-run using same process
     node.terminate() # or node.kill()
@@ -72,7 +72,7 @@ class Node:
                  singleprocess: bool = False,
                  env: Dict[str, str] = None):
 
-        """Creates a new Popen instance for a tezos-node, and manages context.
+        """Creates a new Popen instance for a mineplex-node, and manages context.
 
         args:
             use_tls (tuple): None if no tls, else couple of strings
@@ -90,7 +90,7 @@ class Node:
         self.log_file = log_file
         self._temp_dir = node_dir is None
         if node_dir is None:
-            node_dir = tempfile.mkdtemp(prefix='tezos-node.')
+            node_dir = tempfile.mkdtemp(prefix='mineplex-node.')
         self.node_dir = node_dir
         self.p2p_port = p2p_port
         self.rpc_port = rpc_port
@@ -117,7 +117,7 @@ class Node:
             new_env = os.environ.copy() if new_env is None else new_env
             lwt_log = ";".join(f'{key} -> {values}' for key, values in
                                log_levels.items())
-            new_env['TEZOS_LOG'] = lwt_log
+            new_env['mineplex_LOG'] = lwt_log
         self._new_env = new_env
         self._node_run = node_run
         self._process = None  # type: Optional[subprocess.Popen]
@@ -144,11 +144,11 @@ class Node:
                        '--expected-pow', str(self.expected_pow)] + self._params
 
         if self.use_tls:
-            # We can't create tezos.crt/tezos.key here
+            # We can't create mineplex.crt/mineplex.key here
             # as node_dir has to be empty when we run node_config
             node_config += ['--rpc-tls',
-                            (f'{self.node_dir}/tezos.crt,'
-                             f'{self.node_dir}/tezos.key')]
+                            (f'{self.node_dir}/mineplex.crt,'
+                             f'{self.node_dir}/mineplex.key')]
 
         _run_and_print(node_config)
 
@@ -160,9 +160,9 @@ class Node:
                          '--data-dir', self.node_dir]
         _run_and_print(node_identity)
         if self.use_tls:
-            with open(f'{self.node_dir}/tezos.crt', 'w+') as file:
+            with open(f'{self.node_dir}/mineplex.crt', 'w+') as file:
                 file.write(self.use_tls[0])
-            with open(f'{self.node_dir}/tezos.key', 'w+') as file:
+            with open(f'{self.node_dir}/mineplex.key', 'w+') as file:
                 file.write(self.use_tls[1])
 
     def upgrade_storage(self):

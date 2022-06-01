@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -71,10 +71,10 @@ let commands () =
              ~desc:"the block hash from which to compute the chain id"
         @@ stop )
         (fun () block_hash_str (cctxt : #Client_context.full) ->
-          Lwt.return (Tezos_crypto.Block_hash.of_b58check block_hash_str)
+          Lwt.return (mineplex_crypto.Block_hash.of_b58check block_hash_str)
           >>=? fun block_hash ->
-          let chain_id = Tezos_crypto.Chain_id.of_block_hash block_hash in
-          cctxt#message "%a" Tezos_crypto.Chain_id.pp chain_id
+          let chain_id = mineplex_crypto.Chain_id.of_block_hash block_hash in
+          cctxt#message "%a" mineplex_crypto.Chain_id.pp chain_id
           >>= fun () -> return_unit);
       command
         ~desc:"Computes a chain id from a seed"
@@ -86,7 +86,7 @@ let commands () =
         @@ stop )
         (fun () seed_str (cctxt : #Client_context.full) ->
           let chain_id =
-            Tezos_crypto.Chain_id.hash_bytes [Bytes.of_string seed_str]
+            mineplex_crypto.Chain_id.hash_bytes [Bytes.of_string seed_str]
           in
-          cctxt#message "%a" Tezos_crypto.Chain_id.pp chain_id
+          cctxt#message "%a" mineplex_crypto.Chain_id.pp chain_id
           >>= fun () -> return_unit) ]

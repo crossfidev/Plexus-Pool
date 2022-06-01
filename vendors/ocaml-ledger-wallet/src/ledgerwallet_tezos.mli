@@ -6,11 +6,11 @@
 open Ledgerwallet
 
 module Version : sig
-  type app_class = Tezos | TezBake
+  type app_class = mineplex | TezBake
   val pp_app_class : Format.formatter -> app_class -> unit
 
   type Transport.Status.t +=
-      Tezos_impossible_to_read_version
+      mineplex_impossible_to_read_version
 
   type t = {
     app_class : app_class ;

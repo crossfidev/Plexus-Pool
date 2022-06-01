@@ -15,7 +15,7 @@ let little_mesh_with_bakers ?base_port ?generate_kiln_config state ~protocol
   let block_interval = 1 in
   let (protocol, baker_list) =
     let d = protocol in
-    let open Tezos_protocol in
+    let open mineplex_protocol in
     let bakers = List.take d.bootstrap_accounts bakers in
     ( {
         d with
@@ -35,7 +35,7 @@ let little_mesh_with_bakers ?base_port ?generate_kiln_config state ~protocol
       topology
       ?base_port
       ~make_node:(fun id ~expected_connections ~rpc_port ~p2p_port peers ->
-        Tezos_node.make
+        mineplex_node.make
           ~exec:node_exec
           ~protocol
           id
@@ -57,15 +57,15 @@ let little_mesh_with_bakers ?base_port ?generate_kiln_config state ~protocol
     let nth_baker = nth_node % List.length baker_list in
     let key_name = sprintf "b%d" nth_baker in
     let node = List.nth_exn all_nodes nth_node in
-    let client = Tezos_client.of_node node ~exec:client_exec in
+    let client = mineplex_client.of_node node ~exec:client_exec in
     let baker_account = List.nth_exn baker_list nth_baker in
     let bak =
-      Tezos_client.Keyed.make
+      mineplex_client.Keyed.make
         client
         ~key_name
-        ~secret_key:(Tezos_protocol.Account.private_key (fst baker_account))
+        ~secret_key:(mineplex_protocol.Account.private_key (fst baker_account))
     in
-    Tezos_client.Keyed.initialize state bak >>= fun _ -> return (client, bak)
+    mineplex_client.Keyed.initialize state bak >>= fun _ -> return (client, bak)
   in
   baker 0
   >>= fun (client_0, baker_0) ->
@@ -80,7 +80,7 @@ let little_mesh_with_bakers ?base_port ?generate_kiln_config state ~protocol
         state
         ~clients:[client_0; client_1; client_2]) ;
   Asynchronous_result.map_option generate_kiln_config ~f:(fun kiln_config ->
-      Tezos_client.rpc
+      mineplex_client.rpc
         state
         ~client:client_0
         `Get
@@ -93,23 +93,23 @@ let little_mesh_with_bakers ?base_port ?generate_kiln_config state ~protocol
         state
         kiln_config
         ~peers:
-          (List.map all_nodes ~f:(fun {Tezos_node.p2p_port; _} -> p2p_port))
-        ~sandbox_json:(Tezos_protocol.sandbox_path state protocol)
+          (List.map all_nodes ~f:(fun {mineplex_node.p2p_port; _} -> p2p_port))
+        ~sandbox_json:(mineplex_protocol.sandbox_path state protocol)
         ~nodes:
-          (List.map all_nodes ~f:(fun {Tezos_node.rpc_port; _} ->
+          (List.map all_nodes ~f:(fun {mineplex_node.rpc_port; _} ->
                sprintf "http://localhost:%d" rpc_port))
         ~bakers:
           (List.map
-             protocol.Tezos_protocol.bootstrap_accounts
+             protocol.mineplex_protocol.bootstrap_accounts
              ~f:(fun (account, _) ->
-               Tezos_protocol.Account.(name account, pubkey_hash account)))
+               mineplex_protocol.Account.(name account, pubkey_hash account)))
         ~network_string:network_id
         ~node_exec
         ~client_exec
       >>= fun () ->
       return EF.(wf "Kiln was configured at `%s`" kiln_config.path))
   >>= fun _ ->
-  let bake msg baker = Tezos_client.Keyed.bake state baker msg in
+  let bake msg baker = mineplex_client.Keyed.bake state baker msg in
   List.fold
     (List.init (starting_level - 1) ~f:(fun n -> n))
     ~init:(return ()) (* We are already at level 1, we bake 7 times: *)
@@ -156,8 +156,8 @@ let wait_for_operation_in_mempools state ~nodes:all_nodes ~kind ~client_exec
       List.fold ~init:(return init) all_nodes ~f:(fun prev_m node ->
           prev_m
           >>= fun prev ->
-          let client = Tezos_client.of_node node ~exec:client_exec in
-          Tezos_client.mempool_has_operation state ~client ~kind
+          let client = mineplex_client.of_node node ~exec:client_exec in
+          mineplex_client.mempool_has_operation state ~client ~kind
           >>= fun client_result -> return (combine client_result prev))
       >>= function
       | true ->
@@ -190,18 +190,18 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
   kill_nth 2
   >>= fun () ->
   Loop.n_times (number_of_lonely_bakes - 1) (fun _ ->
-      Tezos_client.Keyed.bake state baker_0 "Bake-on-0")
+      mineplex_client.Keyed.bake state baker_0 "Bake-on-0")
   >>= fun () ->
   (* Bake one block less and inject an operation to generate a different
      block's hash *)
-  Tezos_client.Keyed.endorse state baker_0 "endorsing lonely bake-on-0"
+  mineplex_client.Keyed.endorse state baker_0 "endorsing lonely bake-on-0"
   >>= fun () ->
-  Tezos_client.Keyed.bake state baker_0 "Bake-on-0"
+  mineplex_client.Keyed.bake state baker_0 "Bake-on-0"
   >>= fun () ->
-  Tezos_client.get_block_header state ~client:client_0 `Head
+  mineplex_client.get_block_header state ~client:client_0 `Head
   >>= fun baking_0_header ->
   (* This baking will have better fitness so other nodes will have to fetch it. *)
-  Tezos_client.Keyed.endorse state baker_0 "endorsing lonely bake-on-0"
+  mineplex_client.Keyed.endorse state baker_0 "endorsing lonely bake-on-0"
   >>= fun () ->
   System.sleep 1.
   >>= fun () ->
@@ -212,13 +212,13 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
   restart_nth 2
   >>= fun () ->
   Loop.n_times number_of_lonely_bakes (fun _ ->
-      Tezos_client.Keyed.bake state baker_1 "Bake-on-1")
+      mineplex_client.Keyed.bake state baker_1 "Bake-on-1")
   >>= fun () ->
-  Tezos_client.get_block_header state ~client:client_1 `Head
+  mineplex_client.get_block_header state ~client:client_1 `Head
   >>= fun baking_1_header ->
   restart_nth 0
   >>= fun () ->
-  Tezos_client.Keyed.bake state baker_0 "Bake-on-0"
+  mineplex_client.Keyed.bake state baker_0 "Bake-on-0"
   >>= fun () ->
   Test_scenario.Queries.wait_for_all_levels_to_be
     state
@@ -227,7 +227,7 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
     all_nodes
     (`At_least (starting_level + number_of_lonely_bakes + 1))
   >>= fun () ->
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
     ~client:client_1
     `Get
@@ -241,7 +241,7 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
         ef_json "Baking 1" baking_1_header;
         ef_json "Head hash" head_hash_json ]
   >>= fun () ->
-  Tezos_client.Keyed.forge_and_inject
+  mineplex_client.Keyed.forge_and_inject
     state
     baker_1
     ~json:
@@ -276,7 +276,7 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
     ~client_exec
     `All
   >>= fun () ->
-  Tezos_client.Keyed.bake
+  mineplex_client.Keyed.bake
     state
     baker_2
     (sprintf "all at lvl %d" (starting_level + number_of_lonely_bakes + 1))
@@ -294,7 +294,7 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
     (`Equal_to last_level)
   >>= fun () ->
   Helpers.wait_for state ~attempts:10 ~seconds:4. (fun _ ->
-      Tezos_client.block_has_operation
+      mineplex_client.block_has_operation
         state
         ~client:client_2
         ~level:last_level
@@ -313,7 +313,7 @@ let simple_double_baking ~starting_level ?generate_kiln_config ~state ~protocol
 let find_endorsement_in_mempool state ~client =
   let open Poly in
   Helpers.wait_for state ~attempts:4 ~seconds:2. (fun _ ->
-      Tezos_client.find_applied_in_mempool state ~client ~f:(fun o ->
+      mineplex_client.find_applied_in_mempool state ~client ~f:(fun o ->
           Jqo.field o ~k:"contents"
           |> Jqo.list_exists ~f:(fun op ->
                  (* Dbg.e EF.(ef_json "op" op) ; *)
@@ -339,41 +339,41 @@ let simple_double_endorsement ~starting_level ?generate_kiln_config ~state
   >>= fun (all_nodes, client_0, baker_0, client_1, baker_1, client_2, baker_2) ->
   (* 2 bakers ⇒ baker_0 and baker_2 are for the same key on ≠ nodes *)
   assert (
-    Tezos_client.Keyed.(
+    mineplex_client.Keyed.(
       String.equal baker_0.key_name baker_2.key_name
       && String.equal baker_0.secret_key baker_2.secret_key) ) ;
   let node_0 = List.nth_exn all_nodes 0 in
   let node_1 = List.nth_exn all_nodes 1 in
   let node_2 = List.nth_exn all_nodes 2 in
   let baker_1_n0 =
-    let open Tezos_client.Keyed in
+    let open mineplex_client.Keyed in
     let {key_name; secret_key; _} = baker_1 in
     make client_0 ~key_name ~secret_key
   in
-  Tezos_client.Keyed.initialize state baker_1_n0
+  mineplex_client.Keyed.initialize state baker_1_n0
   >>= fun _ ->
   Helpers.kill_node state node_1
   >>= fun () ->
   Helpers.kill_node state node_2
   >>= fun () ->
   (* Inject an operation to generate a different block's hash *)
-  Tezos_client.Keyed.endorse state baker_0 "endorsing lonely bake-on-0"
+  mineplex_client.Keyed.endorse state baker_0 "endorsing lonely bake-on-0"
   >>= fun () ->
-  Tezos_client.Keyed.bake state baker_0 "baker-0 baking with node 0"
+  mineplex_client.Keyed.bake state baker_0 "baker-0 baking with node 0"
   >>= fun () ->
-  Tezos_client.Keyed.endorse state baker_0 "baker-0 endorsing with node 0"
+  mineplex_client.Keyed.endorse state baker_0 "baker-0 endorsing with node 0"
   >>= fun () ->
   find_endorsement_in_mempool state ~client:client_0
   >>= fun endorsement_0 ->
-  Tezos_client.Keyed.endorse state baker_1_n0 "baker-1 endorsing with node 0"
+  mineplex_client.Keyed.endorse state baker_1_n0 "baker-1 endorsing with node 0"
   >>= fun () ->
   Helpers.kill_node state node_0
   >>= fun () ->
   Helpers.restart_node state node_2 ~client_exec
   >>= fun () ->
-  Tezos_client.Keyed.bake state baker_2 "baker-0 baking with node 2"
+  mineplex_client.Keyed.bake state baker_2 "baker-0 baking with node 2"
   >>= fun () ->
-  Tezos_client.Keyed.endorse state baker_2 "baker-0 endorsing with node 2"
+  mineplex_client.Keyed.endorse state baker_2 "baker-0 endorsing with node 2"
   >>= fun () ->
   find_endorsement_in_mempool state ~client:client_2
   >>= fun endorsement_1 ->
@@ -409,7 +409,7 @@ let simple_double_endorsement ~starting_level ?generate_kiln_config ~state
     all_nodes
     (`Equal_to (starting_level + 1))
   >>= fun () ->
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
     ~client:client_1
     `Get
@@ -444,7 +444,7 @@ let simple_double_endorsement ~starting_level ?generate_kiln_config ~state
     state
     EF.[ef_json "About to forge" double_endorsement]
   >>= fun () ->
-  Tezos_client.Keyed.forge_and_inject state baker_1 ~json:double_endorsement
+  mineplex_client.Keyed.forge_and_inject state baker_1 ~json:double_endorsement
   >>= fun result ->
   Interactive_test.Pauser.generic
     state
@@ -458,9 +458,9 @@ let simple_double_endorsement ~starting_level ?generate_kiln_config ~state
     `All
   >>= fun () ->
   let last_level = starting_level + 2 in
-  Tezos_client.Keyed.bake state baker_1 (sprintf "level %d" last_level)
+  mineplex_client.Keyed.bake state baker_1 (sprintf "level %d" last_level)
   >>= fun () ->
-  Tezos_client.Keyed.endorse
+  mineplex_client.Keyed.endorse
     state
     baker_1
     (sprintf "endorse level %d" last_level)
@@ -474,7 +474,7 @@ let simple_double_endorsement ~starting_level ?generate_kiln_config ~state
   >>= fun () ->
   Helpers.wait_for state ~attempts:10 ~seconds:4. (fun _ ->
       (* We check that client-2 sees the evidence from baker-1 *)
-      Tezos_client.block_has_operation
+      mineplex_client.block_has_operation
         state
         ~client:client_2
         ~level:last_level
@@ -497,7 +497,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   let block_interval = 2 in
   let (protocol, baker_0_account) =
     let d = protocol in
-    let open Tezos_protocol in
+    let open mineplex_protocol in
     let baker = List.hd_exn d.bootstrap_accounts in
     ( {
         d with
@@ -517,7 +517,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
       topology
       ~base_port
       ~make_node:(fun id ~expected_connections ~rpc_port ~p2p_port peers ->
-        Tezos_node.make
+        mineplex_node.make
           ~exec:node_exec
           ~protocol
           id
@@ -532,9 +532,9 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   Test_scenario.Network.(start_up state ~client_exec (make all_nodes))
   >>= fun () ->
   let start_accuser nod =
-    let client = Tezos_client.of_node nod ~exec:client_exec in
-    let acc = Tezos_daemon.accuser_of_node ~exec:accuser_exec ~client nod in
-    Running_processes.start state (Tezos_daemon.process state acc)
+    let client = mineplex_client.of_node nod ~exec:client_exec in
+    let acc = mineplex_daemon.accuser_of_node ~exec:accuser_exec ~client nod in
+    Running_processes.start state (mineplex_daemon.process state acc)
     >>= fun _ -> return ()
   in
   List_sequential.iter accuser_nodes ~f:start_accuser
@@ -542,14 +542,14 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   let key_name = "b0" in
   let baker nth =
     let node = List.nth_exn all_nodes nth in
-    let client = Tezos_client.of_node node ~exec:client_exec in
+    let client = mineplex_client.of_node node ~exec:client_exec in
     let bak =
-      Tezos_client.Keyed.make
+      mineplex_client.Keyed.make
         client
         ~key_name
-        ~secret_key:(Tezos_protocol.Account.private_key (fst baker_0_account))
+        ~secret_key:(mineplex_protocol.Account.private_key (fst baker_0_account))
     in
-    Tezos_client.Keyed.initialize state bak >>= fun _ -> return (client, bak)
+    mineplex_client.Keyed.initialize state bak >>= fun _ -> return (client, bak)
   in
   baker 0
   >>= fun (client_0, baker_0) ->
@@ -573,7 +573,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
     ~f:(fun pm n ->
       pm
       >>= fun () ->
-      Tezos_client.Keyed.bake
+      mineplex_client.Keyed.bake
         state
         baker_0
         (sprintf "first bakes: [%d/%d]" (n + 1) (starting_level - 1)))
@@ -593,10 +593,10 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   >>= fun () ->
   let transfer _msg client =
     let dest =
-      List.random_element_exn protocol.Tezos_protocol.bootstrap_accounts
-      |> fst |> Tezos_protocol.Account.pubkey_hash
+      List.random_element_exn protocol.mineplex_protocol.bootstrap_accounts
+      |> fst |> mineplex_protocol.Account.pubkey_hash
     in
-    Tezos_client.successful_client_cmd
+    mineplex_client.successful_client_cmd
       state
       ~client
       [ "--wait";
@@ -614,7 +614,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
       state
       EF.(
         desc
-          (af "Successful transfer (%s):" client.Tezos_client.id)
+          (af "Successful transfer (%s):" client.mineplex_client.id)
           (ocaml_string_list res#out))
   in
   List_sequential.iter intermediary_nodes ~f:(fun x ->
@@ -642,7 +642,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
         "/chains/main/blocks/%s/header"
         (match block with `Head -> "head" | `Level i -> Int.to_string i)
     in
-    Tezos_client.rpc state ~client `Get ~path
+    mineplex_client.rpc state ~client `Get ~path
   in
   kill_all_but mesh_nodes [0]
   >>= fun () ->
@@ -652,13 +652,13 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   transfer "node0 only alive" client_0
   >>= fun () ->
   Loop.n_times number_of_lonely_bakes (fun n ->
-      Tezos_client.Keyed.bake state baker_0 (sprintf "n0 only alive: %d" n))
+      mineplex_client.Keyed.bake state baker_0 (sprintf "n0 only alive: %d" n))
   >>= fun () ->
   get_block_header ~client:client_0 `Head
   >>= fun _baking_0_header ->
-  Tezos_client.Keyed.endorse state baker_0 "self-endorsing"
+  mineplex_client.Keyed.endorse state baker_0 "self-endorsing"
   >>= fun () ->
-  Tezos_client.Keyed.bake state baker_0 "baking self-endorsement"
+  mineplex_client.Keyed.bake state baker_0 "baking self-endorsement"
   >>= fun () ->
   kill_nth_node mesh_nodes 0
   >>= fun () ->
@@ -667,7 +667,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   transfer "node1 only one alive" client_1
   >>= fun () ->
   Loop.n_times number_of_lonely_bakes (fun _ ->
-      Tezos_client.Keyed.bake state baker_1 "after transfer")
+      mineplex_client.Keyed.bake state baker_1 "after transfer")
   >>= fun () ->
   get_block_header ~client:client_1 `Head
   >>= fun _baking_1_header ->
@@ -686,7 +686,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
   >>= fun () ->
   let node_0 = List.nth_exn mesh_nodes 0 in
   let except_0 l =
-    List.filter l ~f:Tezos_node.(fun n -> Poly.(n.id <> node_0.id))
+    List.filter l ~f:mineplex_node.(fun n -> Poly.(n.id <> node_0.id))
   in
   List_sequential.iter
     (except_0 mesh_nodes)
@@ -709,8 +709,8 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
       List.fold ~init:(return false) accuser_nodes ~f:(fun prev_m node ->
           prev_m
           >>= fun prev ->
-          let client = Tezos_client.of_node node ~exec:client_exec in
-          Tezos_client.mempool_has_operation
+          let client = mineplex_client.of_node node ~exec:client_exec in
+          mineplex_client.mempool_has_operation
             state
             ~client
             ~kind:"double_baking_evidence"
@@ -723,14 +723,14 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
             (`Not_done
               (sprintf "Waiting for accusation to show up in the mempool")))
   >>= fun () ->
-  Tezos_client.Keyed.bake
+  mineplex_client.Keyed.bake
     state
     baker_2
     (sprintf "all at lvl %d" (starting_level + number_of_lonely_bakes + 1))
   >>= fun () ->
   Helpers.wait_for state ~attempts:10 ~seconds:4. (fun _ ->
       let level = starting_level + number_of_lonely_bakes + 2 in
-      Tezos_client.block_has_operation
+      mineplex_client.block_has_operation
         state
         ~client:client_2
         ~level
@@ -750,7 +750,7 @@ let with_accusers ~state ~protocol ~base_port node_exec accuser_exec
           "All nodes reaching level %d"
           (starting_level + number_of_lonely_bakes + 2) ]
   >>= fun () ->
-  Tezos_client.Keyed.bake state baker_1 "a couple more"
+  mineplex_client.Keyed.bake state baker_1 "a couple more"
   >>= fun () ->
   Test_scenario.Queries.wait_for_all_levels_to_be
     state
@@ -872,11 +872,11 @@ let cmd () =
                   ~doc:
                     "Initial block-level to reach before actually starting \
                      the test.")))
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
-    $ Tezos_executable.cli_term base_state `Accuser "tezos"
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
+    $ mineplex_executable.cli_term base_state `Accuser "mineplex"
     $ Kiln.Configuration_directory.cli_term base_state
-    $ Tezos_protocol.cli_term base_state
+    $ mineplex_protocol.cli_term base_state
     $ Test_command_line.cli_state ~name:"accusing" ()
   in
   let info =

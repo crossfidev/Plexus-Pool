@@ -10,7 +10,7 @@ module Michelson : sig
     -> < application_name: string ; .. >
     -> name:string
     -> from:string
-    -> protocol_kind:Tezos_protocol.Protocol_kind.t
+    -> protocol_kind:mineplex_protocol.Protocol_kind.t
     -> parameter:string
     -> init_storage:string
     -> (string list, [> System_error.t]) Asynchronous_result.t
@@ -24,9 +24,9 @@ module Random : sig
        ; paths: Paths.t
        ; runner: Running_processes.State.t
        ; .. >
-    -> protocol:Tezos_protocol.t
-    -> nodes:Tezos_node.t list
-    -> clients:Tezos_client.t list
+    -> protocol:mineplex_protocol.t
+    -> nodes:mineplex_node.t list
+    -> clients:mineplex_client.t list
     -> until_level:int
     -> [> `Any]
     -> (unit, [> System_error.t]) Asynchronous_result.t
@@ -34,7 +34,7 @@ end
 
 module Forge : sig
   val batch_transfer :
-       ?protocol_kind:Tezos_protocol.Protocol_kind.t
+       ?protocol_kind:mineplex_protocol.Protocol_kind.t
     -> ?counter:int
     -> ?dst:(string * int) list
     -> src:string
@@ -44,7 +44,7 @@ module Forge : sig
     -> Ezjsonm.value
 
   val endorsement :
-       ?protocol_kind:Tezos_protocol.Protocol_kind.t
+       ?protocol_kind:mineplex_protocol.Protocol_kind.t
     -> branch:string
     -> int
     -> Ezjsonm.value

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -50,7 +50,7 @@ val inject_block :
   Operation.raw list list ->
   Block_hash.t tzresult Lwt.t
 
-type error += Failed_to_preapply of Tezos_base.Operation.t * error list
+type error += Failed_to_preapply of mineplex_base.Operation.t * error list
 
 (** [forge_block cctxt ?fee_threshold ?force ?operations ?best_effort
     ?sort ?timestamp ?max_priority ?priority ~seed_nonce ~src_sk

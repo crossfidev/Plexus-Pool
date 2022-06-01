@@ -1,20 +1,20 @@
 opam-version: "2.0"
-maintainer: "contact@tezos.com"
-authors: [ "Tezos devteam" ]
-homepage: "https://www.tezos.com/"
-bug-reports: "https://gitlab.com/tezos/tezos/issues"
-dev-repo: "git+https://gitlab.com/tezos/tezos.git"
+maintainer: "contact@mineplex.com"
+authors: [ "mineplex devteam" ]
+homepage: "https://www.mineplex.com/"
+bug-reports: "https://gitlab.com/mineplex/mineplex/issues"
+dev-repo: "git+https://gitlab.com/mineplex/mineplex.git"
 license: "MIT"
 depends: [
-  "tezos-tooling" { with-test }
+  "mineplex-tooling" { with-test }
   ## ocaml should be in sync with `script/version.sh`
   "ocaml" { = "4.09.1" }
   "dune" { >= "1.11" }
   "base-unix"
-  "tezos-base"
-  "tezos-protocol-environment"
-  "tezos-protocol-environment-sigs"
-  "tezos-stdlib-unix"
+  "mineplex-base"
+  "mineplex-protocol-environment"
+  "mineplex-protocol-environment-sigs"
+  "mineplex-stdlib-unix"
   "ocp-ocamlres" { >= "0.4" }
   "re"
 ]
@@ -22,4 +22,4 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
-synopsis: "Tezos: economic-protocol compiler"
+synopsis: "mineplex: economic-protocol compiler"

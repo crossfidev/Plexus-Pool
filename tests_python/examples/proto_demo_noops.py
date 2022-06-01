@@ -25,7 +25,7 @@ def forge_block_header_data(protocol_data):
 
 
 def main():
-    with Sandbox(paths.TEZOS_HOME,
+    with Sandbox(paths.mineplex_HOME,
                  constants.IDENTITIES,
                  log_dir='tmp') as sandbox:
         # launch a sandbox node

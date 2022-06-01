@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -23,27 +23,27 @@
 (*                                                                           *)
 (*****************************************************************************)
 
-include Tezos_stdlib
-module Error_monad = Tezos_error_monad.Error_monad
-include Tezos_rpc
-include Tezos_clic
-include Tezos_crypto
-include Tezos_micheline
+include mineplex_stdlib
+module Error_monad = mineplex_error_monad.Error_monad
+include mineplex_rpc
+include mineplex_clic
+include mineplex_crypto
+include mineplex_micheline
 module Data_encoding = Data_encoding
 
 module Option = struct
   include Option
-  include Tezos_stdlib.TzOption
+  include mineplex_stdlib.TzOption
 end
 
 module List = struct
   include List
-  include Tezos_stdlib.TzList
+  include mineplex_stdlib.TzList
 end
 
 module String = struct
   include String
-  include Tezos_stdlib.TzString
+  include mineplex_stdlib.TzString
 end
 
 module Time = Time

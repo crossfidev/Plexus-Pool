@@ -1,6 +1,6 @@
 (library
- (name tezos_protocol_environment_packer)
- (public_name tezos-protocol-environment-packer)
+ (name mineplex_protocol_environment_packer)
+ (public_name mineplex-protocol-environment-packer)
  (modules))
 
 (executable
@@ -8,10 +8,10 @@
 
 (install
   (section libexec)
-  (package tezos-protocol-environment-packer)
+  (package mineplex-protocol-environment-packer)
   (files (s_packer.exe as s_packer)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

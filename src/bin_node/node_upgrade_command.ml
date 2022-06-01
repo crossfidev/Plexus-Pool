@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -73,7 +73,7 @@ module Term = struct
           else
             trace
               (failure
-                 "Fail to lock the data directory. Is a `tezos-node` running?")
+                 "Fail to lock the data directory. Is a `mineplex-node` running?")
             @@ Lwt_lock_file.create
                  ~unlink_on_exit:true
                  (Node_data_version.lock_file data_dir)

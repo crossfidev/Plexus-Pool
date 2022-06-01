@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -29,9 +29,9 @@ let default_constant = "\x00\x00\x00\x05"
 
 let is_updated_constant =
   let commit_hash =
-    if TzString.is_hex Tezos_version.Current_git_info.commit_hash then
-      Hex.to_string (`Hex Tezos_version.Current_git_info.commit_hash)
-    else Tezos_version.Current_git_info.commit_hash
+    if TzString.is_hex mineplex_version.Current_git_info.commit_hash then
+      Hex.to_string (`Hex mineplex_version.Current_git_info.commit_hash)
+    else mineplex_version.Current_git_info.commit_hash
   in
   if String.length commit_hash >= 4 then String.sub commit_hash 0 4
   else default_constant

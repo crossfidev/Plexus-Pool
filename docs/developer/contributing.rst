@@ -5,20 +5,20 @@ Introduction
 ------------
 
 The purpose of this document is to help contributors get started with
-the Tezos OCaml codebase.
+the mineplex OCaml codebase.
 
 
 Reporting issues
 ----------------
 
-The simplest way to contribute to Tezos is to report issues that you may
-find with the software on `gitlab <https://gitlab.com/tezos/tezos/issues>`__.
+The simplest way to contribute to mineplex is to report issues that you may
+find with the software on `gitlab <https://gitlab.com/mineplex/mineplex/issues>`__.
 If you are unsure about an issue ask on IRC first and always make sure
 to search the existing issues before reporting a new one.
 Some info that are probably important to include in the description:
 the architecture (e.g. *ARM64*), the operating system (e.g. *Debian
 Stretch*), the network you are connected to (e.g. *Zeronet*), the
-binary or component (e.g. *tezos-node crashes* or *rpc X returns Y
+binary or component (e.g. *mineplex-node crashes* or *rpc X returns Y
 while Z was expected*).
 
 
@@ -47,14 +47,14 @@ Where to start
 
 While you familiarize yourself with the basics as suggested above, you
 can have a look at the :ref:`software architecture
-<software_architecture>` of Tezos. It will
+<software_architecture>` of mineplex. It will
 give you the main components and their interactions, and links to the
 documentations for the various parts.
 
 Our git workflow
 ----------------
 
-First, the repository is https://gitlab.com/tezos/tezos, the github one
+First, the repository is https://gitlab.com/mineplex/mineplex, the github one
 is just a clone that exists for historical reasons. So if you want to
 contribute, simply create an account there.
 
@@ -101,7 +101,7 @@ the branch name.
 Code Review
 -----------
 
-At tezos all the code is peer reviewed before getting committed in the
+At mineplex all the code is peer reviewed before getting committed in the
 master branch. Briefly, a code review is a discussion between two or
 more developers about changes to the code to address an issue.
 

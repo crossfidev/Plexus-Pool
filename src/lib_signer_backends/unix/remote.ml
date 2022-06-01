@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -41,7 +41,7 @@ module Make
 struct
   let scheme = scheme
 
-  let title = "Built-in tezos-signer using remote wallet."
+  let title = "Built-in mineplex-signer using remote wallet."
 
   let description =
     "Valid locators are of the form\n\
@@ -49,10 +49,10 @@ struct
      The key will be queried to current remote signer, which can be \
      configured with the `--remote-signer` or `-R` options, or by defining \
      the following environment variables:\n\
-    \ - $TEZOS_SIGNER_UNIX_PATH,\n\
-    \ - $TEZOS_SIGNER_TCP_HOST and $TEZOS_SIGNER_TCP_PORT (default: 7732),\n\
-    \ - $TEZOS_SIGNER_HTTP_HOST and $TEZOS_SIGNER_HTTP_PORT (default: 6732),\n\
-    \ - $TEZOS_SIGNER_HTTPS_HOST and $TEZOS_SIGNER_HTTPS_PORT (default: 443)."
+    \ - $mineplex_SIGNER_UNIX_PATH,\n\
+    \ - $mineplex_SIGNER_TCP_HOST and $mineplex_SIGNER_TCP_PORT (default: 7732),\n\
+    \ - $mineplex_SIGNER_HTTP_HOST and $mineplex_SIGNER_HTTP_PORT (default: 6732),\n\
+    \ - $mineplex_SIGNER_HTTPS_HOST and $mineplex_SIGNER_HTTPS_PORT (default: 443)."
 
   module Socket = Socket.Make (S)
   module Http = Http.Make (RPC_client) (S)
@@ -133,10 +133,10 @@ let make_pk pk =
 
 let read_base_uri_from_env () =
   match
-    ( Sys.getenv_opt "TEZOS_SIGNER_UNIX_PATH",
-      Sys.getenv_opt "TEZOS_SIGNER_TCP_HOST",
-      Sys.getenv_opt "TEZOS_SIGNER_HTTP_HOST",
-      Sys.getenv_opt "TEZOS_SIGNER_HTTPS_HOST" )
+    ( Sys.getenv_opt "mineplex_SIGNER_UNIX_PATH",
+      Sys.getenv_opt "mineplex_SIGNER_TCP_HOST",
+      Sys.getenv_opt "mineplex_SIGNER_HTTP_HOST",
+      Sys.getenv_opt "mineplex_SIGNER_HTTPS_HOST" )
   with
   | (None, None, None, None) ->
       return_none
@@ -145,7 +145,7 @@ let read_base_uri_from_env () =
   | (None, Some host, None, None) -> (
     try
       let port =
-        match Sys.getenv_opt "TEZOS_SIGNER_TCP_PORT" with
+        match Sys.getenv_opt "mineplex_SIGNER_TCP_PORT" with
         | None ->
             7732
         | Some port ->
@@ -153,11 +153,11 @@ let read_base_uri_from_env () =
       in
       return_some (Socket.make_tcp_base host port)
     with Invalid_argument _ ->
-      failwith "Failed to parse TEZOS_SIGNER_TCP_PORT.@." )
+      failwith "Failed to parse mineplex_SIGNER_TCP_PORT.@." )
   | (None, None, Some host, None) -> (
     try
       let port =
-        match Sys.getenv_opt "TEZOS_SIGNER_HTTP_PORT" with
+        match Sys.getenv_opt "mineplex_SIGNER_HTTP_PORT" with
         | None ->
             6732
         | Some port ->
@@ -165,11 +165,11 @@ let read_base_uri_from_env () =
       in
       return_some (Http.make_base host port)
     with Invalid_argument _ ->
-      failwith "Failed to parse TEZOS_SIGNER_HTTP_PORT.@." )
+      failwith "Failed to parse mineplex_SIGNER_HTTP_PORT.@." )
   | (None, None, None, Some host) -> (
     try
       let port =
-        match Sys.getenv_opt "TEZOS_SIGNER_HTTPS_PORT" with
+        match Sys.getenv_opt "mineplex_SIGNER_HTTPS_PORT" with
         | None ->
             443
         | Some port ->
@@ -177,12 +177,12 @@ let read_base_uri_from_env () =
       in
       return_some (Https.make_base host port)
     with Invalid_argument _ ->
-      failwith "Failed to parse TEZOS_SIGNER_HTTPS_PORT.@." )
+      failwith "Failed to parse mineplex_SIGNER_HTTPS_PORT.@." )
   | (_, _, _, _) ->
       failwith
         "Only one the following environment variable must be defined: \
-         TEZOS_SIGNER_UNIX_PATH, TEZOS_SIGNER_TCP_HOST, \
-         TEZOS_SIGNER_HTTP_HOST, TEZOS_SIGNER_HTTPS_HOST@."
+         mineplex_SIGNER_UNIX_PATH, mineplex_SIGNER_TCP_HOST, \
+         mineplex_SIGNER_HTTP_HOST, mineplex_SIGNER_HTTPS_HOST@."
 
 type error += Invalid_remote_signer of string
 

@@ -1,4 +1,4 @@
-open Tezos_crypto
+open mineplex_crypto
 
 (* PBKDF2 *)
 let test_pbkdf2 (module A : Hacl.Hash.S) ~password ~salt ~count ~dk_len ~dk =

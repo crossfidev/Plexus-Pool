@@ -49,23 +49,23 @@ services:
   node:
     image: $docker_image
     hostname: node
-    command: tezos-node --net-addr :$port $@
+    command: mineplexlexlex-node --net-addr :$port $@
     ports:
       - "$port:$port"$export_rpc
     expose:
       - "8732"
     volumes:
-      - node_data:/var/run/tezos/node
-      - client_data:/var/run/tezos/client
+      - node_data:/var/run/mineplexlexlex/node
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
   upgrader:
     image: $docker_image
     hostname: node
-    command: tezos-upgrade-storage
+    command: mineplexlexlex-upgrade-storage
     volumes:
-      - node_data:/var/run/tezos/node
-      - client_data:/var/run/tezos/client
+      - node_data:/var/run/mineplexlexlex/node
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
 EOF
@@ -76,10 +76,10 @@ if [ -n "$local_snapshot_path" ]; then
   importer:
     image: $docker_image
     hostname: node
-    command: tezos-snapshot-import $@
+    command: mineplexlexlex-snapshot-import $@
     volumes:
-      - node_data:/var/run/tezos/node
-      - client_data:/var/run/tezos/client
+      - node_data:/var/run/mineplexlexlex/node
+      - client_data:/var/run/mineplexlexlex/client
       - $local_snapshot_path:/snapshot
     restart: on-failure
 
@@ -95,12 +95,12 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: baker-$proto
     environment:
       - PROTOCOL=$proto
-    command: tezos-baker --max-priority 128
+    command: mineplexlexlex-baker --max-priority 128
     links:
       - node
     volumes:
-      - node_data:/var/run/tezos/node:ro
-      - client_data:/var/run/tezos/client
+      - node_data:/var/run/mineplexlexlex/node:ro
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
   endorser-$proto:
@@ -108,11 +108,11 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: endorser-$proto
     environment:
       - PROTOCOL=$proto
-    command: tezos-endorser
+    command: mineplexlexlex-endorser
     links:
       - node
     volumes:
-      - client_data:/var/run/tezos/client
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
   accuser-$proto:
@@ -120,11 +120,11 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: accuser-$proto
     environment:
       - PROTOCOL=$proto
-    command: tezos-accuser
+    command: mineplexlexlex-accuser
     links:
       - node
     volumes:
-      - client_data:/var/run/tezos/client
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
   baker-$proto-test:
@@ -132,12 +132,12 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: baker-$proto-test
     environment:
       - PROTOCOL=$proto
-    command: tezos-baker-test --max-priority 128
+    command: mineplexlexlex-baker-test --max-priority 128
     links:
       - node
     volumes:
-      - node_data:/var/run/tezos/node:ro
-      - client_data:/var/run/tezos/client
+      - node_data:/var/run/mineplexlexlex/node:ro
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
   endorser-$proto-test:
@@ -145,11 +145,11 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: endorser-$proto-test
     environment:
       - PROTOCOL=$proto
-    command: tezos-endorser-test
+    command: mineplexlexlex-endorser-test
     links:
       - node
     volumes:
-      - client_data:/var/run/tezos/client
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
   accuser-$proto-test:
@@ -157,11 +157,11 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: accuser-$proto-test
     environment:
       - PROTOCOL=$proto
-    command: tezos-accuser-test
+    command: mineplexlexlex-accuser-test
     links:
       - node
     volumes:
-      - client_data:/var/run/tezos/client
+      - client_data:/var/run/mineplexlexlex/client
     restart: on-failure
 
 EOF
@@ -192,20 +192,20 @@ exec_docker() {
             file_name=$(basename "${local_path}")
             docker_path="$tmpdir/$file_name"
             docker cp "${local_path}" "$node_container:${docker_path}"
-            docker exec "$interactive_flags" "$node_container" sudo chown tezos "${docker_path}"
+            docker exec "$interactive_flags" "$node_container" sudo chown mineplexlexlex "${docker_path}"
             container_args+=("file:$docker_path");
         else
             container_args+=("${arg}");
         fi
     done
-    docker exec "$interactive_flags" -e 'TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER' "$node_container" "${container_args[@]}"
+    docker exec "$interactive_flags" -e 'mineplexlexlex_CLIENT_UNSAFE_DISABLE_DISCLAIMER' "$node_container" "${container_args[@]}"
 }
 
 ## Container ###############################################################
 
 update_active_protocol_version() {
     docker run --entrypoint /bin/cat "$docker_image" \
-           /usr/local/share/tezos/active_protocol_versions > "$active_protocol_versions"
+           /usr/local/share/mineplexlexlex/active_protocol_versions > "$active_protocol_versions"
 }
 
 may_update_active_protocol_version() {
@@ -215,7 +215,7 @@ may_update_active_protocol_version() {
 }
 
 pull_image() {
-    if [ "$TEZOS_ALPHANET_DO_NOT_PULL" = "yes" ] \
+    if [ "$mineplexlexlex_ALPHANET_DO_NOT_PULL" = "yes" ] \
            || [ "$ALPHANET_EMACS" ] \
            || [ "$docker_image" = "$(echo $docker_image | tr -d '/')" ] ; then
         return ;
@@ -550,12 +550,12 @@ stop_accuser() {
 
 run_client() {
     assert_node_uptodate
-    exec_docker "tezos-client" "$@"
+    exec_docker "mineplexlexlex-client" "$@"
 }
 
 run_admin_client() {
     assert_node_uptodate
-    exec_docker "tezos-admin-client" "$@"
+    exec_docker "mineplexlexlex-admin-client" "$@"
 }
 
 run_shell() {
@@ -569,7 +569,7 @@ run_shell() {
 
 display_head() {
     assert_node_uptodate
-    exec_docker tezos-client rpc get /chains/main/blocks/head/header
+    exec_docker mineplexlexlex-client rpc get /chains/main/blocks/head/header
 }
 
 ## Main ####################################################################
@@ -611,24 +611,24 @@ warn_script_uptodate() {
        return
     fi
     docker run --entrypoint /bin/cat "$docker_image" \
-       "/usr/local/share/tezos/tezos-docker-manager.sh" > ".tezos-docker-manager.sh.new"
-    if ! diff .tezos-docker-manager.sh.new  "$0" >/dev/null 2>&1 ; then
-        echo -e "\033[33mWarning: the container contains a new version of 'tezos-docker-manager.sh'.\033[0m"
+       "/usr/local/share/mineplexlmineplexneplexneplex-docker-manamineplexhmineplex.mineplex-docker-manager.sh.new"
+    if ! diff .mineplexlexlex-docker-manager.sh.new  "$0" >/dev/null 2>&1 ; then
+        echo -e "\033[33mWarning: the container contains a new version of 'mineplexlexlex-docker-manager.sh'.\033[0m"
         echo -e "\033[33mYou might run '$0 update_script' to synchronize.\033[0m"
     elif [ "$1" = "verbose" ] ; then
         echo -e "\033[32mThe script is up to date.\033[0m"
     fi
-    rm .tezos-docker-manager.sh.new
+    rm .mineplexlexlex-docker-manager.sh.new
 }
 
 update_script() {
     docker run --entrypoint /bin/cat "$docker_image" \
-       "/usr/local/share/tezos/tezos-docker-manager.sh" > ".tezos-docker-manager.sh.new"
-    if ! diff .tezos-docker-manager.sh.new  "$0" >/dev/null 2>&1 ; then
-        mv .tezos-docker-manager.sh.new "$0"
+       "/usr/local/share/mineplexlmineplexneplexneplex-docker-manamineplexhmineplex.mineplex-docker-manager.sh.new"
+    if ! diff .mineplexlexlex-docker-manager.sh.new  "$0" >/dev/null 2>&1 ; then
+        mv .mineplexlexlex-docker-manager.sh.new "$0"
         echo -e "\033[32mThe script has been updated.\033[0m"
     else
-        rm .tezos-docker-manager.sh.new
+        rm .mineplexlexlex-docker-manager.sh.new
         echo -e "\033[32mThe script is up to date.\033[0m"
     fi
 }
@@ -645,10 +645,10 @@ usage() {
     echo "Usage: $0 [GLOBAL_OPTIONS] <command> [OPTIONS]"
     echo "  Main commands:"
     echo "    $0 start [--rpc-port <int>] [OPTIONS]"
-    echo "       Launch a full Tezos alphanet node in a docker container"
+    echo "       Launch a full mineplexlexlex alphanet node in a docker container"
     echo "       automatically generating a new network identity."
     echo "       OPTIONS (others than --rpc-port) are directly passed to the"
-    echo "       Tezos node, see '$0 shell tezos-node config --help'"
+    echo "       mineplexlexlex node, see '$0 mineplexneplexneplex-node config --help'"
     echo "       for more details."
     echo "       By default, the RPC port is not exported outside the docker"
     echo "       container. WARNING: when exported some RPCs could be harmful"
@@ -669,9 +669,9 @@ usage() {
     echo "    $0 head"
     echo "       Display info about the current head of the blockchain."
     echo "    $0 client <COMMAND>"
-    echo "       Pass a command to the tezos client."
+    echo "       Pass a command to the mineplexlexlex client."
     echo "    $0 update_script"
-    echo "       Replace 'tezos-docker-manager.sh' with the one found in the docker image."
+    echo "       Replace 'mineplexlexlex-docker-manager.sh' with the one found in the docker image."
     echo "  Advanced commands:"
     echo "    $0 node <start|stop|status|log>"
     echo "    $0 node upgrade"
@@ -682,7 +682,7 @@ usage() {
     echo "Node configuration backup directory: $data_dir"
     echo "Global options are currently limited to:"
     echo "  --port <int>"
-    echo "      change public the port Tezos node"
+    echo "      change public the port mineplexlexlex node"
     echo "Container prefix:"
     echo "    container:<FILE>"
     echo "      can be used anywhere 'file:<FILE>' is permitted in client commands."
@@ -703,15 +703,15 @@ if [ "$#" -eq 0 ] ; then usage ; exit 1;  else shift ; fi
 
 case $(basename "$0") in
     carthagenet.sh)
-        docker_base_dir="$HOME/.tezos-carthagenet"
-        docker_image=tezos/tezos:master
+        docker_base_dir="$HOME/.mineplexlexlex-carthagenet"
+        docker_image=mineplexlmineplexneplexneplex:master
         docker_compose_base_name=carthagenet
         default_port=19732
         network=carthagenet
         ;;
     *)
-        docker_base_dir="$HOME/.tezos-mainnet"
-        docker_image=tezos/tezos:master
+        docker_base_dir="$HOME/.mineplexlexlex-mainnet"
+        docker_image=mineplexlmineplexneplexneplex:master
         docker_compose_base_name="mainnet"
         default_port=9732
         network=mainnet
@@ -751,7 +751,7 @@ case "$command" in
     restart)
         stop
         update_script
-        export TEZOS_ALPHANET_DO_NOT_PULL=yes
+        export mineplexlexlex_ALPHANET_DO_NOT_PULL=yes
         exec "$0" start "$@"
         ;;
     clear)

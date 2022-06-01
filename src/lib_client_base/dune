@@ -1,14 +1,14 @@
 (library
- (name tezos_client_base)
- (public_name tezos-client-base)
- (libraries tezos-base
-            tezos-shell-services
-            tezos-rpc)
+ (name mineplex_client_base)
+ (public_name mineplex-client-base)
+ (libraries mineplex-base
+            mineplex-shell-services
+            mineplex-rpc)
  (modules (:standard bip39_english))
  (library_flags (:standard -linkall))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_rpc
-                   -open Tezos_shell_services)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_rpc
+                   -open mineplex_shell_services)))
 
 (rule
  (targets bip39_english.ml)
@@ -19,4 +19,4 @@
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

@@ -181,7 +181,7 @@ module Commands = struct
   let curl_level state ~default_port =
     curl_unit_display state ["l"; "level"] ~default_port
       ~path:"/chains/main/blocks/head" ~doc:"Display current head block info."
-      ~pp_json:Tezos_protocol.Pretty_print.(verbatim_protection block_head_rpc)
+      ~pp_json:mineplex_protocol.Pretty_print.(verbatim_protection block_head_rpc)
 
   let curl_baking_rights state ~default_port =
     curl_unit_display state ["bk"; "baking-rights"] ~default_port
@@ -211,7 +211,7 @@ module Commands = struct
       ~path:"/chains/main/mempool/pending_operations"
       ~doc:"Display the status of the mempool."
       ~pp_json:
-        Tezos_protocol.Pretty_print.(
+        mineplex_protocol.Pretty_print.(
           verbatim_protection mempool_pending_operations_rpc)
 
   let show_process state =
@@ -257,9 +257,9 @@ module Commands = struct
             fun ppf () ->
               vertical_box ~indent:0 ppf (fun ppf ->
                   prompt ppf (fun ppf -> pf ppf "Bootstrap Accounts:") ;
-                  List.iter (Tezos_protocol.bootstrap_accounts protocol)
+                  List.iter (mineplex_protocol.bootstrap_accounts protocol)
                     ~f:(fun acc ->
-                      let open Tezos_protocol.Account in
+                      let open mineplex_protocol.Account in
                       cut ppf () ;
                       pf ppf "* Account %S:@," (name acc) ;
                       pf ppf "  * Public Key Hash: %s@," (pubkey_hash acc) ;
@@ -382,13 +382,13 @@ module Commands = struct
       match all with [] -> None | _ -> Some (pp_options all) in
     Console.Prompt.unit_and_loop
       ~description:
-        (Fmt.str "Run a tezos-client command on %s"
+        (Fmt.str "Run a mineplex-client command on %s"
            ( match clients with
            | [] -> "NO CLIENT, so this is useless…"
-           | [one] -> sprintf "the %S client." one.Tezos_client.id
+           | [one] -> sprintf "the %S client." one.mineplex_client.id
            | more ->
                sprintf "all the following clients: %s."
-                 ( List.map more ~f:(fun c -> c.Tezos_client.id)
+                 ( List.map more ~f:(fun c -> c.mineplex_client.id)
                  |> String.concat ~sep:", " ) ))
       ?details command_names
       (fun sexps ->
@@ -412,7 +412,7 @@ module Commands = struct
           | None -> clients
           | Some more ->
               List.filter clients ~f:(fun c ->
-                  List.mem more c.Tezos_client.id ~equal:String.equal) in
+                  List.mem more c.mineplex_client.id ~equal:String.equal) in
         let use_admin =
           match make_admin with
           | None -> `Client
@@ -429,9 +429,9 @@ module Commands = struct
             >>= fun prev ->
             Running_processes.run_cmdf state "sh -c %s"
               ( ( match use_admin with
-                | `Client -> Tezos_client.client_command state client args
+                | `Client -> mineplex_client.client_command state client args
                 | `Admin mkadm ->
-                    Tezos_admin_client.make_command state (mkadm client) args
+                    mineplex_admin_client.make_command state (mkadm client) args
                 )
               |> Genspio.Compile.to_one_liner |> Caml.Filename.quote )
             >>= fun res ->
@@ -458,7 +458,7 @@ module Commands = struct
                           let clients =
                             List.filter_map results ~f:(function
                               | c, r when String.equal res r ->
-                                  Some c.Tezos_client.id
+                                  Some c.mineplex_client.id
                               | _ -> None) in
                           desc
                             (haf "Client%s %s:"
@@ -485,7 +485,7 @@ module Commands = struct
   let protect_with_keyed_client msg ~client ~f =
     let msg =
       Fmt.str "Command-line %s with client %s (account: %s)" msg
-        client.Tezos_client.Keyed.client.id client.Tezos_client.Keyed.key_name
+        client.mineplex_client.Keyed.client.id client.mineplex_client.Keyed.key_name
     in
     Asynchronous_result.bind_on_error (f ()) ~f:(fun ~result:_ ->
       function
@@ -502,11 +502,11 @@ module Commands = struct
           str "Manually bake a block (with %s)."
             ( match clients with
             | [] -> "NO CLIENT, this is just wrong"
-            | [one] -> one.Tezos_client.Keyed.client.id
+            | [one] -> one.mineplex_client.Keyed.client.id
             | m ->
                 str "one of %s"
                   ( List.mapi m ~f:(fun ith one ->
-                        str "%d: %s" ith one.Tezos_client.Keyed.client.id)
+                        str "%d: %s" ith one.mineplex_client.Keyed.client.id)
                   |> String.concat ~sep:", " ) ))
       ["bake"]
       (fun sexps ->
@@ -518,7 +518,7 @@ module Commands = struct
           | _ -> Fmt.kstrf failwith "Wrong command line: %a" pp (List sexps)
         in
         protect_with_keyed_client "manual-baking" ~client ~f:(fun () ->
-            Tezos_client.Keyed.bake state client "Manual baking !"))
+            mineplex_client.Keyed.bake state client "Manual baking !"))
 
   let generate_traffic_command state ~clients =
     Console.Prompt.unit_and_loop
@@ -527,11 +527,11 @@ module Commands = struct
           str "Generate traffic from a client (%s); try `gen help`."
             ( match clients with
             | [] -> "NO CLIENT, this is just wrong"
-            | [one] -> one.Tezos_client.Keyed.client.id
+            | [one] -> one.mineplex_client.Keyed.client.id
             | m ->
                 str "use option (client ..) with one of %s"
                   ( List.mapi m ~f:(fun ith one ->
-                        str "%d: %s" ith one.Tezos_client.Keyed.client.id)
+                        str "%d: %s" ith one.mineplex_client.Keyed.client.id)
                   |> String.concat ~sep:", " ) ))
       ["generate"; "gen"]
       (fun sexps ->
@@ -560,7 +560,7 @@ module Commands = struct
           Sexp_options.make_option "level" ~placeholders:["<int>"] "The level."
         in
         let branch client =
-          Tezos_client.rpc state ~client:client.Tezos_client.Keyed.client `Get
+          mineplex_client.rpc state ~client:client.mineplex_client.Keyed.client `Get
             ~path:"/chains/main/blocks/head/hash"
           >>= fun br ->
           let branch = Jqo.get_string br in
@@ -594,7 +594,7 @@ module Commands = struct
                   ~f:Sexp_options.get_int_exn ~default:(fun () -> return 42)
                 >>= fun level ->
                 let json = Traffic_generation.Forge.endorsement ~branch level in
-                Tezos_client.Keyed.forge_and_inject state client ~json
+                mineplex_client.Keyed.forge_and_inject state client ~json
                 >>= fun json_result ->
                 Console.sayf state
                   More_fmt.(fun ppf () -> json ppf json_result))
@@ -603,11 +603,11 @@ module Commands = struct
                 branch client
                 >>= fun branch ->
                 let src =
-                  client.key_name |> Tezos_protocol.Account.of_name
-                  |> Tezos_protocol.Account.pubkey_hash in
+                  client.key_name |> mineplex_protocol.Account.of_name
+                  |> mineplex_protocol.Account.pubkey_hash in
                 Sexp_options.get counter_option more_args
                   ~f:Sexp_options.get_int_exn ~default:(fun () ->
-                    Tezos_client.rpc state ~client:client.client `Get
+                    mineplex_client.rpc state ~client:client.client `Get
                       ~path:
                         (Fmt.str
                            "/chains/main/blocks/head/context/contracts/%s/counter"
@@ -625,7 +625,7 @@ module Commands = struct
                 let json =
                   Traffic_generation.Forge.batch_transfer ~src ~counter ~fee
                     ~branch size in
-                Tezos_client.Keyed.forge_and_inject state client ~json
+                mineplex_client.Keyed.forge_and_inject state client ~json
                 >>= fun json_result ->
                 Console.sayf state
                   More_fmt.(fun ppf () -> json ppf json_result))
@@ -633,7 +633,7 @@ module Commands = struct
             Fmt.kstr failwith "Wrong command line: %a" Sexp.pp (List other))
 
   let all_defaults state ~nodes =
-    let default_port = (List.hd_exn nodes).Tezos_node.rpc_port in
+    let default_port = (List.hd_exn nodes).mineplex_node.rpc_port in
     [ du_sh_root state; processes state
     ; show_connections state nodes
     ; curl_level state ~default_port

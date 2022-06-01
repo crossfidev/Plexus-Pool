@@ -20,7 +20,7 @@ difficult.
 Why you want the error monad
 ----------------------------
 
-In Tezos, we don’t want to have the node be crashable by an improper
+In mineplex, we don’t want to have the node be crashable by an improper
 input. To avoid this possibility, it was decided that the system should
 not use exceptions for error handling. Instead, it uses an error monad.
 This design forces errors to be handled or carried through before an
@@ -59,7 +59,7 @@ Here’s a very simple error monad.
         | Error -> Error
     end
 
-So, is this what Tezos uses? We actually already have a lot of the
+So, is this what mineplex uses? We actually already have a lot of the
 structure that we’ll use later. The basic idea is that you return a
 value that’s correct and return an error if the operation failed.
 Outside of the error module, you can’t actually introspect an error
@@ -70,7 +70,7 @@ What’s wrong here?
 
 -  We can’t report any information about an error case
 -  We can’t report error traces, something that’s used to improve the
-   quality of error messages throughout Tezos
+   quality of error messages throughout mineplex
 -  We can’t handle some errors and continue executing
 
 A slight improvement
@@ -149,7 +149,7 @@ to a variant type at the cost of exhaustivity checking. We’re going to
 need two new mechanisms to make this work well. The first is an error
 registration scheme. In the actual error monad, this involves the
 :ref:`data encoding module<data_encoding>`,
-which is how all data is encoded/decoded in Tezos. Since you can declare
+which is how all data is encoded/decoded in mineplex. Since you can declare
 arbitrary new errors, we’ll have a way of adding a printer for each error.
 
 When we add a new error handler, we’ll use the ``register_error``
@@ -170,7 +170,7 @@ this:
 I’m also renaming the ``error`` function to ``fail``. This is the
 convention used by the actual `Error_monad` module. I’m also exposing the
 ``'a t`` type so that you can dispatch on it if you need to. This is
-used several times in the Tezos codebase.
+used several times in the mineplex codebase.
 
 .. code-block:: ocaml
 
@@ -216,11 +216,11 @@ used several times in the Tezos codebase.
 Putting ``Lwt.t`` in the mix
 ----------------------------
 
-Tezos uses the `Lwt library <https://ocsigen.org/lwt/3.2.1/manual/manual>`__ for threading.
+mineplex uses the `Lwt library <https://ocsigen.org/lwt/3.2.1/manual/manual>`__ for threading.
 The Lwt monad is mixed in with the error monad module. This requires us
 to add some extra combinators and reexport some functions from Lwt.
 
-I’m also renaming the type ``t`` to ``tzresult``, as used in the Tezos
+I’m also renaming the type ``t`` to ``tzresult``, as used in the mineplex
 codebase.
 
 .. code-block:: ocaml
@@ -280,10 +280,10 @@ codebase.
         | Error errors -> Lwt.return (Error (error :: errors))
     end
 
-The actual Tezos error monad
+The actual mineplex error monad
 ----------------------------
 
-The actual Tezos error monad adds a few things. Firstly, there are three
+The actual mineplex error monad adds a few things. Firstly, there are three
 categories of errors:
 
 -  :literal:`\`Temporary` - An error resulting from an operation that

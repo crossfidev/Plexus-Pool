@@ -79,7 +79,7 @@ let init_validator
    validator. It passes the validator to the test function [f] *)
 let wrap f _switch () =
   Shell_test_helpers.with_empty_mock_sink (fun _ ->
-      Lwt_utils_unix.with_tempdir "tezos_test_" (fun test_dir ->
+      Lwt_utils_unix.with_tempdir "mineplex_test_" (fun test_dir ->
           init_validator f test_dir _switch ()))
 
 (** Start tests *)

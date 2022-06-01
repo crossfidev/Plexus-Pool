@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (* Copyright (c) 2019 Nomadic Labs, <contact@nomadic-labs.com>               *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
@@ -168,15 +168,15 @@ module Manpage = struct
      of a cryptographic key pair as well as a proof-of-work stamp that \
      certifies that enough CPU time has been dedicated to produce the \
      identity, to avoid sybil attacks. An identity with enough proof-of-work \
-     is required to participate in the Tezos network, therefore this command \
-     is necessary to launch Tezos the first time."
+     is required to participate in the mineplex network, therefore this command \
+     is necessary to launch mineplex the first time."
 
   let description =
     [ `S "DESCRIPTION";
       `P (command_description ^ " Several options are possible:");
       `P
         "$(b,show) reads, parses and displays the current identity of the \
-         node. Use this command to see what identity will be used by Tezos. \
+         node. Use this command to see what identity will be used by mineplex. \
          This is the default operation.";
       `P
         "$(b,generate [difficulty]) generates an identity whose proof of work \

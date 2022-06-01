@@ -1,13 +1,13 @@
 (library
- (name tezos_clic)
- (public_name tezos-clic)
- (flags (:standard -open Tezos_stdlib
-                   -open Tezos_error_monad))
- (libraries tezos-stdlib
+ (name mineplex_clic)
+ (public_name mineplex-clic)
+ (flags (:standard -open mineplex_stdlib
+                   -open mineplex_error_monad))
+ (libraries mineplex-stdlib
             lwt
-            tezos-error-monad))
+            mineplex-error-monad))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

@@ -1,23 +1,23 @@
 (library
- (name tezos_client_001_Pt8PXNHh)
- (public_name tezos-client-001-Pt8PXNHh)
- (libraries tezos-base
-            tezos-protocol-001-Pt8PXNHh
-            tezos-shell-services
-            tezos-client-base
-            tezos-mockup-registration
-            tezos-rpc
-            tezos-signer-backends
-            tezos-protocol-001-Pt8PXNHh-parameters)
+ (name mineplex_client_001_Pt8PXNHh)
+ (public_name mineplex-client-001-Pt8PXNHh)
+ (libraries mineplex-base
+            mineplex-protocol-001-Pt8PXNHh
+            mineplex-shell-services
+            mineplex-client-base
+            mineplex-mockup-registration
+            mineplex-rpc
+            mineplex-signer-backends
+            mineplex-protocol-001-Pt8PXNHh-parameters)
  (library_flags (:standard -linkall))
- (flags (:standard -open Tezos_base__TzPervasives
-                   -open Tezos_shell_services
-                   -open Tezos_client_base
-                   -open Tezos_protocol_001_Pt8PXNHh
-                   -open Tezos_protocol_001_Pt8PXNHh_parameters
-                   -open Tezos_rpc)))
+ (flags (:standard -open mineplex_base__TzPervasives
+                   -open mineplex_shell_services
+                   -open mineplex_client_base
+                   -open mineplex_protocol_001_Pt8PXNHh
+                   -open mineplex_protocol_001_Pt8PXNHh_parameters
+                   -open mineplex_rpc)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

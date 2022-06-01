@@ -1,6 +1,6 @@
 .. _michelson:
 
-Michelson: the language of Smart Contracts in Tezos
+Michelson: the language of Smart Contracts in mineplex
 ===================================================
 
 This specification gives a detailed formal semantics of the Michelson
@@ -34,7 +34,7 @@ blockchain.
 Semantics of smart contracts and transactions
 ---------------------------------------------
 
-The Tezos ledger currently has two types of accounts that can hold
+The mineplex ledger currently has two types of accounts that can hold
 tokens (and be the destinations of transactions).
 
   - An implicit account is a non programmable account, whose tokens
@@ -148,7 +148,7 @@ All these errors cannot happen in internal transactions, as the type
 system catches them at operation creation time. In particular,
 Michelson has two types to talk about other accounts: ``address`` and
 ``contract t``. The ``address`` type merely gives the guarantee that
-the value has the form of a Tezos address. The ``contract t`` type, on
+the value has the form of a mineplex address. The ``contract t`` type, on
 the other hand, guarantees that the value is indeed a valid, existing
 account whose parameter type is ``t``. To make a transaction from
 Michelson, a value of type ``contract t`` must be provided, and the
@@ -2859,8 +2859,8 @@ data include not only a description of the action to perform but also
 the address of the multisig contract and a counter that gets
 incremented at each successful call to the contract.
 
-The multisig commands of `Tezos command line client
-<https://tezos.gitlab.io/api/cli-commands.html>`__ use this
+The multisig commands of `mineplex command line client
+<https://mineplex.gitlab.io/api/cli-commands.html>`__ use this
 smart contract. Moreover, `functional correctness of this contract has
 been verified
 <https://gitlab.com/nomadic-labs/mi-cho-coq/blob/master/src/contracts_coq/multisig.v>`__

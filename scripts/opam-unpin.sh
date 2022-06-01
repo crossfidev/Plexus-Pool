@@ -8,6 +8,6 @@ src_dir="$(dirname "$script_dir")"
 . "$script_dir"/opam-remove.sh
 
 echo
-echo "## Unpinning tezos packages..."
+echo "## Unpinning mineplex packages..."
 
 opam pin remove $packages > /dev/null 2>&1

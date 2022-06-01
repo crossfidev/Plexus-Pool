@@ -34,7 +34,7 @@ let () =
          ( Lwt.pause ()
          >>= fun () ->
          Lwt_exit.exit_and_raise 3
-         >>= fun () -> Tezos_stdlib.Lwt_utils.never_ending () )
+         >>= fun () -> mineplex_stdlib.Lwt_utils.never_ending () )
   with
   | Error 3 ->
       ()

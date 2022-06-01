@@ -1,20 +1,20 @@
 (library
- (name tezos_storage)
- (public_name tezos-storage)
- (libraries tezos-base
-            tezos-shell-services
-            tezos-lmdb
+ (name mineplex_storage)
+ (public_name mineplex-storage)
+ (libraries mineplex-base
+            mineplex-shell-services
+            mineplex-lmdb
             logs.fmt
             digestif.c
             irmin
             irmin-pack
-            tezos-stdlib-unix)
- (flags (:standard -open Tezos_shell_services
-                   -open Tezos_base__TzPervasives
-                   -open Tezos_stdlib_unix
-                   -open Tezos_stdlib)))
+            mineplex-stdlib-unix)
+ (flags (:standard -open mineplex_shell_services
+                   -open mineplex_base__TzPervasives
+                   -open mineplex_stdlib_unix
+                   -open mineplex_stdlib)))
 
 (alias
  (name runtest_lint)
  (deps (glob_files *.ml{,i}))
- (action (run %{lib:tezos-tooling:lint.sh} %{deps})))
+ (action (run %{lib:mineplex-tooling:lint.sh} %{deps})))

@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -49,7 +49,7 @@ module M = struct
   let fork_test_chain _ ~protocol:_ ~expiration:_ = assert false
 end
 
-open Tezos_protocol_environment
+open mineplex_protocol_environment
 
 type _ Context.kind += Faked : unit Context.kind
 

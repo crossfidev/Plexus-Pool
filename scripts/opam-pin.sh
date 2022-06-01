@@ -8,7 +8,7 @@ src_dir="$(dirname "$script_dir")"
 export OPAMYES=yes
 
 echo
-echo "## Pinning tezos packages..."
+echo "## Pinning mineplex packages..."
 
 opams=$(find "$src_dir/vendors" "$src_dir/src" -name \*.opam -print)
 

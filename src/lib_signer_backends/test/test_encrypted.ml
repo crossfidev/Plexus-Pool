@@ -1,7 +1,7 @@
 (**************************************************************************)
 (*                                                                        *)
 (*    Copyright (c) 2014 - 2018.                                          *)
-(*    Dynamic Ledger Solutions, Inc. <contact@tezos.com>                  *)
+(*    Dynamic Ledger Solutions, Inc. <contact@mineplex.com>                  *)
 (*                                                                        *)
 (*    All rights reserved. No warranty, explicit or implicit, provided.   *)
 (*                                                                        *)
@@ -158,5 +158,5 @@ let tests =
     Alcotest_lwt.test_case "vectors_decrypt" `Quick test_vectors ]
 
 let () =
-  Alcotest_lwt.run "tezos-signer-backends" [("encrypted", tests)]
+  Alcotest_lwt.run "mineplex-signer-backends" [("encrypted", tests)]
   |> Lwt_main.run

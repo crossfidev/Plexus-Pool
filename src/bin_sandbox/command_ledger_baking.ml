@@ -82,13 +82,13 @@ let assert_hwms state ~client ~uri ~main ~test =
     state
     EF.(wf "Asserting main HWM = %d and test HWM = %d" main test)
   >>= fun () ->
-  Tezos_client.Ledger.get_hwm state ~client ~uri
+  mineplex_client.Ledger.get_hwm state ~client ~uri
   >>= fun {main = main_actual; test = test_actual; _} ->
   assert_eq Int.to_string ~actual:main_actual ~expected:main
   >>= fun () -> assert_eq Int.to_string ~actual:test_actual ~expected:test
 
 let get_chain_id_string state ~client =
-  Tezos_client.rpc state ~client `Get ~path:"/chains/main/chain_id"
+  mineplex_client.rpc state ~client `Get ~path:"/chains/main/chain_id"
   >>= function
   | `String x ->
       return x
@@ -98,10 +98,10 @@ let get_chain_id_string state ~client =
 let get_chain_id state ~client =
   get_chain_id_string state ~client
   >>= fun chain_id_string ->
-  return (Tezos_crypto.Chain_id.of_b58check_exn chain_id_string)
+  return (mineplex_crypto.Chain_id.of_b58check_exn chain_id_string)
 
 let get_head_block_hash state ~client () =
-  Tezos_client.rpc state ~client `Get ~path:"/chains/main/blocks/head/hash"
+  mineplex_client.rpc state ~client `Get ~path:"/chains/main/blocks/head/hash"
   >>= function
   | `String x ->
       return x
@@ -120,7 +120,7 @@ let forge_endorsement state ~client ~chain_id ~level () =
                 [ ("kind", `String "endorsement");
                   ("level", `Float (Float.of_int level)) ] ] ) ]
   in
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
     ~client
     ~path:"/chains/main/blocks/head/helpers/forge/operations"
@@ -130,7 +130,7 @@ let forge_endorsement state ~client ~chain_id ~level () =
       let endorsement_magic_byte = "02" in
       return
         ( endorsement_magic_byte
-        ^ (chain_id |> Tezos_crypto.Chain_id.to_hex |> Hex.show)
+        ^ (chain_id |> mineplex_crypto.Chain_id.to_hex |> Hex.show)
         ^ operation_bytes )
   | _ ->
       failf "Failed to forge operation or parse result"
@@ -153,7 +153,7 @@ let forge_delegation state ~client ~src ~dest ?(fee = 0.00126) () =
                   ("delegate", `String dest);
                   ("storage_limit", `String (Int.to_string 277)) ] ] ) ]
   in
-  Tezos_client.rpc
+  mineplex_client.rpc
     state
     ~client
     ~path:"/chains/main/blocks/head/helpers/forge/operations"
@@ -166,10 +166,10 @@ let forge_delegation state ~client ~src ~dest ?(fee = 0.00126) () =
       failf "Failed to forge operation or parse result"
 
 let sign state ~client ~bytes () =
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
-    ~client:client.Tezos_client.Keyed.client
-    ["sign"; "bytes"; "0x" ^ bytes; "for"; client.Tezos_client.Keyed.key_name]
+    ~client:client.mineplex_client.Keyed.client
+    ["sign"; "bytes"; "0x" ^ bytes; "for"; client.mineplex_client.Keyed.key_name]
   >>= fun _ -> return ()
 
 let originate_account_from state ~client ~account =
@@ -190,7 +190,7 @@ let originate_account_from state ~client ~account =
   let tmp = Caml.Filename.temp_file "little-id-script" ".tz" in
   System.write_file state tmp ~content:(id_script "unit")
   >>= fun () ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client
     [ "originate";
@@ -199,7 +199,7 @@ let originate_account_from state ~client ~account =
       "transferring";
       Int.to_string 1000;
       "from";
-      Tezos_protocol.Account.pubkey_hash account;
+      mineplex_protocol.Account.pubkey_hash account;
       "running";
       tmp;
       "--init";
@@ -212,21 +212,21 @@ let setup_baking_ledger state uri ~client ~protocol =
   Console.say state EF.(wf "Setting up the ledger device %S" uri)
   >>= fun () ->
   let key_name = "ledgered" in
-  let baker = Tezos_client.Keyed.make client ~key_name ~secret_key:uri in
+  let baker = mineplex_client.Keyed.make client ~key_name ~secret_key:uri in
   let assert_baking_key x () =
     let to_string = function Some x -> x | None -> "<none>" in
     Console.say
       state
       EF.(wf "Asserting that the authorized key is %s" (to_string x))
     >>= fun () ->
-    Tezos_client.Ledger.get_authorized_key state ~client ~uri
+    mineplex_client.Ledger.get_authorized_key state ~client ~uri
     >>= fun auth_key -> assert_eq to_string ~expected:x ~actual:auth_key
   in
-  Tezos_client.Ledger.deauthorize_baking state ~client ~uri
+  mineplex_client.Ledger.deauthorize_baking state ~client ~uri
   (* TODO: The following assertion doesn't confirm anything if the ledger was already not authorized to bake. *)
   >>= assert_baking_key None
   >>= fun () ->
-  Tezos_client.Ledger.show_ledger state ~client ~uri
+  mineplex_client.Ledger.show_ledger state ~client ~uri
   >>= fun account ->
   with_ledger_test_reject_and_succeed
     state
@@ -235,20 +235,20 @@ let setup_baking_ledger state uri ~client ~protocol =
         "Importing %S in client `%s`. The ledger should be prompting for \
          acknowledgment to provide the public key of %s"
         uri
-        client.Tezos_client.id
-        (Tezos_protocol.Account.pubkey_hash account))
+        client.mineplex_client.id
+        (mineplex_protocol.Account.pubkey_hash account))
     (fun () ->
-      Tezos_client.Keyed.initialize state baker >>= fun _ -> return ())
+      mineplex_client.Keyed.initialize state baker >>= fun _ -> return ())
   >>= assert_failure state "baking before setup should fail" (fun () ->
-          Tezos_client.Keyed.bake state baker "Baked by ledger")
+          mineplex_client.Keyed.bake state baker "Baked by ledger")
   >>= assert_failure state "endorsing before setup should fail" (fun () ->
-          Tezos_client.Keyed.endorse state baker "Endorsed by ledger")
+          mineplex_client.Keyed.endorse state baker "Endorsed by ledger")
   >>= fun () ->
   let test_invalid_delegations () =
-    let ledger_pkh = Tezos_protocol.Account.pubkey_hash account in
+    let ledger_pkh = mineplex_protocol.Account.pubkey_hash account in
     let other_pkh =
-      Tezos_protocol.Account.pubkey_hash
-        (fst (List.last_exn protocol.Tezos_protocol.bootstrap_accounts))
+      mineplex_protocol.Account.pubkey_hash
+        (fst (List.last_exn protocol.mineplex_protocol.bootstrap_accounts))
     in
     let cases =
       [ (ledger_pkh, other_pkh, "ledger to another account");
@@ -278,12 +278,12 @@ let setup_baking_ledger state uri ~client ~protocol =
       list
         [ wf "Setting up %S for baking" uri;
           wf "Setup Baking?";
-          wf "Address: %S\n" (Tezos_protocol.Account.pubkey_hash account);
+          wf "Address: %S\n" (mineplex_protocol.Account.pubkey_hash account);
           wf "Chain: %S" cid;
           wf "Main Chain HWM: 0";
           wf "Test Chain HWM: 0" ])
     (fun () ->
-      Tezos_client.successful_client_cmd
+      mineplex_client.successful_client_cmd
         state
         ~client
         [ "setup";
@@ -308,11 +308,11 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
     state
     EF.[af "Ready to start"; af "Root path deleted."]
   >>= fun () ->
-  let ledger_client = Tezos_client.no_node_client ~exec:client_exec in
-  Tezos_client.Ledger.show_ledger state ~client:ledger_client ~uri
+  let ledger_client = mineplex_client.no_node_client ~exec:client_exec in
+  mineplex_client.Ledger.show_ledger state ~client:ledger_client ~uri
   >>= fun ledger_account ->
   let protocol =
-    let open Tezos_protocol in
+    let open mineplex_protocol in
     {
       protocol with
       time_between_blocks = [1; 2];
@@ -321,7 +321,7 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
     }
   in
   let other_baker_account =
-    fst (List.nth_exn protocol.Tezos_protocol.bootstrap_accounts 1)
+    fst (List.nth_exn protocol.mineplex_protocol.bootstrap_accounts 1)
   in
   Test_scenario.network_with_protocol
     ~protocol
@@ -331,7 +331,7 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
     ~node_exec
     ~client_exec
   >>= fun (nodes, protocol) ->
-  let make_admin = Tezos_admin_client.of_client ~exec:admin_exec in
+  let make_admin = mineplex_admin_client.of_client ~exec:admin_exec in
   Interactive_test.Pauser.add_commands
     state
     Interactive_test.Commands.(
@@ -340,26 +340,26 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
       @ arbitrary_commands_for_each_and_all_clients
           state
           ~make_admin
-          ~clients:(List.map nodes ~f:(Tezos_client.of_node ~exec:client_exec))) ;
+          ~clients:(List.map nodes ~f:(mineplex_client.of_node ~exec:client_exec))) ;
   Interactive_test.Pauser.generic state EF.[af "About to really start playing"]
   >>= fun () ->
   let client n =
-    Tezos_client.of_node ~exec:client_exec (List.nth_exn nodes n)
+    mineplex_client.of_node ~exec:client_exec (List.nth_exn nodes n)
   in
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:(client 0)
-    Tezos_protocol.Account.
+    mineplex_protocol.Account.
       [ "import";
         "secret";
         "key";
         name other_baker_account;
         private_key other_baker_account ]
   >>= fun _ ->
-  Tezos_client.successful_client_cmd
+  mineplex_client.successful_client_cmd
     state
     ~client:(client 0)
-    Tezos_protocol.Account.["bake"; "for"; name other_baker_account]
+    mineplex_protocol.Account.["bake"; "for"; name other_baker_account]
   >>= fun _ ->
   let assert_hwms_ ~main ~test () =
     assert_hwms state ~client:(client 0) ~uri ~main ~test
@@ -370,7 +370,7 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
       EF.(list [wf "Reset HWM"; wf "%d" level])
       `Succeeds
       ~f:(fun () ->
-        Tezos_client.Ledger.set_hwm state ~client:(client 0) ~uri ~level)
+        mineplex_client.Ledger.set_hwm state ~client:(client 0) ~uri ~level)
   in
   get_chain_id state ~client:(client 0)
   >>= fun chain_id ->
@@ -383,10 +383,10 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
           state
           ~command_names:["baker"]
           ~make_admin
-          ~clients:[baker.Tezos_client.Keyed.client] ] ;
-  let bake () = Tezos_client.Keyed.bake state baker "Baked by ledger" in
+          ~clients:[baker.mineplex_client.Keyed.client] ] ;
+  let bake () = mineplex_client.Keyed.bake state baker "Baked by ledger" in
   let endorse () =
-    Tezos_client.Keyed.endorse state baker "Endorsed by ledger"
+    mineplex_client.Keyed.endorse state baker "Endorsed by ledger"
   in
   get_chain_id_string state ~client:(client 0)
   >>= fun cid ->
@@ -398,13 +398,13 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
   in
   ( if enable_deterministic_nonce_tests then
     (* Test determinism of nonces *)
-    Tezos_client.Keyed.generate_nonce state baker "this"
+    mineplex_client.Keyed.generate_nonce state baker "this"
     >>= fun thisNonce1 ->
-    Tezos_client.Keyed.generate_nonce state baker "that"
+    mineplex_client.Keyed.generate_nonce state baker "that"
     >>= fun thatNonce1 ->
-    Tezos_client.Keyed.generate_nonce state baker "this"
+    mineplex_client.Keyed.generate_nonce state baker "this"
     >>= fun thisNonce2 ->
-    Tezos_client.Keyed.generate_nonce state baker "that"
+    mineplex_client.Keyed.generate_nonce state baker "that"
     >>= fun thatNonce2 ->
     assert_eq (fun x -> x) ~expected:thisNonce1 ~actual:thisNonce2
     >>= fun () ->
@@ -414,14 +414,14 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
   >>= fun () ->
   assert_failure
     state
-    "originating an account from the Tezos Baking app should fail"
+    "originating an account from the mineplex Baking app should fail"
     (fun () ->
       originate_account_from state ~client:(client 0) ~account:ledger_account
       >>= fun _ -> return ())
     ()
   >>= fun () ->
   let fee = 0.00126 in
-  let ledger_pkh = Tezos_protocol.Account.pubkey_hash ledger_account in
+  let ledger_pkh = mineplex_protocol.Account.pubkey_hash ledger_account in
   forge_delegation
     state
     ~client:(client 0)
@@ -445,7 +445,7 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
      state
      EF.(list [wf "Reset HWM"; wf "%d" level])
      (fun () ->
-       Tezos_client.Ledger.set_hwm state ~client:(client 0) ~uri ~level))
+       mineplex_client.Ledger.set_hwm state ~client:(client 0) ~uri ~level))
   >>= assert_hwms_ ~main:1 ~test:1
   >>= bake
   >>= assert_hwms_ ~main:4 ~test:1
@@ -482,7 +482,7 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
   >>= forge_endorsement
         state
         ~client:baker.client
-        ~chain_id:(Tezos_crypto.Chain_id.of_b58check_exn other_chain_id)
+        ~chain_id:(mineplex_crypto.Chain_id.of_b58check_exn other_chain_id)
         ~level:5
   >>= fun endorsement_on_different_chain_bytes ->
   sign state ~client:baker ~bytes:endorsement_on_different_chain_bytes ()
@@ -492,7 +492,7 @@ let run state ~protocol ~node_exec ~client_exec ~admin_exec ~size ~base_port
   Loop.n_times 5 (fun _ -> bake ())
   >>= ask_hwm ~main:11 ~test:5
   >>= fun () ->
-  Tezos_client.Ledger.deauthorize_baking state ~client:(client 0) ~uri
+  mineplex_client.Ledger.deauthorize_baking state ~client:(client 0) ~uri
   >>= assert_failure state "baking after deauthorization should fail" bake
   >>= assert_failure
         state
@@ -546,9 +546,9 @@ let cmd () =
              (some string)
              None
              (info [] ~docv:"LEDGER-URI" ~doc:"ledger:// URI")))
-    $ Tezos_executable.cli_term base_state `Node "tezos"
-    $ Tezos_executable.cli_term base_state `Client "tezos"
-    $ Tezos_executable.cli_term base_state `Admin "tezos"
+    $ mineplex_executable.cli_term base_state `Node "mineplex"
+    $ mineplex_executable.cli_term base_state `Client "mineplex"
+    $ mineplex_executable.cli_term base_state `Admin "mineplex"
     $ Arg.(
         value (opt int 5 (info ["size"; "S"] ~docs ~doc:"Size of the Network")))
     $ Arg.(
@@ -568,7 +568,7 @@ let cmd () =
                 ["no-deterministic-nonce-tests"]
                 ~docs
                 ~doc:"Disable tests for deterministic nonces")))
-    $ Tezos_protocol.cli_term base_state
+    $ mineplex_protocol.cli_term base_state
     $ Test_command_line.cli_state ~name:"ledger-baking" ()
   in
   let info =

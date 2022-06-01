@@ -1,7 +1,7 @@
 (*****************************************************************************)
 (*                                                                           *)
 (* Open Source License                                                       *)
-(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@tezos.com>     *)
+(* Copyright (c) 2018 Dynamic Ledger Solutions, Inc. <contact@mineplex.com>     *)
 (*                                                                           *)
 (* Permission is hereby granted, free of charge, to any person obtaining a   *)
 (* copy of this software and associated documentation files (the "Software"),*)
@@ -31,7 +31,7 @@ let tztest name speed f =
       | Ok () ->
           Lwt.return_unit
       | Error err ->
-          Tezos_stdlib_unix.Internal_event_unix.close ()
+          mineplex_stdlib_unix.Internal_event_unix.close ()
           >>= fun () ->
           Format.printf "@.%a@." pp_print_error err ;
           Lwt.fail Alcotest.Test_error)
