@@ -8,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Wed Jun  1 10:43:54 2022
+# Make data base, printed on Mon Jun 20 10:35:01 2022
 
 # Variables
 
@@ -28,6 +28,7 @@ VSCODE_LOG_NATIVE = false
 OCAML_LSP_SERVER_LOG = -
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
+ 
 # automatic
 @F = $(notdir $@)
 # makefile (from `Makefile', line 21)
@@ -35,7 +36,6 @@ COVERAGE_REPORT := _coverage_report
 # makefile
 CURDIR := /Users/m.rysnik/Chain/mineplex.blockchain
 # makefile
- 
 SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{},"_languagePackSupport":true}
@@ -52,9 +52,9 @@ MAKEFILE_LIST :=  Makefile scripts/version.sh
 # makefile (from `Makefile', line 4)
 active_protocol_versions := 001-Pt8PXNHh 002-Pt4xzupC alpha
 # makefile (from `Makefile', line 18)
-DOCKER_DEPS_IMAGE_NAME := registry.gitlab.com/tezos/opam-repository
+DOCKER_DEPS_IMAGE_NAME := registry.gitlab.com/mineplex/opam-repository
 # makefile (from `Makefile', line 14)
-DOCKER_BARE_IMAGE_NAME := tezos-bare
+DOCKER_BARE_IMAGE_NAME := mineplex-bare
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # makefile (from `scripts/version.sh', line 20)
@@ -62,7 +62,7 @@ COVERAGE_OUTPUT = _coverage_output
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/rd/r_55hb6j3bvf_cpwdcgk0d280000gn/T/vscode-ipc-340af129-a0a1-4381-a058-1114da151830.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/rd/r_55hb6j3bvf_cpwdcgk0d280000gn/T/vscode-ipc-bbb3481c-7a6a-4ccb-bf18-07c37726b420.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -74,7 +74,7 @@ DUNE_INCS = $(patsubst %,%/lib_protocol/dune.inc, ${PROTOCOLS})
 # makefile (from `Makefile', line 20)
 DOCKER_DEPS_MINIMAL_IMAGE_VERSION := minimal--3718dd48d5e502c0fe8fc64ed4bf6b0c8040fadc
 # makefile (from `scripts/version.sh', line 16)
-opam_repository_url = https://gitlab.com/tezos/opam-repository.git
+opam_repository_url = https://gitlab.com/mineplex/opam-repository.git
 # makefile (from `Makefile', line 11)
 DOCKER_IMAGE_VERSION := latest
 # environment
@@ -84,7 +84,7 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.klFQwMr4hS/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.DhM370H66Z/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -92,11 +92,9 @@ AWS_API_KEY_GIFT_CARD = okv6IIZR5B4hdxb1lBGoea59q9myMhhT7Gv21w3T
 # environment
 VSCODE_PIPE_LOGGING = true
 # makefile (from `Makefile', line 16)
-DOCKER_DEBUG_IMAGE_NAME := tezos-debug
+DOCKER_DEBUG_IMAGE_NAME := mineplex-debug
 # environment
 PWD = /Users/m.rysnik/Chain/mineplex.blockchain
-# makefile (from `Makefile', line 69)
-TEZOS_PROTOCOL_FILES = $(wildcard src/proto_*/lib_protocol/TEZOS_PROTOCOL)
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # makefile (from `Makefile', line 13)
@@ -108,7 +106,7 @@ HOME = /Users/m.rysnik
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/m.rysnik/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /Users/m.rysnik/Library/Application Support/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 # environment
 LOGNAME = m.rysnik
 # environment
@@ -154,7 +152,9 @@ TMPDIR = /var/folders/rd/r_55hb6j3bvf_cpwdcgk0d280000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/m.rysnik/Library/Application Support/Code/1.67.2-main.sock
+VSCODE_IPC_HOOK = /Users/m.rysnik/Library/Application Support/Code/1.68.0-main.sock
+# makefile (from `Makefile', line 69)
+mineplex_PROTOCOL_FILES = $(wildcard src/proto_*/lib_protocol/mineplex_PROTOCOL)
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -162,7 +162,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.33110957.33110963
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.34944960.34944966
 # makefile (from `scripts/version.sh', line 15)
 opam_repository_tag = 3718dd48d5e502c0fe8fc64ed4bf6b0c8040fadc
 # automatic
@@ -182,13 +182,13 @@ MAKEFILES :=
 # automatic
 <F = $(notdir $<)
 # makefile (from `Makefile', line 70)
-PROTOCOLS = $(patsubst %/lib_protocol/TEZOS_PROTOCOL,%,${TEZOS_PROTOCOL_FILES})
+PROTOCOLS = $(patsubst %/lib_protocol/mineplex_PROTOCOL,%,${mineplex_PROTOCOL_FILES})
 # makefile (from `scripts/version.sh', line 7)
 opam_version = 2.1
 # environment
 PAGER = less
 # makefile (from `Makefile', line 10)
-DOCKER_IMAGE_NAME := tezos
+DOCKER_IMAGE_NAME := mineplex
 # environment
 LC_ALL = C
 # makefile (from `Makefile', line 28)
@@ -200,22 +200,22 @@ SUFFIXES :=
 # makefile (from `Makefile', line 17)
 DOCKER_DEBUG_IMAGE_VERSION := latest
 # makefile (from `scripts/version.sh', line 17)
+ 
 opam_repository = $opam_repository_url#$opam_repository_tag
 # makefile (from `scripts/version.sh', line 12)
 full_opam_repository_tag = ab47b82abdc03e43c67b45b714806ca4d43d7091
 # default
 .INCLUDE_DIRS = /usr/local/include
 # environment
- 
 MAKELEVEL := 0
 # environment
 LANG = C
 # makefile (from `Makefile', line 12)
-DOCKER_BUILD_IMAGE_NAME := tezos_build
+DOCKER_BUILD_IMAGE_NAME := mineplex_build
 # environment
-VSCODE_PID = 11409
+VSCODE_PID = 948
 # variable set hash-table stats:
-# Load=100/1024=10%, Rehash=0, Collisions=2/165=1%
+# Load=100/1024=10%, Rehash=0, Collisions=5/165=3%
 
 # Pattern-specific Variable Values
 
@@ -223,32 +223,23 @@ VSCODE_PID = 11409
 
 # Directories
 
-# src/proto_genesis_carthagenet/lib_protocol (device 16777220, inode 29960132): 14 files, no impossibilities so far.
-# src/proto_demo_counter/lib_protocol (device 16777220, inode 29960063): 28 files, no impossibilities so far.
+# src/proto_genesis_carthagenet/lib_protocol (device 16777220, inode 29960132): 14 files, no impossibilities.
+# src/proto_demo_counter/lib_protocol (device 16777220, inode 29960063): 28 files, no impossibilities.
 # . (device 16777220, inode 29957222): 34 files, no impossibilities.
-# src/proto_demo_noops/lib_protocol (device 16777220, inode 29960091): 11 files, no impossibilities so far.
-# src/proto_001_Pt8PXNHh/lib_protocol (device 16777220, inode 32220753): 130 files, no impossibilities so far.
-# src/proto_genesis/lib_protocol (device 16777220, inode 29960110): 14 files, no impossibilities so far.
-# src/proto_000_Ps9mPmXa/lib_protocol (device 16777220, inode 29958463): 14 files, no impossibilities so far.
-# src/proto_alpha/lib_protocol (device 16777220, inode 29959873): 131 files, no impossibilities so far.
-# src/proto_002_Pt4xzupC/lib_protocol (device 16777220, inode 32221055): 131 files, no impossibilities so far.
+# src/proto_demo_noops/lib_protocol (device 16777220, inode 29960091): 11 files, no impossibilities.
+# src/proto_001_Pt8PXNHh/lib_protocol (device 16777220, inode 32220753): 135 files, no impossibilities.
+# src/proto_genesis/lib_protocol (device 16777220, inode 29960110): 14 files, no impossibilities.
+# src/proto_000_Ps9mPmXa/lib_protocol (device 16777220, inode 29958463): 14 files, no impossibilities.
+# src/proto_alpha/lib_protocol (device 16777220, inode 29959873): 135 files, no impossibilities.
+# src/proto_002_Pt4xzupC/lib_protocol (device 16777220, inode 32221055): 135 files, no impossibilities.
 
-# 507 files, no impossibilities in 9 directories.
+# 520 files, no impossibilities in 9 directories.
 
 # Implicit Rules
 
 # No implicit rules.
 
 # Files
-
-# Not a target:
-src/proto_demo_noops/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 tezos-protocol-demo-counter.test:
 #  Implicit rule search has not been done.
@@ -359,16 +350,6 @@ coverage-report-summary:
 	@bisect-ppx-report summary --coverage-path ${COVERAGE_OUTPUT}
 	
 
-tezos-endorser-002-Pt4xzupC.pkg:
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC'
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 88):
-	@dune build \
-	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
-	
-
 coverage-report:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
@@ -377,7 +358,6 @@ coverage-report:
 #  commands to execute (from `Makefile', line 120):
 	@bisect-ppx-report html -o ${COVERAGE_REPORT} --coverage-path ${COVERAGE_OUTPUT}
 	@echo "Report should be available in ${COVERAGE_REPORT}/index.html"
- 
 	
 
 tezos-baker-alpha.test:
@@ -420,15 +400,6 @@ tezos-rpc-http-server.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
-# Not a target:
-src/proto_genesis/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-
 build-test: build-sandbox
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
@@ -465,6 +436,7 @@ tezos-shell-context.test:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
 	@dune build \
+ 
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
@@ -565,7 +537,6 @@ tezos-test-services.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
- 
 tezos-protocol-updater.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-protocol-updater'
@@ -674,6 +645,7 @@ tezos-protocol-001-Pt8PXNHh.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
+ 
 .PHONY: all generate_dune all.pkg doc-html dock-html-and-linkcheck coverage-report coverage-report-summary build-sandbox build-test test_protocol_compile tezt tezt-i tezt-c tezt-v check-linting check-python-linting fmt build-deps build-dev-deps docker-image-build docker-image-debug docker-image-bare docker-image-minimal docker-image install uninstall coverage-clean clean
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -701,17 +673,6 @@ tezos-event-logging.pkg:
 tezos-crypto.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-crypto'
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 92):
-	@dune build \
-	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
-	
-
-tezos-protocol-001-Pt8PXNHh.test:
-#  Implicit rule search has not been done.
- 
-#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh'
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
@@ -840,7 +801,6 @@ tezos-protocol-alpha.test:
 
 tezos-embedded-protocol-000-Ps9mPmXa.test:
 #  Implicit rule search has not been done.
- 
 #  Implicit/static pattern stem: `tezos-embedded-protocol-000-Ps9mPmXa'
 #  Modification time never checked.
 #  File has not been updated.
@@ -909,6 +869,7 @@ tezos-workers.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
+ 
 tezos-endorser-002-Pt4xzupC-commands.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC-commands'
@@ -991,7 +952,6 @@ tezos-baking-001-Pt8PXNHh-commands.test:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
- 
 	@dune build \
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
@@ -1102,7 +1062,7 @@ doc-html-and-linkcheck: doc-html
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-12 16:26:54
+#  Last modified 2022-06-17 15:57:13
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1128,19 +1088,6 @@ tezos-client-alpha.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
-src/proto_000_Ps9mPmXa/lib_protocol/dune.inc:: src/proto_000_Ps9mPmXa/lib_protocol/TEZOS_PROTOCOL
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `000_Ps9mPmXa'
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
-	
-
 tezos-micheline.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-micheline'
@@ -1158,7 +1105,6 @@ tezos-version.pkg:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 88):
 	@dune build \
- 
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
@@ -1172,6 +1118,7 @@ tezos-baker-002-Pt4xzupC.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
+ 
 tezos-protocol-alpha-tests.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-protocol-alpha-tests'
@@ -1227,15 +1174,6 @@ tezos-client.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
-# Not a target:
-src/proto_demo_counter/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-
 tezos-accuser-002-Pt4xzupC.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-accuser-002-Pt4xzupC'
@@ -1265,15 +1203,6 @@ tezos-baking-002-Pt4xzupC.test:
 	@dune build \
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
-
-# Not a target:
-src/proto_000_Ps9mPmXa/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 tezos-signer.test:
 #  Implicit rule search has not been done.
@@ -1322,7 +1251,6 @@ tezos-validator.test:
 #  Implicit/static pattern stem: `tezos-validator'
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  commands to execute (from `Makefile', line 92):
 	@dune build \
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
@@ -1365,16 +1293,6 @@ coverage-clean:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 234):
 	@-rm -Rf ${COVERAGE_OUTPUT}/*.coverage ${COVERAGE_REPORT}
-	
-
-tezos-error-monad.test:
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `tezos-error-monad'
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 92):
-	@dune build \
-	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
 tezos-stdlib.pkg:
@@ -1444,6 +1362,7 @@ tezos-baking-002-Pt4xzupC-commands.test:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
 	@dune build \
+ 
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
@@ -1474,7 +1393,6 @@ tezos-error-monad.pkg:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 88):
 	@dune build \
- 
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
@@ -1577,16 +1495,6 @@ tezos-tooling.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-tezos-endorser-alpha-commands.pkg:
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `tezos-endorser-alpha-commands'
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 88):
-	@dune build \
-	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
-	
-
 tezos-protocol-001-Pt8PXNHh-tests.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh-tests'
@@ -1629,25 +1537,22 @@ tezos-protocol-demo-counter.pkg:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 88):
- 
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-src/proto_001_Pt8PXNHh/lib_protocol/dune.inc:: src/proto_001_Pt8PXNHh/lib_protocol/TEZOS_PROTOCOL
+tezos-endorser-001-Pt8PXNHh.pkg:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `001_Pt8PXNHh'
-#  Last modified 2022-05-12 16:26:54
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
+#  Implicit/static pattern stem: `tezos-endorser-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
 tezos-protocol-genesis.pkg:
+ 
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-protocol-genesis'
 #  Modification time never checked.
@@ -1757,15 +1662,6 @@ tezos-codec.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
-# Not a target:
-src/proto_001_Pt8PXNHh/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-05-12 16:26:54
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-
 uecc.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `uecc'
@@ -1787,7 +1683,6 @@ tezos-p2p.pkg:
 	
 
 ledgerwallet.test:
- 
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `ledgerwallet'
 #  Modification time never checked.
@@ -1867,18 +1762,17 @@ tezos-mempool-001-Pt8PXNHh.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-generate_dune: src/proto_000_Ps9mPmXa/lib_protocol/dune.inc src/proto_001_Pt8PXNHh/lib_protocol/dune.inc src/proto_002_Pt4xzupC/lib_protocol/dune.inc src/proto_alpha/lib_protocol/dune.inc src/proto_demo_counter/lib_protocol/dune.inc src/proto_demo_noops/lib_protocol/dune.inc src/proto_genesis/lib_protocol/dune.inc src/proto_genesis_carthagenet/lib_protocol/dune.inc
+generate_dune:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has been updated.
 #  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 tezos-stdlib-unix.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-stdlib-unix'
+ 
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
@@ -1981,7 +1875,6 @@ tezos-crypto.pkg:
 #  Implicit/static pattern stem: `tezos-crypto'
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  commands to execute (from `Makefile', line 88):
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
@@ -2007,17 +1900,14 @@ tezos-lmdb.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
-src/proto_002_Pt4xzupC/lib_protocol/dune.inc:: src/proto_002_Pt4xzupC/lib_protocol/TEZOS_PROTOCOL
+tezos-endorser-002-Pt4xzupC.pkg:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `002_Pt4xzupC'
-#  Last modified 2022-05-12 16:26:54
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
+#  Implicit/static pattern stem: `tezos-endorser-002-Pt4xzupC'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
 tezt:
@@ -2039,17 +1929,14 @@ tezos-embedded-protocol-demo-noops.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-src/proto_genesis_carthagenet/lib_protocol/dune.inc:: src/proto_genesis_carthagenet/lib_protocol/TEZOS_PROTOCOL
+tezos-protocol-001-Pt8PXNHh.test:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `genesis_carthagenet'
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
+#  Implicit/static pattern stem: `tezos-protocol-001-Pt8PXNHh'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
 tezos-002-Pt4xzupC-test-helpers.test:
@@ -2082,6 +1969,7 @@ tezos-event-logging.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
+ 
 tezos-accuser-001-Pt8PXNHh.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-accuser-001-Pt8PXNHh'
@@ -2105,7 +1993,7 @@ tezos-baking-001-Pt8PXNHh.pkg:
 # Not a target:
 scripts/version.sh:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-12 17:08:49
+#  Last modified 2022-06-17 15:57:13
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -2150,7 +2038,6 @@ docker-image-debug:
 tezos-baker-001-Pt8PXNHh.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-baker-001-Pt8PXNHh'
- 
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
@@ -2189,15 +2076,6 @@ tezos-storage.test:
 	@dune build \
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
-
-# Not a target:
-src/proto_002_Pt4xzupC/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-05-12 16:26:54
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 tezos-protocol-environment-sigs.pkg:
 #  Implicit rule search has not been done.
@@ -2238,15 +2116,6 @@ tezos-endorser-002-Pt4xzupC-commands.pkg:
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
-
-# Not a target:
-src/proto_genesis_carthagenet/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 tezos-clic.test:
 #  Implicit rule search has not been done.
@@ -2423,7 +2292,6 @@ tezos-client-genesis.pkg:
 #  Implicit/static pattern stem: `tezos-client-genesis'
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  commands to execute (from `Makefile', line 88):
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
@@ -2485,6 +2353,7 @@ build-sandbox:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 129):
 	@dune build src/bin_sandbox/main.exe
+ 
 	@cp _build/default/src/bin_sandbox/main.exe mineplex-sandbox
 	
 
@@ -2531,17 +2400,6 @@ tezos-version.test:
 tezos-signer.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-signer'
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 88):
-	@dune build \
-	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
-	
-
-tezos-endorser-001-Pt8PXNHh.pkg:
-#  Implicit rule search has not been done.
- 
-#  Implicit/static pattern stem: `tezos-endorser-001-Pt8PXNHh'
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 88):
@@ -2618,28 +2476,25 @@ tezos-protocol-compiler.test:
 	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
-src/proto_alpha/lib_protocol/dune.inc:: src/proto_alpha/lib_protocol/TEZOS_PROTOCOL
+tezos-endorser-alpha.pkg:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `alpha'
-#  Last modified 2022-05-12 16:26:54
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
+#  Implicit/static pattern stem: `tezos-endorser-alpha'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
 doc-html: all
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
+ 
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 97):
 	@dune build @doc
 	@./mineplex-client -protocol ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-client.html
- 
 	@./mineplex-admin-client man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-admin-client.html
 	@./mineplex-signer man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-signer.html
 	@./mineplex-baker-alpha man -verbosity 3 -format html | sed "s#${HOME}#\$$HOME#g" > docs/api/mineplex-baker-alpha.html
@@ -2696,22 +2551,11 @@ tezos-embedded-protocol-001-Pt8PXNHh.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-tezos-endorser-alpha.pkg:
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `tezos-endorser-alpha'
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 88):
-	@dune build \
-	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
-	
-
 tezos-node.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-node'
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  commands to execute (from `Makefile', line 88):
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
@@ -2785,7 +2629,6 @@ test_protocol_compile:
 #  commands to execute (from `Makefile', line 138):
 	@dune build  @runtest_compile_protocol
 	
- 
 
 tezos-shell-context.pkg:
 #  Implicit rule search has not been done.
@@ -2796,15 +2639,6 @@ tezos-shell-context.pkg:
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
-
-# Not a target:
-src/proto_alpha/lib_protocol/TEZOS_PROTOCOL:
-#  Implicit rule search has been done.
-#  Last modified 2022-05-12 16:26:54
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 tezos-stdlib.test:
 #  Implicit rule search has not been done.
@@ -2826,17 +2660,15 @@ tezos-protocol-demo-noops.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-src/proto_demo_counter/lib_protocol/dune.inc:: src/proto_demo_counter/lib_protocol/TEZOS_PROTOCOL
+tezos-endorser-alpha-commands.pkg:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `demo_counter'
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
+#  Implicit/static pattern stem: `tezos-endorser-alpha-commands'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@dune build \
+ 
+	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
 tezos-protocol-environment.pkg:
@@ -2872,7 +2704,6 @@ tezos-mempool-alpha.pkg:
 tezos-mockup-commands.test:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-mockup-commands'
- 
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 92):
@@ -2910,17 +2741,14 @@ tezos-embedded-protocol-002-Pt4xzupC.pkg:
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
 	
 
-src/proto_demo_noops/lib_protocol/dune.inc:: src/proto_demo_noops/lib_protocol/TEZOS_PROTOCOL
+tezos-error-monad.test:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `demo_noops'
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
+#  Implicit/static pattern stem: `tezos-error-monad'
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@dune build \
+	@$(patsubst %/$*.opam,%,$(shell find src vendors -name $*.opam))/runtest
 	
 
 tezos-protocol-001-Pt8PXNHh-tests.pkg:
@@ -2975,6 +2803,7 @@ tezt-c:
 tezos-rpc-http-client-unix.pkg:
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: `tezos-rpc-http-client-unix'
+ 
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 88):
@@ -3010,24 +2839,10 @@ tezos-signer-services.pkg:
 #  commands to execute (from `Makefile', line 88):
 	@dune build \
 	$(patsubst %.opam,%.install, $(shell find src vendors -name $*.opam -print))
- 
-	
-
-src/proto_genesis/lib_protocol/dune.inc:: src/proto_genesis/lib_protocol/TEZOS_PROTOCOL
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `genesis'
-#  Last modified 2022-04-19 10:38:19
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 79):
-	dune build @$(dir $@)/runtest_dune_template --auto-promote
-	touch $@
 	
 
 # files hash-table stats:
-# Load=269/1024=26%, Rehash=0, Collisions=69/370=19%
+# Load=253/1024=25%, Rehash=0, Collisions=60/330=18%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -3039,6 +2854,6 @@ src/proto_genesis/lib_protocol/dune.inc:: src/proto_genesis/lib_protocol/TEZOS_P
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4068 / max = 4068 / min = 4068 / avg = 4068
 
-# Finished Make data base on Wed Jun  1 10:43:54 2022
+# Finished Make data base on Mon Jun 20 10:35:01 2022
 
  

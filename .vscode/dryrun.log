@@ -1,28 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/m.rysnik/Chain/mineplex.blockchain'
-dune build @src/proto_000_Ps9mPmXa/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_000_Ps9mPmXa/lib_protocol/dune.inc
- 
-dune build @src/proto_001_Pt8PXNHh/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_001_Pt8PXNHh/lib_protocol/dune.inc
- 
-dune build @src/proto_002_Pt4xzupC/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_002_Pt4xzupC/lib_protocol/dune.inc
- 
-dune build @src/proto_alpha/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_alpha/lib_protocol/dune.inc
- 
-dune build @src/proto_demo_counter/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_demo_counter/lib_protocol/dune.inc
- 
-dune build @src/proto_demo_noops/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_demo_noops/lib_protocol/dune.inc
- 
-dune build @src/proto_genesis/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_genesis/lib_protocol/dune.inc
- 
-dune build @src/proto_genesis_carthagenet/lib_protocol//runtest_dune_template --auto-promote
-touch src/proto_genesis_carthagenet/lib_protocol/dune.inc
 dune build \
 		src/bin_node/main.exe \
 		src/bin_validation/main_validator.exe \
@@ -33,7 +10,6 @@ dune build \
 		src/lib_protocol_compiler/main_native.exe \
 		 src/proto_001_Pt8PXNHh/bin_baker/main_baker_001_Pt8PXNHh.exe  src/proto_002_Pt4xzupC/bin_baker/main_baker_002_Pt4xzupC.exe  src/proto_alpha/bin_baker/main_baker_alpha.exe \
 		 src/proto_001_Pt8PXNHh/bin_endorser/main_endorser_001_Pt8PXNHh.exe  src/proto_002_Pt4xzupC/bin_endorser/main_endorser_002_Pt4xzupC.exe  src/proto_alpha/bin_endorser/main_endorser_alpha.exe \
- 
 		 src/proto_001_Pt8PXNHh/bin_accuser/main_accuser_001_Pt8PXNHh.exe  src/proto_002_Pt4xzupC/bin_accuser/main_accuser_002_Pt4xzupC.exe  src/proto_alpha/bin_accuser/main_accuser_alpha.exe \
 		 src/proto_001_Pt8PXNHh/lib_parameters/mainnet-parameters.json  src/proto_002_Pt4xzupC/lib_parameters/mainnet-parameters.json  src/proto_alpha/lib_parameters/mainnet-parameters.json \
 		 src/proto_001_Pt8PXNHh/lib_parameters/sandbox-parameters.json  src/proto_002_Pt4xzupC/lib_parameters/sandbox-parameters.json  src/proto_alpha/lib_parameters/sandbox-parameters.json \
