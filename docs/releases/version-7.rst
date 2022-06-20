@@ -9,7 +9,7 @@ Version 7.1 fixes a few compilation issues that users encountered with version 7
 and fixes a few client commands.
 
 Version 7.2 fixes an issue that could cause baking to fail when validating some
-smart contracts, and fixes how arguments are passed by the tezos-docker-manager.sh
+smart contracts, and fixes how arguments are passed by the mineplex-docker-manager.sh
 script when using Docker images.
 
 Version 7.3 fixes a couple of security issues.
@@ -25,7 +25,7 @@ To update from sources::
   eval $(opam env)
   make
 
-If you are using Docker instead, use the ``v7.3`` Docker images of Tezos.
+If you are using Docker instead, use the ``v7.3`` Docker images of mineplex.
 
 New Versioning Scheme
 ---------------------
@@ -56,9 +56,9 @@ branch.
 Note for Remote Signer Users
 ----------------------------
 
-Note for users of ``tezos-signer``: the 7.0 (or above) client, baker, endorser
+Note for users of ``mineplex-signer``: the 7.0 (or above) client, baker, endorser
 and accuser need the 7.0 signer (or above) to work. They are in particular not
-compatible with the ``mainnet`` version of ``tezos-signer``. So remember to
+compatible with the ``mainnet`` version of ``mineplex-signer``. So remember to
 update your remote signer too!
 
 Multinetwork Node
@@ -75,7 +75,7 @@ If you are following the ``mainnet`` branch, you should instead follow the
 ``latest-release`` branch.
 
 If you are using the Docker script (``alphanet.sh``), note that
-this script has been renamed ``tezos-docker-manager.sh``. The ``alphanet.sh``
+this script has been renamed ``mineplex-docker-manager.sh``. The ``alphanet.sh``
 script is still available in the Docker image for the auto-update mechanism.
 See :ref:`howtoget` for more information.
 
@@ -94,7 +94,7 @@ Changelog — Version 7.2
 
 - Fixed an error that could cause baking to fail when validating some smart contracts.
 
-- Fixed an issue in ``tezos-docker-manager.sh`` which prevented to use some options,
+- Fixed an issue in ``mineplex-docker-manager.sh`` which prevented to use some options,
   such as ``--rpc-port``.
 
 Changelog — Version 7.1
@@ -103,9 +103,9 @@ Changelog — Version 7.1
 Source Compilation
 ~~~~~~~~~~~~~~~~~~
 
-- The ``Makefile`` now ignores directories with no ``lib_protocol/TEZOS_PROTOCOL``
+- The ``Makefile`` now ignores directories with no ``lib_protocol/mineplex_PROTOCOL``
   files when listing protocols to compile. This fixes an error where ``make`` complained
-  that it had no rule to build ``TEZOS_PROTOCOL`` for directories that Git
+  that it had no rule to build ``mineplex_PROTOCOL`` for directories that Git
   does not completely remove when switching branches.
 
 - One can now use opam 2.0.0 again. In version 7.0, an error saying that it did not know
@@ -141,18 +141,18 @@ Multinetwork
 - Node and client now come with all current and past protocols that are still
   in use on Mainnet or some active test networks.
 
-- Added option ``--network`` to ``tezos-node config init`` to select which network
+- Added option ``--network`` to ``mineplex-node config init`` to select which network
   to connect to from a list of built-in networks (e.g. ``carthagenet``). If you do not
   run ``config init`` or run it without the ``--network`` option, the node will
   use the default network (Mainnet).
 
-- Added option ``--network`` to ``tezos-node run`` and ``tezos-node snapshot import``
+- Added option ``--network`` to ``mineplex-node run`` and ``mineplex-node snapshot import``
   which causes the node to check that it is configured to use the given network.
 
 - Added ``network`` configuration field to select which network to connect to,
   similar to ``--network``. This field also lets you specify an entirely custom,
   non-built-in network and is especially useful to run private networks.
-  For instance, LabNet (https://forum.tezosagora.org/t/introducing-labnet-a-rapid-iteration-testnet-for-tezos/1522)
+  For instance, LabNet (https://forum.mineplexagora.org/t/introducing-labnet-a-rapid-iteration-testnet-for-mineplex/1522)
   uses such a custom configuration.
 
 - The ``network`` configuration field also allows to specify user-activated upgrades
@@ -168,7 +168,7 @@ Multinetwork
 
 - The network name is printed in the logs on startup.
 
-For more information, see: http://tezos.gitlab.io/user/multinetwork.html
+For more information, see: http://mineplex.gitlab.io/user/multinetwork.html
 
 Node
 ~~~~
@@ -252,7 +252,7 @@ Client
 
 - Added protocol command ``expand macros in`` to expand macros in Michelson code.
 
-- Added command ``tezos-admin-client protocol environment`` which displays the
+- Added command ``mineplex-admin-client protocol environment`` which displays the
   version of the environment used by a given protocol.
 
 - Greatly reduce the time the client takes to load.
@@ -282,9 +282,9 @@ Protocol
 Docker Script
 ~~~~~~~~~~~~~
 
-- Renamed script ``alphanet.sh`` into ``tezos-docker-manager.sh``.
+- Renamed script ``alphanet.sh`` into ``mineplex-docker-manager.sh``.
   You should still use ``mainnet.sh`` and ``carthagenet.sh`` as they are now
-  symbolic links to ``tezos-docker-manager.sh`` instead of ``alphanet.sh``.
+  symbolic links to ``mineplex-docker-manager.sh`` instead of ``alphanet.sh``.
 
 - Removed script ``zeronet.sh`` as Zeronet is using an older version of Babylon
   (PsBABY5H) for which the baker, endorser and accuser binaries are no longer available.

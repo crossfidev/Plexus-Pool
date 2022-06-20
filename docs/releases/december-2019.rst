@@ -49,7 +49,7 @@ Docker Images
 Codec
 ~~~~~
 
-- New binary: ``tezos-codec`` to encode and decode Tezos values
+- New binary: ``mineplex-codec`` to encode and decode mineplex values
 
 Baker
 ~~~~~
@@ -90,7 +90,7 @@ To upgrade your node, you first need to determine the situation you are currentl
 - If you are using a previous release of the ``mainnet`` branch:
 
   - find out whether you are using the ``archive`` history-mode or not by running:
-    ``./tezos-admin-client show current checkpoint | grep 'History mode'``
+    ``./mineplex-admin-client show current checkpoint | grep 'History mode'``
     while your node is running;
 
   - if you are in the default ``full`` mode, follow the instructions in
@@ -118,10 +118,10 @@ the new storage backend and is thus simple to upgrade from.
 
 - Compile the new version of the node (see `How to Update the Node`_).
 
-- Run: ``./tezos-node upgrade storage``
+- Run: ``./mineplex-node upgrade storage``
   This takes less than a second.
 
-- Start your node as usual with: ``./tezos-node run``
+- Start your node as usual with: ``./mineplex-node run``
 
 Upgrade From Previous Mainnet in Full Mode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,18 +133,18 @@ Upgrade From Previous Mainnet in Full Mode
 - Compile the new version of the node (see `How to Update the Node`_).
 
 - Remove the ``context`` and ``store`` folders in your data directory,
-  or simply move them away with: ``mv ~/.tezos-node/context ~/tezos-context-backup``
-  and: ``mv ~/.tezos-node/store ~/tezos-store-backup``
+  or simply move them away with: ``mv ~/.mineplex-node/context ~/mineplex-context-backup``
+  and: ``mv ~/.mineplex-node/store ~/mineplex-store-backup``
 
 - Import your snapshot using:
-  ``./tezos-node snapshot import snapshot.full``
+  ``./mineplex-node snapshot import snapshot.full``
   This takes between about 10 minutes and one hour depending on your hardware.
 
-- You are now ready to start your upgraded node with: ``./tezos-node run``
+- You are now ready to start your upgraded node with: ``./mineplex-node run``
 
 If your node is running well and you made backups of your ``context`` and ``store``
 directories, you can now safely remove them:
-``rm -rf ~/tezos-context-backup ~/tezos-store-backup``
+``rm -rf ~/mineplex-context-backup ~/mineplex-store-backup``
 
 Upgrade From Previous Mainnet in Archive Mode (Minimal Interruption)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,7 +158,7 @@ you can run the second node on another machine.
 - Compile the new version of the node (see `How to Update the Node`_).
 
 - Use it to generate a new data directory with a new identity with:
-  ``./tezos-node identity generate --data-dir ~/tezos-node-2``
+  ``./mineplex-node identity generate --data-dir ~/mineplex-node-2``
 
 Now choose between option A and option B.
 
@@ -167,18 +167,18 @@ Now choose between option A and option B.
   - Export a snapshot from your first node or download one (see `How to Export a Snapshot`_).
 
   - Import it in your second node using
-    ``./tezos-node snapshot import snapshot.full --data-dir ~/tezos-node-2 --reconstruct``
+    ``./mineplex-node snapshot import snapshot.full --data-dir ~/mineplex-node-2 --reconstruct``
     (replace ``snapshot.full`` with the filename of your snapshot).
     The reconstruction takes a couple of days to complete.
 
   - Once it is done, start your node as usual with:
-    ``./tezos-node run --data-dir ~/tezos-node-2``
+    ``./mineplex-node run --data-dir ~/mineplex-node-2``
     and let it run for a while so that it catches up with the latest blocks that were produced
     while you were reconstructing your context.
 
 - **Option B**: bootstrap your node from scratch.
   Just start your second node with:
-  ``./tezos-node run --history-mode=archive --data-dir ~/tezos-node-2``
+  ``./mineplex-node run --history-mode=archive --data-dir ~/mineplex-node-2``
   It will take about a week to synchronize.
 
 You now have a second node which is running with the new storage backend.
@@ -205,8 +205,8 @@ will not be usable. If this is an issue, read the above section instead.
 - Compile the new version of the node (see `How to Update the Node`_).
 
 - Remove the ``context`` and ``store`` folders in your data directory,
-  or simply move them away with: ``mv ~/.tezos-node/context ~/tezos-context-backup``
-  and: ``mv ~/.tezos-node/store ~/tezos-store-backup``
+  or simply move them away with: ``mv ~/.mineplex-node/context ~/mineplex-context-backup``
+  and: ``mv ~/.mineplex-node/store ~/mineplex-store-backup``
 
 Now choose between option A and option B.
 Option A is faster but uses more RAM.
@@ -214,19 +214,19 @@ Option A is faster but uses more RAM.
 - **Option A**: import a snapshot and reconstruct.
 
   - Import your snapshot using:
-    ``./tezos-node snapshot import snapshot.full --data-dir ~/tezos-node-2 --reconstruct``
+    ``./mineplex-node snapshot import snapshot.full --data-dir ~/mineplex-node-2 --reconstruct``
     The reconstruction takes a couple of days to complete.
 
-  - You are now ready to start your upgraded node with: ``./tezos-node run``
+  - You are now ready to start your upgraded node with: ``./mineplex-node run``
 
 - **Option B**: bootstrap your node from scratch.
   Just start your node as usual with:
-  ``./tezos-node run --history-mode=archive``
+  ``./mineplex-node run --history-mode=archive``
   It will take about a week to synchronize.
 
 If your node is running well and you made backups of your ``context`` and ``store``
 directories, you can now safely remove them:
-``rm -rf ~/tezos-context-backup ~/tezos-store-backup``
+``rm -rf ~/mineplex-context-backup ~/mineplex-store-backup``
 
 How to Export a Snapshot
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -236,10 +236,10 @@ Here is how to do so.
 You may also just download a recent snapshot instead.
 
 - Get the hash of the current block using:
-  ``./tezos-client rpc get /chains/main/blocks/head | grep 'hash\": \"BL'``
+  ``./mineplex-client rpc get /chains/main/blocks/head | grep 'hash\": \"BL'``
   (or simply find the hash in the logs of your running node).
 
-- Export the snapshot with: ``./tezos-node snapshot --block <BLOCK> export snapshot.full``
+- Export the snapshot with: ``./mineplex-node snapshot --block <BLOCK> export snapshot.full``
   (replace ``<BLOCK>`` with the hash of the current block).
 
 If you do not specify ``--block`` the snapshot will be less recent
@@ -248,7 +248,7 @@ and thus your node will have to spend some time to catch up.
 How to Update the Node
 ~~~~~~~~~~~~~~~~~~~~~~
 
-This section assumes that you compile your node from a clone of the Tezos Git repository.
+This section assumes that you compile your node from a clone of the mineplex Git repository.
 
 - Checkout the latest version: ``git checkout mainnet && git pull``
 
@@ -271,7 +271,7 @@ and helps you upgrade to the new storage format.
 
 Run: ``docker volume create node_migration``
 
-Now either download a full snapshot file, or create one from your Tezos node.
+Now either download a full snapshot file, or create one from your mineplex node.
 
 2a) Import an Existing Snapshot File
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -281,10 +281,10 @@ This is going to take multiple days.
 Run::
 
   docker run -d --name upgrader \
-      --mount source=node_migration,target=/tezosdata \
+      --mount source=node_migration,target=/mineplexdata \
       -v /path/to/snapshot/file.full:/snap.full \
-      tezos/tezos-bare:master \
-      tezos-node snapshot import /snap.full --data-dir /tezosdata --reconstruct
+      mineplex/mineplex-bare:master \
+      mineplex-node snapshot import /snap.full --data-dir /mineplexdata --reconstruct
 
 While this is running you can check the logs with ``docker logs -f upgrader``.
 Wait until this command terminates.
@@ -294,7 +294,7 @@ Wait until this command terminates.
 
 Run::
 
-  docker exec -it mainnet_node_1 tezos-node snapshot export /snap.full
+  docker exec -it mainnet_node_1 mineplex-node snapshot export /snap.full
 
 to create the file, and copy it to your host with::
 
@@ -302,7 +302,7 @@ to create the file, and copy it to your host with::
 
 Then proceed with Step 2a.
 
-3) Copy New Data to Your Tezos Node
+3) Copy New Data to Your mineplex Node
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First stop your node with ``mainnet.sh stop``, copy the files with::
