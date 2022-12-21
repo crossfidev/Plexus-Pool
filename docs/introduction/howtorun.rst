@@ -162,7 +162,7 @@ the node data directory for performance reasons.
 Let's launch the daemon pointing to the standard node directory and
 baking for user *bob*::
 
-   ./mineplex-baker-002-Pt4xzupC run with local node ~/mineplex-mainnet bob --minimal-fees 100000
+   ./mineplex-baker-002-Pt4xzupC run with local node ~/mineplex-mainnet bob --minimal-fees 1000000
 
 Endorser
 ~~~~~~~~
