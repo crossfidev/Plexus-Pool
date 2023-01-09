@@ -1,5 +1,4 @@
 #!/bin/sh
-
 set -e
 
 bin_dir="$(cd "$(dirname "$0")" && echo "$(pwd -P)/")"
@@ -12,13 +11,13 @@ bin_dir="$(cd "$(dirname "$0")" && echo "$(pwd -P)/")"
 
 : ${PROTOCOL:="unspecified-PROTOCOL-variable"}
 
-node="$BIN_DIR/tezos-node"
-client="$BIN_DIR/tezos-client"
-admin_client="$BIN_DIR/tezos-admin-client"
-baker="$BIN_DIR/tezos-baker-$PROTOCOL"
-endorser="$BIN_DIR/tezos-endorser-$PROTOCOL"
-accuser="$BIN_DIR/tezos-accuser-$PROTOCOL"
-signer="$BIN_DIR/tezos-signer"
+node="$BIN_DIR/mineplex-node"
+client="$BIN_DIR/mineplex-client"
+admin_client="$BIN_DIR/mineplex-admin-client"
+baker="$BIN_DIR/mineplex-baker-$PROTOCOL"
+endorser="$BIN_DIR/mineplex-endorser-$PROTOCOL"
+accuser="$BIN_DIR/mineplex-accuser-$PROTOCOL"
+signer="$BIN_DIR/mineplex-signer"
 
 client_dir="$DATA_DIR/client"
 node_dir="$DATA_DIR/node"
@@ -26,81 +25,81 @@ node_data_dir="$node_dir/data"
 
 . "$bin_dir/entrypoint.inc.sh"
 
-command=${1:-tezos-node}
+command=${1:-mineplex-node}
 shift 1
 
 case $command in
-    tezos-node)
+    mineplex-node)
         launch_node "$@"
         ;;
-    tezos-upgrade-storage)
+    mineplex-upgrade-storage)
         upgrade_node_storage
         ;;
-    tezos-snapshot-import)
+    mineplex-snapshot-import)
         snapshot_import "$@"
         ;;
-    tezos-baker)
+    mineplex-baker)
         launch_baker "$@"
         ;;
-    tezos-baker-test)
+    mineplex-baker-test)
         launch_baker_test "$@"
         ;;
-    tezos-endorser)
+    mineplex-endorser)
         launch_endorser "$@"
         ;;
-    tezos-endorser-test)
+    mineplex-endorser-test)
         launch_endorser_test "$@"
         ;;
-    tezos-accuser)
+    mineplex-accuser)
         launch_accuser "$@"
         ;;
-    tezos-accuser-test)
+    mineplex-accuser-test)
         launch_accuser_test "$@"
         ;;
-    tezos-client)
+    mineplex-client)
         configure_client
         exec "$client" "$@"
         ;;
-    tezos-admin-client)
+    mineplex-admin-client)
         configure_client
         exec "$admin_client" "$@"
         ;;
-    tezos-signer)
+    mineplex-signer)
         exec "$signer" "$@"
         ;;
     *)
         cat <<EOF
 Available commands:
 
-The following are wrappers around the tezos binaries.
-To call the tezos binaries directly you must override the
+The following are wrappers around the mineplex binaries.
+To call the mineplex binaries directly you must override the
 entrypoint using --entrypoint . All binaries are in
-$BIN_DIR and the tezos data in $DATA_DIR
+$BIN_DIR and the mineplex data in $DATA_DIR
 
 You can specify the network with argument --network, for instance:
   --network carthagenet
 (default is mainnet).
 
 Daemons:
-- tezos-node [args]
-  Initialize a new identity and run the tezos node.
+- mineplex-node [args]
+  Initialize a new identity and run the mineplex node.
 
-- tezos-baker [keys]
-- tezos-baker-test [keys]
-- tezos-endorser [keys]
-- tezos-endorser-test [keys]
+- mineplex-baker [keys]
+- mineplex-baker-test [keys]
+- mineplex-endorser [keys]
+- mineplex-endorser-test [keys]
 
 Clients:
-- tezos-client [args]
-- tezos-signer [args]
-- tezos-admin-client
+- mineplex-client [args]
+- mineplex-signer [args]
+- mineplex-admin-client
 
 Commands:
-  - tezos-upgrade-storage
-  - tezos-snapshot-import [args]
+  - mineplex-upgrade-storage
+  - mineplex-snapshot-import [args]
     Import a snapshot. The snapshot must be available in the file /snapshot
     Using docker run, you can make it available using the command :
-       docker run -v <yourfilename>:/snapshot tezos/tezos tezos-snapshot-import
+       docker run -v <yourfilename>:/snapshot mineplex/mineplex mineplex-snapshot-import
     <yourfilename> must be an absolute path.
 EOF
         ;;

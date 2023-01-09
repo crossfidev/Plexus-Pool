@@ -16,47 +16,47 @@ cd "$src_dir"
 # identified by the prefix "minimal--" followed by the same
 # commit reference of the build image.
 
-image_name="${1:-tezos}"
+image_name="${1:-mineplex}"
 image_version="${2:-latest}"
 build_image="${3:-registry.gitlab.com/tezos/opam-repository}"
 base_image="${4-registry.gitlab.com/tezos/opam-repository}"
 base_version="${5-minimal--${opam_repository_tag}}"
 commit_short_sha="${6:-$(git rev-parse --short HEAD)}"
 
-echo
-echo "### Building minimal docker images..."
-echo
+# echo
+# echo "### Building minimal docker images..."
+# echo
 
-docker build \
-  -t "$image_name-debug:$image_version" \
-  --build-arg "BASE_IMAGE=$base_image" \
-  --build-arg "BASE_IMAGE_VERSION=$base_version" \
-  --build-arg "BASE_IMAGE_VERSION_NON_MIN=$opam_repository_tag" \
-  --build-arg "BUILD_IMAGE=${build_image}" \
-  --build-arg "BUILD_IMAGE_VERSION=${image_version}" \
-  --build-arg "COMMIT_SHORT_SHA=${commit_short_sha}" \
-  --target=debug \
-  "$src_dir"
+# docker build \
+#   -t "$image_name-debug:$image_version" \
+#   --build-arg "BASE_IMAGE=$base_image" \
+#   --build-arg "BASE_IMAGE_VERSION=$base_version" \
+#   --build-arg "BASE_IMAGE_VERSION_NON_MIN=$opam_repository_tag" \
+#   --build-arg "BUILD_IMAGE=${build_image}" \
+#   --build-arg "BUILD_IMAGE_VERSION=${image_version}" \
+#   --build-arg "COMMIT_SHORT_SHA=${commit_short_sha}" \
+#   --target=debug \
+#   "$src_dir"
 
-echo
-echo "### Successfully build docker image: $image_name-debug:$image_version"
-echo
+# echo
+# echo "### Successfully build docker image: $image_name-debug:$image_version"
+# echo
 
-docker build \
-  -t "$image_name-bare:$image_version" \
-  --build-arg "BASE_IMAGE=$base_image" \
-  --build-arg "BASE_IMAGE_VERSION=$base_version" \
-  --build-arg "BUILD_IMAGE=${build_image}" \
-  --build-arg "BUILD_IMAGE_VERSION=${image_version}" \
-  --build-arg "BASE_IMAGE_VERSION_NON_MIN=$opam_repository_tag" \
-  --build-arg "COMMIT_SHORT_SHA=${commit_short_sha}" \
-  --target=bare \
-  "$src_dir"
+# docker build \
+#   -t "$image_name-bare:$image_version" \
+#   --build-arg "BASE_IMAGE=$base_image" \
+#   --build-arg "BASE_IMAGE_VERSION=$base_version" \
+#   --build-arg "BUILD_IMAGE=${build_image}" \
+#   --build-arg "BUILD_IMAGE_VERSION=${image_version}" \
+#   --build-arg "BASE_IMAGE_VERSION_NON_MIN=$opam_repository_tag" \
+#   --build-arg "COMMIT_SHORT_SHA=${commit_short_sha}" \
+#   --target=bare \
+#   "$src_dir"
 
 
-echo
-echo "### Successfully build docker image: $image_name-bare:$image_version"
-echo
+# echo
+# echo "### Successfully build docker image: $image_name-bare:$image_version"
+# echo
 
 docker build \
   -t "$image_name:$image_version" \

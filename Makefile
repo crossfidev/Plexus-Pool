@@ -7,7 +7,7 @@ active_protocol_directories := $(shell tr -- - _ < active_protocol_versions)
 current_opam_version := $(shell opam --version)
 include scripts/version.sh
 
-DOCKER_IMAGE_NAME := tezos
+DOCKER_IMAGE_NAME := mineplex
 DOCKER_IMAGE_VERSION := latest
 DOCKER_BUILD_IMAGE_NAME := $(DOCKER_IMAGE_NAME)_build
 DOCKER_BUILD_IMAGE_VERSION := latest

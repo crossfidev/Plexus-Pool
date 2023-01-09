@@ -9,14 +9,14 @@ cd "$src_dir"
 
 . "$script_dir"/version.sh
 
-image_name="${1:-tezos_build}"
+image_name="${1:-mineplex_build}"
 image_version="${2:-latest}"
 base_image="${3-${image_name}_deps}"
 base_image_version="${4:-latest}"
 commit_short_sha="${5:-unknown}"
 
 echo
-echo "### Building tezos..."
+echo "### Building mineplex..."
 echo
 
 docker build \

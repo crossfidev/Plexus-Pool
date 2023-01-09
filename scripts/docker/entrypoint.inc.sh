@@ -1,18 +1,17 @@
 #!/bin/sh
 
 configure_client() {
+    # local client_config="$HOME/.tezos-client/config"
+    # mkdir -p "$client_dir" "$HOME/.tezos-client"
 
-    local client_config="$HOME/.tezos-client/config"
-    mkdir -p "$client_dir" "$HOME/.tezos-client"
-
-    if [ ! -f "$client_config" ]; then
+    if [ ! -f "$client_dir/config" ]; then
         "$client" --base-dir "$client_dir" \
                   --endpoint "http://$NODE_HOST:$NODE_RPC_PORT" \
-                  config init --output "$client_config" >/dev/null 2>&1
+                  config init
     else
         "$client" --base-dir "$client_dir" \
                   --endpoint "http://$NODE_HOST:$NODE_RPC_PORT" \
-                  config update >/dev/null 2>&1
+                  config update
     fi
 
 }
@@ -107,12 +106,11 @@ launch_node() {
                 --data-dir "$node_data_dir"
     fi
 
-    configure_client
+    # configure_client
+    # echo "Client configured"
 
     # Launching the node
-
-    exec "$node" run --data-dir "$node_data_dir"
-
+    exec "$node" run --data-dir "$node_data_dir" --connections 15 --history-mode=archive --singleprocess
 }
 
 upgrade_node_storage() {
