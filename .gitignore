@@ -39,7 +39,7 @@ __pycache__
 /docs/api/p2p.rst
 
 /src/bin_client/test/LOG.*
-/src/bin_client/tezos-init-mainnet-client-d001.sh
+/src/bin_client/tezos-init-mainnet-client-*
 /_coverage_output/*.coverage
 /_coverage_report
 

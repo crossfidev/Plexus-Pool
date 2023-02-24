@@ -30,6 +30,9 @@
             (select void_for_linking-002-Pt4xzupC from
               (tezos-client-002-Pt4xzupC-commands.registration -> void_for_linking)
               (-> void_for_linking))
+            (select void_for_linking-003-PtWEnWTw from
+              (tezos-client-003-PtWEnWTw-commands.registration -> void_for_linking)
+              (-> void_for_linking))
 
             (select void_for_linking-alpha from
               (tezos-client-alpha-commands.registration -> void_for_linking)
@@ -46,6 +49,9 @@
               (-> void_for_linking))
             (select void_for_linking-baking-002-Pt4xzupC from
               (tezos-baking-002-Pt4xzupC-commands.registration -> void_for_linking)
+              (-> void_for_linking))
+            (select void_for_linking-baking-003-PtWEnWTw from
+              (tezos-baking-003-PtWEnWTw-commands.registration -> void_for_linking)
               (-> void_for_linking))
 
             tezos-stdlib-unix

@@ -1,0 +1,49 @@
+(executable
+ (name main)
+ (libraries tezos-base
+            tezos-micheline
+            tezos-protocol-environment
+            alcotest-lwt
+            tezos-003-PtWEnWTw-test-helpers
+            tezos-stdlib-unix
+            tezos-client-base
+            tezos-protocol-003-PtWEnWTw-parameters
+            tezos-test-services)
+ (flags (:standard -open Tezos_base__TzPervasives
+                   -open Tezos_micheline
+                   -open Tezos_client_003_PtWEnWTw
+                   -open Tezos_protocol_003_PtWEnWTw
+                   -open Tezos_protocol_environment_003_PtWEnWTw
+                   -open Tezos_003_PtWEnWTw_test_helpers
+                   -open Tezos_test_services)))
+
+(alias
+ (name buildtest)
+ (package tezos-protocol-003-PtWEnWTw-tests)
+ (deps main.exe))
+
+(rule
+ (copy %{lib:tezos-protocol-003-PtWEnWTw-parameters:test-parameters.json}
+       protocol_parameters.json))
+
+; runs only the `Quick tests
+(alias
+ (name runtest_proto_003_PtWEnWTw)
+ (package tezos-protocol-003-PtWEnWTw-tests)
+ (action (run %{exe:main.exe} -v -q)))
+
+; runs both `Quick and `Slow tests
+(alias
+ (name runtest_slow)
+ (package tezos-protocol-003-PtWEnWTw-tests)
+ (action (run %{exe:main.exe} -v)))
+
+(alias
+ (name runtest)
+ (package tezos-protocol-003-PtWEnWTw-tests)
+ (deps (alias runtest_proto_003_PtWEnWTw)))
+
+(alias
+ (name runtest_lint)
+ (deps (glob_files *.ml{,i}))
+ (action (run %{lib:tezos-tooling:lint.sh} %{deps})))

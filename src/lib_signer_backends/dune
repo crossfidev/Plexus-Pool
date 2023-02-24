@@ -2,6 +2,7 @@
  (name tezos_signer_backends)
  (public_name tezos-signer-backends)
  (libraries tezos-base
+            base
             tezos-stdlib
             tezos-client-base
             tezos-rpc-http-client

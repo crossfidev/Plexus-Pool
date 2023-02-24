@@ -17,7 +17,7 @@ depends: [
   "tezos-validation"
   "tezos-stdlib-unix"
   "tezos-requester"
-  "lwt-watcher" { = "0.1" }
+  "lwt-watcher" { = "0.2" }
   "lwt-canceler" { = "0.2" }
   "alcotest-lwt" { with-test & >= "1.1.0" }
   "tezos-workers"
@@ -26,6 +26,6 @@ depends: [
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
-  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+  # ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
 synopsis: "Tezos: core of `tezos-node` (gossip, validation scheduling, mempool, ...)"

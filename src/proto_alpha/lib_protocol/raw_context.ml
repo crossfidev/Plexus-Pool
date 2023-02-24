@@ -144,6 +144,10 @@ let add_rewards ctxt rewards =
   Lwt.return Tez_repr.(ctxt.rewards +? rewards)
   >>=? fun rewards -> return {ctxt with rewards}
 
+let add_mine_rewards ctxt mine_rewards =
+  Lwt.return Mine_repr.(ctxt.mine_rewards +? mine_rewards)
+  >>=? fun mine_rewards -> return {ctxt with mine_rewards}
+
 let add_deposit ctxt delegate deposit =
   let previous =
     match Signature.Public_key_hash.Map.find_opt delegate ctxt.deposits with
@@ -584,6 +588,7 @@ type previous_protocol =
   | Alpha_previous
   | D_001
   | D_002
+  | D_003
 
 let check_and_update_protocol_version ctxt =
   Context.get ctxt version_key
@@ -604,6 +609,8 @@ let check_and_update_protocol_version ctxt =
               return (D_001, ctxt)
             else if Compare.String.(s = "d_002") then
               return (D_002, ctxt)
+            else if Compare.String.(s = "d_003") then
+              return (D_003, ctxt)
             else storage_error (Incompatible_protocol_version s))
   >>=? fun (previous_proto, ctxt) ->
   Context.set ctxt version_key (MBytes.of_string version_value)
@@ -633,7 +640,20 @@ let prepare_first_block ~level ~timestamp ~fitness ctxt =
       in
       set_constants ctxt constants
       >>= fun ctxt -> return ctxt
-  | Alpha_previous | D_002 ->
+  | D_002 ->
+      get_constants ctxt
+      >>=? fun c ->
+      let constants =
+        Constants_repr.
+          {
+            c with
+            blocks_per_voting_period = 1440l;
+            test_chain_duration = Int64.mul 1440L 60L;
+          }
+      in
+      set_constants ctxt constants
+      >>= fun ctxt -> return ctxt
+  | Alpha_previous | D_003 ->
       return ctxt )
   >>=? fun ctxt ->
   prepare ctxt ~level ~predecessor_timestamp:timestamp ~timestamp ~fitness

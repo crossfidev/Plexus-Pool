@@ -1,0 +1,23 @@
+(library
+ (name tezos_003_PtWEnWTw_test_helpers)
+ (public_name tezos-003-PtWEnWTw-test-helpers)
+ (libraries alcotest-lwt
+            tezos-base
+            tezos-stdlib-unix
+            tezos-shell-services
+            tezos-protocol-environment
+            tezos-protocol-003-PtWEnWTw
+            tezos-protocol-003-PtWEnWTw-parameters
+            tezos-client-003-PtWEnWTw)
+ (flags (:standard -open Tezos_base__TzPervasives
+                   -open Tezos_micheline
+                   -open Tezos_stdlib_unix
+                   -open Tezos_protocol_003_PtWEnWTw
+                   -open Tezos_client_003_PtWEnWTw
+                   -open Tezos_protocol_environment_003_PtWEnWTw
+                   -open Tezos_shell_services)))
+
+(alias
+ (name runtest_lint)
+ (deps (glob_files *.ml{,i}))
+ (action (run %{lib:tezos-tooling:lint.sh} %{deps})))

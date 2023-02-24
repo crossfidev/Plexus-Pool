@@ -13,7 +13,7 @@ depends: [
   "tezos-p2p-services"
   "alcotest-lwt" { with-test & >= "1.1.0" }
   "lwt"
-  "lwt-watcher" { = "0.1" }
+  "lwt-watcher" { >= "0.1" }
   "lwt-canceler" { = "0.2" }
   "ringo" { = "0.5" }
 ]

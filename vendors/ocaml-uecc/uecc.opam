@@ -16,6 +16,6 @@ depends: [
   "dune" {build & >= "1.7"}
   "bigstring" {>= "0.1.1"}
   "alcotest" {with-test & >= "0.8.1"}
-  "cstruct" {with-test & >= "3.2.1"}
+  "cstruct" {with-test & = "5.1.1"}
   "hex" {with-test & >= "1.4.0"}
 ]

@@ -27,9 +27,11 @@ depends: [
   "tezos-mempool-001-Pt8PXNHh"
   "tezos-embedded-protocol-002-Pt4xzupC"
   "tezos-mempool-002-Pt4xzupC"
+  "tezos-embedded-protocol-003-PtWEnWTw"
+  "tezos-mempool-003-PtWEnWTw"
   "cmdliner"
   "tls"
-  "cstruct"
+  "cstruct" { = "5.1.1"}
 ]
 build: [
   ["dune" "build" "-p" name "-j" jobs]

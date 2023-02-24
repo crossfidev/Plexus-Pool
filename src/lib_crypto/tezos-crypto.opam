@@ -15,9 +15,9 @@ depends: [
   "tezos-rpc"
   "tezos-clic"
   "lwt"
-  "hacl-star"
+  "hacl-star" { = "0.2.2" }
   "zarith"
-  "secp256k1-internal"
+  "secp256k1-internal" { = "0.2.0" }
   "uecc"
   "conf-rust" # fake (for the CI) to be removed once libsapling is merged
   "ringo" { = "0.5" }

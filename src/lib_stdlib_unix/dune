@@ -14,6 +14,8 @@
             ptime
             ptime.clock.os
             mtime
+            re
+            fmt
             mtime.clock.os
             lwt_log))
 

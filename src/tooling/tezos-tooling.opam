@@ -8,7 +8,7 @@ license: "MIT"
 depends: [
   "coq-of-ocaml" { = "2.2.1" }
   "dune" { >= "1.11" }
-  "ocamlformat" { = "0.10" }
+  "ocamlformat" { = "0.12" }
   "bisect_ppx" { >= "2.3" }
 ]
 build: [
