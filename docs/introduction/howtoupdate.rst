@@ -3,7 +3,7 @@
 How to update Mineplex
 ================
 
-Run this scrupt::
+Run this script::
 
     git pull
     pkill -9 "mineplex*"
