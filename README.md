@@ -14,4 +14,5 @@ Instructions to
 [install](https://github.com/mineplexio/Plexus-Pool/blob/mineplex-beta-protocol/docs/introduction/howtoget.rst),
 [start using](https://github.com/mineplexio/Plexus-Pool/blob/mineplex-beta-protocol/docs/introduction/howtouse.rst), and
 [taking part in the consensus](https://github.com/mineplexio/Plexus-Pool/blob/mineplex-beta-protocol/docs/introduction/howtorun.rst) are
-available at https://github.com/mineplexio/Plexus-Pool.
+available at https://github.com/mineplexio/Plexus-Pool
+[how to update](https://github.com/mineplexio/Plexus-Pool/blob/mineplex-beta-protocol/docs/introduction/howtoupdate.rst)
